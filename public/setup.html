@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FuelWise AI Setup</title>
+  <link rel="stylesheet" href="/assets/css/site.css" />
+</head>
+<body>
+  <main class="scan-wrap">
+    <a class="top-link" href="/public/index.html">
+  Start
+</a>
+
+    <section class="scan-card">
+      <h1>Athlete Setup</h1>
+      <p class="sub">Set your context before scanning meals.</p>
+
+      <input id="heightInput" class="goal-select" type="text" placeholder="Height (example: 5'10)" />
+      <input id="weightInput" class="goal-select" type="text" placeholder="Current Weight (example: 165 lbs)" />
+      <input id="targetWeightInput" class="goal-select" type="text" placeholder="Target Weight (optional)" />
+
+      <select id="ageRange" class="goal-select">
+        <option value="13-18">Ages 13–18</option>
+        <option value="19-30">Ages 19–30</option>
+        <option value="31-45">Ages 31–45</option>
+        <option value="46-60">Ages 46–60</option>
+        <option value="60+">Ages 60+</option>
+      </select>
+
+      <select id="genderType" class="goal-select">
+        <option value="male">Male</option>
+        <option value="female">Female</option>
+      </select>
+
+      <select id="goalSelect" class="goal-select">
+        <option value="fuelwise">Fuel_Wise_Maintain</option>
+        <option value="cutwise">Cut_Wise_Drop</option>
+        <option value="gainwise">Gain_Wise_Add</option>
+        <option value="hydratewise">Hydrate_Wise_H2O</option>
+      </select>
+<button id="saveSetupBtn" class="start-btn">
+  Continue to Scanner
+</button>
+    </section>
+  </main>
+
+  <script src="/assets/js/setup.js"></script>
+</body>
+</html>
