@@ -112,12 +112,65 @@ if (fridgeAnalyzeBtn) {
       clearInterval(loadingInterval);
       fridgeLoadingCard.classList.add("hidden");
 
-      fridgeResultCard.innerHTML = `
-        <h2>Error</h2>
+fridgeResultCard.innerHTML = `
+  <h2>Dinner Ideas</h2>
+
+  <p class="feedback">
+    <strong>Detected:</strong>
+    ${(parsed.detectedItems || []).join(", ") || "No clear items detected"}
+  </p>
+
+  ${
+    parsed.possibleItems?.length
+      ? `
         <p class="feedback">
-          Could not suggest meals. Please try again.
+          <strong>Maybe:</strong>
+          ${parsed.possibleItems.join(", ")}
         </p>
-      `;
+      `
+      : ""
+  }
+
+  <div class="history-section">
+    ${(parsed.suggestedMeals || []).map(meal => `
+      <div class="history-item">
+        <strong>${meal.name}</strong>
+        <div class="history-meta">${meal.time || ""}</div>
+
+        <p class="feedback">
+          ${meal.whyItWorks || ""}
+        </p>
+
+        <p class="feedback">
+          <strong>Uses:</strong>
+          ${(meal.uses || []).join(", ") || "Items from your photo"}
+        </p>
+
+        <p class="feedback">
+          <strong>Need:</strong>
+          ${(meal.needs || []).join(", ") || "Nothing extra"}
+        </p>
+
+        ${
+          meal.steps?.length
+            ? `
+              <ol>
+                ${meal.steps.map(step => `<li>${step}</li>`).join("")}
+              </ol>
+            `
+            : ""
+        }
+      </div>
+    `).join("")}
+  </div>
+
+  <div class="history-item">
+    <strong>Quick Grocery List</strong>
+    <p class="feedback">
+      ${(parsed.groceryList || []).join(", ") || "No extra groceries needed"}
+    </p>
+  </div>
+`;
 
       fridgeResultCard.classList.remove("hidden");
       fridgeAnalyzeBtn.textContent = "Try Again";
