@@ -77,6 +77,12 @@ function buildDailyLogForDate(dateKey) {
     return entry.type === "training";
   }).length;
 
+
+const latestWeight =
+  logs
+    .filter((entry) => entry.type === "weight")
+    .slice(-1)[0]?.weight || null;
+
   return {
     date: dateKey,
     goal: setup.goal || "fuelwise",
@@ -85,6 +91,7 @@ function buildDailyLogForDate(dateKey) {
     calories,
     water,
     trainingCount,
+    latestWeight,
     scanCount: logs.filter((entry) => entry.type === "meal").length,
     totalEntries: logs.length,
     updatedAt: new Date().toISOString()
