@@ -4,6 +4,7 @@ const analyzeBtn = document.getElementById("analyzeBtn");
 const resultCard = document.getElementById("resultCard");
 const loadingCard = document.getElementById("loadingCard");
 const loadingText = document.getElementById("loadingText");
+const uploadBox = document.getElementById("uploadBox");
 
 let selectedImageBase64 = null;
 
@@ -17,16 +18,16 @@ if (foodInput) {
 
     const reader = new FileReader();
 
-    reader.onload = () => {
-      selectedImageBase64 = reader.result;
+reader.onload = () => {
+  selectedImageBase64 = reader.result;
 
-      previewImage.src = selectedImageBase64;
-      previewImage.classList.remove("hidden");
-      analyzeBtn.classList.remove("hidden");
-      resultCard.classList.add("hidden");
-      loadingCard.classList.add("hidden");
-    };
-
+  previewImage.src = selectedImageBase64;
+  previewImage.classList.remove("hidden");
+  uploadBox.classList.add("hidden");
+  analyzeBtn.classList.remove("hidden");
+  resultCard.classList.add("hidden");
+  loadingCard.classList.add("hidden");
+};
     reader.readAsDataURL(file);
   });
 }
@@ -167,7 +168,7 @@ saveScan({
       resultCard.innerHTML = `
         <h2>Error</h2>
         <p class="feedback">
-          Could not analyze image. Make sure the server is running.
+        Could not analyze image. Please try again.
         </p>
       `;
 
