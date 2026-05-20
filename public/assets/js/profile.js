@@ -22,12 +22,12 @@ if (profileCard) {
         ${setup.gender === "female" ? "👩" : "👨"}
       </div>
 
-      <div>
-        <h2 class="profile-name">
-          Athlete Profile
-        </h2>
 
-        <p class="profile-goal">
+<h2 class="profile-name">
+  ${setup.nickname || "Your Profile"}
+</h2>
+
+      <p class="profile-goal">
           ${displayGoal[setup.goal] || "FuelWise"}
         </p>
       </div>
