@@ -4,12 +4,12 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>WiseGuyAI</title>
+  <title>Wise Guide</title>
 
   <link rel="stylesheet" href="/assets/css/site.css" />
 </head>
 
-<body>
+<body data-theme="day">
   <main class="scan-wrap">
 
     <a class="top-link" href="/">
@@ -36,41 +36,68 @@
 
       <div class="quick-log-grid">
 
-        <button class="start-btn" id="addWaterBtn">
-         + 8 oz  + Water
+        <button class="start-btn" id="addWaterBtn" type="button">
+          + 8 oz Water
         </button>
 
-        <button class="start-btn" id="addTrainingBtn">
-          + Training
+        <button class="start-btn" id="addTrainingBtn" type="button">
+          + Training Logged
         </button>
 
       </div>
 
       <section class="range-card">
         <p class="range-label">Wise Check</p>
+
         <p id="wiseAdvice" class="range-output">
           Loading guidance...
         </p>
       </section>
-<div class="wise-links">
 
-  <a class="secondary-btn" href="/app.html">
-    Scan Meal
-  </a>
+      <section class="range-card">
+        <p class="range-label">
+          Quick Check-In
+        </p>
 
-  <a class="secondary-btn" href="/fridge.html">
-    Open FridgeWise
-  </a>
+        <textarea
+          id="wiseChatInput"
+          class="goal-select"
+          placeholder="Ask your guide something..."
+          rows="4"
+        ></textarea>
 
-  <a class="secondary-btn" href="/logs.html">
-    View 90-Day Log
-  </a>
+        <button class="start-btn" id="sendWiseChatBtn" type="button">
+          Ask
+        </button>
 
-  <a class="secondary-btn" href="/setup.html">
-    Edit Setup
-  </a>
+        <p id="wiseChatReply" class="range-output">
+          Your guide is listening.
+        </p>
+      </section>
 
-</div>
+      <div class="wise-links">
+
+        <a class="secondary-btn" href="/app.html">
+          Scan Meal
+        </a>
+
+        <a class="secondary-btn" href="/fridge.html">
+          Open FridgeWise
+        </a>
+
+        <a class="secondary-btn" href="/logs.html">
+          View 90-Day Log
+        </a>
+
+        <a class="secondary-btn" href="/setup.html">
+          Edit Setup
+        </a>
+
+      </div>
+
+      <p class="hero-note">
+        FuelAI • Less overthinking. Better decisions.
+      </p>
 
     </section>
   </main>
