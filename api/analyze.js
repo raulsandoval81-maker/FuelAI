@@ -68,10 +68,16 @@ Return ONLY valid JSON:
       result: response.choices[0].message.content
     });
 
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Failed to analyze image" });
-  }
+} catch (err) {
+
+  console.error("ANALYZE ERROR:", err);
+
+  res.status(500).json({
+    error: err.message || "Failed to analyze image"
+  });
+
+}
+
 }
 
 export const config = {
