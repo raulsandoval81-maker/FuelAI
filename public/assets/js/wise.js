@@ -45,6 +45,7 @@ const wiseChatReply =
 
 if (window.FuelAILog) {
   window.FuelAILog.syncDailyLogs();
+  
 }
 
 function getGuideName() {
