@@ -1,162 +1,123 @@
-const fridgeInput = document.getElementById("fridgeInput");
-const fridgePreview = document.getElementById("fridgePreview");
-const fridgeAnalyzeBtn = document.getElementById("fridgeAnalyzeBtn");
-const fridgeResultCard = document.getElementById("fridgeResultCard");
-const fridgeLoadingCard = document.getElementById("fridgeLoadingCard");
-const fridgeLoadingText = document.getElementById("fridgeLoadingText");
-const fridgeUploadBox = document.getElementById("fridgeUploadBox");
+import OpenAI from "openai";
 
-let selectedFridgeImage = null;
+const client = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY,
+});
 
-if (fridgeInput) {
+export default async function handler(req, res) {
+  if (req.method !== "POST") {
+    return res.status(405).json({
+      error: "Method not allowed",
+    });
+  }
 
-  fridgeInput.addEventListener("change", () => {
+  try {
+    const {
+      image,
+      lang = "en",
+    } = req.body;
 
-    const file = fridgeInput.files[0];
-
-    if (!file) return;
-
-    const reader = new FileReader();
-
-    reader.onload = () => {
-
-      selectedFridgeImage = reader.result;
-
-      fridgePreview.src = selectedFridgeImage;
-
-      fridgePreview.classList.remove("hidden");
-      fridgeUploadBox.classList.add("hidden");
-      fridgeAnalyzeBtn.classList.remove("hidden");
-
-      fridgeResultCard.classList.add("hidden");
-      fridgeLoadingCard.classList.add("hidden");
-
-    };
-
-    reader.readAsDataURL(file);
-
-  });
-
-}
-
-if (fridgeAnalyzeBtn) {
-
-  fridgeAnalyzeBtn.addEventListener("click", async () => {
-
-    if (!selectedFridgeImage) return;
-
-    const loadingMessages = [
-      "Detecting foods...",
-      "Finding simple combinations...",
-      "Reducing dinner stress...",
-      "Building dinner paths..."
-    ];
-
-    let loadingIndex = 0;
-
-    fridgeAnalyzeBtn.disabled = true;
-    fridgeAnalyzeBtn.textContent = "Thinking...";
-
-    fridgeResultCard.classList.add("hidden");
-
-    fridgeLoadingCard.classList.remove("hidden");
-
-    fridgeLoadingText.textContent =
-      loadingMessages[0];
-
-    const loadingInterval = setInterval(() => {
-
-      loadingIndex++;
-
-      if (loadingIndex >= loadingMessages.length) {
-        loadingIndex = 0;
-      }
-
-      fridgeLoadingText.textContent =
-        loadingMessages[loadingIndex];
-
-    }, 1200);
-
-    try {
-
-      const response = await fetch("/api/fridge", {
-        method: "POST",
-
-        headers: {
-          "Content-Type": "application/json"
-        },
-
-        body: JSON.stringify({
-          image: selectedFridgeImage
-        })
+    if (!image) {
+      return res.status(400).json({
+        error: "Missing image",
       });
-
-      const data = await response.json();
-
-      const cleaned =
-        data.result
-          .replace(/```json/g, "")
-          .replace(/```/g, "")
-          .trim();
-
-      const parsed =
-        JSON.parse(cleaned);
-
-      localStorage.setItem(
-        "fuelwise_fridge_result",
-        JSON.stringify(parsed)
-      );
-
-      clearInterval(loadingInterval);
-
-      fridgeLoadingCard.classList.add("hidden");
-
-fridgeResultCard.innerHTML = `
-  <h2>Fridge Scanned</h2>
-
-  <p class="feedback">
-    <strong>Detected:</strong>
-    ${(parsed.detectedItems || []).join(", ") || "No clear items detected"}
-  </p>
-
-  <a class="start-btn" href="/fridge-meals.html">
-    View Meal Ideas
-  </a>
-`;
-
-      fridgeResultCard.classList.remove("hidden");
-
-      fridgeAnalyzeBtn.textContent =
-        "Scan Again";
-
-    } catch (error) {
-
-      console.error(error);
-
-      clearInterval(loadingInterval);
-
-      fridgeLoadingCard.classList.add("hidden");
-
-      fridgeResultCard.innerHTML = `
-        <h2>Error</h2>
-
-        <p class="feedback">
-          Could not analyze fridge.
-          Please try again.
-        </p>
-      `;
-
-      fridgeResultCard.classList.remove("hidden");
-
-      fridgeAnalyzeBtn.textContent =
-        "Try Again";
-
-    } finally {
-
-      fridgeAnalyzeBtn.disabled = false;
-
     }
 
-  });
+    const language =
+      lang === "es"
+        ? "Spanish"
+        : "English";
 
+    const response = await client.chat.completions.create({
+      model: "gpt-4.1-mini",
+      response_format: { type: "json_object" },
+      messages: [
+        {
+          role: "user",
+          content: [
+            {
+              type: "text",
+              text: `
+You are FridgeWise, a practical fridge-to-dinner assistant for overwhelmed adults and families.
+
+Respond entirely in ${language}.
+Use natural, simple, practical wording.
+Your job is NOT perfect nutrition.
+Your job is dinner relief.
+
+Analyze the uploaded fridge, pantry, grocery, leftover, or food image.
+
+Return ONLY valid JSON in this exact structure:
+
+{
+  "detectedItems": [],
+  "possibleItems": [],
+  "unclearItems": [],
+  "suggestedMeals": [
+    {
+      "name": "",
+      "time": "",
+      "whyItWorks": "",
+      "uses": [],
+      "needs": [],
+      "steps": []
+    }
+  ],
+  "groceryList": []
 }
+
+Rules:
+- Give EXACTLY 3 meal suggestions.
+- Keep meals simple, realistic, and fast.
+- Prioritize ingredients visible in the image.
+- Prioritize minimal extra shopping.
+- Grocery list should include ONLY missing items.
+- Keep instructions short.
+- Avoid health lectures.
+- Avoid calorie/macros.
+- Avoid gourmet recipes.
+- Avoid overwhelming the user.
+- If something is uncertain, put it in possibleItems or unclearItems.
+- Do not pretend certainty.
+- If the image is not a fridge/pantry/food image, still give practical help based on what is visible.
+              `,
+            },
+            {
+              type: "image_url",
+              image_url: {
+                url: image,
+              },
+            },
+          ],
+        },
+      ],
+    });
+
+    const content = response.choices?.[0]?.message?.content;
+
+    if (!content) {
+      return res.status(500).json({
+        error: "No AI response returned",
+      });
+    }
+
+    return res.status(200).json({
+      result: content,
+    });
+
+  } catch (err) {
+    console.error("FRIDGE ERROR:", err);
+
+    return res.status(500).json({
+      error: err.message || "Failed to analyze fridge image",
+    });
+  }
+}
+
+export const config = {
+  api: {
+    bodyParser: {
+      sizeLimit: "10mb",
+    },
+  },
+};

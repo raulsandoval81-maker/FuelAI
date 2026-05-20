@@ -112,8 +112,21 @@ const cleaned = data.result
   .replace(/```json/g, "")
   .replace(/```/g, "")
   .trim();
-  
+
       const parsed = JSON.parse(cleaned);
+
+      window.FuelAILog.addFuelLog({
+  type: "meal",
+
+  calories:
+    Number(
+      String(parsed.calories)
+        .replace(/[^0-9]/g, "")
+    ) || 0,
+
+  goal:
+    setup.goal || "fuelwise"
+});
 
       resultCard.innerHTML = `
         <h2>${parsed.mealName}</h2>

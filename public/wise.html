@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>WiseGuyAI</title>
+
+  <link rel="stylesheet" href="/assets/css/site.css" />
+</head>
+
+<body data-theme="day">
+  <main class="scan-wrap">
+
+    <a class="top-link" href="/">
+      ← FuelAI
+    </a>
+
+    <section class="scan-card">
+
+      <h1 id="wiseTitle">WiseGuyAI</h1>
+
+      <p id="wiseSub" class="sub">
+        Your daily food, water, and training check-in.
+      </p>
+
+      <section class="range-card">
+        <p class="range-label">Current Plan</p>
+        <p id="planOutput" class="range-output">Loading...</p>
+      </section>
+
+      <section class="range-card">
+        <p class="range-label">Today</p>
+        <p id="todayOutput" class="range-output">Loading...</p>
+      </section>
+
+      <div class="quick-log-grid">
+
+        <button class="start-btn" id="addWaterBtn">
+          + Water
+        </button>
+
+        <button class="start-btn" id="addTrainingBtn">
+          + Training
+        </button>
+
+      </div>
+
+      <section class="range-card">
+        <p class="range-label">Wise Check</p>
+        <p id="wiseAdvice" class="range-output">
+          Loading guidance...
+        </p>
+      </section>
+
+      <a class="secondary-btn" href="/app.html">
+        Scan Meal
+      </a>
+
+      <a class="secondary-btn" href="/fridge.html">
+        Open FridgeWise
+      </a>
+
+      <a class="secondary-btn" href="/setup.html">
+        Edit Setup
+      </a>
+
+    </section>
+  </main>
+
+  <script src="/assets/js/preferences.js"></script>
+  <script src="/assets/js/fuelai-log.js"></script>
+  <script src="/assets/js/wise.js"></script>
+</body>
+</html>

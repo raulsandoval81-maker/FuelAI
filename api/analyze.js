@@ -6,11 +6,33 @@ const client = new OpenAI({
 
 export default async function handler(req, res) {
   if (req.method !== "POST") {
-    return res.status(405).json({ error: "Method not allowed" });
+    return res.status(405).json({
+      error: "Method not allowed",
+    });
   }
 
   try {
-    const { image, goal, height, weight, targetWeight, ageRange, gender } = req.body;
+    const {
+      image,
+      goal = "fuelwise",
+      height = "",
+      weight = "",
+      targetWeight = "",
+      ageRange = "",
+      gender = "",
+      lang = "en",
+    } = req.body;
+
+    if (!image) {
+      return res.status(400).json({
+        error: "Missing image",
+      });
+    }
+
+    const language =
+      lang === "es"
+        ? "Spanish"
+        : "English";
 
     const response = await client.chat.completions.create({
       model: "gpt-4.1-mini",
@@ -22,25 +44,29 @@ export default async function handler(req, res) {
             {
               type: "text",
               text: `
-You are FuelWise AI, an image-based athlete nutrition assistant.
+You are FuelAI, an image-based nutrition decision assistant.
+
+Respond entirely in ${language}.
+Use natural, simple, practical wording.
+Keep the response useful for a normal person, not a bodybuilding spreadsheet.
+Do not give medical advice.
 
 User context:
 - Height: ${height}
 - Current weight: ${weight}
-- Target weight: ${targetWeight}
+- Target weight: ${targetWeight || "not provided"}
 - Age range: ${ageRange}
-- Gender: ${gender}
+- Body type: ${gender}
 - Mode: ${goal}
 
-Goal rules:
-- fuelwise = balanced performance nutrition, sustainable eating habits, recovery support, and long-term athlete fuel guidance
-- cutwise = lower calorie choices, weight-cut focused guidance, leaner meal decisions, hydration awareness, and controlled bodyweight management
-- gainwise = muscle growth, recovery support, higher calorie performance fuel, strength development, and athletic recovery nutrition
-- hydratewise = hydration awareness, sodium balance, recovery fluids, dehydration prevention, electrolyte support, and performance hydration guidance
+Mode rules:
+- fuelwise = balanced performance nutrition, sustainable eating, recovery support, and long-term fuel guidance
+- cutwise = lighter choices, leaner meal decisions, calorie awareness, hydration awareness, and controlled bodyweight support
+- gainwise = muscle growth, recovery support, higher-calorie performance fuel, strength development, and athletic recovery nutrition
 
 Analyze the uploaded food image visually.
 
-Return ONLY valid JSON:
+Return ONLY valid JSON with this exact shape:
 
 {
   "mealName": "",
@@ -53,37 +79,44 @@ Return ONLY valid JSON:
   "feedback": "",
   "caution": ""
 }
-`
+              `,
             },
             {
               type: "image_url",
-              image_url: { url: image }
-            }
-          ]
-        }
-      ]
+              image_url: {
+                url: image,
+              },
+            },
+          ],
+        },
+      ],
     });
 
-    res.status(200).json({
-      result: response.choices[0].message.content
+    const content = response.choices?.[0]?.message?.content;
+
+    if (!content) {
+      return res.status(500).json({
+        error: "No AI response returned",
+      });
+    }
+
+    return res.status(200).json({
+      result: content,
     });
 
-} catch (err) {
+  } catch (err) {
+    console.error("ANALYZE ERROR:", err);
 
-  console.error("ANALYZE ERROR:", err);
-
-  res.status(500).json({
-    error: err.message || "Failed to analyze image"
-  });
-
-}
-
+    return res.status(500).json({
+      error: err.message || "Failed to analyze image",
+    });
+  }
 }
 
 export const config = {
   api: {
     bodyParser: {
-      sizeLimit: "10mb"
-    }
-  }
+      sizeLimit: "10mb",
+    },
+  },
 };

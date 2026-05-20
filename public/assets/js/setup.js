@@ -1,112 +1,276 @@
 const saveSetupBtn = document.getElementById("saveSetupBtn");
 
-if (saveSetupBtn) {
+const heightInput = document.getElementById("heightInput");
+const weightInput = document.getElementById("weightInput");
+const targetWeightInput = document.getElementById("targetWeightInput");
+const ageRange = document.getElementById("ageRange");
+const genderType = document.getElementById("genderType");
+const activityLevel = document.getElementById("activityLevel");
+const goalSelect = document.getElementById("goalSelect");
+const rangeOutput = document.getElementById("rangeOutput");
 
-  saveSetupBtn.addEventListener("click", () => {
+const langToggle = document.getElementById("langToggle");
+const themeToggle = document.getElementById("themeToggle");
 
-    const setup = {
-      height: document.getElementById("heightInput").value,
-      weight: document.getElementById("weightInput").value,
-      targetWeight: document.getElementById("targetWeightInput").value,
-      ageRange: document.getElementById("ageRange").value,
-      gender: document.getElementById("genderType").value,
-      goal: document.getElementById("goalSelect").value
-    };
+const copy = {
+  en: {
+    langBtn: "Español",
+    nightBtn: "Night",
+    dayBtn: "Day",
+    start: "← Start",
+    title: "Setup",
+    sub: "Give FuelAI a little context before your scan.",
+    height: "Height — example: 5'10",
+    weight: "Current weight — example: 165 lbs",
+    target: "Target weight — optional",
+    bodyType: "Body type",
+    male: "Male",
+    female: "Female",
+    activityPlaceholder: "Activity / Training Level",
+    activity01: "0–1 days per week",
+    activity23: "2–3 days per week",
+    activity45: "4–5 days per week",
+    activity6: "6+ days per week",
+    fuelwise: "FuelWise — Maintain / Balance",
+    cutwise: "CutWise — Lean Out",
+    gainwise: "GainWise — Build / Recover",
+    guidance: "Suggested Guidance",
+    emptyRange: "Enter height and weight",
+    note: "General guidance only. Not medical advice.",
+    continue: "Continue to Scanner",
+    range: "General range:",
+    current: "Current weight:",
+    training: "Training:",
+    direction: "Direction:",
+    maintain: "Maintain",
+    cut: "Gradual Cut",
+    gain: "Gradual Gain"
+  },
 
-    localStorage.setItem(
-      "fuelai-setup",
-      JSON.stringify(setup)
-    );
+  es: {
+    langBtn: "English",
+    nightBtn: "Noche",
+    dayBtn: "Día",
+    start: "← Inicio",
+    title: "Configuración",
+    sub: "Dale a FuelAI un poco de contexto antes de escanear.",
+    height: "Estatura — ejemplo: 5'10",
+    weight: "Peso actual — ejemplo: 165 lbs",
+    target: "Peso objetivo — opcional",
+    bodyType: "Tipo de cuerpo",
+    male: "Masculino",
+    female: "Femenino",
+    activityPlaceholder: "Nivel de actividad / entrenamiento",
+    activity01: "0–1 días por semana",
+    activity23: "2–3 días por semana",
+    activity45: "4–5 días por semana",
+    activity6: "6+ días por semana",
+    fuelwise: "FuelWise — Mantener / Balance",
+    cutwise: "CutWise — Bajar / Definir",
+    gainwise: "GainWise — Subir / Recuperar",
+    guidance: "Guía sugerida",
+    emptyRange: "Ingresa estatura y peso",
+    note: "Guía general solamente. No es consejo médico.",
+    continue: "Continuar al escáner",
+    range: "Rango general:",
+    current: "Peso actual:",
+    training: "Entrenamiento:",
+    direction: "Dirección:",
+    maintain: "Mantener",
+    cut: "Bajar gradual",
+    gain: "Subir gradual"
+  }
+};
 
-    window.location.href = "/app.html";
-
-  });
-
+function getLang() {
+  return localStorage.getItem("fuelai-lang") || "en";
 }
 
+function getTheme() {
+  return localStorage.getItem("fuelai-theme") || "day";
+}
 
-/* ------------------------- */
-/* Suggested Guidance Logic */
-/* ------------------------- */
+function applyLanguage(lang) {
+  const t = copy[lang];
 
-const heightInput =
-  document.getElementById("heightInput");
+  document.body.dataset.lang = lang;
+  localStorage.setItem("fuelai-lang", lang);
 
-const weightInput =
-  document.getElementById("weightInput");
+  document.querySelector(".top-link").textContent = t.start;
+  document.querySelector(".scan-card h1").textContent = t.title;
+  document.querySelector(".scan-card .sub").textContent = t.sub;
 
-const ageRange =
-  document.getElementById("ageRange");
+  heightInput.placeholder = t.height;
+  weightInput.placeholder = t.weight;
+  targetWeightInput.placeholder = t.target;
 
-const genderType =
-  document.getElementById("genderType");
+  genderType.options[0].textContent = t.bodyType;
+  genderType.options[1].textContent = t.male;
+  genderType.options[2].textContent = t.female;
 
-const rangeOutput =
-  document.getElementById("rangeOutput");
+  activityLevel.options[0].textContent = t.activityPlaceholder;
+  activityLevel.options[1].textContent = t.activity01;
+  activityLevel.options[2].textContent = t.activity23;
+  activityLevel.options[3].textContent = t.activity45;
+  activityLevel.options[4].textContent = t.activity6;
 
+  goalSelect.options[0].textContent = t.fuelwise;
+  goalSelect.options[1].textContent = t.cutwise;
+  goalSelect.options[2].textContent = t.gainwise;
+
+  document.querySelector(".range-label").textContent = t.guidance;
+  document.querySelector(".range-note").textContent = t.note;
+
+  saveSetupBtn.textContent = t.continue;
+  langToggle.textContent = t.langBtn;
+
+  updateThemeButton();
+  updateGuidance();
+}
+
+function applyTheme(theme) {
+  document.body.dataset.theme = theme;
+  localStorage.setItem("fuelai-theme", theme);
+  updateThemeButton();
+}
+
+function updateThemeButton() {
+  const t = copy[getLang()];
+  const theme = getTheme();
+
+  themeToggle.textContent =
+    theme === "night" ? t.dayBtn : t.nightBtn;
+}
+
+function getActivityText() {
+  const lang = getLang();
+  const value = activityLevel.value;
+
+  const labels = {
+    en: {
+      low: "Not selected",
+      "0-1": "0–1 days per week",
+      "2-3": "2–3 days per week",
+      "4-5": "4–5 days per week",
+      "6plus": "6+ days per week"
+    },
+    es: {
+      low: "No seleccionado",
+      "0-1": "0–1 días por semana",
+      "2-3": "2–3 días por semana",
+      "4-5": "4–5 días por semana",
+      "6plus": "6+ días por semana"
+    }
+  };
+
+  return labels[lang][value] || labels[lang].low;
+}
 
 function updateGuidance() {
+  const t = copy[getLang()];
 
-  const height =
-    heightInput.value.trim();
-
-  const weight =
-    parseInt(weightInput.value);
+  const height = heightInput.value.trim();
+  const weight = parseInt(weightInput.value, 10);
 
   if (!height || !weight) {
-
-    rangeOutput.textContent =
-      "Enter height and weight";
-
+    rangeOutput.textContent = t.emptyRange;
     return;
   }
 
-  let low = weight - 10;
-  let high = weight + 10;
+  const low = weight - 10;
+  const high = weight + 10;
 
-  let direction = "Maintain";
+  let direction = t.maintain;
 
-  if (weight > high - 3) {
-    direction = "Gradual Cut";
+  if (goalSelect.value === "cutwise") {
+    direction = t.cut;
   }
 
-  if (weight < low + 3) {
-    direction = "Gradual Gain";
+  if (goalSelect.value === "gainwise") {
+    direction = t.gain;
   }
 
   rangeOutput.innerHTML = `
-    General performance range:
+    ${t.range}<br>
     ${low}–${high} lbs
 
     <br><br>
 
-    Current weight:
+    ${t.current}<br>
     ${weight} lbs
 
     <br><br>
 
-    Direction:
+    ${t.training}<br>
+    ${getActivityText()}
+
+    <br><br>
+
+    ${t.direction}<br>
     ${direction}
   `;
 }
 
+function loadSavedSetup() {
+  const saved = JSON.parse(localStorage.getItem("fuelai-setup") || "{}");
 
-heightInput.addEventListener(
-  "input",
-  updateGuidance
-);
+  heightInput.value = saved.height || "";
+  weightInput.value = saved.weight || "";
+  targetWeightInput.value = saved.targetWeight || "";
+  ageRange.value = saved.ageRange || "13-18";
+  genderType.value = saved.gender || "";
+  activityLevel.value = saved.activityLevel || "low";
+  goalSelect.value = saved.goal || "fuelwise";
+}
 
-weightInput.addEventListener(
-  "input",
-  updateGuidance
-);
+if (langToggle) {
+  langToggle.addEventListener("click", () => {
+    const nextLang = getLang() === "en" ? "es" : "en";
+    applyLanguage(nextLang);
+  });
+}
 
-ageRange.addEventListener(
-  "change",
-  updateGuidance
-);
+if (themeToggle) {
+  themeToggle.addEventListener("click", () => {
+    const nextTheme = getTheme() === "day" ? "night" : "day";
+    applyTheme(nextTheme);
+  });
+}
 
-genderType.addEventListener(
-  "change",
-  updateGuidance
-);
+if (saveSetupBtn) {
+  saveSetupBtn.addEventListener("click", () => {
+    const setup = {
+      height: heightInput.value.trim(),
+      weight: weightInput.value.trim(),
+      targetWeight: targetWeightInput.value.trim(),
+      ageRange: ageRange.value,
+      gender: genderType.value,
+      activityLevel: activityLevel.value,
+      goal: goalSelect.value,
+
+       guide:
+    genderType.value === "female"
+      ? "wisegal"
+      : "wiseguy",
+      
+      lang: getLang(),
+      theme: getTheme()
+    };
+
+    localStorage.setItem("fuelai-setup", JSON.stringify(setup));
+
+    window.location.href = "/app.html";
+  });
+}
+
+heightInput.addEventListener("input", updateGuidance);
+weightInput.addEventListener("input", updateGuidance);
+targetWeightInput.addEventListener("input", updateGuidance);
+ageRange.addEventListener("change", updateGuidance);
+genderType.addEventListener("change", updateGuidance);
+activityLevel.addEventListener("change", updateGuidance);
+goalSelect.addEventListener("change", updateGuidance);
+
+loadSavedSetup();
+applyTheme(getTheme());
+applyLanguage(getLang());
