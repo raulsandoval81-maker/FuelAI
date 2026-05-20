@@ -5,7 +5,7 @@ const guide =
   setup.guide || "wiseguy";
 
 const flavor =
-  setup.wiseflavor || "sweetspot";
+  setup.wiseFlavor || "sweetspot";
 
 const wiseTitle =
   document.getElementById("wiseTitle");
@@ -72,11 +72,21 @@ function getGreeting() {
 }
 
 function getFlavorLine(lines) {
-  if (flavor === "toughguy") return lines.tough;
-  if (flavor === "mafia") return lines.mafia;
-  if (flavor === "internet") return lines.internet;
 
-  return lines.sweet;
+  if (flavor === "toughguy") {
+    return lines.toughguy;
+  }
+
+  if (flavor === "mafia") {
+    return lines.mafia;
+  }
+
+  if (flavor === "internet") {
+    return lines.internet;
+  }
+
+  return lines.sweetspot;
+
 }
 
 function hasTrainingToday() {
