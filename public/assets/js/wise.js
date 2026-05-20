@@ -106,10 +106,12 @@ if (addWaterBtn) {
 
 if (addTrainingBtn) {
   addTrainingBtn.addEventListener("click", () => {
-    window.FuelAILog.addFuelLog({
-      type: "training",
-      intensity: "moderate"
-    });
+window.FuelAILog.addFuelLog({
+  type: "training",
+  sessions: 1,
+  caloriesBurned: 0,
+  source: "manual"
+});
 
     renderWise();
   });
