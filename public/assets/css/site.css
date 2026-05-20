@@ -539,3 +539,14 @@ body[data-theme="night"] .mini-toggle {
   background: rgba(255,255,255,0.12);
   color: #ffffff;
 }
+.wise-links {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  margin-top: 1.5rem;
+}
+
+.wise-links .secondary-btn {
+  width: 100%;
+  text-align: center;
+}

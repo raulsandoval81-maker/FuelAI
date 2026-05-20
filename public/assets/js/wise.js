@@ -25,6 +25,10 @@ const addWaterBtn =
 const addTrainingBtn =
   document.getElementById("addTrainingBtn");
 
+if (window.FuelAILog) {
+  window.FuelAILog.syncDailyLogs();
+}
+
 function getGuideName() {
   return guide === "wisegal" ? "WiseGalAI" : "WiseGuyAI";
 }
@@ -36,6 +40,11 @@ function getPlanName(goal) {
 }
 
 function renderWise() {
+  if (!window.FuelAILog) {
+    wiseAdvice.textContent = "Log system not loaded.";
+    return;
+  }
+
   const summary = window.FuelAILog.getFuelSummary();
 
   wiseTitle.textContent = getGuideName();
@@ -55,6 +64,8 @@ function renderWise() {
     Water logged: ${summary.waterToday || 0} cups
     <br><br>
     Training: ${summary.trainingToday ? "Logged" : "Not logged"}
+    <br><br>
+    90-day days tracked: ${summary.totalDays || 0}
   `;
 
   wiseAdvice.textContent = getAdvice(summary);
@@ -82,22 +93,26 @@ function getAdvice(summary) {
   return `${getGuideName()} says: Keep it balanced. Nothing needs to be perfect — just stay aware.`;
 }
 
-addWaterBtn.addEventListener("click", () => {
-  window.FuelAILog.addFuelLog({
-    type: "water",
-    water: 1
+if (addWaterBtn) {
+  addWaterBtn.addEventListener("click", () => {
+    window.FuelAILog.addFuelLog({
+      type: "water",
+      water: 1
+    });
+
+    renderWise();
   });
+}
 
-  renderWise();
-});
+if (addTrainingBtn) {
+  addTrainingBtn.addEventListener("click", () => {
+    window.FuelAILog.addFuelLog({
+      type: "training",
+      intensity: "moderate"
+    });
 
-addTrainingBtn.addEventListener("click", () => {
-  window.FuelAILog.addFuelLog({
-    type: "training",
-    intensity: "moderate"
+    renderWise();
   });
-
-  renderWise();
-});
+}
 
 renderWise();
