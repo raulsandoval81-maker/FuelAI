@@ -111,18 +111,18 @@ if (fridgeAnalyzeBtn) {
 
       fridgeLoadingCard.classList.add("hidden");
 
-      fridgeResultCard.innerHTML = `
-        <h2>Fridge Scanned</h2>
+fridgeResultCard.innerHTML = `
+  <h2>Fridge Scanned</h2>
 
-        <p class="feedback">
-          <strong>Detected:</strong>
-          ${(parsed.detectedItems || []).join(", ") || "No clear items detected"}
-        </p>
+  <p class="feedback">
+    <strong>Detected:</strong>
+    ${(parsed.detectedItems || []).join(", ") || "No clear items detected"}
+  </p>
 
-        <a class="start-btn" href="/fridge-meals.html">
-          View Meal Ideas
-        </a>
-      `;
+  <a class="start-btn" href="/fridge-meals.html">
+    View Meal Ideas
+  </a>
+`;
 
       fridgeResultCard.classList.remove("hidden");
 
