@@ -297,3 +297,29 @@ h1{
   object-fit:cover;
   flex-shrink:0;
 }
+.range-card{
+  margin-top:1rem;
+  padding:1rem;
+  border-radius:20px;
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.08);
+}
+
+.range-label{
+  font-size:.8rem;
+  opacity:.7;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  margin-bottom:.5rem;
+}
+
+.range-output{
+  font-size:1rem;
+  line-height:1.6;
+}
+
+.range-note{
+  margin-top:.75rem;
+  font-size:.8rem;
+  opacity:.6;
+}
