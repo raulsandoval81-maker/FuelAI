@@ -31,6 +31,7 @@ export default async function handler(req, res) {
     const response = await client.chat.completions.create({
       model: "gpt-4.1-mini",
       response_format: { type: "json_object" },
+      temperature: 0.3,
       messages: [
         {
           role: "user",
@@ -55,6 +56,7 @@ Return ONLY valid JSON in this exact structure:
   "unclearItems": [],
   "suggestedMeals": [
     {
+      "type": "",
       "name": "",
       "time": "",
       "whyItWorks": "",
@@ -67,8 +69,10 @@ Return ONLY valid JSON in this exact structure:
 }
 
 Rules:
-- Give EXACTLY 3 meal suggestions.
-- Keep meals simple, realistic, and fast.
+- Give EXACTLY 3 suggestions total.
+- Give EXACTLY 2 quick meals and EXACTLY 1 snack.
+- Mark each suggestion with a "type" field: "meal" or "snack".
+- Keep meals and snacks simple, realistic, and fast.
 - Prioritize ingredients visible in the image.
 - Prioritize minimal extra shopping.
 - Grocery list should include ONLY missing items.

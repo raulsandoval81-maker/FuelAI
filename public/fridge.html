@@ -8,13 +8,14 @@
 
   <link rel="stylesheet" href="/assets/css/site.css" />
 </head>
-<bodY>
+
+<body data-theme="day">
 
   <main class="scan-wrap">
 
-    <a class="top-link" href="/index.html">
-      Start
-    </a>
+<a class="top-link" href="/wise.html">
+  ← Your Guide
+</a>
 
     <section class="scan-card">
 
@@ -52,6 +53,7 @@
       <button
         id="fridgeAnalyzeBtn"
         class="start-btn hidden"
+        type="button"
       >
         Analyze Fridge
       </button>
@@ -60,11 +62,13 @@
         id="fridgeLoadingCard"
         class="loading-card hidden"
       >
+
         <div class="scanner"></div>
 
         <p id="fridgeLoadingText">
           Checking fridge...
         </p>
+
       </div>
 
       <section
@@ -72,14 +76,27 @@
         class="result-card hidden"
       ></section>
 
-      <a class="start-btn" href="/app.html">
-        Meal Scanner
-      </a>
+      <div class="wise-links">
+
+        <a class="secondary-btn" href="/fridge-meals.html">
+          Open Dinner Ideas
+        </a>
+
+        <a class="secondary-btn" href="/app.html">
+          Open Meal Scanner
+        </a>
+
+        <a class="secondary-btn" href="/wise.html">
+          Return to Your Guide
+        </a>
+
+      </div>
 
     </section>
 
   </main>
 
+  <script src="/assets/js/preferences.js"></script>
   <script src="/assets/js/fridge.js"></script>
 
 </body>

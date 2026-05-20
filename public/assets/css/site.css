@@ -550,3 +550,13 @@ body[data-theme="night"] .mini-toggle {
   width: 100%;
   text-align: center;
 }
+.upload-box {
+  border: 2px dashed rgba(37, 99, 235, 0.55);
+  background: rgba(37, 99, 235, 0.06);
+  cursor: pointer;
+}
+
+.upload-box:hover {
+  border-color: rgba(37, 99, 235, 0.9);
+  background: rgba(37, 99, 235, 0.1);
+}
