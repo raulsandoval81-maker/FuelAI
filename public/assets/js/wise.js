@@ -144,7 +144,7 @@ function renderWise() {
     <br><br>
 
 
-Daily Weight:
+Daily Weight Log:
 ${
   summary.today?.latestWeight
     ? `${summary.today.latestWeight} lbs`
