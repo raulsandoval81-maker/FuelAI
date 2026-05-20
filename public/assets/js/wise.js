@@ -40,21 +40,19 @@ const sendWiseChatBtn =
 const wiseChatReply =
   document.getElementById("wiseChatReply");
 
+  const wiseChatLabel =
+  document.getElementById("wiseChatLabel");
+
 if (window.FuelAILog) {
   window.FuelAILog.syncDailyLogs();
 }
 
 function getGuideName() {
   return guide === "wisegal"
-    ? "WiseGalAI"
-    : "WiseGuyAI";
-}
-
-function getShortGuideName() {
-  return guide === "wisegal"
     ? "WiseGal"
     : "WiseGuy";
 }
+
 
 function getPlanName(goal) {
   if (goal === "cutwise") return "CutWise — Cut";
@@ -168,6 +166,13 @@ ${
       "hidden",
       hasWeightToday()
     );
+  }
+
+  if (wiseChatLabel) {
+  wiseChatLabel.textContent =
+    guide === "wisegal"
+      ? "WiseGalAI"
+      : "WiseGuyAI";
   }
 
   wiseAdvice.textContent =
