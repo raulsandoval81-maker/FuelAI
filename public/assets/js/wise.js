@@ -4,6 +4,9 @@ const setup =
 const guide =
   setup.guide || "wiseguy";
 
+const wiseFlavor =
+  setup.wiseFlavor || "medium";
+
 const wiseTitle =
   document.getElementById("wiseTitle");
 
@@ -73,7 +76,46 @@ function getGreeting() {
   return "Good evening";
 }
 
+/* =========================
+   WISE FLAVOR SYSTEM
+========================= */
+
+function spice(levels) {
+  return levels[wiseFlavor] || levels.medium;
+}
+
+function getFlavorIntro() {
+  return spice({
+    rare:
+      "",
+
+    medium:
+      "",
+
+    welldone:
+      "Ayyy… "
+  });
+}
+
+function getFlavorCloser() {
+  return spice({
+    rare:
+      "",
+
+    medium:
+      " Honestly.",
+
+    welldone:
+      " You’re alright."
+  });
+}
+
+/* =========================
+   MAIN RENDER
+========================= */
+
 function renderWise() {
+
   if (!window.FuelAILog) {
     wiseAdvice.textContent =
       "Log system not loaded.";
@@ -115,91 +157,222 @@ function renderWise() {
 
     <br><br>
 
-Weekly Weight:
-${summary.today?.latestWeight
-  ? `${summary.today.latestWeight} lbs`
-  : "Not logged"}
-  
+    Weekly Weight:
+    ${summary.today?.latestWeight
+      ? `${summary.today.latestWeight} lbs`
+      : "Not logged"}
+
     <br><br>
 
     90-day days tracked:
     ${summary.totalDays || 0}
-
-
   `;
 
   wiseAdvice.textContent =
     getAdvice(summary);
 }
 
+/* =========================
+   DAILY ADVICE
+========================= */
+
 function getAdvice(summary) {
+
   const goal =
     setup.goal || "fuelwise";
 
   if (summary.todayCount === 0) {
-    return `${getGuideName()} says: Start simple today. Log water, scan a meal, or mark training if you move.`;
+
+    return spice({
+      rare:
+        `${getGuideName()} says: Start simple today. Log water, scan a meal, or mark training if you move.`,
+
+      medium:
+        `${getGuideName()} says: Start simple today. Log water, scan a meal, or mark training if you move. No need to overdo it.`,
+
+      welldone:
+        `${getGuideName()} says: Ayyy… start simple today. Little water, little food scan, little movement. Don’t make this complicated.`
+    });
   }
 
   if (summary.waterToday < 32) {
-    return `${getGuideName()} says: Hydration could use some attention today. Add water before overthinking food.`;
+
+    return spice({
+      rare:
+        `${getGuideName()} says: Hydration could use some attention today. Add water before overthinking food.`,
+
+      medium:
+        `${getGuideName()} says: Hydration could use some attention today. Add water before overthinking food. Easy fix.`,
+
+      welldone:
+        `${getGuideName()} says: Ayyy… drink some water before we start spiraling about macros over here.`
+    });
   }
 
   if (goal === "cutwise") {
-    return `${getGuideName()} says: Stay steady. Keep meals lighter, drink water, and avoid panic choices.`;
+
+    return spice({
+      rare:
+        `${getGuideName()} says: Stay steady. Keep meals lighter and avoid panic choices.`,
+
+      medium:
+        `${getGuideName()} says: Stay steady. Keep meals lighter and avoid panic choices. One meal doesn’t ruin anything.`,
+
+      welldone:
+        `${getGuideName()} says: Relax. One heavy meal ain’t the end of civilization. Just clean the next one up a little.`
+    });
   }
 
   if (goal === "gainwise") {
-    return `${getGuideName()} says: Fuel matters today. If you trained, make sure you are not under-eating.`;
+
+    return spice({
+      rare:
+        `${getGuideName()} says: Fuel matters today. If you trained, make sure intake supports recovery.`,
+
+      medium:
+        `${getGuideName()} says: Fuel matters today. If you trained, don’t under-eat and wonder why recovery feels rough.`,
+
+      welldone:
+        `${getGuideName()} says: You trained? Then eat like somebody who trained. Don’t scare the calories away now.`
+    });
   }
 
-  return `${getGuideName()} says: Keep it balanced. Nothing needs to be perfect — just stay aware.`;
+  return spice({
+    rare:
+      `${getGuideName()} says: Keep it balanced. Stay aware and consistent.`,
+
+    medium:
+      `${getGuideName()} says: Keep it balanced. Nothing needs to be perfect — just stay aware.`,
+
+    welldone:
+      `${getGuideName()} says: You’re good. Keep it balanced and stop overthinking every bite of food.`
+  });
 }
 
+/* =========================
+   CHAT REPLIES
+========================= */
+
 function generateWiseReply(question, summary) {
+
   const lower =
     question.toLowerCase();
 
   if (lower.includes("water")) {
+
     if (summary.waterToday < 32) {
-      return `${getGuideName()} says: Hydration could use some attention today. Add water first before overthinking food.`;
+
+      return spice({
+        rare:
+          `${getGuideName()} says: Hydration could use some attention today.`,
+
+        medium:
+          `${getGuideName()} says: Hydration could use some attention today. Add water first before overthinking food.`,
+
+        welldone:
+          `${getGuideName()} says: Ayyy… water first. Everybody always wants to skip the easy fix.`
+      });
     }
 
-    return `${getGuideName()} says: Hydration looks pretty solid today.`;
+    return spice({
+      rare:
+        `${getGuideName()} says: Hydration looks solid today.`,
+
+      medium:
+        `${getGuideName()} says: Hydration looks pretty solid today.`,
+
+      welldone:
+        `${getGuideName()} says: Hydration’s lookin’ pretty solid today honestly.`
+    });
   }
 
   if (
     lower.includes("cut") ||
     lower.includes("lose")
   ) {
-    return `${getGuideName()} says: Stay steady. Consistency matters more than panic restriction.`;
+
+    return spice({
+      rare:
+        `${getGuideName()} says: Stay steady. Consistency matters.`,
+
+      medium:
+        `${getGuideName()} says: Stay steady. Consistency matters more than panic restriction.`,
+
+      welldone:
+        `${getGuideName()} says: Don’t go full maniac trying to cut overnight. Steady wins here.`
+    });
   }
 
   if (
     lower.includes("gain") ||
     lower.includes("muscle")
   ) {
-    return `${getGuideName()} says: Fuel and recovery matter. Make sure intake supports training.`;
+
+    return spice({
+      rare:
+        `${getGuideName()} says: Fuel and recovery matter.`,
+
+      medium:
+        `${getGuideName()} says: Fuel and recovery matter. Make sure intake supports training.`,
+
+      welldone:
+        `${getGuideName()} says: If you wanna grow, ya gotta eat a little. We can’t build muscle outta thin air.`
+    });
   }
 
   if (
     lower.includes("eat") ||
     lower.includes("food")
   ) {
-    return `${getGuideName()} says: Keep meals practical and balanced. Nothing needs to be perfect.`;
+
+    return spice({
+      rare:
+        `${getGuideName()} says: Keep meals balanced and practical.`,
+
+      medium:
+        `${getGuideName()} says: Keep meals practical and balanced. Nothing needs to be perfect.`,
+
+      welldone:
+        `${getGuideName()} says: Relax. You don’t need the perfect meal. Just don’t go completely off the rails.`
+    });
   }
 
   if (
     lower.includes("weight") ||
     lower.includes("scale")
   ) {
-    return `${getGuideName()} says: Treat weight as a weekly trend, not a daily judgment. One check is enough.`;
+
+    return spice({
+      rare:
+        `${getGuideName()} says: Treat weight as a long-term trend.`,
+
+      medium:
+        `${getGuideName()} says: Treat weight as a weekly trend, not a daily judgment.`,
+
+      welldone:
+        `${getGuideName()} says: One weird scale day ain’t a tragedy. Human bodies do weird stuff sometimes.`
+    });
   }
 
-  return `${getGuideName()} says: Stay aware, stay consistent, and avoid overthinking today.`;
+  return spice({
+    rare:
+      `${getGuideName()} says: Stay aware and consistent today.`,
+
+    medium:
+      `${getGuideName()} says: Stay aware, stay consistent, and avoid overthinking today.`,
+
+    welldone:
+      `${getGuideName()} says: Ayyy… breathe a little. You’re probably overthinking this right now.`
+  });
 }
+
+/* =========================
+   QUICK ACTIONS
+========================= */
 
 if (addWaterBtn) {
   addWaterBtn.addEventListener("click", () => {
+
     window.FuelAILog.addFuelLog({
       type: "water",
       water: 8
@@ -211,6 +384,7 @@ if (addWaterBtn) {
 
 if (addTrainingBtn) {
   addTrainingBtn.addEventListener("click", () => {
+
     window.FuelAILog.addFuelLog({
       type: "training",
       sessions: 1,
@@ -224,6 +398,7 @@ if (addTrainingBtn) {
 
 if (addWeightBtn) {
   addWeightBtn.addEventListener("click", () => {
+
     const current =
       prompt("Enter current weight");
 
@@ -241,8 +416,14 @@ if (addWeightBtn) {
   });
 }
 
+/* =========================
+   CHAT
+========================= */
+
 if (sendWiseChatBtn) {
+
   sendWiseChatBtn.addEventListener("click", () => {
+
     const question =
       wiseChatInput.value.trim();
 
@@ -255,6 +436,8 @@ if (sendWiseChatBtn) {
 
     wiseChatReply.textContent =
       generateWiseReply(question, summary);
+
+    wiseChatInput.value = "";
   });
 }
 

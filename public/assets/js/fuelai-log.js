@@ -119,6 +119,7 @@ function buildDailyLogForDate(dateKey) {
     date: dateKey,
     goal: setup.goal || "fuelwise",
     guide: setup.guide || "wiseguy",
+    wiseFlavor: setup.wiseFlavor || "medium",
     activityLevel: setup.activityLevel || "low",
     calories,
     water,
@@ -128,7 +129,7 @@ function buildDailyLogForDate(dateKey) {
     totalEntries: logs.length,
     updatedAt: new Date().toISOString()
   };
-}
+  }
 
 function buildTodayDailyLog() {
   const date = todayKey();

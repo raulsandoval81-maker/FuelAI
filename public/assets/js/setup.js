@@ -7,6 +7,7 @@ const ageRange = document.getElementById("ageRange");
 const genderType = document.getElementById("genderType");
 const activityLevel = document.getElementById("activityLevel");
 const goalSelect = document.getElementById("goalSelect");
+const wiseFlavor = document.getElementById("wiseFlavor");
 const rangeOutput = document.getElementById("rangeOutput");
 
 const langToggle = document.getElementById("langToggle");
@@ -26,22 +27,31 @@ const copy = {
     bodyType: "Body type",
     male: "Male",
     female: "Female",
+
     activityPlaceholder: "Activity / Training Level",
     activity01: "0–1 days per week",
     activity23: "2–3 days per week",
     activity45: "4–5 days per week",
     activity6: "6+ days per week",
+
     fuelwise: "FuelWise — Maintain / Balance",
     cutwise: "CutWise — Lean Out",
     gainwise: "GainWise — Build / Recover",
+
+    rare: "Rare — 10/90",
+    medium: "Medium — 20/80",
+    welldone: "Well Done — 30/70",
+
     guidance: "Suggested Guidance",
     emptyRange: "Enter height and weight",
     note: "General guidance only. Not medical advice.",
     continue: "Continue to Your Guide",
+
     range: "General range:",
     current: "Current weight:",
     training: "Training:",
     direction: "Direction:",
+
     maintain: "Maintain",
     cut: "Gradual Cut",
     gain: "Gradual Gain"
@@ -54,28 +64,39 @@ const copy = {
     start: "← Inicio",
     title: "Configuración",
     sub: "Dale a FuelAI un poco de contexto antes de escanear.",
+
     height: "Estatura — ejemplo: 5'10",
     weight: "Peso actual — ejemplo: 165 lbs",
     target: "Peso objetivo — opcional",
+
     bodyType: "Tipo de cuerpo",
     male: "Masculino",
     female: "Femenino",
+
     activityPlaceholder: "Nivel de actividad / entrenamiento",
     activity01: "0–1 días por semana",
     activity23: "2–3 días por semana",
     activity45: "4–5 días por semana",
     activity6: "6+ días por semana",
+
     fuelwise: "FuelWise — Mantener / Balance",
     cutwise: "CutWise — Bajar / Definir",
     gainwise: "GainWise — Subir / Recuperar",
+
+    rare: "Rare — 10/90",
+    medium: "Medium — 20/80",
+    welldone: "Well Done — 30/70",
+
     guidance: "Guía sugerida",
     emptyRange: "Ingresa estatura y peso",
     note: "Guía general solamente. No es consejo médico.",
     continue: "Continuar a tu guía",
+
     range: "Rango general:",
     current: "Peso actual:",
     training: "Entrenamiento:",
     direction: "Dirección:",
+
     maintain: "Mantener",
     cut: "Bajar gradual",
     gain: "Subir gradual"
@@ -118,6 +139,12 @@ function applyLanguage(lang) {
   goalSelect.options[1].textContent = t.cutwise;
   goalSelect.options[2].textContent = t.gainwise;
 
+  if (wiseFlavor) {
+    wiseFlavor.options[0].textContent = t.rare;
+    wiseFlavor.options[1].textContent = t.medium;
+    wiseFlavor.options[2].textContent = t.welldone;
+  }
+
   document.querySelector(".range-label").textContent = t.guidance;
   document.querySelector(".range-note").textContent = t.note;
 
@@ -155,6 +182,7 @@ function getActivityText() {
       "4-5": "4–5 days per week",
       "6plus": "6+ days per week"
     },
+
     es: {
       low: "No seleccionado",
       "0-1": "0–1 días por semana",
@@ -222,6 +250,10 @@ function loadSavedSetup() {
   genderType.value = saved.gender || "";
   activityLevel.value = saved.activityLevel || "low";
   goalSelect.value = saved.goal || "fuelwise";
+
+  if (wiseFlavor) {
+    wiseFlavor.value = saved.wiseFlavor || "medium";
+  }
 }
 
 if (langToggle) {
@@ -245,25 +277,34 @@ if (themeToggle) {
 
 if (saveSetupBtn) {
   saveSetupBtn.addEventListener("click", () => {
+
+    const flavor = wiseFlavor?.value || "medium";
+
     const setup = {
       height: heightInput.value.trim(),
       weight: weightInput.value.trim(),
       targetWeight: targetWeightInput.value.trim(),
+
       ageRange: ageRange.value,
       gender: genderType.value,
       activityLevel: activityLevel.value,
       goal: goalSelect.value,
 
-       guide:
-    genderType.value === "female"
-      ? "wisegal"
-      : "wiseguy",
+      wiseFlavor: flavor,
+
+      guide:
+        genderType.value === "female"
+          ? "wisegal"
+          : "wiseguy",
 
       lang: getLang(),
       theme: getTheme()
     };
 
-    localStorage.setItem("fuelai-setup", JSON.stringify(setup));
+    localStorage.setItem(
+      "fuelai-setup",
+      JSON.stringify(setup)
+    );
 
     window.location.href = "/wise.html";
   });
@@ -272,6 +313,7 @@ if (saveSetupBtn) {
 heightInput.addEventListener("input", updateGuidance);
 weightInput.addEventListener("input", updateGuidance);
 targetWeightInput.addEventListener("input", updateGuidance);
+
 ageRange.addEventListener("change", updateGuidance);
 genderType.addEventListener("change", updateGuidance);
 activityLevel.addEventListener("change", updateGuidance);

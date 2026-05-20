@@ -15,6 +15,7 @@ export default async function handler(req, res) {
     const {
       image,
       lang = "en",
+      wiseFlavor = "medium",
     } = req.body;
 
     if (!image) {
@@ -27,6 +28,20 @@ export default async function handler(req, res) {
       lang === "es"
         ? "Spanish"
         : "English";
+
+    const flavorGuide = {
+      rare:
+        "Rare tone: 90% practical, 10% personality. Be calm, direct, and minimal.",
+
+      medium:
+        "Medium tone: 80% practical, 20% personality. Add light warmth and a little human flavor, but stay useful.",
+
+      welldone:
+        "Well Done tone: 70% practical, 30% personality. Add occasional playful WiseGuy/WiseGal-style comments, but do not become a parody."
+    };
+
+    const selectedFlavor =
+      flavorGuide[wiseFlavor] || flavorGuide.medium;
 
     const response = await client.chat.completions.create({
       model: "gpt-4.1-mini",
@@ -45,6 +60,9 @@ Respond entirely in ${language}.
 Use natural, simple, practical wording.
 Your job is NOT perfect nutrition.
 Your job is dinner relief.
+
+Tone setting:
+${selectedFlavor}
 
 Analyze the uploaded fridge, pantry, grocery, leftover, or food image.
 
@@ -75,6 +93,8 @@ Rules:
 - Keep meals and snacks simple, realistic, and fast.
 - Prioritize ingredients visible in the image.
 - Prioritize minimal extra shopping.
+- Prefer low-dishes, low-cleanup meals when possible.
+- Avoid requiring more than 1–2 missing grocery items per suggestion.
 - Grocery list should include ONLY missing items.
 - Keep instructions short.
 - Avoid health lectures.
@@ -84,6 +104,11 @@ Rules:
 - If something is uncertain, put it in possibleItems or unclearItems.
 - Do not pretend certainty.
 - If the image is not a fridge/pantry/food image, still give practical help based on what is visible.
+- Personality should show lightly in wording only.
+- Do not use exaggerated accents.
+- Do not use mafia parody.
+- Do not make every line funny.
+- Help first. Flavor second.
               `,
             },
             {
@@ -97,7 +122,8 @@ Rules:
       ],
     });
 
-    const content = response.choices?.[0]?.message?.content;
+    const content =
+      response.choices?.[0]?.message?.content;
 
     if (!content) {
       return res.status(500).json({
@@ -105,8 +131,18 @@ Rules:
       });
     }
 
+    let parsed;
+
+    try {
+      parsed = JSON.parse(content);
+    } catch {
+      return res.status(500).json({
+        error: "Invalid AI JSON returned",
+      });
+    }
+
     return res.status(200).json({
-      result: content,
+      result: parsed,
     });
 
   } catch (err) {
