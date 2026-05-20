@@ -79,7 +79,7 @@ if (analyzeBtn) {
     }, 1200);
 
     try {
-      const response = await fetch("http://localhost:3000/analyze", {
+      const response = await fetch("/api/analyze", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
