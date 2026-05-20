@@ -143,13 +143,13 @@ function renderWise() {
 
     <br><br>
 
-    Weight:
-    ${
-      summary.today?.latestWeight
-        ? `${summary.today.latestWeight} lbs`
-        : "Not logged"
-    }
 
+Daily Weight:
+${
+  summary.today?.latestWeight
+    ? `${summary.today.latestWeight} lbs`
+    : "Not logged"
+}
     <br><br>
 
     90-day days tracked:
