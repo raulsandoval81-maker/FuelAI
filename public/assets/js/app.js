@@ -9,34 +9,38 @@ const uploadBox = document.getElementById("uploadBox");
 let selectedImageBase64 = null;
 
 const setup =
-  JSON.parse(localStorage.getItem("fuelai-setup")) || {};
+  JSON.parse(localStorage.getItem("fuelai-setup") || "{}");
 
 if (foodInput) {
   foodInput.addEventListener("change", () => {
     const file = foodInput.files[0];
+
     if (!file) return;
 
     const reader = new FileReader();
 
-reader.onload = () => {
-  selectedImageBase64 = reader.result;
+    reader.onload = () => {
+      selectedImageBase64 = reader.result;
 
-  previewImage.src = selectedImageBase64;
-  previewImage.classList.remove("hidden");
-  if (uploadBox) {
-  uploadBox.classList.add("hidden");
-}
-  analyzeBtn.classList.remove("hidden");
-  resultCard.classList.add("hidden");
-  loadingCard.classList.add("hidden");
-};
+      previewImage.src = selectedImageBase64;
+      previewImage.classList.remove("hidden");
+
+      if (uploadBox) {
+        uploadBox.classList.add("hidden");
+      }
+
+      analyzeBtn.classList.remove("hidden");
+      resultCard.classList.add("hidden");
+      loadingCard.classList.add("hidden");
+    };
+
     reader.readAsDataURL(file);
   });
 }
 
 function saveScan(scan) {
   const scans =
-    JSON.parse(localStorage.getItem("cutwise-history")) || [];
+    JSON.parse(localStorage.getItem("cutwise-history") || "[]");
 
   scans.unshift({
     ...scan,
@@ -51,16 +55,28 @@ function saveScan(scan) {
   );
 }
 
+function showError(message) {
+  resultCard.innerHTML = `
+    <h2>Error</h2>
+
+    <p class="feedback">
+      ${message || "Could not analyze image. Please try again."}
+    </p>
+  `;
+
+  resultCard.classList.remove("hidden");
+}
+
 if (analyzeBtn) {
   analyzeBtn.addEventListener("click", async () => {
     if (!selectedImageBase64) return;
 
     const loadingMessages = [
       "Detecting ingredients...",
-      "Estimating macros...",
-      "Checking calorie density...",
-      "Building athlete guidance...",
-      "Calculating recovery value..."
+      "Estimating calories...",
+      "Checking balance...",
+      "Building guidance...",
+      "Finishing scan..."
     ];
 
     let loadingIndex = 0;
@@ -94,110 +110,116 @@ if (analyzeBtn) {
           weight: setup.weight || "",
           targetWeight: setup.targetWeight || "",
           ageRange: setup.ageRange || "",
-          gender: setup.gender || ""
+          gender: setup.gender || "",
+          activityLevel: setup.activityLevel || "",
+          lang: setup.lang || "en"
         })
       });
 
-const data = await response.json();
+      const data = await response.json();
 
-if (!response.ok) {
-  throw new Error(data.error || "API request failed");
-}
+      if (!response.ok) {
+        throw new Error(data.error || "API request failed");
+      }
 
-if (!data.result) {
-  throw new Error("No AI result returned");
-}
+      if (!data.result) {
+        throw new Error("No AI result returned");
+      }
 
-const cleaned = data.result
-  .replace(/```json/g, "")
-  .replace(/```/g, "")
-  .trim();
+      const cleaned = data.result
+        .replace(/```json/g, "")
+        .replace(/```/g, "")
+        .trim();
 
-      const parsed = JSON.parse(cleaned);
+      let parsed;
 
-      window.FuelAILog.addFuelLog({
-  type: "meal",
+      try {
+        parsed = JSON.parse(cleaned);
+      } catch (err) {
+        console.error("JSON PARSE ERROR:", err);
+        console.error("RAW AI RESULT:", data.result);
 
-  calories:
-    Number(
-      String(parsed.calories)
-        .replace(/[^0-9]/g, "")
-    ) || 0,
+        showError("AI response formatting failed. Try again.");
+        return;
+      }
 
-  goal:
-    setup.goal || "fuelwise"
-});
+      if (window.FuelAILog) {
+        window.FuelAILog.addFuelLog({
+          type: "meal",
+          calories:
+            Number(
+              String(parsed.calories)
+                .replace(/[^0-9]/g, "")
+            ) || 0,
+          goal: setup.goal || "fuelwise",
+          source: "meal-scan"
+        });
+      }
 
       resultCard.innerHTML = `
-        <h2>${parsed.mealName}</h2>
+        <h2>${parsed.mealName || "Meal Scan"}</h2>
 
         <div class="calories">
-          ${parsed.calories} Calories
+          ${parsed.calories || "Unknown"} Calories
         </div>
 
         <div class="macro-grid">
           <div>
             <strong>Protein</strong>
-            <span>${parsed.protein}</span>
+            <span>${parsed.protein || "—"}</span>
           </div>
 
           <div>
             <strong>Carbs</strong>
-            <span>${parsed.carbs}</span>
+            <span>${parsed.carbs || "—"}</span>
           </div>
 
           <div>
             <strong>Fat</strong>
-            <span>${parsed.fat}</span>
+            <span>${parsed.fat || "—"}</span>
           </div>
         </div>
 
         <p class="feedback">
-          ${parsed.feedback}
+          ${parsed.feedback || ""}
         </p>
 
         <p class="feedback">
-          Meal Score: ${parsed.score}/10
+          Meal Score: ${parsed.score || "—"}/10
         </p>
 
         <p class="feedback">
-          Confidence: ${parsed.confidence}
+          Confidence: ${parsed.confidence || "—"}
         </p>
 
         <p class="caution">
-          ${parsed.caution}
+          ${parsed.caution || ""}
         </p>
       `;
 
-saveScan({
-  mealName: parsed.mealName,
-  calories: parsed.calories,
-  goal: setup.goal || "fuelwise",
-  confidence: parsed.confidence,
-});
+      saveScan({
+        mealName: parsed.mealName || "Meal Scan",
+        calories: parsed.calories || "",
+        goal: setup.goal || "fuelwise",
+        confidence: parsed.confidence || ""
+      });
 
-      clearInterval(loadingInterval);
-      loadingCard.classList.add("hidden");
       resultCard.classList.remove("hidden");
       analyzeBtn.textContent = "Analyze Again";
 
-    } catch (error) {
-      console.error(error);
+    } catch (err) {
+      console.error("SCAN ERROR:", err);
 
-      clearInterval(loadingInterval);
-      loadingCard.classList.add("hidden");
+      showError(
+        err?.message ||
+        "Could not analyze image. Please try again."
+      );
 
-      resultCard.innerHTML = `
-        <h2>Error</h2>
-        <p class="feedback">
-        Could not analyze image. Please try again.
-        </p>
-      `;
-
-      resultCard.classList.remove("hidden");
       analyzeBtn.textContent = "Try Again";
 
     } finally {
+      clearInterval(loadingInterval);
+      loadingCard.classList.add("hidden");
       analyzeBtn.disabled = false;
     }
   });
