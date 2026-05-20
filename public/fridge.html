@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>FuelWise AI Fridge</title>
+
+  <link rel="stylesheet" href="/assets/css/site.css" />
+</head>
+
+<body>
+
+  <main class="scan-wrap">
+
+    <a class="top-link" href="/index.html">
+      Start
+    </a>
+
+    <section class="scan-card">
+      <h1>FridgeWise</h1>
+
+      <p class="sub">
+        Scan your fridge. Get simple meal ideas fast.
+      </p>
+
+      <label id="fridgeUploadBox" class="upload-box">
+
+        <span class="upload-title">
+          Open Camera
+        </span>
+
+        <span class="upload-sub">
+          Take a fridge photo or choose from library
+        </span>
+
+        <input
+          id="fridgeInput"
+          type="file"
+          accept="image/*"
+          capture="environment"
+        />
+
+      </label>
+
+      <img id="fridgePreview" class="preview hidden" alt="Fridge preview" />
+
+      <button id="fridgeAnalyzeBtn" class="start-btn hidden">
+        Suggest Meals
+      </button>
+
+      <div id="fridgeLoadingCard" class="loading-card hidden">
+        <div class="scanner"></div>
+        <p id="fridgeLoadingText">Checking fridge...</p>
+      </div>
+
+      <section id="fridgeResultCard" class="result-card hidden"></section>
+
+      <a class="start-btn" href="/app.html">
+        Meal Scanner
+      </a>
+
+    </section>
+
+  </main>
+
+  <script src="/assets/js/fridge.js"></script>
+</body>
+</html>

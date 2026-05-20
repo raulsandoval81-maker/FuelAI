@@ -323,3 +323,52 @@ h1{
   font-size:.8rem;
   opacity:.6;
 }
+/* ------------------------- */
+/* Fridge Mode */
+/* ------------------------- */
+
+.upload-title{
+  display:block;
+  font-size:1.1rem;
+  font-weight:700;
+  margin-bottom:.35rem;
+}
+
+.upload-sub{
+  display:block;
+  font-size:.9rem;
+  opacity:.7;
+}
+
+.history-section{
+  margin-top:1rem;
+}
+
+.history-item{
+  padding:1rem;
+  border-radius:18px;
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.08);
+  margin-bottom:.75rem;
+}
+
+.history-meta{
+  margin-top:.35rem;
+  font-size:.85rem;
+  opacity:.7;
+}
+
+.feedback{
+  margin-top:.75rem;
+  line-height:1.5;
+}
+
+.caution{
+  margin-top:1rem;
+  font-size:.85rem;
+  opacity:.65;
+}
+
+.hidden{
+  display:none !important;
+}
