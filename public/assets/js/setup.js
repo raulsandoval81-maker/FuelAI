@@ -37,7 +37,7 @@ const copy = {
     guidance: "Suggested Guidance",
     emptyRange: "Enter height and weight",
     note: "General guidance only. Not medical advice.",
-    continue: "Continue to Scanner",
+    continue: "Continue to Your Guide",
     range: "General range:",
     current: "Current weight:",
     training: "Training:",
@@ -71,7 +71,7 @@ const copy = {
     guidance: "Guía sugerida",
     emptyRange: "Ingresa estatura y peso",
     note: "Guía general solamente. No es consejo médico.",
-    continue: "Continuar al escáner",
+    continue: "Continuar a tu guía",
     range: "Rango general:",
     current: "Peso actual:",
     training: "Entrenamiento:",
@@ -265,7 +265,7 @@ if (saveSetupBtn) {
 
     localStorage.setItem("fuelai-setup", JSON.stringify(setup));
 
-    window.location.href = "/app.html";
+    window.location.href = "/wise.html";
   });
 }
 
