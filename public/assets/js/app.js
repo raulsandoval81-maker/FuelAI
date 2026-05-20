@@ -153,7 +153,6 @@ saveScan({
   calories: parsed.calories,
   goal: setup.goal || "fuelwise",
   confidence: parsed.confidence,
-  image: selectedImageBase64
 });
 
       clearInterval(loadingInterval);
