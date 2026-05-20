@@ -3,22 +3,47 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>FuelWise AI Setup</title>
+
+  <title>FuelAI Setup</title>
+
   <link rel="stylesheet" href="/assets/css/site.css" />
 </head>
+
 <body>
   <main class="scan-wrap">
+
     <a class="top-link" href="/">
-  Start
-</a>
+      ← Start
+    </a>
 
     <section class="scan-card">
-      <h1>Athlete Setup</h1>
-      <p class="sub">Set your context before scanning meals.</p>
 
-      <input id="heightInput" class="goal-select" type="text" placeholder="Height (example: 5'10)" />
-      <input id="weightInput" class="goal-select" type="text" placeholder="Current Weight (example: 165 lbs)" />
-      <input id="targetWeightInput" class="goal-select" type="text" placeholder="Target Weight (optional)" />
+      <h1>Setup</h1>
+
+      <p class="sub">
+        Give FuelAI a little context before your scan.
+      </p>
+
+      <input
+        id="heightInput"
+        class="goal-select"
+        type="text"
+        placeholder="Height — example: 5'10"
+      />
+
+      <input
+        id="weightInput"
+        class="goal-select"
+        type="text"
+        placeholder="Current weight — example: 165 lbs"
+      />
+
+      <input
+        id="targetWeightInput"
+        class="goal-select"
+        type="text"
+        placeholder="Target weight — optional"
+      />
 
       <select id="ageRange" class="goal-select">
         <option value="13-18">Ages 13–18</option>
@@ -29,34 +54,35 @@
       </select>
 
       <select id="genderType" class="goal-select">
+        <option value="">Body type</option>
         <option value="male">Male</option>
         <option value="female">Female</option>
       </select>
 
-      <section class="range-card">
-
-  <p class="range-label">
-    Suggested Guidance
-  </p>
-
-  <p id="rangeOutput" class="range-output">
-    Enter height and weight
-  </p>
-
-  <p class="range-note">
-    Guidance is for general athlete performance support and is not medical advice.
-  </p>
-
-</section>
-
       <select id="goalSelect" class="goal-select">
-        <option value="fuelwise">Fuel_Wise_Maintain</option>
-        <option value="cutwise">Cut_Wise_Drop</option>
-        <option value="gainwise">Gain_Wise_Add</option>
+        <option value="fuelwise">FuelWise — Maintain / Balance</option>
+        <option value="cutwise">CutWise — Lean Out</option>
+        <option value="gainwise">GainWise — Build / Recover</option>
       </select>
-<button id="saveSetupBtn" class="start-btn">
-  Continue to Scanner
-</button>
+
+      <section class="range-card">
+        <p class="range-label">
+          Suggested Guidance
+        </p>
+
+        <p id="rangeOutput" class="range-output">
+          Enter height and weight
+        </p>
+
+        <p class="range-note">
+          General guidance only. Not medical advice.
+        </p>
+      </section>
+
+      <button id="saveSetupBtn" class="start-btn">
+        Continue to Scanner
+      </button>
+
     </section>
   </main>
 
