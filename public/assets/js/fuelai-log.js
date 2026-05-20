@@ -7,25 +7,41 @@ function todayKey() {
 }
 
 function getFuelLog() {
-  return JSON.parse(localStorage.getItem(FUELAI_LOG_KEY) || "[]");
+  return JSON.parse(
+    localStorage.getItem(FUELAI_LOG_KEY) || "[]"
+  );
 }
 
 function getDailyLogs() {
-  return JSON.parse(localStorage.getItem(FUELAI_DAILY_KEY) || "{}");
+  return JSON.parse(
+    localStorage.getItem(FUELAI_DAILY_KEY) || "{}"
+  );
 }
 
 function saveFuelLog(logs) {
-  const cutoff = Date.now() - FUELAI_LOG_DAYS * 24 * 60 * 60 * 1000;
+  const cutoff =
+    Date.now() -
+    FUELAI_LOG_DAYS * 24 * 60 * 60 * 1000;
 
-  const cleaned = logs.filter((entry) => {
-    return new Date(entry.createdAt).getTime() >= cutoff;
-  });
+  const cleaned =
+    logs.filter((entry) => {
+      return (
+        new Date(entry.createdAt).getTime()
+        >= cutoff
+      );
+    });
 
-  localStorage.setItem(FUELAI_LOG_KEY, JSON.stringify(cleaned));
+  localStorage.setItem(
+    FUELAI_LOG_KEY,
+    JSON.stringify(cleaned)
+  );
 }
 
 function saveDailyLogs(dailyLogs) {
-  const cutoff = Date.now() - FUELAI_LOG_DAYS * 24 * 60 * 60 * 1000;
+  const cutoff =
+    Date.now() -
+    FUELAI_LOG_DAYS * 24 * 60 * 60 * 1000;
+
   const cleaned = {};
 
   Object.keys(dailyLogs).forEach((date) => {
@@ -34,7 +50,10 @@ function saveDailyLogs(dailyLogs) {
     }
   });
 
-  localStorage.setItem(FUELAI_DAILY_KEY, JSON.stringify(cleaned));
+  localStorage.setItem(
+    FUELAI_DAILY_KEY,
+    JSON.stringify(cleaned)
+  );
 }
 
 function addFuelLog(entry) {
@@ -59,29 +78,42 @@ function getTodayLogs() {
 }
 
 function buildDailyLogForDate(dateKey) {
-  const setup = JSON.parse(localStorage.getItem("fuelai-setup") || "{}");
+  const setup =
+    JSON.parse(
+      localStorage.getItem("fuelai-setup") || "{}"
+    );
 
-  const logs = getFuelLog().filter((entry) => {
-    return entry.createdAt.slice(0, 10) === dateKey;
-  });
+  const logs =
+    getFuelLog().filter((entry) => {
+      return entry.createdAt.slice(0, 10) === dateKey;
+    });
 
-  const calories = logs.reduce((sum, entry) => {
-    return sum + Number(entry.calories || 0);
-  }, 0);
+  const calories =
+    logs.reduce((sum, entry) => {
+      return sum + Number(entry.calories || 0);
+    }, 0);
 
-  const water = logs.reduce((sum, entry) => {
-    return sum + Number(entry.water || 0);
-  }, 0);
+  const water =
+    logs.reduce((sum, entry) => {
+      return sum + Number(entry.water || 0);
+    }, 0);
 
-  const trainingCount = logs.filter((entry) => {
-    return entry.type === "training";
-  }).length;
+  const trainingCount =
+    logs
+      .filter((entry) => entry.type === "training")
+      .reduce((sum, entry) => {
+        return sum + Number(entry.sessions || 1);
+      }, 0);
 
+  const latestWeight =
+    logs
+      .filter((entry) => entry.type === "weight")
+      .slice(-1)[0]?.weight || null;
 
-const latestWeight =
-  logs
-    .filter((entry) => entry.type === "weight")
-    .slice(-1)[0]?.weight || null;
+  const scanCount =
+    logs.filter((entry) => {
+      return entry.type === "meal";
+    }).length;
 
   return {
     date: dateKey,
@@ -92,7 +124,7 @@ const latestWeight =
     water,
     trainingCount,
     latestWeight,
-    scanCount: logs.filter((entry) => entry.type === "meal").length,
+    scanCount,
     totalEntries: logs.length,
     updatedAt: new Date().toISOString()
   };
@@ -102,7 +134,8 @@ function buildTodayDailyLog() {
   const date = todayKey();
   const dailyLogs = getDailyLogs();
 
-  dailyLogs[date] = buildDailyLogForDate(date);
+  dailyLogs[date] =
+    buildDailyLogForDate(date);
 
   saveDailyLogs(dailyLogs);
 
@@ -122,7 +155,8 @@ function syncDailyLogs() {
   dates.add(todayKey());
 
   dates.forEach((date) => {
-    dailyLogs[date] = buildDailyLogForDate(date);
+    dailyLogs[date] =
+      buildDailyLogForDate(date);
   });
 
   saveDailyLogs(dailyLogs);
@@ -143,6 +177,7 @@ function getFuelSummary() {
     waterToday: today.water || 0,
     trainingToday: today.trainingCount > 0,
     todayCount: today.totalEntries || 0,
+    weightToday: today.latestWeight || null,
     today,
     dailyLogs
   };
