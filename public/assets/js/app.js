@@ -23,7 +23,9 @@ reader.onload = () => {
 
   previewImage.src = selectedImageBase64;
   previewImage.classList.remove("hidden");
+  if (uploadBox) {
   uploadBox.classList.add("hidden");
+}
   analyzeBtn.classList.remove("hidden");
   resultCard.classList.add("hidden");
   loadingCard.classList.add("hidden");
