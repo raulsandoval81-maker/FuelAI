@@ -13,6 +13,6 @@ if (saveSetupBtn) {
 
     localStorage.setItem("fuelai-setup", JSON.stringify(setup));
 
-    window.location.href = "/public/app.html";
+    window.location.href = "/app.html";
   });
 }
