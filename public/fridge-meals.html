@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Fridge Meals</title>
+
+  <link rel="stylesheet" href="/assets/css/site.css" />
+</head>
+
+<body>
+
+  <main class="scan-wrap">
+
+    <a class="top-link" href="/fridge.html">
+      Back
+    </a>
+
+    <section class="scan-card">
+
+      <h1>Meal Ideas</h1>
+
+      <p class="sub">
+        Simple dinner paths using what you already have.
+      </p>
+
+      <section
+        id="mealsContainer"
+        class="result-card"
+      ></section>
+
+    </section>
+
+  </main>
+
+  <script>
+
+    const result =
+      JSON.parse(
+        localStorage.getItem("fuelwise_fridge_result") || "{}"
+      );
+
+    const mealsContainer =
+      document.getElementById("mealsContainer");
+
+    const meals =
+      result.suggestedMeals || [];
+
+    mealsContainer.innerHTML = `
+
+      <p class="feedback">
+        <strong>Detected:</strong>
+        ${(result.detectedItems || []).join(", ") || "No clear items detected"}
+      </p>
+
+      ${
+        result.possibleItems?.length
+          ? `
+            <p class="feedback">
+              <strong>Maybe:</strong>
+              ${result.possibleItems.join(", ")}
+            </p>
+          `
+          : ""
+      }
+
+      <div class="history-section">
+
+        ${meals.map(meal => `
+
+          <div class="history-item">
+
+            <strong>${meal.name}</strong>
+
+            <div class="history-meta">
+              ${meal.time || ""}
+            </div>
+
+            <p class="feedback">
+              ${meal.whyItWorks || ""}
+            </p>
+
+            <p class="feedback">
+              <strong>Uses:</strong>
+              ${(meal.uses || []).join(", ") || "Items from your fridge"}
+            </p>
+
+            <p class="feedback">
+              <strong>Need:</strong>
+              ${(meal.needs || []).join(", ") || "Nothing extra"}
+            </p>
+
+            ${
+              meal.steps?.length
+                ? `
+                  <ol>
+                    ${meal.steps.map(step => `
+                      <li>${step}</li>
+                    `).join("")}
+                  </ol>
+                `
+                : ""
+            }
+
+          </div>
+
+        `).join("")}
+
+      </div>
+
+      <div class="history-item">
+
+        <strong>Quick Grocery List</strong>
+
+        <p class="feedback">
+          ${(result.groceryList || []).join(", ") || "No extra groceries needed"}
+        </p>
+
+      </div>
+
+    `;
+
+  </script>
+
+</body>
+</html>
