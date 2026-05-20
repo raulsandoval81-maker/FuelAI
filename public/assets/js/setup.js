@@ -38,9 +38,10 @@ const copy = {
     cutwise: "CutWise — Lean Out",
     gainwise: "GainWise — Build / Recover",
 
-    rare: "Rare — 10/90",
-    medium: "Medium — 20/80",
-    welldone: "Well Done — 30/70",
+    sweetspot: "Sweet Spot — Calm + Balanced",
+    mafia: "Mafia — Funny Movie Flavor",
+    toughguy: "Tough Guy — Direct Coach Energy",
+    internet: "Internet — Meme / Teen Slang",
 
     guidance: "Suggested Guidance",
     emptyRange: "Enter height and weight",
@@ -83,9 +84,10 @@ const copy = {
     cutwise: "CutWise — Bajar / Definir",
     gainwise: "GainWise — Subir / Recuperar",
 
-    rare: "Rare — 10/90",
-    medium: "Medium — 20/80",
-    welldone: "Well Done — 30/70",
+    sweetspot: "Sweet Spot — Calmado + Balanceado",
+    mafia: "Mafia — Sabor de Película",
+    toughguy: "Tough Guy — Energía de Coach Directo",
+    internet: "Internet — Meme / Slang Teen",
 
     guidance: "Guía sugerida",
     emptyRange: "Ingresa estatura y peso",
@@ -140,9 +142,10 @@ function applyLanguage(lang) {
   goalSelect.options[2].textContent = t.gainwise;
 
   if (wiseFlavor) {
-    wiseFlavor.options[0].textContent = t.rare;
-    wiseFlavor.options[1].textContent = t.medium;
-    wiseFlavor.options[2].textContent = t.welldone;
+    wiseFlavor.options[0].textContent = t.sweetspot;
+    wiseFlavor.options[1].textContent = t.mafia;
+    wiseFlavor.options[2].textContent = t.toughguy;
+    wiseFlavor.options[3].textContent = t.internet;
   }
 
   document.querySelector(".range-label").textContent = t.guidance;
@@ -252,7 +255,7 @@ function loadSavedSetup() {
   goalSelect.value = saved.goal || "fuelwise";
 
   if (wiseFlavor) {
-    wiseFlavor.value = saved.wiseFlavor || "medium";
+    wiseFlavor.value = saved.wiseFlavor || "sweetspot";
   }
 }
 
@@ -278,7 +281,7 @@ if (themeToggle) {
 if (saveSetupBtn) {
   saveSetupBtn.addEventListener("click", () => {
 
-    const flavor = wiseFlavor?.value || "medium";
+    const flavor = wiseFlavor?.value || "sweetspot";
 
     const setup = {
       height: heightInput.value.trim(),

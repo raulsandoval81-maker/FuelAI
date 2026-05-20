@@ -15,7 +15,7 @@ export default async function handler(req, res) {
     const {
       image,
       lang = "en",
-      wiseFlavor = "medium",
+      wiseFlavor = "sweetspot",
     } = req.body;
 
     if (!image) {
@@ -30,18 +30,21 @@ export default async function handler(req, res) {
         : "English";
 
     const flavorGuide = {
-      rare:
-        "Rare tone: 90% practical, 10% personality. Be calm, direct, and minimal.",
+      sweetspot:
+        "Sweet Spot tone: calm, practical, lightly human. Useful first, personality second.",
 
-      medium:
-        "Medium tone: 80% practical, 20% personality. Add light warmth and a little human flavor, but stay useful.",
+      mafia:
+        "Mafia tone: funny movie flavor with light playful confidence. Do not use threats, crime language, exaggerated accents, or offensive stereotypes. Keep it useful and family-friendly.",
 
-      welldone:
-        "Well Done tone: 70% practical, 30% personality. Add occasional playful WiseGuy/WiseGal-style comments, but do not become a parody."
+      toughguy:
+        "Tough Guy tone: direct coach energy. Clear, motivating, no excuses, but not mean, toxic, or shaming.",
+
+      internet:
+        "Internet tone: light meme/teen slang flavor. Keep it understandable, not cringe, not excessive, and still practical."
     };
 
     const selectedFlavor =
-      flavorGuide[wiseFlavor] || flavorGuide.medium;
+      flavorGuide[wiseFlavor] || flavorGuide.sweetspot;
 
     const response = await client.chat.completions.create({
       model: "gpt-4.1-mini",
@@ -105,10 +108,14 @@ Rules:
 - Do not pretend certainty.
 - If the image is not a fridge/pantry/food image, still give practical help based on what is visible.
 - Personality should show lightly in wording only.
-- Do not use exaggerated accents.
-- Do not use mafia parody.
 - Do not make every line funny.
 - Help first. Flavor second.
+- Never shame the user.
+- Never insult the user.
+- Never use profanity.
+- Never use threatening language.
+- Never use criminal language.
+- Never use stereotypes.
               `,
             },
             {

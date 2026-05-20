@@ -25,10 +25,7 @@ function saveFuelLog(logs) {
 
   const cleaned =
     logs.filter((entry) => {
-      return (
-        new Date(entry.createdAt).getTime()
-        >= cutoff
-      );
+      return new Date(entry.createdAt).getTime() >= cutoff;
     });
 
   localStorage.setItem(
@@ -119,7 +116,7 @@ function buildDailyLogForDate(dateKey) {
     date: dateKey,
     goal: setup.goal || "fuelwise",
     guide: setup.guide || "wiseguy",
-    wiseFlavor: setup.wiseFlavor || "medium",
+    wiseFlavor: setup.wiseFlavor || "sweetspot",
     activityLevel: setup.activityLevel || "low",
     calories,
     water,
@@ -129,7 +126,7 @@ function buildDailyLogForDate(dateKey) {
     totalEntries: logs.length,
     updatedAt: new Date().toISOString()
   };
-  }
+}
 
 function buildTodayDailyLog() {
   const date = todayKey();
@@ -179,6 +176,7 @@ function getFuelSummary() {
     trainingToday: today.trainingCount > 0,
     todayCount: today.totalEntries || 0,
     weightToday: today.latestWeight || null,
+    wiseFlavor: today.wiseFlavor || "sweetspot",
     today,
     dailyLogs
   };
