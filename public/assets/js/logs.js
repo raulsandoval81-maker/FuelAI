@@ -46,12 +46,21 @@ function renderLogs() {
             <br><br>
 
             Water:
-            ${day.water || 0} cups
+            ${day.water || 0} oz
 
             <br><br>
 
             Training Sessions:
             ${day.trainingCount || 0}
+
+            <br><br>
+
+            Weight:
+            ${
+              day.latestWeight
+                ? `${day.latestWeight} lbs`
+                : "—"
+            }
 
             <br><br>
 
@@ -62,6 +71,7 @@ function renderLogs() {
 
         </section>
       `;
+
     }).join("");
 }
 
