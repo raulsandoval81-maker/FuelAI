@@ -4,8 +4,8 @@ const setup =
 const guide =
   setup.guide || "wiseguy";
 
-const wiseFlavor =
-  setup.wiseFlavor || "medium";
+const flavor =
+  setup.wiseflavor || "sweetspot";
 
 const wiseTitle =
   document.getElementById("wiseTitle");
@@ -50,72 +50,48 @@ function getGuideName() {
     : "WiseGuyAI";
 }
 
+function getShortGuideName() {
+  return guide === "wisegal"
+    ? "WiseGal"
+    : "WiseGuy";
+}
+
 function getPlanName(goal) {
-  if (goal === "cutwise") {
-    return "CutWise — Cut";
-  }
-
-  if (goal === "gainwise") {
-    return "GainWise — Gain";
-  }
-
+  if (goal === "cutwise") return "CutWise — Cut";
+  if (goal === "gainwise") return "GainWise — Gain";
   return "FuelWise — Maintain";
 }
 
 function getGreeting() {
   const hour = new Date().getHours();
 
-  if (hour < 12) {
-    return "Good morning";
-  }
-
-  if (hour < 18) {
-    return "Good afternoon";
-  }
+  if (hour < 12) return "Good morning";
+  if (hour < 18) return "Good afternoon";
 
   return "Good evening";
 }
 
-/* =========================
-   WISE FLAVOR SYSTEM
-========================= */
+function getFlavorLine(lines) {
+  if (flavor === "toughguy") return lines.tough;
+  if (flavor === "mafia") return lines.mafia;
+  if (flavor === "internet") return lines.internet;
 
-function spice(levels) {
-  return levels[wiseFlavor] || levels.medium;
+  return lines.sweet;
 }
 
-function getFlavorIntro() {
-  return spice({
-    rare:
-      "",
-
-    medium:
-      "",
-
-    welldone:
-      "Ayyy… "
-  });
+function hasTrainingToday() {
+  return window.FuelAILog
+    .getTodayLogs()
+    .some((entry) => entry.type === "training");
 }
 
-function getFlavorCloser() {
-  return spice({
-    rare:
-      "",
-
-    medium:
-      " Honestly.",
-
-    welldone:
-      " You’re alright."
-  });
+function hasWeightToday() {
+  return window.FuelAILog
+    .getTodayLogs()
+    .some((entry) => entry.type === "weight");
 }
-
-/* =========================
-   MAIN RENDER
-========================= */
 
 function renderWise() {
-
   if (!window.FuelAILog) {
     wiseAdvice.textContent =
       "Log system not loaded.";
@@ -157,10 +133,12 @@ function renderWise() {
 
     <br><br>
 
-    Weekly Weight:
-    ${summary.today?.latestWeight
-      ? `${summary.today.latestWeight} lbs`
-      : "Not logged"}
+    Weight:
+    ${
+      summary.today?.latestWeight
+        ? `${summary.today.latestWeight} lbs`
+        : "Not logged"
+    }
 
     <br><br>
 
@@ -168,121 +146,136 @@ function renderWise() {
     ${summary.totalDays || 0}
   `;
 
+  if (addTrainingBtn) {
+    addTrainingBtn.classList.toggle(
+      "hidden",
+      hasTrainingToday()
+    );
+  }
+
+  if (addWeightBtn) {
+    addWeightBtn.classList.toggle(
+      "hidden",
+      hasWeightToday()
+    );
+  }
+
   wiseAdvice.textContent =
     getAdvice(summary);
 }
 
-/* =========================
-   DAILY ADVICE
-========================= */
-
 function getAdvice(summary) {
-
   const goal =
     setup.goal || "fuelwise";
 
   if (summary.todayCount === 0) {
-
-    return spice({
-      rare:
-        `${getGuideName()} says: Start simple today. Log water, scan a meal, or mark training if you move.`,
-
-      medium:
-        `${getGuideName()} says: Start simple today. Log water, scan a meal, or mark training if you move. No need to overdo it.`,
-
-      welldone:
-        `${getGuideName()} says: Ayyy… start simple today. Little water, little food scan, little movement. Don’t make this complicated.`
+    return getFlavorLine({
+      sweetspot:
+        "Start simple today. Log water, scan a meal, or mark training if you move.",
+      toughguy:
+        "Small actions count. Water, food, movement. Start there.",
+      mafia:
+        "Let’s keep it simple today. Water first. Chaos later.",
+      internet:
+        "Tiny reset. Water + food + movement. We move."
     });
   }
 
   if (summary.waterToday < 32) {
-
-    return spice({
-      rare:
-        `${getGuideName()} says: Hydration could use some attention today. Add water before overthinking food.`,
-
-      medium:
-        `${getGuideName()} says: Hydration could use some attention today. Add water before overthinking food. Easy fix.`,
-
-      welldone:
-        `${getGuideName()} says: Ayyy… drink some water before we start spiraling about macros over here.`
+    return getFlavorLine({
+      sweetspot:
+        "Hydration could use some attention today. Add water before overthinking food.",
+      toughguy:
+        "You’re probably more dehydrated than tired. Drink water first.",
+      mafia:
+        "Listen… the body’s asking for water. Let’s handle that first.",
+      internet:
+        "Low-key dehydrated. Water first."
     });
   }
 
   if (goal === "cutwise") {
-
-    return spice({
-      rare:
-        `${getGuideName()} says: Stay steady. Keep meals lighter and avoid panic choices.`,
-
-      medium:
-        `${getGuideName()} says: Stay steady. Keep meals lighter and avoid panic choices. One meal doesn’t ruin anything.`,
-
-      welldone:
-        `${getGuideName()} says: Relax. One heavy meal ain’t the end of civilization. Just clean the next one up a little.`
+    return getFlavorLine({
+      sweetspot:
+        "Stay steady. Keep meals lighter and avoid panic choices.",
+      toughguy:
+        "Consistency beats crash dieting every time.",
+      mafia:
+        "No panic moves. Nice and steady.",
+      internet:
+        "No food spirals today. Keep it clean."
     });
   }
 
   if (goal === "gainwise") {
-
-    return spice({
-      rare:
-        `${getGuideName()} says: Fuel matters today. If you trained, make sure intake supports recovery.`,
-
-      medium:
-        `${getGuideName()} says: Fuel matters today. If you trained, don’t under-eat and wonder why recovery feels rough.`,
-
-      welldone:
-        `${getGuideName()} says: You trained? Then eat like somebody who trained. Don’t scare the calories away now.`
+    return getFlavorLine({
+      sweetspot:
+        "Fuel matters today. Make sure recovery matches training.",
+      toughguy:
+        "Training hard without fueling hard makes no sense.",
+      mafia:
+        "You want growth? Feed the machine.",
+      internet:
+        "Muscles need snacks too."
     });
   }
 
-  return spice({
-    rare:
-      `${getGuideName()} says: Keep it balanced. Stay aware and consistent.`,
-
-    medium:
-      `${getGuideName()} says: Keep it balanced. Nothing needs to be perfect — just stay aware.`,
-
-    welldone:
-      `${getGuideName()} says: You’re good. Keep it balanced and stop overthinking every bite of food.`
+  return getFlavorLine({
+    sweetspot:
+      "Keep it balanced. Nothing needs to be perfect.",
+    toughguy:
+      "Stay consistent. That’s the whole game.",
+    mafia:
+      "Nice and steady. We keep moving.",
+    internet:
+      "Honestly? You’re doing alright."
   });
 }
 
-/* =========================
-   CHAT REPLIES
-========================= */
-
 function generateWiseReply(question, summary) {
-
   const lower =
     question.toLowerCase();
 
+  if (
+    lower.includes("what you doing") ||
+    lower.includes("what you doin") ||
+    lower.includes("what are you doing")
+  ) {
+    return getFlavorLine({
+      sweetspot:
+        "Trying to help you eat a little better and overthink a little less.",
+      toughguy:
+        "Keeping you honest. Food, water, training. Simple.",
+      mafia:
+        "Making sure you don’t turn one meal into a whole crisis.",
+      internet:
+        "Trying to keep the food chaos under control."
+    });
+  }
+
   if (lower.includes("water")) {
-
     if (summary.waterToday < 32) {
-
-      return spice({
-        rare:
-          `${getGuideName()} says: Hydration could use some attention today.`,
-
-        medium:
-          `${getGuideName()} says: Hydration could use some attention today. Add water first before overthinking food.`,
-
-        welldone:
-          `${getGuideName()} says: Ayyy… water first. Everybody always wants to skip the easy fix.`
+      return getFlavorLine({
+        sweetspot:
+          "Hydration could use some attention today. Add water first before overthinking food.",
+        toughguy:
+          "Water first. You can’t outthink dehydration.",
+        mafia:
+          "Listen… handle the water first. Easy win.",
+        internet:
+          "Low-key, water fixes more than people admit."
       });
     }
 
-    return spice({
-      rare:
-        `${getGuideName()} says: Hydration looks solid today.`,
-
-      medium:
-        `${getGuideName()} says: Hydration looks pretty solid today.`,
-
-      welldone:
-        `${getGuideName()} says: Hydration’s lookin’ pretty solid today honestly.`
+    return getFlavorLine({
+      sweetspot:
+        "Hydration looks pretty solid today.",
+      toughguy:
+        "Hydration is handled. Keep it that way.",
+      mafia:
+        "Water’s looking alright. We like that.",
+      internet:
+        "Hydration check passed."
     });
   }
 
@@ -290,16 +283,15 @@ function generateWiseReply(question, summary) {
     lower.includes("cut") ||
     lower.includes("lose")
   ) {
-
-    return spice({
-      rare:
-        `${getGuideName()} says: Stay steady. Consistency matters.`,
-
-      medium:
-        `${getGuideName()} says: Stay steady. Consistency matters more than panic restriction.`,
-
-      welldone:
-        `${getGuideName()} says: Don’t go full maniac trying to cut overnight. Steady wins here.`
+    return getFlavorLine({
+      sweetspot:
+        "Stay steady. Consistency matters more than panic restriction.",
+      toughguy:
+        "Don’t crash diet. Stay disciplined.",
+      mafia:
+        "No panic cuts. We play the long game.",
+      internet:
+        "Do not spiral. Just tighten the next choice."
     });
   }
 
@@ -307,16 +299,15 @@ function generateWiseReply(question, summary) {
     lower.includes("gain") ||
     lower.includes("muscle")
   ) {
-
-    return spice({
-      rare:
-        `${getGuideName()} says: Fuel and recovery matter.`,
-
-      medium:
-        `${getGuideName()} says: Fuel and recovery matter. Make sure intake supports training.`,
-
-      welldone:
-        `${getGuideName()} says: If you wanna grow, ya gotta eat a little. We can’t build muscle outta thin air.`
+    return getFlavorLine({
+      sweetspot:
+        "Fuel and recovery matter. Make sure intake supports training.",
+      toughguy:
+        "If you train hard, you need to eat like it.",
+      mafia:
+        "You want growth? Feed the machine.",
+      internet:
+        "Muscles need snacks too. Unfortunately, science."
     });
   }
 
@@ -324,16 +315,15 @@ function generateWiseReply(question, summary) {
     lower.includes("eat") ||
     lower.includes("food")
   ) {
-
-    return spice({
-      rare:
-        `${getGuideName()} says: Keep meals balanced and practical.`,
-
-      medium:
-        `${getGuideName()} says: Keep meals practical and balanced. Nothing needs to be perfect.`,
-
-      welldone:
-        `${getGuideName()} says: Relax. You don’t need the perfect meal. Just don’t go completely off the rails.`
+    return getFlavorLine({
+      sweetspot:
+        "Keep meals practical and balanced. Nothing needs to be perfect.",
+      toughguy:
+        "Pick a solid meal and move on.",
+      mafia:
+        "Simple plate. No drama.",
+      internet:
+        "You don’t need a perfect meal. You need a decent one."
     });
   }
 
@@ -341,38 +331,32 @@ function generateWiseReply(question, summary) {
     lower.includes("weight") ||
     lower.includes("scale")
   ) {
-
-    return spice({
-      rare:
-        `${getGuideName()} says: Treat weight as a long-term trend.`,
-
-      medium:
-        `${getGuideName()} says: Treat weight as a weekly trend, not a daily judgment.`,
-
-      welldone:
-        `${getGuideName()} says: One weird scale day ain’t a tragedy. Human bodies do weird stuff sometimes.`
+    return getFlavorLine({
+      sweetspot:
+        "Treat weight as a trend, not a daily judgment.",
+      toughguy:
+        "One scale check does not define the work.",
+      mafia:
+        "One weird scale day ain’t the whole story.",
+      internet:
+        "The scale is noisy. Trends matter."
     });
   }
 
-  return spice({
-    rare:
-      `${getGuideName()} says: Stay aware and consistent today.`,
-
-    medium:
-      `${getGuideName()} says: Stay aware, stay consistent, and avoid overthinking today.`,
-
-    welldone:
-      `${getGuideName()} says: Ayyy… breathe a little. You’re probably overthinking this right now.`
+  return getFlavorLine({
+    sweetspot:
+      "Stay aware, stay consistent, and avoid overthinking today.",
+    toughguy:
+      "Keep it simple. Do the basics.",
+    mafia:
+      "Nice and steady. We keep moving.",
+    internet:
+      "Breathe. You’re probably overthinking it."
   });
 }
 
-/* =========================
-   QUICK ACTIONS
-========================= */
-
 if (addWaterBtn) {
   addWaterBtn.addEventListener("click", () => {
-
     window.FuelAILog.addFuelLog({
       type: "water",
       water: 8
@@ -384,7 +368,6 @@ if (addWaterBtn) {
 
 if (addTrainingBtn) {
   addTrainingBtn.addEventListener("click", () => {
-
     window.FuelAILog.addFuelLog({
       type: "training",
       sessions: 1,
@@ -398,13 +381,10 @@ if (addTrainingBtn) {
 
 if (addWeightBtn) {
   addWeightBtn.addEventListener("click", () => {
-
     const current =
       prompt("Enter current weight");
 
-    if (!current) {
-      return;
-    }
+    if (!current) return;
 
     window.FuelAILog.addFuelLog({
       type: "weight",
@@ -416,20 +396,12 @@ if (addWeightBtn) {
   });
 }
 
-/* =========================
-   CHAT
-========================= */
-
 if (sendWiseChatBtn) {
-
   sendWiseChatBtn.addEventListener("click", () => {
-
     const question =
       wiseChatInput.value.trim();
 
-    if (!question) {
-      return;
-    }
+    if (!question) return;
 
     const summary =
       window.FuelAILog.getFuelSummary();

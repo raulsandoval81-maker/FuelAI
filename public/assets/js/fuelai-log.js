@@ -169,17 +169,25 @@ function getFuelSummary() {
   const dailyLogs = getDailyLogs();
   const allDays = Object.values(dailyLogs);
 
-  return {
-    totalDays: allDays.length,
-    caloriesToday: today.calories || 0,
-    waterToday: today.water || 0,
-    trainingToday: today.trainingCount > 0,
-    todayCount: today.totalEntries || 0,
-    weightToday: today.latestWeight || null,
-    wiseFlavor: today.wiseFlavor || "sweetspot",
-    today,
-    dailyLogs
-  };
+return {
+  totalDays: allDays.length,
+  caloriesToday: today.calories || 0,
+  waterToday: today.water || 0,
+  trainingToday: today.trainingCount > 0,
+  todayCount: today.totalEntries || 0,
+  weightToday: today.latestWeight || null,
+
+  wiseFlavor:
+    today.wiseFlavor ||
+    JSON.parse(
+      localStorage.getItem("fuelai-setup") || "{}"
+    ).wiseFlavor ||
+    "sweetspot",
+
+  today,
+  dailyLogs
+};
+
 }
 
 window.FuelAILog = {

@@ -34,13 +34,13 @@ export default async function handler(req, res) {
         "Sweet Spot tone: calm, practical, lightly human. Useful first, personality second.",
 
       mafia:
-        "Mafia tone: funny movie flavor with light playful confidence. Do not use threats, crime language, exaggerated accents, or offensive stereotypes. Keep it useful and family-friendly.",
+        "Mafia tone: light funny movie flavor with playful confidence. Do not use threats, crime language, exaggerated accents, or offensive stereotypes. Keep it useful and family-friendly.",
 
       toughguy:
         "Tough Guy tone: direct coach energy. Clear, motivating, no excuses, but not mean, toxic, or shaming.",
 
       internet:
-        "Internet tone: light meme/teen slang flavor. Keep it understandable, not cringe, not excessive, and still practical."
+        "Internet tone: light meme/teen slang flavor. Keep it understandable, not cringe, not excessive, and still practical.",
     };
 
     const selectedFlavor =
@@ -141,8 +141,14 @@ Rules:
     let parsed;
 
     try {
-      parsed = JSON.parse(content);
-    } catch {
+      parsed =
+        typeof content === "string"
+          ? JSON.parse(content)
+          : content;
+    } catch (err) {
+      console.error("FRIDGE JSON PARSE ERROR:", err);
+      console.error("RAW FRIDGE RESULT:", content);
+
       return res.status(500).json({
         error: "Invalid AI JSON returned",
       });
@@ -156,7 +162,9 @@ Rules:
     console.error("FRIDGE ERROR:", err);
 
     return res.status(500).json({
-      error: err.message || "Failed to analyze fridge image",
+      error:
+        err.message ||
+        "Failed to analyze fridge image",
     });
   }
 }
