@@ -129,14 +129,15 @@ function applyLanguage(lang) {
 }
 
 function applyTheme(theme) {
-  document.body.dataset.theme = theme;
+  document.body.setAttribute("data-theme", theme);
   localStorage.setItem("fuelai-theme", theme);
   updateThemeButton();
 }
 
 function updateThemeButton() {
-  const t = copy[getLang()];
-  const theme = getTheme();
+  const lang = getLang();
+  const theme = document.body.getAttribute("data-theme") || getTheme();
+  const t = copy[lang];
 
   themeToggle.textContent =
     theme === "night" ? t.dayBtn : t.nightBtn;
@@ -232,7 +233,12 @@ if (langToggle) {
 
 if (themeToggle) {
   themeToggle.addEventListener("click", () => {
-    const nextTheme = getTheme() === "day" ? "night" : "day";
+    const current =
+      document.body.getAttribute("data-theme") || "day";
+
+    const nextTheme =
+      current === "day" ? "night" : "day";
+
     applyTheme(nextTheme);
   });
 }
@@ -252,7 +258,7 @@ if (saveSetupBtn) {
     genderType.value === "female"
       ? "wisegal"
       : "wiseguy",
-      
+
       lang: getLang(),
       theme: getTheme()
     };
