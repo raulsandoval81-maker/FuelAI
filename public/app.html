@@ -3,55 +3,91 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>FuelWise AI Scanner</title>
+
+  <title>FuelWise Scanner</title>
+
   <link rel="stylesheet" href="/assets/css/site.css" />
 </head>
-<body>
+
+<body data-theme="day">
   <main class="scan-wrap">
-<a class="top-link" href="/wise.html">
-  ← Back to Guide
-</a>
+
+    <a class="top-link" href="/wise.html">
+      ← Back to Guide
+    </a>
+
     <section class="scan-card">
+
       <h1>FuelWise</h1>
-      <p class="sub">Scan meals. Make smarter athlete nutrition decisions.</p>
 
-<label id="uploadBox" class="upload-box">
-  <span class="upload-title">
-    Open Camera
-  </span>
+      <p class="sub">
+        Scan a meal. Get simple food guidance.
+      </p>
 
-  <span class="upload-sub">
-    Take a meal photo or choose from library
-  </span>
+      <label id="uploadBox" class="upload-box">
+        <span class="upload-title">
+          Open Camera
+        </span>
 
-  <input
-    id="foodInput"
-    type="file"
-    accept="image/*"
-    capture="environment"
-  />
+        <span class="upload-sub">
+          Take a meal photo or choose from library
+        </span>
 
-</label>
+        <input
+          id="foodInput"
+          type="file"
+          accept="image/*"
+          capture="environment"
+        />
+      </label>
 
-      <img id="previewImage" class="preview hidden" alt="Food preview" />
+      <img
+        id="previewImage"
+        class="preview hidden"
+        alt="Food preview"
+      />
 
-      <button id="analyzeBtn" class="start-btn hidden">Analyze Meal</button>
+      <button
+        id="analyzeBtn"
+        class="start-btn hidden"
+        type="button"
+      >
+        Analyze Meal
+      </button>
 
-      <div id="loadingCard" class="loading-card hidden">
+      <div
+        id="loadingCard"
+        class="loading-card hidden"
+      >
         <div class="scanner"></div>
-        <p id="loadingText">loading...</p>
+
+        <p id="loadingText">
+          Loading...
+        </p>
       </div>
 
-      <section id="resultCard" class="result-card hidden"></section>
+      <section
+        id="resultCard"
+        class="result-card hidden"
+      ></section>
 
-<a class="start-btn" href="/profile.html">
-  Progress
-</a>
+      <div class="wise-links">
+
+        <a class="secondary-btn" href="/wise.html">
+          Return to Guide
+        </a>
+
+        <a class="secondary-btn" href="/logs.html">
+          View 90-Day Log
+        </a>
+
+      </div>
+
     </section>
   </main>
 
-<script src="/assets/js/preferences.js"></script>
-<script src="/assets/js/fuelai-log.js"></script>
-<script src="/assets/js/app.js"></script>
+  <script src="/assets/js/preferences.js"></script>
+  <script src="/assets/js/fuelai-log.js"></script>
+  <script src="/assets/js/app.js"></script>
 </body>
 </html>
