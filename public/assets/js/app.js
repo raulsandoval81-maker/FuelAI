@@ -99,6 +99,13 @@ if (analyzeBtn) {
       });
 
       const data = await response.json();
+      if (!response.ok) {
+  throw new Error(data.error || "API request failed");
+}
+
+if (!data.result) {
+  throw new Error("No AI result returned");
+}
 
       const cleaned = data.result
         .replace(/```json/g, "")
