@@ -73,3 +73,11 @@ Return ONLY valid JSON:
     res.status(500).json({ error: "Failed to analyze image" });
   }
 }
+
+export const config = {
+  api: {
+    bodyParser: {
+      sizeLimit: "10mb"
+    }
+  }
+};
