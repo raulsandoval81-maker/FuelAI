@@ -212,7 +212,7 @@ if (analyzeBtn) {
 
       showError(
         err?.message ||
-        "Could not analyze image. Please try again."
+        "Could not analyze meal. Try another photo."
       );
 
       analyzeBtn.textContent = "Try Again";

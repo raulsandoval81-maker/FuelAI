@@ -87,7 +87,7 @@ Return ONLY valid JSON with this exact shape:
             {
               type: "image_url",
               image_url: {
-                url: image,
+                url: safeImage,
               },
             },
           ],
