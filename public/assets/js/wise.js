@@ -72,19 +72,27 @@ function getGreeting() {
 
 function getFlavorLine(lines) {
 
+  let message;
+
   if (flavor === "toughguy") {
-    return lines.toughguy;
+    message = lines.toughguy;
+
+  } else if (flavor === "mafia") {
+    message = lines.mafia;
+
+  } else if (flavor === "internet") {
+    message = lines.internet;
+
+  } else {
+    message = lines.sweetspot;
   }
 
-  if (flavor === "mafia") {
-    return lines.mafia;
-  }
+  const speaker =
+    guide === "wisegal"
+      ? "WiseGal"
+      : "WiseGuy";
 
-  if (flavor === "internet") {
-    return lines.internet;
-  }
-
-  return lines.sweetspot;
+  return `${speaker}: ${message}`;
 
 }
 
