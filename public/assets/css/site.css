@@ -585,3 +585,19 @@ body[data-theme="night"] .mini-toggle {
 
   text-align: center;
 }
+.range-card {
+  padding: 26px;
+}
+
+#wiseChatInput {
+  margin-bottom: 22px;
+}
+
+#sendWiseChatBtn {
+  margin-bottom: 18px;
+}
+
+#wiseChatReply {
+  margin-top: 4px;
+  line-height: 1.5;
+}
