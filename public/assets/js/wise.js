@@ -359,6 +359,94 @@ function generateWiseReply(question, summary) {
     });
   }
 
+  if (
+  lower.includes("alien") ||
+  lower.includes("spaceship")
+) {
+
+  return getFlavorLine({
+    sweetspot:
+      "Probably hard to explore galaxies while dehydrated.",
+
+    toughguy:
+      "Even astronauts need water.",
+
+    mafia:
+      "Space is cold. Bring snacks.",
+
+    internet:
+      "Intergalactic hydration matters."
+  });
+
+}
+
+if (
+  lower.includes("batman") ||
+  lower.includes("superhero")
+) {
+
+  return getFlavorLine({
+    sweetspot:
+      "Batman definitely meal preps.",
+
+    toughguy:
+      "Recovery is the real superpower.",
+
+    mafia:
+      "No way Batman skips protein.",
+
+    internet:
+      "Bruce Wayne definitely tracks macros."
+  });
+
+}
+
+if (
+  lower.includes("zombie")
+) {
+
+  return getFlavorLine({
+    sweetspot:
+      "Surviving zombies probably requires decent recovery meals.",
+
+    toughguy:
+      "Cardio suddenly matters a lot more.",
+
+    mafia:
+      "We’re grabbing water before the apocalypse starts.",
+
+    internet:
+      "Honestly? Zombies would hate hydrated people."
+  });
+
+}
+
+if (
+  lower.includes("alien") ||
+  lower.includes("spaceship") ||
+  lower.includes("zombie") ||
+  lower.includes("batman") ||
+  lower.includes("superhero") ||
+  lower.includes("skibidi") ||
+  lower.includes("rizz")
+) {
+
+  return getFlavorLine({
+    sweetspot:
+      "That feels slightly outside the nutrition department.",
+
+    toughguy:
+      "I respect the creativity. Still drink water.",
+
+    mafia:
+      "Listen… I’m trying to help you survive lunch first.",
+
+    internet:
+      "That question has powerful side-quest energy."
+  });
+
+}
+
   return getFlavorLine({
     sweetspot:
       "Stay aware, stay consistent, and avoid overthinking today.",
