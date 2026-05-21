@@ -568,3 +568,20 @@ body[data-theme="night"] .mini-toggle {
 
   opacity: 0.75;
 }
+.wise-links {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 20px;
+}
+
+.wise-links .secondary-btn {
+  width: 100%;
+  max-width: 100%;
+
+  padding: 18px 20px;
+
+  border-radius: 999px;
+
+  text-align: center;
+}
