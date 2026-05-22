@@ -4,9 +4,18 @@ const setup =
 const guide =
   setup.guide || "wiseguy";
 
-const flavor =
+  const flavor =
   setup.wiseFlavor || "sweetspot";
 
+const flavorOdds = {
+  sweetspot: 0.15,
+  toughguy: 0.30,
+  mafia: 0.35,
+  internet: 0.40
+};
+const useFlavor =
+  Math.random() <
+  (flavorOdds[flavor] || 0.15);
 
 const wiseTitle =
   document.getElementById("wiseTitle");
@@ -227,6 +236,10 @@ ${
     getAdvice(summary);
 }
 function getFlavorLine(lines) {
+
+  if (!useFlavor) {
+    return lines.sweetspot;
+  }
 
   if (flavor === "toughguy") {
     return lines.toughguy;

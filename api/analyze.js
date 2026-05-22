@@ -29,32 +29,35 @@ export default async function handler(req, res) {
         error: "Missing image",
       });
     }
-const safeImage =
-  String(image || "").trim();
 
-if (!safeImage.startsWith("data:image/")) {
-  return res.status(400).json({
-    error: "Invalid image format",
-  });
-}
+    const safeImage =
+      String(image || "").trim();
+
+    if (!safeImage.startsWith("data:image/")) {
+      return res.status(400).json({
+        error: "Invalid image format",
+      });
+    }
+
     const language =
       lang === "es"
         ? "Spanish"
         : "English";
 
-    const response = await client.chat.completions.create({
-      model: "gpt-4.1-mini",
-      response_format: {
-  type: "json_object"
-},
-temperature: 0.3,
-      messages: [
-        {
-          role: "user",
-          content: [
-            {
-              type: "text",
-              text: `
+    const response =
+      await client.chat.completions.create({
+        model: "gpt-4.1-mini",
+        response_format: {
+          type: "json_object",
+        },
+        temperature: 0.3,
+        messages: [
+          {
+            role: "user",
+            content: [
+              {
+                type: "text",
+                text: `
 You are FuelAI, an image-based nutrition decision assistant.
 
 Respond entirely in ${language}.
@@ -71,56 +74,44 @@ User context:
 - Mode: ${goal}
 
 Mode rules:
+- fuelwise = balanced performance nutrition, sustainable eating, recovery support, steady energy, consistency, and long-term healthy fuel guidance.
+- cutwise = lighter choices, leaner meal decisions, portion awareness, hydration awareness, controlled bodyweight support, and avoiding unnecessary overeating.
+- gainwise = muscle growth, performance fuel, higher-calorie support, recovery nutrition, strength development, and avoiding under-eating.
 
-Adjust tone and feedback naturally based on the selected mode.
-
-FuelWise should feel balanced and sustainable.
-
-CutWise should encourage restraint and awareness without guilt or extreme dieting.
-
-GainWise should encourage fueling, recovery, and performance support without reckless overeating.
-
-Keep all guidance practical, calm, and simple.
-
-
-- fuelwise =
-balanced performance nutrition,
-sustainable eating,
-recovery support,
-steady energy,
-consistency,
-and long-term healthy fuel guidance
-
-- cutwise =
-lighter choices,
-leaner meal decisions,
-portion awareness,
-hydration awareness,
-controlled bodyweight support,
-and avoiding unnecessary overeating
-
-- gainwise =
-muscle growth,
-performance fuel,
-higher-calorie support,
-recovery nutrition,
-strength development,
-and avoiding under-eating
+Adjust tone and feedback naturally based on the selected mode:
+- FuelWise should feel balanced and sustainable.
+- CutWise should encourage restraint and awareness without guilt or extreme dieting.
+- GainWise should encourage fueling, recovery, and performance support without reckless overeating.
 
 Extra ingredients or notes:
 ${extraIngredients || "None provided"}
+
+Extra note behavior:
+- If extra ingredients were provided, briefly acknowledge the note without blindly agreeing with it.
+- Most of the time, respond generally.
+- Only mention a specific ingredient if it seems normal, useful, and believable.
+- If the note seems unusual, mismatched, joking, or unclear, do not repeat it back.
+- Never argue with the user.
+- Never shame the user.
+- Never make the app look gullible.
+- Keep extraNoteResponse short.
+- One sentence maximum.
+
+Safe examples:
+"Notes received. Factoring that into the estimate."
+"Extra ingredients considered. Portion estimate adjusted."
+"Got it. Adjusting the estimate with that note."
+
+Specific examples only when normal:
+"Extra sauce noted. Estimate adjusted."
+"Cheese added into the estimate."
+"Adjusting for dressing."
+
+Bad examples:
+Do not say "Steak in fruit salad noted."
+Do not repeat strange combinations unless clearly useful.
+
 Analyze the uploaded food image visually.
-
-If extra ingredients were provided,
-briefly acknowledge them naturally.
-
-Examples:
-"Gotcha. Factoring that in."
-"Noted. Sauces and oils can add up fast."
-"10-4. Adding that into the estimate."
-
-Keep it short.
-One sentence maximum.
 
 Return ONLY valid JSON with this exact shape:
 
@@ -136,51 +127,49 @@ Return ONLY valid JSON with this exact shape:
   "caution": "",
   "extraNoteResponse": ""
 }
-              `,
-            },
-            {
-              type: "image_url",
-              image_url: {
-                url: safeImage,
+                `,
               },
-            },
-          ],
-        },
-      ],
+              {
+                type: "image_url",
+                image_url: {
+                  url: safeImage,
+                },
+              },
+            ],
+          },
+        ],
+      });
+
+    const content =
+      response.choices?.[0]?.message?.content;
+
+    if (!content) {
+      return res.status(500).json({
+        error: "No AI response returned",
+      });
+    }
+
+    let parsed;
+
+    try {
+      parsed = JSON.parse(content);
+    } catch {
+      return res.status(500).json({
+        error: "AI formatting failed",
+      });
+    }
+
+    return res.status(200).json({
+      result: parsed,
     });
-
-    const content = response.choices?.[0]?.message?.content;
-
-
-if (!content) {
-  return res.status(500).json({
-    error: "No AI response returned",
-  });
-}
-
-let parsed;
-
-try {
-
-  parsed = JSON.parse(content);
-
-} catch {
-
-  return res.status(500).json({
-    error: "AI formatting failed"
-  });
-
-}
-
-return res.status(200).json({
-  result: parsed,
-});
 
   } catch (err) {
     console.error("ANALYZE ERROR:", err);
 
     return res.status(500).json({
-      error: err.message || "Failed to analyze image",
+      error:
+        err.message ||
+        "Failed to analyze image",
     });
   }
 }
