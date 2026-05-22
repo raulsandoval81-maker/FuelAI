@@ -13,6 +13,9 @@
 
   <main class="scan-wrap">
 
+    <a class="top-link" href="/wise.html">
+      ↩️ Return to Guide
+    </a>
 
     <section class="scan-card">
 
@@ -22,24 +25,49 @@
         Scan your fridge. Get simple dinner ideas.
       </p>
 
-      <label id="fridgeUploadBox" class="upload-box">
+      <div id="fridgeUploadBox" class="upload-actions">
 
-        <span class="upload-title">
-          📸 Scan Fridge
-        </span>
+        <label class="upload-half">
+          <span class="upload-title">
+            📸 Take Fridge Photo
+          </span>
 
-        <span class="upload-sub">
-          Take a photo or choose from library
-        </span>
+          <span class="upload-sub">
+            Open camera
+          </span>
 
-        <input
-          id="fridgeInput"
-          type="file"
-          accept="image/*"
-          capture="environment"
-        />
+          <input
+            id="fridgeInput"
+            type="file"
+            accept="image/*"
+            capture="environment"
+          />
+        </label>
 
-      </label>
+        <label class="upload-half">
+          <span class="upload-title">
+            🖼 Upload Fridge Photo
+          </span>
+
+          <span class="upload-sub">
+            Choose from library
+          </span>
+
+          <input
+            id="fridgeUploadInput"
+            type="file"
+            accept="image/*"
+          />
+        </label>
+
+      </div>
+
+      <textarea
+        id="pantryNotes"
+        class="goal-select"
+        placeholder="Anything not visible? Pantry, freezer, rice, pasta, spices..."
+        rows="3"
+      ></textarea>
 
       <img
         id="fridgePreview"
@@ -59,13 +87,11 @@
         id="fridgeLoadingCard"
         class="loading-card hidden"
       >
-
         <div class="scanner"></div>
 
         <p id="fridgeLoadingText">
           Checking fridge...
         </p>
-
       </div>
 
       <section
