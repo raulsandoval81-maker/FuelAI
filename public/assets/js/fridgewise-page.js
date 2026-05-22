@@ -1,5 +1,5 @@
 console.log("FRIDGEWISE PAGE JS LOADED");
-
+alert("FRIDGE JS LOADED");
 const fridgeInput =
   document.getElementById("fridgeInput");
 
