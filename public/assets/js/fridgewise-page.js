@@ -229,7 +229,7 @@ if (fridgeAnalyzeBtn) {
       }
 
       localStorage.setItem(
-        "fuelwise_result",
+        "fuelwise_fridge_result",
         JSON.stringify(data.result)
       );
 

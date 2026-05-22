@@ -1,3 +1,23 @@
+const mealsContainer =
+  document.getElementById("mealsContainer");
+
+const setup =
+  JSON.parse(
+    localStorage.getItem("fuelai-setup") || "{}"
+  );
+
+const wiseFlavor =
+  setup.wiseFlavor || "sweetspot";
+
+const result =
+  JSON.parse(
+    localStorage.getItem("fuelwise_fridge_result") || "null"
+  );
+
+/* =========================
+   FLAVOR HEADER
+========================= */
+
 function getFlavorHeader() {
 
   switch (wiseFlavor) {
