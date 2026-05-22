@@ -8,13 +8,9 @@
 
   <link rel="stylesheet" href="/assets/css/site.css" />
 </head>
+<body data-theme="day">
+    <main class="scan-wrap">
 
-<body>
-  <main class="scan-wrap">
-
-<a class="top-link" href="/wise.html">
-  ← Your Guide
-</a>
 
     <section class="scan-card">
 
@@ -49,7 +45,7 @@
     mealsContainer.innerHTML = `
 
       <p class="feedback">
-        <strong>Detected:</strong>
+        <strong>🧊 Detected:</strong>
         ${(result.detectedItems || []).join(", ") || "No clear items detected"}
       </p>
 
@@ -133,8 +129,7 @@
       </div>
 
 
-<div class="history-item">
-
+<div class="history-item grocery-card">
   <strong>
     🛒 Quick Grocery List
   </strong>
