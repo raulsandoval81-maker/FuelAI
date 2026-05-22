@@ -1,3 +1,5 @@
+console.log("FRIDGEWISE PAGE JS LOADED");
+
 const fridgeInput =
   document.getElementById("fridgeInput");
 
@@ -46,13 +48,11 @@ let pantryCompanion = [];
 ========================= */
 
 if (pantryToggle && pantryPanel) {
-
   pantryToggle.addEventListener("click", () => {
+    console.log("PANTRY CLICK");
 
     pantryPanel.classList.toggle("hidden");
-
   });
-
 }
 
 /* =========================
@@ -60,9 +60,7 @@ if (pantryToggle && pantryPanel) {
 ========================= */
 
 if (pantryChips) {
-
   pantryChips.addEventListener("click", (e) => {
-
     const btn =
       e.target.closest("button");
 
@@ -77,22 +75,16 @@ if (pantryChips) {
       pantryCompanion.includes(item);
 
     if (exists) {
-
       pantryCompanion =
-        pantryCompanion.filter(i => i !== item);
+        pantryCompanion.filter((i) => i !== item);
 
       btn.classList.remove("active");
-
     } else {
-
       pantryCompanion.push(item);
 
       btn.classList.add("active");
-
     }
-
   });
-
 }
 
 /* =========================
@@ -100,9 +92,7 @@ if (pantryChips) {
 ========================= */
 
 if (addPantryItem && pantryInput) {
-
   addPantryItem.addEventListener("click", () => {
-
     const value =
       pantryInput.value.trim();
 
@@ -111,9 +101,7 @@ if (addPantryItem && pantryInput) {
     pantryCompanion.push(value);
 
     pantryInput.value = "";
-
   });
-
 }
 
 /* =========================
@@ -121,13 +109,12 @@ if (addPantryItem && pantryInput) {
 ========================= */
 
 function handleImage(file) {
-
   if (!file) return;
 
-  const reader = new FileReader();
+  const reader =
+    new FileReader();
 
   reader.onload = (e) => {
-
     selectedImage =
       e.target.result;
 
@@ -137,35 +124,25 @@ function handleImage(file) {
     fridgePreview.classList.remove("hidden");
 
     fridgeAnalyzeBtn.classList.remove("hidden");
-
   };
 
   reader.readAsDataURL(file);
-
 }
 
 if (fridgeInput) {
-
   fridgeInput.addEventListener("change", (e) => {
-
     handleImage(
       e.target.files?.[0]
     );
-
   });
-
 }
 
 if (fridgeUploadInput) {
-
   fridgeUploadInput.addEventListener("change", (e) => {
-
     handleImage(
       e.target.files?.[0]
     );
-
   });
-
 }
 
 /* =========================
@@ -173,10 +150,10 @@ if (fridgeUploadInput) {
 ========================= */
 
 if (fridgeAnalyzeBtn) {
-
   fridgeAnalyzeBtn.addEventListener("click", async () => {
-
     if (!selectedImage) return;
+
+    fridgeAnalyzeBtn.disabled = true;
 
     fridgeLoadingCard.classList.remove("hidden");
 
@@ -188,10 +165,8 @@ if (fridgeAnalyzeBtn) {
       );
 
     try {
-
       const response =
         await fetch("/api/fridge", {
-
           method: "POST",
 
           headers: {
@@ -199,7 +174,6 @@ if (fridgeAnalyzeBtn) {
           },
 
           body: JSON.stringify({
-
             image: selectedImage,
 
             lang:
@@ -212,20 +186,16 @@ if (fridgeAnalyzeBtn) {
 
             pantryNotes:
               pantryNotes?.value || ""
-
           }),
-
         });
 
       const data =
         await response.json();
 
       if (!response.ok) {
-
         throw new Error(
           data.error || "Failed to analyze fridge"
         );
-
       }
 
       localStorage.setItem(
@@ -240,14 +210,12 @@ if (fridgeAnalyzeBtn) {
         "/fridgewise-results.html";
 
     } catch (err) {
-
       console.error(err);
 
       fridgeLoadingText.textContent =
         "Something went wrong.";
 
+      fridgeAnalyzeBtn.disabled = false;
     }
-
   });
-
 }
