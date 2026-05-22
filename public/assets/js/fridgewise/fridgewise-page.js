@@ -39,6 +39,16 @@ const pantryChips =
 const pantryNotes =
   document.getElementById("pantryNotes");
 
+const fridgeLoadingMessages = [
+  "Checking fridge...",
+  "Finding quick meal options...",
+  "Looking at pantry and freezer notes...",
+  "Keeping it simple...",
+  "Building dinner ideas..."
+];
+
+let fridgeLoadingInterval = null;
+
 let selectedImage = null;
 let pantryCompanion = [];
 
@@ -95,7 +105,33 @@ if (addPantryItem && pantryInput) {
     pantryInput.value = "";
   });
 }
+function startFridgeLoadingMessages() {
+  let index = 0;
 
+  if (fridgeLoadingText) {
+    fridgeLoadingText.textContent =
+      fridgeLoadingMessages[index];
+  }
+
+  fridgeLoadingInterval =
+    setInterval(() => {
+      index =
+        (index + 1) %
+        fridgeLoadingMessages.length;
+
+      if (fridgeLoadingText) {
+        fridgeLoadingText.textContent =
+          fridgeLoadingMessages[index];
+      }
+    }, 1200);
+}
+
+function stopFridgeLoadingMessages() {
+  if (fridgeLoadingInterval) {
+    clearInterval(fridgeLoadingInterval);
+    fridgeLoadingInterval = null;
+  }
+}
 /* Image preview */
 
 function handleImage(file) {
@@ -142,7 +178,7 @@ if (fridgeAnalyzeBtn) {
     if (fridgeLoadingCard) {
       fridgeLoadingCard.classList.remove("hidden");
     }
-
+      startFridgeLoadingMessages();
     if (fridgeResultCard) {
       fridgeResultCard.classList.add("hidden");
     }
@@ -187,12 +223,16 @@ if (fridgeAnalyzeBtn) {
         fridgeLoadingText.textContent =
           "Dinner ideas ready.";
       }
+       stopFridgeLoadingMessages();
 
       window.location.href =
         "/fridgewise-results.html";
 
     } catch (err) {
       console.error(err);
+
+
+      stopFridgeLoadingMessages();
 
       if (fridgeLoadingText) {
         fridgeLoadingText.textContent =
