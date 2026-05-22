@@ -30,89 +30,53 @@ const setup =
   );
 
 function handleFoodFile(file) {
-
   if (!file) return;
 
+  const img = new Image();
   const reader = new FileReader();
 
   reader.onload = () => {
-
-    const img = new Image();
-
     img.onload = () => {
-
-      const canvas =
-        document.createElement("canvas");
-
-      const ctx =
-        canvas.getContext("2d");
-
-      const maxWidth = 1200;
+      const maxSize = 1200;
 
       let width = img.width;
       let height = img.height;
 
-      if (width > maxWidth) {
-
-        height =
-          (height * maxWidth) / width;
-
-        width = maxWidth;
-
+      if (width > height && width > maxSize) {
+        height = Math.round((height * maxSize) / width);
+        width = maxSize;
+      } else if (height > maxSize) {
+        width = Math.round((width * maxSize) / height);
+        height = maxSize;
       }
 
+      const canvas = document.createElement("canvas");
       canvas.width = width;
       canvas.height = height;
 
-      ctx.drawImage(
-        img,
-        0,
-        0,
-        width,
-        height
-      );
+      const ctx = canvas.getContext("2d");
+      ctx.drawImage(img, 0, 0, width, height);
 
       selectedImageBase64 =
-        canvas.toDataURL(
-          "image/jpeg",
-          0.82
-        );
+        canvas.toDataURL("image/jpeg", 0.82);
 
-      previewImage.src =
-        selectedImageBase64;
-
-      previewImage.classList.remove(
-        "hidden"
-      );
+      previewImage.src = selectedImageBase64;
+      previewImage.classList.remove("hidden");
 
       if (uploadBox) {
-        uploadBox.classList.add(
-          "hidden"
-        );
+        uploadBox.classList.add("hidden");
       }
 
-      analyzeBtn.classList.remove(
-        "hidden"
-      );
-
-      resultCard.classList.add(
-        "hidden"
-      );
-
-      loadingCard.classList.add(
-        "hidden"
-      );
-
+      analyzeBtn.classList.remove("hidden");
+      resultCard.classList.add("hidden");
+      loadingCard.classList.add("hidden");
     };
 
     img.src = reader.result;
-
   };
 
   reader.readAsDataURL(file);
-
 }
-
 if (foodInput) {
 
   foodInput.addEventListener("change", () => {
