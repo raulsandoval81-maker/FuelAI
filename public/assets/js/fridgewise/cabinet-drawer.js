@@ -7,7 +7,23 @@ let cabinetDrawer =
   JSON.parse(
     localStorage.getItem("fuelai-cabinet-drawer") || "[]"
   );
+const drawerToggles =
+  document.querySelectorAll(".drawer-toggle");
 
+drawerToggles.forEach((toggle) => {
+
+  toggle.addEventListener("click", () => {
+
+    const panel =
+      toggle.nextElementSibling;
+
+    if (!panel) return;
+
+    panel.classList.toggle("hidden");
+
+  });
+
+});
 allDrawerButtons.forEach((button) => {
 
   const label =
