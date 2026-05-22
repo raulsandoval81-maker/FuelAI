@@ -119,30 +119,6 @@ function getGreeting() {
   return "Good evening";
 }
 
-function getFlavorLine(lines) {
-
-  const useFlavor =
-    shouldUseFlavor();
-
-  if (!useFlavor) {
-    return lines.sweetspot;
-  }
-
-  if (flavor === "toughguy") {
-    return lines.toughguy;
-  }
-
-  if (flavor === "mafia") {
-    return lines.mafia;
-  }
-
-  if (flavor === "internet") {
-    return lines.internet;
-  }
-
-  return lines.sweetspot;
-
-}
 
 function hasTrainingToday() {
   return window.FuelAILog
