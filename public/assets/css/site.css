@@ -197,10 +197,19 @@ textarea.goal-select{
   transform:translateY(-1px);
 }
 
-.upload-half input{
-  display:none;
+.upload-half{
+  position:relative;
+  overflow:hidden;
 }
 
+.upload-half input{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  opacity:0;
+  cursor:pointer;
+}
 .upload-title{
   display:block;
   font-size:1.15rem;
