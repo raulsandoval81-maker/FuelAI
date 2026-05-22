@@ -322,19 +322,6 @@ const parsed = data.result;
 
       `;
 
-      saveScan({
-        mealName:
-          parsed.mealName || "Meal Scan",
-
-        calories:
-          parsed.calories || "",
-
-        goal:
-          setup.goal || "fuelwise",
-
-        confidence:
-          parsed.confidence || ""
-      });
 
       resultCard.classList.remove("hidden");
 const commitMealBtn =
@@ -346,7 +333,19 @@ const discardMealBtn =
 if (commitMealBtn) {
 
   commitMealBtn.addEventListener("click", () => {
+saveScan({
+  mealName:
+    parsed.mealName || "Meal Scan",
 
+  calories:
+    parsed.calories || "",
+
+  goal:
+    setup.goal || "fuelwise",
+
+  confidence:
+    parsed.confidence || ""
+});
     if (window.FuelAILog) {
 
       window.FuelAILog.addFuelLog({
