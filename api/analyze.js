@@ -21,6 +21,7 @@ export default async function handler(req, res) {
       ageRange = "",
       gender = "",
       lang = "en",
+      extraIngredients = "",
     } = req.body;
 
     if (!image) {
@@ -74,6 +75,8 @@ Mode rules:
 - cutwise = lighter choices, leaner meal decisions, calorie awareness, hydration awareness, and controlled bodyweight support
 - gainwise = muscle growth, recovery support, higher-calorie performance fuel, strength development, and athletic recovery nutrition
 
+Extra ingredients or notes:
+${extraIngredients || "None provided"}
 Analyze the uploaded food image visually.
 
 Return ONLY valid JSON with this exact shape:

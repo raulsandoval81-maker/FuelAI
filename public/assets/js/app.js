@@ -22,6 +22,9 @@ const loadingText =
 const uploadBox =
   document.getElementById("uploadBox");
 
+const extraIngredients =
+  document.getElementById("extraIngredients");
+
 let selectedImageBase64 = null;
 
 const setup =
@@ -208,7 +211,11 @@ if (analyzeBtn) {
             activityLevel:
               setup.activityLevel || "",
             lang:
-              setup.lang || "en"
+              setup.lang || "en",
+            extraIngredients:
+               extraIngredients?.value.trim() || ""
+
+
           })
         });
 

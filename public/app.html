@@ -9,14 +9,10 @@
 
   <title>FuelWise Scanner</title>
 
-  <link
-    rel="stylesheet"
-    href="/assets/css/site.css"
-  />
+  <link rel="stylesheet" href="/assets/css/site.css" />
 </head>
 
 <body data-theme="day">
-
   <main class="scan-wrap">
 
     <a class="top-link" href="/wise.html">
@@ -31,13 +27,9 @@
         Scan a meal. Get simple food guidance.
       </p>
 
-      <div
-        id="uploadBox"
-        class="upload-actions"
-      >
+      <div id="uploadBox" class="upload-actions">
 
         <label class="upload-half">
-
           <span class="upload-title">
             Take Photo
           </span>
@@ -52,11 +44,9 @@
             accept="image/*"
             capture="environment"
           />
-
         </label>
 
         <label class="upload-half">
-
           <span class="upload-title">
             Upload Photo
           </span>
@@ -70,10 +60,16 @@
             type="file"
             accept="image/*"
           />
-
         </label>
 
       </div>
+
+      <textarea
+        id="extraIngredients"
+        class="goal-select"
+        placeholder="Anything else in this meal? Oil, sauce, cheese, dressing..."
+        rows="3"
+      ></textarea>
 
       <img
         id="previewImage"
@@ -86,20 +82,18 @@
         class="start-btn hidden"
         type="button"
       >
-         Pre-Scan Meal
+        Pre-Scan Meal
       </button>
 
       <div
         id="loadingCard"
         class="loading-card hidden"
       >
-
         <div class="scanner"></div>
 
         <p id="loadingText">
           Loading...
         </p>
-
       </div>
 
       <section
@@ -109,17 +103,11 @@
 
       <div class="wise-links">
 
-        <a
-          class="secondary-btn"
-          href="/wise.html"
-        >
+        <a class="secondary-btn" href="/wise.html">
           Return to Guide
         </a>
 
-        <a
-          class="secondary-btn"
-          href="/logs.html"
-        >
+        <a class="secondary-btn" href="/logs.html">
           View 90-Day Log
         </a>
 
@@ -132,6 +120,5 @@
   <script src="/assets/js/preferences.js"></script>
   <script src="/assets/js/fuelai-log.js"></script>
   <script src="/assets/js/app.js"></script>
-
 </body>
 </html>
