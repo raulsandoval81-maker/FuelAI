@@ -102,9 +102,51 @@
           🍽️ Open Dinner Ideas
         </a>
 
-        <a class="secondary-btn" href="/app.html">
-          🍽️ Open Meal Scanner
-        </a>
+        <section class="pantry-companion">
+
+  <button
+    id="pantryToggle"
+    class="action-btn pantry-btn"
+    type="button"
+  >
+    🥫 Pantry Companion
+  </button>
+
+  <div id="pantryPanel" class="pantry-panel hidden">
+
+    <p class="pantry-copy">
+      Tap what you usually have. Add anything else below.
+    </p>
+
+    <div id="pantryChips" class="pantry-chips">
+      <button type="button" data-item="Rice">Rice</button>
+      <button type="button" data-item="Pasta">Pasta</button>
+      <button type="button" data-item="Bread">Bread</button>
+      <button type="button" data-item="Tortillas">Tortillas</button>
+      <button type="button" data-item="Beans">Beans</button>
+      <button type="button" data-item="Eggs">Eggs</button>
+      <button type="button" data-item="Cheese">Cheese</button>
+      <button type="button" data-item="Potatoes">Potatoes</button>
+      <button type="button" data-item="Frozen Chicken">Frozen Chicken</button>
+      <button type="button" data-item="Ground Beef">Ground Beef</button>
+      <button type="button" data-item="Tuna">Tuna</button>
+      <button type="button" data-item="Oil">Oil</button>
+      <button type="button" data-item="Spices">Spices</button>
+    </div>
+
+    <div class="pantry-add-row">
+      <input
+        id="pantryInput"
+        type="text"
+        placeholder="Add pantry item..."
+      />
+      <button id="addPantryItem" type="button">Add</button>
+    </div>
+
+  </div>
+
+</section>
+
 
         <a class="secondary-btn" href="/wise.html">
           ↩️ Return to Guide

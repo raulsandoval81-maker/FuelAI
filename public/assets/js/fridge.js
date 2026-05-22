@@ -16,6 +16,7 @@ export default async function handler(req, res) {
       image,
       lang = "en",
       wiseFlavor = "sweetspot",
+      pantryCompanion = [],
     } = req.body;
 
     if (!image) {
@@ -55,6 +56,12 @@ export default async function handler(req, res) {
     const selectedFlavor =
       flavorGuide[wiseFlavor] || flavorGuide.sweetspot;
 
+    const safePantryItems = Array.isArray(pantryItems)
+      ? pantryItems
+          .map(item => String(item).trim())
+          .filter(Boolean)
+      : [];
+
     const response =
       await client.chat.completions.create({
         model: "gpt-4.1-mini",
@@ -79,6 +86,19 @@ Your job is dinner relief.
 
 Tone setting:
 ${selectedFlavor}
+
+Pantry Companion items user says they may have:
+${safePantryItems.length
+  ? safePantryItems.join(", ")
+  : "None provided"}
+
+Use Pantry Companion items as available ingredients when building suggestions.
+
+Do not add Pantry Companion items to the groceryList.
+
+Only put groceryList items that are missing from BOTH:
+- the image
+- Pantry Companion
 
 Analyze the uploaded fridge, pantry, grocery, leftover, or food image.
 
@@ -108,6 +128,7 @@ Rules:
 - Mark each suggestion with a "type" field: "meal" or "snack".
 - Keep meals and snacks simple, realistic, and fast.
 - Prioritize ingredients visible in the image.
+- Prioritize Pantry Companion items second.
 - Prioritize minimal extra shopping.
 - Prefer low-dishes and low-cleanup meals.
 - Avoid requiring more than 1–2 missing grocery items per suggestion.
