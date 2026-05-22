@@ -84,3 +84,34 @@
 .hidden {
   display: none;
 }
+.drawer-section{
+  margin-top:1rem;
+}
+
+.drawer-toggle{
+  width:100%;
+  min-height:72px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  border-radius:24px;
+  border:1px solid rgba(255,255,255,.16);
+
+  background:rgba(255,255,255,.08);
+  color:white;
+
+  font-size:1.15rem;
+  font-weight:900;
+
+  cursor:pointer;
+}
+
+.drawer-toggle:hover{
+  background:rgba(255,255,255,.12);
+}
+
+.drawer-content{
+  margin-top:1rem;
+}
