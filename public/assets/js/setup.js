@@ -9,6 +9,8 @@ const activityLevel = document.getElementById("activityLevel");
 const goalSelect = document.getElementById("goalSelect");
 const wiseFlavor = document.getElementById("wiseFlavor");
 const rangeOutput = document.getElementById("rangeOutput");
+const nicknameInput = document.getElementById("nicknameInput");
+
 
 const langToggle = document.getElementById("langToggle");
 const themeToggle = document.getElementById("themeToggle");
@@ -250,6 +252,7 @@ function updateGuidance() {
 function loadSavedSetup() {
   const saved = JSON.parse(localStorage.getItem("fuelai-setup") || "{}");
 
+  nicknameInput.value = saved.nickname || "";
   heightInput.value = saved.height || "";
   weightInput.value = saved.weight || "";
   targetWeightInput.value = saved.targetWeight || "";
@@ -286,9 +289,10 @@ if (themeToggle) {
 if (saveSetupBtn) {
   saveSetupBtn.addEventListener("click", () => {
     const flavor = wiseFlavor?.value || "sweetspot";
-    const dial = flavorDial?.value || "80-20";
 
     const setup = {
+
+      nickname: nicknameInput.value.trim(),
       height: heightInput.value.trim(),
       weight: weightInput.value.trim(),
       targetWeight: targetWeightInput.value.trim(),
