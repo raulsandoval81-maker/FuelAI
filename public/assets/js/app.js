@@ -134,57 +134,6 @@ function showError(message) {
 
   resultCard.classList.remove("hidden");
 
-  const commitMealBtn =
-  document.getElementById("commitMealBtn");
-
-const discardMealBtn =
-  document.getElementById("discardMealBtn");
-
-if (commitMealBtn) {
-
-  commitMealBtn.addEventListener("click", () => {
-
-    if (window.FuelAILog) {
-
-      window.FuelAILog.addFuelLog({
-        type: "meal",
-
-        calories:
-          Number(
-            String(parsed.calories)
-              .replace(/[^0-9]/g, "")
-          ) || 0,
-
-        goal:
-          setup.goal || "fuelwise",
-
-        source: "meal-scan"
-      });
-
-    }
-
-    commitMealBtn.textContent =
-      "Meal Committed";
-
-    commitMealBtn.disabled = true;
-
-  });
-
-}
-
-if (discardMealBtn) {
-
-  discardMealBtn.addEventListener("click", () => {
-
-    resultCard.classList.add("hidden");
-
-    analyzeBtn.textContent =
-      "Pre-Scan Meal";
-
-  });
-
-}
-
 }
 
 if (analyzeBtn) {
@@ -373,7 +322,56 @@ const parsed = data.result;
       });
 
       resultCard.classList.remove("hidden");
+const commitMealBtn =
+  document.getElementById("commitMealBtn");
 
+const discardMealBtn =
+  document.getElementById("discardMealBtn");
+
+if (commitMealBtn) {
+
+  commitMealBtn.addEventListener("click", () => {
+
+    if (window.FuelAILog) {
+
+      window.FuelAILog.addFuelLog({
+        type: "meal",
+
+        calories:
+          Number(
+            String(parsed.calories)
+              .replace(/[^0-9]/g, "")
+          ) || 0,
+
+        goal:
+          setup.goal || "fuelwise",
+
+        source: "meal-scan"
+      });
+
+    }
+
+    commitMealBtn.textContent =
+      "Meal Committed";
+
+    commitMealBtn.disabled = true;
+
+  });
+
+}
+
+if (discardMealBtn) {
+
+  discardMealBtn.addEventListener("click", () => {
+
+    resultCard.classList.add("hidden");
+
+    analyzeBtn.textContent =
+      "Pre-Scan Meal";
+
+  });
+
+}
       analyzeBtn.textContent =
         "Analyze Again";
 
