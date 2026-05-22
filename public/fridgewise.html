@@ -32,23 +32,24 @@
         class="upload-actions"
       >
 
-      <label class="upload-half">
-  <span class="upload-title">
-    📸 Take Fridge Photo
-  </span>
+        <label class="upload-half">
 
-  <span class="upload-sub">
-    Open camera
-  </span>
+          <span class="upload-title">
+            📸 Take Fridge Photo
+          </span>
 
-  <input
-    id="fridgeInput"
-    type="file"
-    accept="image/*"
-    capture="environment"
-  />
-</label>
+          <span class="upload-sub">
+            Open camera
+          </span>
 
+          <input
+            id="fridgeInput"
+            type="file"
+            accept="image/*"
+            capture="environment"
+          />
+
+        </label>
 
         <label class="upload-half">
 
@@ -95,13 +96,11 @@
         id="fridgeLoadingCard"
         class="loading-card hidden"
       >
-
         <div class="scanner"></div>
 
         <p id="fridgeLoadingText">
           Checking fridge...
         </p>
-
       </div>
 
       <section
@@ -126,6 +125,8 @@
           id="pantryToggle"
           class="secondary-btn pantry-btn"
           type="button"
+          aria-expanded="false"
+          aria-controls="pantryPanel"
         >
           🥫 Pantry Companion
         </button>
@@ -145,63 +146,19 @@
             class="pantry-chips"
           >
 
-            <button type="button" data-item="Rice">
-              Rice
-            </button>
-
-            <button type="button" data-item="Pasta">
-              Pasta
-            </button>
-
-            <button type="button" data-item="Bread">
-              Bread
-            </button>
-
-            <button type="button" data-item="Tortillas">
-              Tortillas
-            </button>
-
-            <button type="button" data-item="Beans">
-              Beans
-            </button>
-
-            <button type="button" data-item="Eggs">
-              Eggs
-            </button>
-
-            <button type="button" data-item="Cheese">
-              Cheese
-            </button>
-
-            <button type="button" data-item="Potatoes">
-              Potatoes
-            </button>
-
-            <button
-              type="button"
-              data-item="Frozen Chicken"
-            >
-              Frozen Chicken
-            </button>
-
-            <button
-              type="button"
-              data-item="Ground Beef"
-            >
-              Ground Beef
-            </button>
-
-            <button type="button" data-item="Tuna">
-              Tuna
-            </button>
-
-            <button type="button" data-item="Oil">
-              Oil
-            </button>
-
-            <button type="button" data-item="Spices">
-              Spices
-            </button>
+            <button type="button" data-item="Rice">Rice</button>
+            <button type="button" data-item="Pasta">Pasta</button>
+            <button type="button" data-item="Bread">Bread</button>
+            <button type="button" data-item="Tortillas">Tortillas</button>
+            <button type="button" data-item="Beans">Beans</button>
+            <button type="button" data-item="Eggs">Eggs</button>
+            <button type="button" data-item="Cheese">Cheese</button>
+            <button type="button" data-item="Potatoes">Potatoes</button>
+            <button type="button" data-item="Frozen Chicken">Frozen Chicken</button>
+            <button type="button" data-item="Ground Beef">Ground Beef</button>
+            <button type="button" data-item="Tuna">Tuna</button>
+            <button type="button" data-item="Oil">Oil</button>
+            <button type="button" data-item="Spices">Spices</button>
 
           </div>
 
@@ -242,7 +199,7 @@
   </main>
 
   <script src="/assets/js/preferences.js"></script>
-  <script src="/assets/js/fridgewise/fridgewise-page.js?v=2"></script>
+  <script src="/assets/js/fridgewise/fridgewise-page.js?v=3"></script>
 
 </body>
 </html>
