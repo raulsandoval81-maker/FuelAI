@@ -620,3 +620,9 @@ body[data-theme="night"] .mini-toggle {
 .upload-half input {
   display: none;
 }
+.commit-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 24px;
+}
