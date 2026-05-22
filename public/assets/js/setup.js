@@ -8,7 +8,6 @@ const genderType = document.getElementById("genderType");
 const activityLevel = document.getElementById("activityLevel");
 const goalSelect = document.getElementById("goalSelect");
 const wiseFlavor = document.getElementById("wiseFlavor");
-const flavorDial = document.getElementById("flavorDial");
 const rangeOutput = document.getElementById("rangeOutput");
 
 const langToggle = document.getElementById("langToggle");
@@ -43,11 +42,6 @@ const copy = {
     mafia: "Mafia — Funny Movie Flavor",
     toughguy: "Tough Guy — Direct Coach Energy",
     internet: "Internet — Meme / Teen Slang",
-
-    originalFlavor: "Original",
-mildFlavor: "Mild",
-hotFlavor: "Hot",
-spicyFlavor: "Spicy",
                   
     guidance: "Suggested Guidance",
     emptyRange: "Enter height and weight",
@@ -156,14 +150,6 @@ function applyLanguage(lang) {
     wiseFlavor.options[1].textContent = t.mafia;
     wiseFlavor.options[2].textContent = t.toughguy;
     wiseFlavor.options[3].textContent = t.internet;
-  }
-
-  if (flavorDial) {
-
-flavorDial.options[0].textContent = t.originalFlavor;
-flavorDial.options[1].textContent = t.mildFlavor;
-flavorDial.options[2].textContent = t.hotFlavor;
-flavorDial.options[3].textContent = t.spicyFlavor;
   }
 
   document.querySelector(".range-label").textContent = t.guidance;
@@ -276,9 +262,6 @@ function loadSavedSetup() {
     wiseFlavor.value = saved.wiseFlavor || "sweetspot";
   }
 
-  if (flavorDial) {
-    flavorDial.value = saved.flavorDial || "original";
-  }
 }
 
 if (langToggle) {
@@ -316,7 +299,6 @@ if (saveSetupBtn) {
       goal: goalSelect.value,
 
       wiseFlavor: flavor,
-      flavorDial: dial,
 
       guide:
         genderType.value === "female"

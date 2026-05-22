@@ -7,37 +7,7 @@ const guide =
 const flavor =
   setup.wiseFlavor || "sweetspot";
 
-const flavorDial =
-  setup.flavorDial || "original";
-  
-function shouldUseFlavor() {
 
-  let chance = 0.05;
-
-  if (flavorDial === "mild") {
-    chance =
-      Math.random() < 0.15
-        ? 0.15
-        : 0.10;
-  }
-
-  if (flavorDial === "hot") {
-    chance =
-      Math.random() < 0.25
-        ? 0.25
-        : 0.20;
-  }
-
-  if (flavorDial === "spicy") {
-    chance =
-      Math.random() < 0.35
-        ? 0.35
-        : 0.25;
-  }
-
-  return Math.random() < chance;
-
-}
 const wiseTitle =
   document.getElementById("wiseTitle");
 
