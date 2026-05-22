@@ -52,9 +52,6 @@ h1{
   margin-bottom:1.5rem;
 }
 
-.hidden{
-  display:none !important;
-}
 
 /* =========================
    BUTTONS
@@ -324,7 +321,10 @@ textarea.goal-select{
   gap:14px;
   margin-top:24px;
 }
-
+.pantry-panel{
+  display:flex;
+  flex-direction:column;
+}
 /* =========================
    RANGE / SUMMARY CARDS
 ========================= */
