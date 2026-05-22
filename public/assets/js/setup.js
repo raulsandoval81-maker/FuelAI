@@ -8,6 +8,7 @@ const genderType = document.getElementById("genderType");
 const activityLevel = document.getElementById("activityLevel");
 const goalSelect = document.getElementById("goalSelect");
 const wiseFlavor = document.getElementById("wiseFlavor");
+const flavorDial = document.getElementById("flavorDial");
 const rangeOutput = document.getElementById("rangeOutput");
 
 const langToggle = document.getElementById("langToggle");
@@ -42,6 +43,10 @@ const copy = {
     mafia: "Mafia — Funny Movie Flavor",
     toughguy: "Tough Guy — Direct Coach Energy",
     internet: "Internet — Meme / Teen Slang",
+
+    lightFlavor: "90 / 10 — Light Flavor",
+    balancedFlavor: "80 / 20 — Balanced",
+    spicyFlavor: "70 / 30 — Spicy",
 
     guidance: "Suggested Guidance",
     emptyRange: "Enter height and weight",
@@ -88,6 +93,10 @@ const copy = {
     mafia: "Mafia — Sabor de Película",
     toughguy: "Tough Guy — Energía de Coach Directo",
     internet: "Internet — Meme / Slang Teen",
+
+    lightFlavor: "90 / 10 — Sabor Ligero",
+    balancedFlavor: "80 / 20 — Balanceado",
+    spicyFlavor: "70 / 30 — Picante",
 
     guidance: "Guía sugerida",
     emptyRange: "Ingresa estatura y peso",
@@ -146,6 +155,12 @@ function applyLanguage(lang) {
     wiseFlavor.options[1].textContent = t.mafia;
     wiseFlavor.options[2].textContent = t.toughguy;
     wiseFlavor.options[3].textContent = t.internet;
+  }
+
+  if (flavorDial) {
+    flavorDial.options[0].textContent = t.lightFlavor;
+    flavorDial.options[1].textContent = t.balancedFlavor;
+    flavorDial.options[2].textContent = t.spicyFlavor;
   }
 
   document.querySelector(".range-label").textContent = t.guidance;
@@ -257,6 +272,10 @@ function loadSavedSetup() {
   if (wiseFlavor) {
     wiseFlavor.value = saved.wiseFlavor || "sweetspot";
   }
+
+  if (flavorDial) {
+    flavorDial.value = saved.flavorDial || "80-20";
+  }
 }
 
 if (langToggle) {
@@ -280,8 +299,8 @@ if (themeToggle) {
 
 if (saveSetupBtn) {
   saveSetupBtn.addEventListener("click", () => {
-
     const flavor = wiseFlavor?.value || "sweetspot";
+    const dial = flavorDial?.value || "80-20";
 
     const setup = {
       height: heightInput.value.trim(),
@@ -294,6 +313,7 @@ if (saveSetupBtn) {
       goal: goalSelect.value,
 
       wiseFlavor: flavor,
+      flavorDial: dial,
 
       guide:
         genderType.value === "female"
