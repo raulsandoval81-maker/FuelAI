@@ -25,6 +25,10 @@ const uploadBox =
 const extraIngredients =
   document.getElementById("extraIngredients");
 
+
+  const scanMealBtn =
+  document.getElementById("scanMealBtn");
+
 let selectedImageBase64 = null;
 
 const setup =
@@ -71,6 +75,10 @@ function handleFoodFile(file) {
       }
 
       analyzeBtn.classList.remove("hidden");
+
+      if (scanMealBtn) {
+    scanMealBtn.classList.remove("hidden");
+    }
       resultCard.classList.add("hidden");
       loadingCard.classList.add("hidden");
     };

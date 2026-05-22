@@ -13,6 +13,7 @@
 </head>
 
 <body data-theme="day">
+
   <main class="scan-wrap">
 
     <a class="top-link" href="/wise.html">
@@ -27,9 +28,13 @@
         Scan a meal. Get simple food guidance.
       </p>
 
-      <div id="uploadBox" class="upload-actions">
+      <div
+        id="uploadBox"
+        class="upload-actions"
+      >
 
         <label class="upload-half">
+
           <span class="upload-title">
             Take Photo
           </span>
@@ -44,9 +49,11 @@
             accept="image/*"
             capture="environment"
           />
+
         </label>
 
         <label class="upload-half">
+
           <span class="upload-title">
             Upload Photo
           </span>
@@ -60,6 +67,7 @@
             type="file"
             accept="image/*"
           />
+
         </label>
 
       </div>
@@ -78,6 +86,14 @@
       />
 
       <button
+        id="scanMealBtn"
+        class="start-btn hidden"
+        type="button"
+      >
+        Scan Meal
+      </button>
+
+      <button
         id="analyzeBtn"
         class="start-btn hidden"
         type="button"
@@ -89,11 +105,13 @@
         id="loadingCard"
         class="loading-card hidden"
       >
+
         <div class="scanner"></div>
 
         <p id="loadingText">
           Loading...
         </p>
+
       </div>
 
       <section
@@ -103,12 +121,11 @@
 
       <div class="wise-links">
 
-        <a class="secondary-btn" href="/wise.html">
+        <a
+          class="secondary-btn"
+          href="/wise.html"
+        >
           Return to Guide
-        </a>
-
-        <a class="secondary-btn" href="/logs.html">
-          View 90-Day Log
         </a>
 
       </div>
@@ -120,5 +137,6 @@
   <script src="/assets/js/preferences.js"></script>
   <script src="/assets/js/fuelai-log.js"></script>
   <script src="/assets/js/app.js"></script>
+
 </body>
 </html>
