@@ -1,90 +1,5 @@
-.drawer-section {
-  margin-top: 1.25rem;
-  padding: 1rem;
-  border-radius: 20px;
-
-  background:
-    rgba(255,255,255,0.04);
-
-  border:
-    1px solid rgba(255,255,255,0.08);
-}
-
-.drawer-section h2 {
-  margin: 0;
-  font-size: 1rem;
-  font-weight: 700;
-
-  cursor: pointer;
-
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.drawer-content {
-  margin-top: 1rem;
-}
-
-.drawer-chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.65rem;
-}
-
-.drawer-chips button {
-  border: none;
-
-  padding:
-    0.7rem 1rem;
-
-  border-radius: 999px;
-
-  background:
-    rgba(255,255,255,0.08);
-
-  color: white;
-
-  font-size: 0.95rem;
-  font-weight: 600;
-
-  cursor: pointer;
-
-  transition:
-    transform 0.15s ease,
-    background 0.2s ease;
-}
-
-.drawer-chips button:hover {
-  transform: scale(1.04);
-
-  background:
-    rgba(255,255,255,0.14);
-}
-
-.drawer-chips button.active {
-  background:
-    linear-gradient(
-      135deg,
-      #3b82f6,
-      #2563eb
-    );
-
-  color: white;
-}
-
-.drawer-copy {
-  margin-top: 1rem;
-
-  opacity: 0.8;
-
-  line-height: 1.5;
-}
-
-.hidden {
-  display: none;
-}
 .drawer-section{
+  width:100%;
   margin-top:1rem;
 }
 
@@ -96,8 +11,8 @@
   align-items:center;
   justify-content:center;
 
+  border:none;
   border-radius:24px;
-  border:1px solid rgba(255,255,255,.16);
 
   background:rgba(255,255,255,.08);
   color:white;
@@ -114,4 +29,44 @@
 
 .drawer-content{
   margin-top:1rem;
+  padding:1rem;
+
+  border-radius:20px;
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.08);
+}
+
+.drawer-chips{
+  display:flex;
+  flex-wrap:wrap;
+  gap:.65rem;
+}
+
+.drawer-chips button{
+  border:none;
+  border-radius:999px;
+
+  padding:.7rem 1rem;
+
+  background:rgba(255,255,255,.08);
+  color:white;
+
+  font-size:.95rem;
+  font-weight:700;
+
+  cursor:pointer;
+}
+
+.drawer-chips button.active{
+  background:#2563eb;
+}
+
+.drawer-copy{
+  margin-top:1rem;
+  opacity:.8;
+  line-height:1.5;
+}
+
+.hidden{
+  display:none !important;
 }
