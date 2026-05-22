@@ -452,7 +452,7 @@ if (analyzeBtn) {
       }
 
       analyzeBtn.textContent =
-        "Analyze Again";
+        "Pre-Scan Another Meal";
 
     } catch (err) {
       console.error(
