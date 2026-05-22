@@ -43,6 +43,9 @@ const wiseChatReply =
   const wiseChatLabel =
   document.getElementById("wiseChatLabel");
 
+  const goalTargetOutput =
+  document.getElementById("goalTargetOutput");
+
 if (window.FuelAILog) {
   window.FuelAILog.syncDailyLogs();
   
@@ -59,6 +62,52 @@ function getPlanName(goal) {
   if (goal === "cutwise") return "CutWise — Cut";
   if (goal === "gainwise") return "GainWise — Gain";
   return "FuelWise — Maintain";
+}
+
+
+function getGoalTargets() {
+
+  const weight =
+    Number(setup.weight || 0);
+
+  if (!weight) {
+    return {
+      calories: "Set weight in setup",
+      protein: "Set weight in setup"
+    };
+  }
+
+  let lowCal = weight * 13;
+  let highCal = weight * 15;
+
+  if (setup.goal === "cutwise") {
+
+    lowCal = weight * 10;
+    highCal = weight * 12;
+
+  }
+
+  if (setup.goal === "gainwise") {
+
+    lowCal = weight * 15;
+    highCal = weight * 17;
+
+  }
+
+  const lowProtein =
+    Math.round(weight * 0.7);
+
+  const highProtein =
+    Math.round(weight * 1.0);
+
+  return {
+    calories:
+      `${Math.round(lowCal)}–${Math.round(highCal)} calories`,
+
+    protein:
+      `${lowProtein}–${highProtein}g protein`
+  };
+
 }
 
 function getGreeting() {
@@ -125,7 +174,22 @@ function renderWise() {
     Activity:
     ${setup.activityLevel || "not set"}
   `;
+if (goalTargetOutput) {
 
+  const targets =
+    getGoalTargets();
+
+  goalTargetOutput.innerHTML = `
+    Calories:
+    ${targets.calories}
+
+    <br><br>
+
+    Protein:
+    ${targets.protein}
+  `;
+
+}
   todayOutput.innerHTML = `
     Calories logged:
     ${summary.caloriesToday || 0}

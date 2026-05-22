@@ -280,12 +280,12 @@ const parsed = data.result;
         </p>
 
         ${parsed.extraNoteResponse
-  ? `
-  <p class="feedback">
-    ${parsed.extraNoteResponse}
-  </p>
-`
-  : ""}
+       ? `
+      <p class="feedback">
+        ${parsed.extraNoteResponse}
+      </p>
+       `
+         : ""}
 
         <p class="feedback">
           Meal Score:
