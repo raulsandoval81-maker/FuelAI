@@ -2,14 +2,21 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
 
   <title>FuelWise Scanner</title>
 
-  <link rel="stylesheet" href="/assets/css/site.css" />
+  <link
+    rel="stylesheet"
+    href="/assets/css/site.css"
+  />
 </head>
 
 <body data-theme="day">
+
   <main class="scan-wrap">
 
     <a class="top-link" href="/wise.html">
@@ -24,22 +31,49 @@
         Scan a meal. Get simple food guidance.
       </p>
 
-      <label id="uploadBox" class="upload-box">
-        <span class="upload-title">
-          Open Camera
-        </span>
+      <div
+        id="uploadBox"
+        class="upload-actions"
+      >
 
-        <span class="upload-sub">
-          Take a meal photo or choose from library
-        </span>
+        <label class="upload-half">
 
-        <input
-          id="foodInput"
-          type="file"
-          accept="image/*"
-          capture="environment"
-        />
-      </label>
+          <span class="upload-title">
+            Take Photo
+          </span>
+
+          <span class="upload-sub">
+            Open camera
+          </span>
+
+          <input
+            id="foodInput"
+            type="file"
+            accept="image/*"
+            capture="environment"
+          />
+
+        </label>
+
+        <label class="upload-half">
+
+          <span class="upload-title">
+            Upload Photo
+          </span>
+
+          <span class="upload-sub">
+            Choose from library
+          </span>
+
+          <input
+            id="foodUploadInput"
+            type="file"
+            accept="image/*"
+          />
+
+        </label>
+
+      </div>
 
       <img
         id="previewImage"
@@ -59,11 +93,13 @@
         id="loadingCard"
         class="loading-card hidden"
       >
+
         <div class="scanner"></div>
 
         <p id="loadingText">
           Loading...
         </p>
+
       </div>
 
       <section
@@ -73,21 +109,29 @@
 
       <div class="wise-links">
 
-        <a class="secondary-btn" href="/wise.html">
+        <a
+          class="secondary-btn"
+          href="/wise.html"
+        >
           Return to Guide
         </a>
 
-        <a class="secondary-btn" href="/logs.html">
+        <a
+          class="secondary-btn"
+          href="/logs.html"
+        >
           View 90-Day Log
         </a>
 
       </div>
 
     </section>
+
   </main>
 
   <script src="/assets/js/preferences.js"></script>
   <script src="/assets/js/fuelai-log.js"></script>
   <script src="/assets/js/app.js"></script>
+
 </body>
 </html>

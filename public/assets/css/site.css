@@ -601,3 +601,22 @@ body[data-theme="night"] .mini-toggle {
   margin-top: 4px;
   line-height: 1.5;
 }
+.upload-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  width: 100%;
+}
+
+.upload-half {
+  padding: 32px 14px;
+  border: 2px dashed rgba(37, 99, 235, 0.75);
+  border-radius: 28px;
+  background: rgba(37, 99, 235, 0.07);
+  text-align: center;
+  cursor: pointer;
+}
+
+.upload-half input {
+  display: none;
+}
