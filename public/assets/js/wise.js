@@ -226,6 +226,23 @@ ${
   wiseAdvice.textContent =
     getAdvice(summary);
 }
+function getFlavorLine(lines) {
+
+  if (flavor === "toughguy") {
+    return lines.toughguy;
+  }
+
+  if (flavor === "mafia") {
+    return lines.mafia;
+  }
+
+  if (flavor === "internet") {
+    return lines.internet;
+  }
+
+  return lines.sweetspot;
+
+}
 
 function getAdvice(summary) {
   const goal =
