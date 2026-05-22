@@ -109,12 +109,19 @@ if (addPantryItem && pantryInput) {
 ========================= */
 
 function handleImage(file) {
-  if (!file) return;
+  console.log("FILE SELECTED:", file);
+
+  if (!file) {
+    alert("No file selected");
+    return;
+  }
 
   const reader =
     new FileReader();
 
   reader.onload = (e) => {
+    console.log("IMAGE LOADED");
+
     selectedImage =
       e.target.result;
 
@@ -124,6 +131,10 @@ function handleImage(file) {
     fridgePreview.classList.remove("hidden");
 
     fridgeAnalyzeBtn.classList.remove("hidden");
+  };
+
+  reader.onerror = () => {
+    alert("Could not read image");
   };
 
   reader.readAsDataURL(file);
