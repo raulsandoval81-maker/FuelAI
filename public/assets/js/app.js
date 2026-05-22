@@ -10,6 +10,9 @@ const previewImage =
 const analyzeBtn =
   document.getElementById("analyzeBtn");
 
+const scanMealBtn =
+  document.getElementById("scanMealBtn");
+
 const resultCard =
   document.getElementById("resultCard");
 
@@ -25,11 +28,8 @@ const uploadBox =
 const extraIngredients =
   document.getElementById("extraIngredients");
 
-
-  const scanMealBtn =
-  document.getElementById("scanMealBtn");
-
 let selectedImageBase64 = null;
+let scanMode = "prescan";
 
 const setup =
   JSON.parse(
@@ -50,35 +50,47 @@ function handleFoodFile(file) {
       let height = img.height;
 
       if (width > height && width > maxSize) {
-        height = Math.round((height * maxSize) / width);
+        height =
+          Math.round((height * maxSize) / width);
         width = maxSize;
       } else if (height > maxSize) {
-        width = Math.round((width * maxSize) / height);
+        width =
+          Math.round((width * maxSize) / height);
         height = maxSize;
       }
 
-      const canvas = document.createElement("canvas");
+      const canvas =
+        document.createElement("canvas");
+
       canvas.width = width;
       canvas.height = height;
 
-      const ctx = canvas.getContext("2d");
+      const ctx =
+        canvas.getContext("2d");
+
       ctx.drawImage(img, 0, 0, width, height);
 
       selectedImageBase64 =
         canvas.toDataURL("image/jpeg", 0.82);
 
-      previewImage.src = selectedImageBase64;
+      previewImage.src =
+        selectedImageBase64;
+
       previewImage.classList.remove("hidden");
 
       if (uploadBox) {
         uploadBox.classList.add("hidden");
       }
 
-      analyzeBtn.classList.remove("hidden");
+      if (analyzeBtn) {
+        analyzeBtn.classList.remove("hidden");
+        analyzeBtn.textContent = "Pre-Scan Meal";
+      }
 
       if (scanMealBtn) {
-    scanMealBtn.classList.remove("hidden");
-    }
+        scanMealBtn.classList.remove("hidden");
+      }
+
       resultCard.classList.add("hidden");
       loadingCard.classList.add("hidden");
     };
@@ -88,32 +100,27 @@ function handleFoodFile(file) {
 
   reader.readAsDataURL(file);
 }
+
 if (foodInput) {
-
   foodInput.addEventListener("change", () => {
-
-    handleFoodFile(
-      foodInput.files[0]
-    );
-
+    handleFoodFile(foodInput.files[0]);
   });
-
 }
 
 if (foodUploadInput) {
-
   foodUploadInput.addEventListener("change", () => {
-
-    handleFoodFile(
-      foodUploadInput.files[0]
-    );
-
+    handleFoodFile(foodUploadInput.files[0]);
   });
+}
 
+if (scanMealBtn) {
+  scanMealBtn.addEventListener("click", () => {
+    scanMode = "scan";
+    analyzeBtn.click();
+  });
 }
 
 function saveScan(scan) {
-
   const scans =
     JSON.parse(
       localStorage.getItem("cutwise-history") || "[]"
@@ -124,17 +131,16 @@ function saveScan(scan) {
     createdAt: new Date().toLocaleString()
   });
 
-  const trimmed = scans.slice(0, 5);
+  const trimmed =
+    scans.slice(0, 5);
 
   localStorage.setItem(
     "cutwise-history",
     JSON.stringify(trimmed)
   );
-
 }
 
 function showError(message) {
-
   resultCard.innerHTML = `
     <h2>Error</h2>
 
@@ -144,14 +150,18 @@ function showError(message) {
   `;
 
   resultCard.classList.remove("hidden");
-
 }
 
 if (analyzeBtn) {
-
   analyzeBtn.addEventListener("click", async () => {
-
     if (!selectedImageBase64) return;
+
+    const isDirectScan =
+      scanMode === "scan";
+
+    if (!isDirectScan) {
+      scanMode = "prescan";
+    }
 
     const loadingMessages = [
       "Detecting ingredients...",
@@ -164,11 +174,13 @@ if (analyzeBtn) {
     let loadingIndex = 0;
 
     analyzeBtn.disabled = true;
-
     analyzeBtn.textContent = "Analyzing...";
 
-    resultCard.classList.add("hidden");
+    if (scanMealBtn) {
+      scanMealBtn.disabled = true;
+    }
 
+    resultCard.classList.add("hidden");
     loadingCard.classList.remove("hidden");
 
     loadingText.textContent =
@@ -176,7 +188,6 @@ if (analyzeBtn) {
 
     const loadingInterval =
       setInterval(() => {
-
         loadingIndex++;
 
         if (
@@ -188,42 +199,46 @@ if (analyzeBtn) {
 
         loadingText.textContent =
           loadingMessages[loadingIndex];
-
       }, 1200);
 
     try {
-
       const response =
         await fetch("/api/analyze", {
           method: "POST",
 
           headers: {
-            "Content-Type":
-              "application/json"
+            "Content-Type": "application/json"
           },
 
           body: JSON.stringify({
             image: selectedImageBase64,
+
             goal:
               setup.goal || "fuelwise",
+
             height:
               setup.height || "",
+
             weight:
               setup.weight || "",
+
             targetWeight:
               setup.targetWeight || "",
+
             ageRange:
               setup.ageRange || "",
+
             gender:
               setup.gender || "",
+
             activityLevel:
               setup.activityLevel || "",
+
             lang:
               setup.lang || "en",
+
             extraIngredients:
-               extraIngredients?.value.trim() || ""
-
-
+              extraIngredients?.value.trim() || ""
           })
         });
 
@@ -231,23 +246,20 @@ if (analyzeBtn) {
         await response.json();
 
       if (!response.ok) {
-
         throw new Error(
           data.error ||
           "API request failed"
         );
-
       }
 
       if (!data.result) {
-
         throw new Error(
           "No AI result returned"
         );
-
       }
 
-const parsed = data.result;
+      const parsed =
+        data.result;
 
       resultCard.innerHTML = `
         <h2>
@@ -287,13 +299,15 @@ const parsed = data.result;
           ${parsed.feedback || ""}
         </p>
 
-        ${parsed.extraNoteResponse
-       ? `
-      <p class="feedback">
-        ${parsed.extraNoteResponse}
-      </p>
-       `
-         : ""}
+        ${
+          parsed.extraNoteResponse
+            ? `
+              <p class="feedback">
+                ${parsed.extraNoteResponse}
+              </p>
+            `
+            : ""
+        }
 
         <p class="feedback">
           Meal Score:
@@ -308,97 +322,139 @@ const parsed = data.result;
         <p class="caution">
           ${parsed.caution || ""}
         </p>
-<div class="commit-actions">
 
-  <button
-    id="commitMealBtn"
-    class="start-btn"
-    type="button"
-  >
-    👍 Commit Meal
-  </button>
+        <div class="commit-actions">
 
-  <button
-    id="discardMealBtn"
-    class="secondary-btn"
-    type="button"
-  >
-    ✕ Never Mind
-  </button>
+          <button
+            id="commitMealBtn"
+            class="start-btn"
+            type="button"
+          >
+            👍 Commit Meal
+          </button>
 
-</div>
+          <button
+            id="discardMealBtn"
+            class="secondary-btn"
+            type="button"
+          >
+            ✕ Never Mind
+          </button>
 
+        </div>
       `;
 
-
       resultCard.classList.remove("hidden");
-const commitMealBtn =
-  document.getElementById("commitMealBtn");
 
-const discardMealBtn =
-  document.getElementById("discardMealBtn");
+      const commitMealBtn =
+        document.getElementById("commitMealBtn");
 
-if (commitMealBtn) {
+      const discardMealBtn =
+        document.getElementById("discardMealBtn");
 
-  commitMealBtn.addEventListener("click", () => {
-saveScan({
-  mealName:
-    parsed.mealName || "Meal Scan",
+      if (isDirectScan) {
+        saveScan({
+          mealName:
+            parsed.mealName || "Meal Scan",
 
-  calories:
-    parsed.calories || "",
+          calories:
+            parsed.calories || "",
 
-  goal:
-    setup.goal || "fuelwise",
+          goal:
+            setup.goal || "fuelwise",
 
-  confidence:
-    parsed.confidence || ""
-});
-    if (window.FuelAILog) {
+          confidence:
+            parsed.confidence || ""
+        });
 
-      window.FuelAILog.addFuelLog({
-        type: "meal",
+        if (window.FuelAILog) {
+          window.FuelAILog.addFuelLog({
+            type: "meal",
 
-        calories:
-          Number(
-            String(parsed.calories)
-              .replace(/[^0-9]/g, "")
-          ) || 0,
+            calories:
+              Number(
+                String(parsed.calories)
+                  .replace(/[^0-9]/g, "")
+              ) || 0,
 
-        goal:
-          setup.goal || "fuelwise",
+            goal:
+              setup.goal || "fuelwise",
 
-        source: "meal-scan"
-      });
+            source: "meal-scan"
+          });
+        }
 
-    }
+        const commitActions =
+          document.querySelector(".commit-actions");
 
-    commitMealBtn.textContent =
-      "Meal Committed";
+        if (commitActions) {
+          commitActions.innerHTML = `
+            <button
+              class="start-btn"
+              type="button"
+              disabled
+            >
+              Meal Logged
+            </button>
+          `;
+        }
+      }
 
-    commitMealBtn.disabled = true;
+      if (commitMealBtn) {
+        commitMealBtn.addEventListener("click", () => {
+          saveScan({
+            mealName:
+              parsed.mealName || "Meal Scan",
 
-  });
+            calories:
+              parsed.calories || "",
 
-}
+            goal:
+              setup.goal || "fuelwise",
 
-if (discardMealBtn) {
+            confidence:
+              parsed.confidence || ""
+          });
 
-  discardMealBtn.addEventListener("click", () => {
+          if (window.FuelAILog) {
+            window.FuelAILog.addFuelLog({
+              type: "meal",
 
-    resultCard.classList.add("hidden");
+              calories:
+                Number(
+                  String(parsed.calories)
+                    .replace(/[^0-9]/g, "")
+                ) || 0,
 
-    analyzeBtn.textContent =
-      "Pre-Scan Meal";
+              goal:
+                setup.goal || "fuelwise",
 
-  });
+              source: "meal-scan"
+            });
+          }
 
-}
+          commitMealBtn.textContent =
+            "Meal Committed";
+
+          commitMealBtn.disabled = true;
+        });
+      }
+
+      if (discardMealBtn) {
+        discardMealBtn.addEventListener("click", () => {
+          resultCard.classList.add("hidden");
+
+          analyzeBtn.textContent =
+            "Pre-Scan Meal";
+
+          scanMode = "prescan";
+        });
+      }
+
       analyzeBtn.textContent =
         "Analyze Again";
 
     } catch (err) {
-
       console.error(
         "SCAN ERROR:",
         err
@@ -412,7 +468,6 @@ if (discardMealBtn) {
         "Try Again";
 
     } finally {
-
       clearInterval(
         loadingInterval
       );
@@ -421,8 +476,13 @@ if (discardMealBtn) {
 
       analyzeBtn.disabled = false;
 
+      if (scanMealBtn) {
+        scanMealBtn.disabled = false;
+      }
+
+      if (scanMode === "scan") {
+        scanMode = "prescan";
+      }
     }
-
   });
-
 }
