@@ -772,4 +772,15 @@ body[data-theme="day"] .top-link{
   border: none;
   padding: 0 14px;
   font-weight: 700;
+}#pantryNotes{
+  margin-top:1rem;
+  margin-bottom:1rem;
+
+  min-height:80px;
+
+  border-radius:18px;
+
+  padding:1rem;
+
+  resize:none;
 }

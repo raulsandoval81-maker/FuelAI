@@ -56,12 +56,12 @@ export default async function handler(req, res) {
     const selectedFlavor =
       flavorGuide[wiseFlavor] || flavorGuide.sweetspot;
 
-    const safePantryItems = Array.isArray(pantryItems)
-      ? pantryItems
-          .map(item => String(item).trim())
-          .filter(Boolean)
-      : [];
-
+const safePantryItems = Array.isArray(pantryCompanion)
+  ? pantryCompanion
+      .map(item => String(item).trim())
+      .filter(Boolean)
+  : [];
+  
     const response =
       await client.chat.completions.create({
         model: "gpt-4.1-mini",
