@@ -168,23 +168,23 @@ if (goalTargetOutput) {
 
     <br><br>
 
-    Protein:
+   🥩  Protein:
     ${targets.protein}
   `;
 
 }
   todayOutput.innerHTML = `
-    Calories logged:
+   🔥 Calories logged:
     ${summary.caloriesToday || 0}
 
     <br><br>
 
-    Water logged:
+   💧 Water logged:
     ${summary.waterToday || 0} oz
 
     <br><br>
 
-    Training:
+   🏋️  Training:
     ${summary.trainingToday ? "Logged" : "Not logged"}
 
     <br><br>
