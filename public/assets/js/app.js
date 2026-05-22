@@ -37,21 +37,75 @@ function handleFoodFile(file) {
 
   reader.onload = () => {
 
-    selectedImageBase64 = reader.result;
+    const img = new Image();
 
-    previewImage.src = selectedImageBase64;
+    img.onload = () => {
 
-    previewImage.classList.remove("hidden");
+      const canvas =
+        document.createElement("canvas");
 
-    if (uploadBox) {
-      uploadBox.classList.add("hidden");
-    }
+      const ctx =
+        canvas.getContext("2d");
 
-    analyzeBtn.classList.remove("hidden");
+      const maxWidth = 1200;
 
-    resultCard.classList.add("hidden");
+      let width = img.width;
+      let height = img.height;
 
-    loadingCard.classList.add("hidden");
+      if (width > maxWidth) {
+
+        height =
+          (height * maxWidth) / width;
+
+        width = maxWidth;
+
+      }
+
+      canvas.width = width;
+      canvas.height = height;
+
+      ctx.drawImage(
+        img,
+        0,
+        0,
+        width,
+        height
+      );
+
+      selectedImageBase64 =
+        canvas.toDataURL(
+          "image/jpeg",
+          0.82
+        );
+
+      previewImage.src =
+        selectedImageBase64;
+
+      previewImage.classList.remove(
+        "hidden"
+      );
+
+      if (uploadBox) {
+        uploadBox.classList.add(
+          "hidden"
+        );
+      }
+
+      analyzeBtn.classList.remove(
+        "hidden"
+      );
+
+      resultCard.classList.add(
+        "hidden"
+      );
+
+      loadingCard.classList.add(
+        "hidden"
+      );
+
+    };
+
+    img.src = reader.result;
 
   };
 
