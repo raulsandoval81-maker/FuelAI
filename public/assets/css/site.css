@@ -784,3 +784,7 @@ body[data-theme="day"] .top-link{
 
   resize:none;
 }
+#pantryNotes{
+  margin-top:1rem;
+  margin-bottom:1rem;
+}
