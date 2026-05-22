@@ -23,7 +23,7 @@
       <h1>Cabinet Drawer</h1>
 
       <p class="sub">
-        Save what your household usually has, likes, and needs.
+        Save what your household usually has and needs.
       </p>
 
       <section class="drawer-section">
@@ -32,7 +32,7 @@
           type="button"
           data-drawer="pantry"
         >
-          🥫 Pantry Staples
+          🥫 Pantry
         </button>
 
         <div
@@ -67,7 +67,7 @@
           type="button"
           data-drawer="freezer"
         >
-          ❄️ Freezer Items
+          ❄️ Freezer
         </button>
 
         <div
@@ -100,44 +100,9 @@
         <button
           class="drawer-toggle"
           type="button"
-          data-drawer="favorites"
-        >
-          ⭐ Favorites
-        </button>
-
-        <div
-          id="drawer-favorites"
-          class="drawer-panel hidden"
-        >
-          <ul
-            id="favoritesList"
-            class="drawer-list"
-          ></ul>
-
-          <div class="drawer-add-row">
-            <input
-              id="favoritesInput"
-              type="text"
-              placeholder="Add favorite meal..."
-            />
-
-            <button
-              type="button"
-              data-add="favorites"
-            >
-              Add
-            </button>
-          </div>
-        </div>
-      </section>
-
-      <section class="drawer-section">
-        <button
-          class="drawer-toggle"
-          type="button"
           data-drawer="grocery"
         >
-          🛒 Grocery List
+          🛒 Groceries
         </button>
 
         <div
@@ -170,30 +135,30 @@
         <button
           class="drawer-toggle"
           type="button"
-          data-drawer="preferences"
+          data-drawer="other"
         >
-          ⚡ Meal Preferences
+          📦 Other
         </button>
 
         <div
-          id="drawer-preferences"
+          id="drawer-other"
           class="drawer-panel hidden"
         >
           <ul
-            id="preferencesList"
+            id="otherList"
             class="drawer-list"
           ></ul>
 
           <div class="drawer-add-row">
             <input
-              id="preferencesInput"
+              id="otherInput"
               type="text"
-              placeholder="Add preference..."
+              placeholder="Add other household item..."
             />
 
             <button
               type="button"
-              data-add="preferences"
+              data-add="other"
             >
               Add
             </button>
@@ -202,7 +167,7 @@
       </section>
 
       <p class="range-note">
-        Enough structure to help. Not so much it becomes work.
+        Pantry. Freezer. Groceries. Other. Keep it simple.
       </p>
 
       <div class="wise-links">
