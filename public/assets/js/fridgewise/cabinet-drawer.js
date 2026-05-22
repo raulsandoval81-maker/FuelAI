@@ -46,7 +46,10 @@ let drawerData =
   JSON.parse(
     localStorage.getItem("fuelai-cabinet-drawer")
   ) || DEFAULTS;
-
+drawerData = {
+  ...DEFAULTS,
+  ...drawerData
+};
 /* =========================
    SAVE
 ========================= */
