@@ -274,7 +274,7 @@ function loadSavedSetup() {
   }
 
   if (flavorDial) {
-    flavorDial.value = saved.flavorDial || "80-20";
+    flavorDial.value = saved.flavorDial || "original";
   }
 }
 

@@ -8,26 +8,36 @@ const flavor =
   setup.wiseFlavor || "sweetspot";
 
 const flavorDial =
-  setup.flavorDial || "80-20";
-
+  setup.flavorDial || "original";
+  
 function shouldUseFlavor() {
 
-  if (flavor === "sweetspot") {
-    return false;
+  let chance = 0.05;
+
+  if (flavorDial === "mild") {
+    chance =
+      Math.random() < 0.15
+        ? 0.15
+        : 0.10;
   }
 
-  if (flavorDial === "90-10") {
-    return Math.random() < 0.10;
+  if (flavorDial === "hot") {
+    chance =
+      Math.random() < 0.25
+        ? 0.25
+        : 0.20;
   }
 
-  if (flavorDial === "70-30") {
-    return Math.random() < 0.30;
+  if (flavorDial === "spicy") {
+    chance =
+      Math.random() < 0.35
+        ? 0.35
+        : 0.25;
   }
 
-  return Math.random() < 0.20;
+  return Math.random() < chance;
 
 }
-
 const wiseTitle =
   document.getElementById("wiseTitle");
 
