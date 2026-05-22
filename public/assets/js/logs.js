@@ -29,46 +29,41 @@ function renderLogs() {
       return `
         <section class="range-card">
 
-          <p class="range-label">
-            ${day.date}
-          </p>
+<p class="range-output">
 
-          <p class="range-output">
+  Plan:
+  ${day.goal || "fuelwise"}
 
-            Plan:
-            ${day.goal || "fuelwise"}
+  <br><br>
 
-            <br><br>
+  🔥 Calories:
+  ${day.calories || 0}
 
-            Calories:
-            ${day.calories || 0}
+  <br><br>
 
-            <br><br>
+  💧 Water:
+  ${day.water || 0} oz
 
-            Water:
-            ${day.water || 0} oz
+  <br><br>
 
-            <br><br>
+  🏋️ Training Sessions:
+  ${day.trainingCount || 0}
 
-            Training Sessions:
-            ${day.trainingCount || 0}
+  <br><br>
 
-            <br><br>
+  Weight:
+  ${
+    day.latestWeight
+      ? `${day.latestWeight} lbs`
+      : "—"
+  }
 
-            Weight:
-            ${
-              day.latestWeight
-                ? `${day.latestWeight} lbs`
-                : "—"
-            }
+  <br><br>
 
-            <br><br>
+  🍽️ Meal Scans:
+  ${day.scanCount || 0}
 
-            Meal Scans:
-            ${day.scanCount || 0}
-
-          </p>
-
+</p>
         </section>
       `;
 

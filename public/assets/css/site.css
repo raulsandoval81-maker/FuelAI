@@ -670,3 +670,38 @@ body[data-theme="day"] .top-link{
   color:#102033;
   border-color:rgba(0,0,0,.14);
 }
+.meal-card{
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+}
+
+.meal-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:12px;
+}
+
+.meal-title{
+  display:block;
+  font-size:1rem;
+  margin-bottom:4px;
+}
+
+.meal-time{
+  font-size:.9rem;
+  opacity:.7;
+  white-space:nowrap;
+}
+
+.meal-steps{
+  margin-left:1.25rem;
+  display:flex;
+  flex-direction:column;
+  gap:.45rem;
+}
+
+.make-this-btn{
+  margin-top:.5rem;
+}

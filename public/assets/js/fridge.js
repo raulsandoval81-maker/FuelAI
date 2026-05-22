@@ -24,6 +24,15 @@ export default async function handler(req, res) {
       });
     }
 
+    const safeImage =
+      String(image || "").trim();
+
+    if (!safeImage.startsWith("data:image/")) {
+      return res.status(400).json({
+        error: "Invalid image format",
+      });
+    }
+
     const language =
       lang === "es"
         ? "Spanish"
@@ -34,33 +43,37 @@ export default async function handler(req, res) {
         "Sweet Spot tone: calm, practical, lightly human. Useful first, personality second.",
 
       mafia:
-        "Mafia tone: light funny movie flavor with playful confidence. Do not use threats, crime language, exaggerated accents, or offensive stereotypes. Keep it useful and family-friendly.",
+        "Mafia tone: light funny movie flavor with playful confidence. No threats, crime language, stereotypes, or exaggerated accents. Keep it family-friendly and useful.",
 
       toughguy:
-        "Tough Guy tone: direct coach energy. Clear, motivating, no excuses, but not mean, toxic, or shaming.",
+        "Tough Guy tone: direct coach energy. Clear, motivating, practical, no excuses, but never mean, toxic, or shaming.",
 
       internet:
-        "Internet tone: light meme/teen slang flavor. Keep it understandable, not cringe, not excessive, and still practical.",
+        "Internet tone: light meme/teen flavor. Understandable, not cringe, not excessive, and still practical.",
     };
 
     const selectedFlavor =
       flavorGuide[wiseFlavor] || flavorGuide.sweetspot;
 
-    const response = await client.chat.completions.create({
-      model: "gpt-4.1-mini",
-      response_format: { type: "json_object" },
-      temperature: 0.3,
-      messages: [
-        {
-          role: "user",
-          content: [
-            {
-              type: "text",
-              text: `
-You are FridgeWise, a practical fridge-to-dinner assistant for overwhelmed adults and families.
+    const response =
+      await client.chat.completions.create({
+        model: "gpt-4.1-mini",
+        response_format: {
+          type: "json_object",
+        },
+        temperature: 0.3,
+        messages: [
+          {
+            role: "user",
+            content: [
+              {
+                type: "text",
+                text: `
+You are FridgeWise, a practical fridge-to-dinner assistant for overwhelmed adults, teens, and families.
 
 Respond entirely in ${language}.
 Use natural, simple, practical wording.
+
 Your job is NOT perfect nutrition.
 Your job is dinner relief.
 
@@ -96,17 +109,18 @@ Rules:
 - Keep meals and snacks simple, realistic, and fast.
 - Prioritize ingredients visible in the image.
 - Prioritize minimal extra shopping.
-- Prefer low-dishes, low-cleanup meals when possible.
+- Prefer low-dishes and low-cleanup meals.
 - Avoid requiring more than 1–2 missing grocery items per suggestion.
 - Grocery list should include ONLY missing items.
-- Keep instructions short.
+- Keep steps short and doable.
+- Use common kitchen language.
 - Avoid health lectures.
-- Avoid calorie/macros.
+- Avoid calories/macros.
 - Avoid gourmet recipes.
 - Avoid overwhelming the user.
 - If something is uncertain, put it in possibleItems or unclearItems.
 - Do not pretend certainty.
-- If the image is not a fridge/pantry/food image, still give practical help based on what is visible.
+- If the image is not a fridge, pantry, grocery, leftover, or food image, still give practical help based on what is visible.
 - Personality should show lightly in wording only.
 - Do not make every line funny.
 - Help first. Flavor second.
@@ -116,18 +130,18 @@ Rules:
 - Never use threatening language.
 - Never use criminal language.
 - Never use stereotypes.
-              `,
-            },
-            {
-              type: "image_url",
-              image_url: {
-                url: image,
+                `,
               },
-            },
-          ],
-        },
-      ],
-    });
+              {
+                type: "image_url",
+                image_url: {
+                  url: safeImage,
+                },
+              },
+            ],
+          },
+        ],
+      });
 
     const content =
       response.choices?.[0]?.message?.content;
@@ -141,10 +155,7 @@ Rules:
     let parsed;
 
     try {
-      parsed =
-        typeof content === "string"
-          ? JSON.parse(content)
-          : content;
+      parsed = JSON.parse(content);
     } catch (err) {
       console.error("FRIDGE JSON PARSE ERROR:", err);
       console.error("RAW FRIDGE RESULT:", content);

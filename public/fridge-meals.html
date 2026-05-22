@@ -68,57 +68,83 @@
 
         ${meals.map(meal => `
 
-          <div class="history-item">
+  <div class="history-item meal-card">
 
-            <strong>${meal.name}</strong>
+    <div class="meal-top">
 
-            <div class="history-meta">
-              ${meal.time || ""}
-            </div>
+      <div>
+        <strong class="meal-title">
+          ${
+            meal.type === "snack"
+              ? "🥨 Quick Snack"
+              : "🍽️ Quick Meal"
+          }
+        </strong>
 
-            <p class="feedback">
-              ${meal.whyItWorks || ""}
-            </p>
+        <div class="history-meta">
+          ${meal.name}
+        </div>
+      </div>
 
-            <p class="feedback">
-              <strong>Uses:</strong>
-              ${(meal.uses || []).join(", ") || "Items from your fridge"}
-            </p>
+      <div class="meal-time">
+        ⏱️ ${meal.time || "10 min"}
+      </div>
 
-            <p class="feedback">
-              <strong>Need:</strong>
-              ${(meal.needs || []).join(", ") || "Nothing extra"}
-            </p>
+    </div>
 
-            ${
-              meal.steps?.length
-                ? `
-                  <ol>
-                    ${meal.steps.map(step => `
-                      <li>${step}</li>
-                    `).join("")}
-                  </ol>
-                `
-                : ""
-            }
+    <p class="feedback">
+      ${meal.whyItWorks || ""}
+    </p>
 
-          </div>
+    <p class="feedback">
+      <strong>🧊 Uses:</strong>
+      ${(meal.uses || []).join(", ") || "Items from your fridge"}
+    </p>
 
-        `).join("")}
+    <p class="feedback">
+      <strong>🛒 Needs:</strong>
+      ${(meal.needs || []).join(", ") || "Nothing extra"}
+    </p>
+
+    ${
+      meal.steps?.length
+        ? `
+          <ol class="meal-steps">
+            ${meal.steps.map(step => `
+              <li>${step}</li>
+            `).join("")}
+          </ol>
+        `
+        : ""
+    }
+
+    <button
+      class="secondary-btn make-this-btn"
+      type="button"
+    >
+      ✅ Make This
+    </button>
+
+  </div>
+
+`).join("")}
+
 
       </div>
 
-      <div class="history-item">
 
-        <strong>Quick Grocery List</strong>
+<div class="history-item">
 
-        <p class="feedback">
-          ${(result.groceryList || []).join(", ") || "No extra groceries needed"}
-        </p>
+  <strong>
+    🛒 Quick Grocery List
+  </strong>
 
-      </div>
+  <p class="feedback">
+    ${(result.groceryList || []).join(", ") || "No extra groceries needed"}
+  </p>
 
-    `;
+</div>
+      `;
 
   </script>
 
