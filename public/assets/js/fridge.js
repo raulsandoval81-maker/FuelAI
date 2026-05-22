@@ -16,7 +16,9 @@ export default async function handler(req, res) {
       image,
       lang = "en",
       wiseFlavor = "sweetspot",
+      pantryItems = [],
       pantryCompanion = [],
+      pantryNotes = "",
     } = req.body;
 
     if (!image) {
@@ -25,8 +27,7 @@ export default async function handler(req, res) {
       });
     }
 
-    const safeImage =
-      String(image || "").trim();
+    const safeImage = String(image || "").trim();
 
     if (!safeImage.startsWith("data:image/")) {
       return res.status(400).json({
@@ -34,10 +35,7 @@ export default async function handler(req, res) {
       });
     }
 
-    const language =
-      lang === "es"
-        ? "Spanish"
-        : "English";
+    const language = lang === "es" ? "Spanish" : "English";
 
     const flavorGuide = {
       sweetspot:
@@ -56,26 +54,32 @@ export default async function handler(req, res) {
     const selectedFlavor =
       flavorGuide[wiseFlavor] || flavorGuide.sweetspot;
 
-const safePantryItems = Array.isArray(pantryCompanion)
-  ? pantryCompanion
-      .map(item => String(item).trim())
-      .filter(Boolean)
-  : [];
-  
-    const response =
-      await client.chat.completions.create({
-        model: "gpt-4.1-mini",
-        response_format: {
-          type: "json_object",
-        },
-        temperature: 0.3,
-        messages: [
-          {
-            role: "user",
-            content: [
-              {
-                type: "text",
-                text: `
+    const combinedPantry = [
+      ...(Array.isArray(pantryItems) ? pantryItems : []),
+      ...(Array.isArray(pantryCompanion) ? pantryCompanion : []),
+    ];
+
+    const safePantryItems = [...new Set(
+      combinedPantry
+        .map(item => String(item).trim())
+        .filter(Boolean)
+    )];
+
+    const safePantryNotes = String(pantryNotes || "").trim();
+
+    const response = await client.chat.completions.create({
+      model: "gpt-4.1-mini",
+      response_format: {
+        type: "json_object",
+      },
+      temperature: 0.3,
+      messages: [
+        {
+          role: "user",
+          content: [
+            {
+              type: "text",
+              text: `
 You are FridgeWise, a practical fridge-to-dinner assistant for overwhelmed adults, teens, and families.
 
 Respond entirely in ${language}.
@@ -87,18 +91,19 @@ Your job is dinner relief.
 Tone setting:
 ${selectedFlavor}
 
-Pantry Companion items user says they may have:
-${safePantryItems.length
-  ? safePantryItems.join(", ")
-  : "None provided"}
+Pantry Companion selected items:
+${safePantryItems.length ? safePantryItems.join(", ") : "None provided"}
 
-Use Pantry Companion items as available ingredients when building suggestions.
+Extra pantry/freezer notes:
+${safePantryNotes || "None provided"}
 
-Do not add Pantry Companion items to the groceryList.
+Use Pantry Companion items and pantry notes as available ingredients when building suggestions.
+
+Do not add Pantry Companion items or pantry notes items to the groceryList.
 
 Only put groceryList items that are missing from BOTH:
 - the image
-- Pantry Companion
+- Pantry Companion / pantry notes
 
 Analyze the uploaded fridge, pantry, grocery, leftover, or food image.
 
@@ -141,9 +146,7 @@ Rules:
 - Avoid overwhelming the user.
 - If something is uncertain, put it in possibleItems or unclearItems.
 - Do not pretend certainty.
-- If the image is not a fridge, pantry, grocery, leftover, or food image, still give practical help based on what is visible.
 - Personality should show lightly in wording only.
-- Do not make every line funny.
 - Help first. Flavor second.
 - Never shame the user.
 - Never insult the user.
@@ -151,21 +154,20 @@ Rules:
 - Never use threatening language.
 - Never use criminal language.
 - Never use stereotypes.
-                `,
+              `,
+            },
+            {
+              type: "image_url",
+              image_url: {
+                url: safeImage,
               },
-              {
-                type: "image_url",
-                image_url: {
-                  url: safeImage,
-                },
-              },
-            ],
-          },
-        ],
-      });
+            },
+          ],
+        },
+      ],
+    });
 
-    const content =
-      response.choices?.[0]?.message?.content;
+    const content = response.choices?.[0]?.message?.content;
 
     if (!content) {
       return res.status(500).json({
@@ -194,9 +196,7 @@ Rules:
     console.error("FRIDGE ERROR:", err);
 
     return res.status(500).json({
-      error:
-        err.message ||
-        "Failed to analyze fridge image",
+      error: err.message || "Failed to analyze fridge image",
     });
   }
 }
