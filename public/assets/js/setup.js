@@ -44,10 +44,11 @@ const copy = {
     toughguy: "Tough Guy — Direct Coach Energy",
     internet: "Internet — Meme / Teen Slang",
 
-    lightFlavor: "90 / 10 — Light Flavor",
-    balancedFlavor: "80 / 20 — Balanced",
-    spicyFlavor: "70 / 30 — Spicy",
-
+    originalFlavor: "Original",
+mildFlavor: "Mild",
+hotFlavor: "Hot",
+spicyFlavor: "Spicy",
+                  
     guidance: "Suggested Guidance",
     emptyRange: "Enter height and weight",
     note: "General guidance only. Not medical advice.",
@@ -158,9 +159,11 @@ function applyLanguage(lang) {
   }
 
   if (flavorDial) {
-    flavorDial.options[0].textContent = t.lightFlavor;
-    flavorDial.options[1].textContent = t.balancedFlavor;
-    flavorDial.options[2].textContent = t.spicyFlavor;
+
+flavorDial.options[0].textContent = t.originalFlavor;
+flavorDial.options[1].textContent = t.mildFlavor;
+flavorDial.options[2].textContent = t.hotFlavor;
+flavorDial.options[3].textContent = t.spicyFlavor;
   }
 
   document.querySelector(".range-label").textContent = t.guidance;
