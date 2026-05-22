@@ -1,12 +1,114 @@
 console.log("CABINET DRAWER LOADED");
 
-const allDrawerButtons =
-  document.querySelectorAll(".drawer-chips button");
+/* =========================
+   DEFAULT DATA
+========================= */
 
-let cabinetDrawer =
+const DEFAULTS = {
+
+  pantry: [
+    "Rice",
+    "Pasta",
+    "Beans",
+    "Tortillas"
+  ],
+
+  freezer: [
+    "Frozen Chicken",
+    "Ground Beef",
+    "Frozen Veggies",
+    "Pizza"
+  ],
+
+  favorites: [
+    "Quesadillas",
+    "Rice Bowls",
+    "Protein Snacks"
+  ],
+
+  grocery: [],
+
+  preferences: [
+    "Ultra Fast",
+    "Family",
+    "Kid Friendly",
+    "Protein-Heavy",
+    "Leftovers First"
+  ]
+
+};
+
+/* =========================
+   STORAGE
+========================= */
+
+let drawerData =
   JSON.parse(
-    localStorage.getItem("fuelai-cabinet-drawer") || "[]"
+    localStorage.getItem("fuelai-cabinet-drawer")
+  ) || DEFAULTS;
+
+/* =========================
+   SAVE
+========================= */
+
+function saveDrawer() {
+
+  localStorage.setItem(
+    "fuelai-cabinet-drawer",
+    JSON.stringify(drawerData)
   );
+
+}
+
+/* =========================
+   RENDER
+========================= */
+
+function renderList(type) {
+
+  const list =
+    document.getElementById(`${type}List`);
+
+  if (!list) return;
+
+  list.innerHTML = "";
+
+  drawerData[type].forEach((item, index) => {
+
+    const li =
+      document.createElement("li");
+
+    li.className =
+      "drawer-item";
+
+    li.innerHTML = `
+      <span>${item}</span>
+
+      <button
+        class="remove-btn"
+        data-type="${type}"
+        data-index="${index}"
+      >
+        Remove
+      </button>
+    `;
+
+    list.appendChild(li);
+
+  });
+
+}
+
+/* =========================
+   INITIAL RENDER
+========================= */
+
+Object.keys(drawerData).forEach(renderList);
+
+/* =========================
+   TOGGLES
+========================= */
+
 const drawerToggles =
   document.querySelectorAll(".drawer-toggle");
 
@@ -24,42 +126,64 @@ drawerToggles.forEach((toggle) => {
   });
 
 });
-allDrawerButtons.forEach((button) => {
 
-  const label =
-    button.textContent.trim();
+/* =========================
+   ADD ITEM
+========================= */
 
-  if (cabinetDrawer.includes(label)) {
-    button.classList.add("active");
-  }
+const addButtons =
+  document.querySelectorAll("[data-add]");
+
+addButtons.forEach((button) => {
 
   button.addEventListener("click", () => {
 
-    const exists =
-      cabinetDrawer.includes(label);
+    const type =
+      button.dataset.add;
 
-    if (exists) {
+    const input =
+      document.getElementById(`${type}Input`);
 
-      cabinetDrawer =
-        cabinetDrawer.filter(
-          (item) => item !== label
-        );
+    if (!input) return;
 
-      button.classList.remove("active");
+    const value =
+      input.value.trim();
 
-    } else {
+    if (!value) return;
 
-      cabinetDrawer.push(label);
+    drawerData[type].push(value);
 
-      button.classList.add("active");
+    saveDrawer();
 
-    }
+    renderList(type);
 
-    localStorage.setItem(
-      "fuelai-cabinet-drawer",
-      JSON.stringify(cabinetDrawer)
-    );
+    input.value = "";
 
   });
+
+});
+
+/* =========================
+   REMOVE ITEM
+========================= */
+
+document.addEventListener("click", (e) => {
+
+  const btn =
+    e.target.closest(".remove-btn");
+
+  if (!btn) return;
+
+  const type =
+    btn.dataset.type;
+
+  const index =
+    Number(btn.dataset.index);
+
+  drawerData[type].splice(index, 1);
+
+  saveDrawer();
+
+  renderList(type);
 
 });

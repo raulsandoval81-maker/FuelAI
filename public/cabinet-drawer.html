@@ -23,88 +23,180 @@
       <h1>Cabinet Drawer</h1>
 
       <p class="sub">
-        Save the stuff your household usually has, likes, and needs.
+        Save what your household usually has, likes, and needs.
       </p>
 
       <section class="drawer-section">
-        <button class="drawer-toggle" type="button">
+        <button
+          class="drawer-toggle"
+          type="button"
+          data-drawer="pantry"
+        >
           🥫 Pantry Staples
         </button>
 
-        <div class="drawer-panel hidden">
-          <div class="drawer-chips" id="pantryStaples">
-            <button type="button">Rice</button>
-            <button type="button">Pasta</button>
-            <button type="button">Beans</button>
-            <button type="button">Tortillas</button>
-            <button type="button">+ Add Your Own</button>
+        <div
+          id="drawer-pantry"
+          class="drawer-panel hidden"
+        >
+          <ul
+            id="pantryList"
+            class="drawer-list"
+          ></ul>
+
+          <div class="drawer-add-row">
+            <input
+              id="pantryInput"
+              type="text"
+              placeholder="Add pantry item..."
+            />
+
+            <button
+              type="button"
+              data-add="pantry"
+            >
+              Add
+            </button>
           </div>
         </div>
       </section>
 
       <section class="drawer-section">
-        <button class="drawer-toggle" type="button">
+        <button
+          class="drawer-toggle"
+          type="button"
+          data-drawer="freezer"
+        >
           ❄️ Freezer Items
         </button>
 
-        <div class="drawer-panel hidden">
-          <div class="drawer-chips" id="freezerItems">
-            <button type="button">Frozen Chicken</button>
-            <button type="button">Ground Beef</button>
-            <button type="button">Frozen Veggies</button>
-            <button type="button">Pizza</button>
-            <button type="button">+ Add Your Own</button>
+        <div
+          id="drawer-freezer"
+          class="drawer-panel hidden"
+        >
+          <ul
+            id="freezerList"
+            class="drawer-list"
+          ></ul>
+
+          <div class="drawer-add-row">
+            <input
+              id="freezerInput"
+              type="text"
+              placeholder="Add freezer item..."
+            />
+
+            <button
+              type="button"
+              data-add="freezer"
+            >
+              Add
+            </button>
           </div>
         </div>
       </section>
 
       <section class="drawer-section">
-        <button class="drawer-toggle" type="button">
+        <button
+          class="drawer-toggle"
+          type="button"
+          data-drawer="favorites"
+        >
           ⭐ Favorites
         </button>
 
-        <div class="drawer-panel hidden">
-          <div class="drawer-chips" id="favorites">
-            <button type="button">Quesadillas</button>
-            <button type="button">Rice Bowls</button>
-            <button type="button">Protein Snacks</button>
-            <button type="button">Sandwiches</button>
-            <button type="button">+ Add Your Own</button>
+        <div
+          id="drawer-favorites"
+          class="drawer-panel hidden"
+        >
+          <ul
+            id="favoritesList"
+            class="drawer-list"
+          ></ul>
+
+          <div class="drawer-add-row">
+            <input
+              id="favoritesInput"
+              type="text"
+              placeholder="Add favorite meal..."
+            />
+
+            <button
+              type="button"
+              data-add="favorites"
+            >
+              Add
+            </button>
           </div>
         </div>
       </section>
 
-      
-
       <section class="drawer-section">
-        <button class="drawer-toggle" type="button">
+        <button
+          class="drawer-toggle"
+          type="button"
+          data-drawer="grocery"
+        >
           🛒 Grocery List
         </button>
 
-        <div class="drawer-panel hidden">
-          <textarea
+        <div
+          id="drawer-grocery"
+          class="drawer-panel hidden"
+        >
+          <ul
             id="groceryList"
-            class="goal-select"
-            placeholder="Add groceries you need..."
-            rows="3"
-          ></textarea>
+            class="drawer-list"
+          ></ul>
+
+          <div class="drawer-add-row">
+            <input
+              id="groceryInput"
+              type="text"
+              placeholder="Add grocery item..."
+            />
+
+            <button
+              type="button"
+              data-add="grocery"
+            >
+              Add
+            </button>
+          </div>
         </div>
       </section>
 
       <section class="drawer-section">
-        <button class="drawer-toggle" type="button">
+        <button
+          class="drawer-toggle"
+          type="button"
+          data-drawer="preferences"
+        >
           ⚡ Meal Preferences
         </button>
 
-        <div class="drawer-panel hidden">
-          <div class="drawer-chips" id="mealModes">
-            <button type="button">⚡ Ultra Fast</button>
-<button type="button">👨‍👩‍👧 Family</button>
-<button type="button">👧 Kid Friendly</button>
-<button type="button">💪 Protein-Heavy</button>
-<button type="button">♻️ Leftovers First</button>
-<button type="button">🧼 Low Cleanup</button>
-<button type="button">💵 Budget Friendly</button>
+        <div
+          id="drawer-preferences"
+          class="drawer-panel hidden"
+        >
+          <ul
+            id="preferencesList"
+            class="drawer-list"
+          ></ul>
+
+          <div class="drawer-add-row">
+            <input
+              id="preferencesInput"
+              type="text"
+              placeholder="Add preference..."
+            />
+
+            <button
+              type="button"
+              data-add="preferences"
+            >
+              Add
+            </button>
           </div>
         </div>
       </section>
@@ -117,9 +209,9 @@
 
         <a
           class="secondary-btn"
-          href="/fridgewise.html"
+          href="/wise.html"
         >
-          🧊 Back to FridgeWise
+          ↩️ Return to Guide
         </a>
 
       </div>

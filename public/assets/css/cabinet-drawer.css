@@ -6,65 +6,72 @@
 .drawer-toggle{
   width:100%;
   min-height:72px;
-
   display:flex;
   align-items:center;
   justify-content:center;
-
   border:none;
   border-radius:24px;
-
   background:rgba(255,255,255,.08);
   color:white;
-
   font-size:1.15rem;
   font-weight:900;
-
   cursor:pointer;
 }
 
-.drawer-toggle:hover{
-  background:rgba(255,255,255,.12);
-}
-
-.drawer-content{
+.drawer-panel{
   margin-top:1rem;
   padding:1rem;
-
   border-radius:20px;
   background:rgba(255,255,255,.04);
   border:1px solid rgba(255,255,255,.08);
 }
 
-.drawer-chips{
+.drawer-list{
+  list-style:none;
   display:flex;
-  flex-wrap:wrap;
+  flex-direction:column;
   gap:.65rem;
 }
 
-.drawer-chips button{
+.drawer-item{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:1rem;
+  padding:.85rem 1rem;
+  border-radius:16px;
+  background:rgba(255,255,255,.07);
+  text-align:left;
+}
+
+.remove-btn{
   border:none;
   border-radius:999px;
-
-  padding:.7rem 1rem;
-
-  background:rgba(255,255,255,.08);
-  color:white;
-
-  font-size:.95rem;
-  font-weight:700;
-
+  padding:.45rem .75rem;
+  font-weight:800;
   cursor:pointer;
 }
 
-.drawer-chips button.active{
-  background:#2563eb;
+.drawer-add-row{
+  display:flex;
+  gap:.5rem;
+  margin-top:1rem;
 }
 
-.drawer-copy{
-  margin-top:1rem;
-  opacity:.8;
-  line-height:1.5;
+.drawer-add-row input{
+  flex:1;
+  min-width:0;
+  padding:.85rem;
+  border:none;
+  border-radius:14px;
+}
+
+.drawer-add-row button{
+  border:none;
+  border-radius:14px;
+  padding:0 1rem;
+  font-weight:900;
+  cursor:pointer;
 }
 
 .hidden{
