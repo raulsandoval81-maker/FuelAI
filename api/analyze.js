@@ -28,7 +28,14 @@ export default async function handler(req, res) {
         error: "Missing image",
       });
     }
+const safeImage =
+  String(image || "").trim();
 
+if (!safeImage.startsWith("data:image/")) {
+  return res.status(400).json({
+    error: "Invalid image format",
+  });
+}
     const language =
       lang === "es"
         ? "Spanish"
