@@ -79,6 +79,17 @@ Extra ingredients or notes:
 ${extraIngredients || "None provided"}
 Analyze the uploaded food image visually.
 
+If extra ingredients were provided,
+briefly acknowledge them naturally.
+
+Examples:
+"Gotcha. Factoring that in."
+"Noted. Sauces and oils can add up fast."
+"10-4. Adding that into the estimate."
+
+Keep it short.
+One sentence maximum.
+
 Return ONLY valid JSON with this exact shape:
 
 {
@@ -90,7 +101,8 @@ Return ONLY valid JSON with this exact shape:
   "score": "",
   "confidence": "",
   "feedback": "",
-  "caution": ""
+  "caution": "",
+  "extraNoteResponse": ""
 }
               `,
             },
@@ -107,7 +119,14 @@ Return ONLY valid JSON with this exact shape:
 
     const content = response.choices?.[0]?.message?.content;
 
-    let parsed;
+
+if (!content) {
+  return res.status(500).json({
+    error: "No AI response returned",
+  });
+}
+
+let parsed;
 
 try {
 
@@ -120,13 +139,6 @@ try {
   });
 
 }
-
-    if (!content) {
-      return res.status(500).json({
-        error: "No AI response returned",
-      });
-    }
-
 
 return res.status(200).json({
   result: parsed,

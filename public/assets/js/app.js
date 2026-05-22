@@ -279,6 +279,14 @@ const parsed = data.result;
           ${parsed.feedback || ""}
         </p>
 
+        ${parsed.extraNoteResponse
+  ? `
+  <p class="feedback">
+    ${parsed.extraNoteResponse}
+  </p>
+`
+  : ""}
+
         <p class="feedback">
           Meal Score:
           ${parsed.score || "—"}/10
