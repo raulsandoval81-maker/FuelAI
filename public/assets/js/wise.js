@@ -7,6 +7,27 @@ const guide =
 const flavor =
   setup.wiseFlavor || "sweetspot";
 
+const flavorDial =
+  setup.flavorDial || "80-20";
+
+function shouldUseFlavor() {
+
+  if (flavor === "sweetspot") {
+    return false;
+  }
+
+  if (flavorDial === "90-10") {
+    return Math.random() < 0.10;
+  }
+
+  if (flavorDial === "70-30") {
+    return Math.random() < 0.30;
+  }
+
+  return Math.random() < 0.20;
+
+}
+
 const wiseTitle =
   document.getElementById("wiseTitle");
 
@@ -40,15 +61,14 @@ const sendWiseChatBtn =
 const wiseChatReply =
   document.getElementById("wiseChatReply");
 
-  const wiseChatLabel =
+const wiseChatLabel =
   document.getElementById("wiseChatLabel");
 
-  const goalTargetOutput =
+const goalTargetOutput =
   document.getElementById("goalTargetOutput");
 
 if (window.FuelAILog) {
   window.FuelAILog.syncDailyLogs();
-  
 }
 
 function getGuideName() {
@@ -120,6 +140,13 @@ function getGreeting() {
 }
 
 function getFlavorLine(lines) {
+
+  const useFlavor =
+    shouldUseFlavor();
+
+  if (!useFlavor) {
+    return lines.sweetspot;
+  }
 
   if (flavor === "toughguy") {
     return lines.toughguy;
@@ -249,6 +276,32 @@ function getAdvice(summary) {
     setup.goal || "fuelwise";
 
   if (summary.todayCount === 0) {
+    if (goal === "cutwise") {
+      return getFlavorLine({
+        sweetspot:
+          "Start simple today. Water first, then keep meals steady and controlled.",
+        toughguy:
+          "Start with the basics. Water, movement, controlled choices.",
+        mafia:
+          "Water first. Then we keep the food moves nice and clean.",
+        internet:
+          "Tiny reset. Water first, chaos later."
+      });
+    }
+
+    if (goal === "gainwise") {
+      return getFlavorLine({
+        sweetspot:
+          "Start simple today. Water, food, and training all matter for recovery.",
+        toughguy:
+          "Fuel the work. Water, food, training. Start there.",
+        mafia:
+          "Feed the machine today. Water and real food first.",
+        internet:
+          "Water + food + movement. Growth needs supplies."
+      });
+    }
+
     return getFlavorLine({
       sweetspot:
         "Start simple today. Log water, scan a meal, or mark training if you move.",
@@ -277,20 +330,20 @@ function getAdvice(summary) {
   if (goal === "cutwise") {
     return getFlavorLine({
       sweetspot:
-        "Stay steady. Keep meals lighter and avoid panic choices.",
+        "Stay steady. Keep portions lighter and avoid panic choices.",
       toughguy:
-        "Consistency beats crash dieting every time.",
+        "Control the easy stuff. Portions, water, consistency.",
       mafia:
-        "No panic moves. Nice and steady.",
+        "No panic moves. Keep it lighter and steady.",
       internet:
-        "No food spirals today. Keep it clean."
+        "No food spirals today. Keep the next choice clean."
     });
   }
 
   if (goal === "gainwise") {
     return getFlavorLine({
       sweetspot:
-        "Fuel matters today. Make sure recovery matches training.",
+        "Fuel matters today. Make sure recovery matches the work.",
       toughguy:
         "Training hard without fueling hard makes no sense.",
       mafia:

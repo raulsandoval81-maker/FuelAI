@@ -71,9 +71,41 @@ User context:
 - Mode: ${goal}
 
 Mode rules:
-- fuelwise = balanced performance nutrition, sustainable eating, recovery support, and long-term fuel guidance
-- cutwise = lighter choices, leaner meal decisions, calorie awareness, hydration awareness, and controlled bodyweight support
-- gainwise = muscle growth, recovery support, higher-calorie performance fuel, strength development, and athletic recovery nutrition
+
+Adjust tone and feedback naturally based on the selected mode.
+
+FuelWise should feel balanced and sustainable.
+
+CutWise should encourage restraint and awareness without guilt or extreme dieting.
+
+GainWise should encourage fueling, recovery, and performance support without reckless overeating.
+
+Keep all guidance practical, calm, and simple.
+
+
+- fuelwise =
+balanced performance nutrition,
+sustainable eating,
+recovery support,
+steady energy,
+consistency,
+and long-term healthy fuel guidance
+
+- cutwise =
+lighter choices,
+leaner meal decisions,
+portion awareness,
+hydration awareness,
+controlled bodyweight support,
+and avoiding unnecessary overeating
+
+- gainwise =
+muscle growth,
+performance fuel,
+higher-calorie support,
+recovery nutrition,
+strength development,
+and avoiding under-eating
 
 Extra ingredients or notes:
 ${extraIngredients || "None provided"}

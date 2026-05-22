@@ -5,7 +5,7 @@ const setup =
   JSON.parse(localStorage.getItem("fuelai-setup")) || {};
 
 const scans =
-  JSON.parse(localStorage.getItem("cutwise-history")) || [];
+  JSON.parse(localStorage.getItem("fuelai-history")) || [];
 
 const displayGoal = {
   fuelwise: "FuelWise Maintain",

@@ -123,7 +123,7 @@ if (scanMealBtn) {
 function saveScan(scan) {
   const scans =
     JSON.parse(
-      localStorage.getItem("cutwise-history") || "[]"
+      localStorage.getItem("fuelai-history") || "[]"
     );
 
   scans.unshift({
@@ -135,7 +135,7 @@ function saveScan(scan) {
     scans.slice(0, 5);
 
   localStorage.setItem(
-    "cutwise-history",
+    "fuelai-history",
     JSON.stringify(trimmed)
   );
 }
@@ -310,12 +310,12 @@ if (analyzeBtn) {
         }
 
         <p class="feedback">
-          Meal Score:
+          Fuel Check:
           ${parsed.score || "—"}/10
         </p>
 
         <p class="feedback">
-          Confidence:
+          Confidence Level:
           ${parsed.confidence || "—"}
         </p>
 
@@ -394,7 +394,7 @@ if (analyzeBtn) {
               type="button"
               disabled
             >
-              Meal Logged
+            Meal added to your log.
             </button>
           `;
         }
