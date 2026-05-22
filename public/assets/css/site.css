@@ -639,3 +639,34 @@ body[data-theme="night"] .mini-toggle{
     padding:22px;
   }
 }
+.top-link{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+
+  margin-bottom:1rem;
+  padding:.7rem 1.1rem;
+
+  border-radius:999px;
+
+  border:1px solid rgba(255,255,255,.14);
+
+  background:rgba(255,255,255,.06);
+
+  color:inherit;
+
+  font-weight:800;
+  text-decoration:none;
+
+  transition:.2s ease;
+}
+
+.top-link:hover{
+  transform:translateY(-1px);
+  background:rgba(255,255,255,.10);
+}
+body[data-theme="day"] .top-link{
+  background:#eaf1ff;
+  color:#102033;
+  border-color:rgba(0,0,0,.14);
+}

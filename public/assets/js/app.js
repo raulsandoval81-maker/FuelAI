@@ -272,27 +272,26 @@ if (analyzeBtn) {
 
         <div class="macro-grid">
 
-          <div>
-            <strong>Protein</strong>
-            <span>
-              ${parsed.protein || "—"}
-            </span>
-          </div>
+<div>
+  <strong>🥩 Protein</strong>
+  <span>
+    ${parsed.protein || "—"}
+  </span>
+</div>
 
-          <div>
-            <strong>Carbs</strong>
-            <span>
-              ${parsed.carbs || "—"}
-            </span>
-          </div>
+<div>
+  <strong>🍞 Carbs</strong>
+  <span>
+    ${parsed.carbs || "—"}
+  </span>
+</div>
 
-          <div>
-            <strong>Fat</strong>
-            <span>
-              ${parsed.fat || "—"}
-            </span>
-          </div>
-
+<div>
+  <strong>🥑 Fat</strong>
+  <span>
+    ${parsed.fat || "—"}
+  </span>
+</div>
         </div>
 
         <p class="feedback">
