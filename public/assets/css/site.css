@@ -321,10 +321,6 @@ textarea.goal-select{
   gap:14px;
   margin-top:24px;
 }
-.pantry-panel{
-  display:flex;
-  flex-direction:column;
-}
 /* =========================
    RANGE / SUMMARY CARDS
 ========================= */
@@ -708,31 +704,8 @@ body[data-theme="day"] .top-link{
 .grocery-card{
   margin-top:1rem;
 }
-.pantry-companion {
-  margin-top: 14px;
-}
 
-.pantry-btn {
-  width: 100%;
-}
 
-.pantry-panel {
-  margin-top: 12px;
-  padding: 14px;
-  border-radius: 18px;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-}
-
-.hidden {
-  display: none;
-}
-
-.pantry-copy {
-  margin: 0 0 12px;
-  font-size: 0.9rem;
-  opacity: 0.78;
-}
 
 .pantry-chips {
   display: flex;
@@ -803,26 +776,9 @@ body[data-theme="day"] .top-link{
   text-decoration: none;
 }
 
-.pantry-companion {
-  width: 100%;
-  margin: 22px 0 14px;
-}
 
-.pantry-btn {
-  min-height: 62px;
-}
 
-.pantry-panel {
-  margin-top: 14px;
-  padding: 16px;
-  border-radius: 22px;
-  background: rgba(255, 255, 255, 0.07);
-  border: 1px solid rgba(255, 255, 255, 0.16);
-}
 
-.hidden {
-  display: none;
-}
 
 .pantry-copy {
   margin: 0 0 12px;
@@ -883,8 +839,11 @@ body[data-theme="day"] .top-link{
 .pantry-btn{
   width:100%;
 }
-
 .pantry-panel{
+  display:flex;
+  flex-direction:column;
+  gap:1rem;
+
   padding:1rem;
 
   border-radius:20px;
@@ -892,7 +851,4 @@ body[data-theme="day"] .top-link{
   background:rgba(255,255,255,.05);
 
   border:1px solid rgba(255,255,255,.08);
-}
-.upload-half input{
-  display:none;
 }
