@@ -283,16 +283,7 @@ if (analyzeBtn) {
 
       }
 
-      const parsed =
-        typeof data.result === "string"
-          ? JSON.parse(
-              data.result
-                .replace(/```json/g, "")
-                .replace(/```/g, "")
-                .trim()
-            )
-          : data.result;
-
+const parsed = data.result;
 
       resultCard.innerHTML = `
         <h2>

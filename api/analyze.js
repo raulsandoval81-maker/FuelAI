@@ -104,15 +104,30 @@ Return ONLY valid JSON with this exact shape:
 
     const content = response.choices?.[0]?.message?.content;
 
+    let parsed;
+
+try {
+
+  parsed = JSON.parse(content);
+
+} catch {
+
+  return res.status(500).json({
+    error: "AI formatting failed"
+  });
+
+}
+
     if (!content) {
       return res.status(500).json({
         error: "No AI response returned",
       });
     }
 
-    return res.status(200).json({
-      result: content,
-    });
+
+return res.status(200).json({
+  result: parsed,
+});
 
   } catch (err) {
     console.error("ANALYZE ERROR:", err);
