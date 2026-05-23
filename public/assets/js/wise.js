@@ -787,9 +787,31 @@ const guideImage =
 
 if (guideImage && guideConfig) {
 
-guideImage.src =
-  currentAvatar === "female"
-    ? (guideConfig.female || guideConfig.male)
-    : (guideConfig.male || guideConfig.female);
+  const imagePath =
+    currentAvatar === "female"
+      ? (guideConfig.female || guideConfig.male)
+      : (guideConfig.male || guideConfig.female);
+
+  guideImage.onload = () => {
+
+    guideImage.classList.add(
+      "loaded"
+    );
+
+  };
+
+  guideImage.onerror = () => {
+
+    console.error(
+      "Guide image failed:",
+      imagePath
+    );
+
+  };
+
+  guideImage.src =
+    imagePath;
+
 }
+
 renderWise();
