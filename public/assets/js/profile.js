@@ -29,8 +29,8 @@ if (profileCard) {
 
       <div class="profile-avatar">
         ${setup.gender === "female"
-          ? "👩"
-          : "👨"}
+          ?  "♀"
+          :  "♂" }
       </div>
 
       <h2 class="profile-name">

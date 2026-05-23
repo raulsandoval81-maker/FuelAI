@@ -566,40 +566,34 @@ if (analyzeBtn) {
           });
 
           if (window.FuelAILog) {
+window.FuelAILog.addFuelLog({
+  type: "meal",
 
-            window.FuelAILog.addFuelLog({
+  calories:
+    Number(
+      String(parsed.calories).replace(/[^0-9]/g, "")
+    ) || 0,
 
-              type: "meal",
+  protein:
+    Number(
+      String(parsed.protein).replace(/[^0-9]/g, "")
+    ) || 0,
 
-              calories:
-                Number(
-                  String(
-                    parsed.calories
-                  ).replace(
-                    /[^0-9]/g,
-                    ""
-                  )
-                ) || 0,
+  carbs:
+    Number(
+      String(parsed.carbs).replace(/[^0-9]/g, "")
+    ) || 0,
 
-              protein:
-                Number(
-                  String(
-                    parsed.protein
-                  ).replace(
-                    /[^0-9]/g,
-                    ""
-                  )
-                ) || 0,
+  fats:
+    Number(
+      String(parsed.fat || parsed.fats).replace(/[^0-9]/g, "")
+    ) || 0,
 
-              goal:
-                setup.goal ||
-                "fuelwise",
+  goal:
+    setup.goal || "fuelwise",
 
-              source:
-                "meal-scan"
-
-            });
-
+  source: "meal-scan"
+});
           }
 
           const commitActions =
