@@ -211,40 +211,35 @@ if (goalTargetOutput) {
   `;
 
 }
+
 todayOutput.innerHTML = `
- 🔥 Calories logged:
+  🔥 Calories logged:
   ${summary.caloriesToday || 0}
 
- <br><br>
+  <br><br>
 
- 🥩 Protein logged:
+  🥩 Protein logged:
   ${summary.proteinToday || 0}g
 
- <br><br>
+  <br><br>
 
- 💧 Water logged:
+  💧 Water logged:
   ${summary.waterToday || 0} oz
 
- <br><br>
+  <br><br>
 
- 🏋️ Training:
+  🏋️ Training:
   ${summary.trainingToday ? "Logged" : "Not logged"}
 
- <br><br>
+  <br><br>
 
- ⚖️ Daily Weight Log:
- ${
-   summary.today?.latestWeight
-     ? `${summary.today.latestWeight} lbs`
-     : "Not logged"
- }
-
- <br><br>
-
- 📅 90-day days tracked:
- ${summary.totalDays || 0}
+  ⚖️ Daily Weight Log:
+  ${
+    summary.today?.latestWeight
+      ? "Logged"
+      : "Not logged"
+  }
 `;
-
 if (addTrainingBtn) {
     addTrainingBtn.classList.toggle(
       "hidden",
