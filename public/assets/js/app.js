@@ -716,19 +716,12 @@ if (analyzeBtn) {
               analyzeBtn.textContent =
                 "Scan Meal";
 
-              scanMode =
-                "prescan";
+                resetMealScan();
 
             }
           );
 
         }
-
-        analyzeBtn.textContent =
-  "Pre-Scan Another Meal";
-
-analyzeBtn.onclick =
-  resetMealScan;
 
 
       }
