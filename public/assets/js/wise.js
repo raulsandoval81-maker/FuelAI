@@ -460,12 +460,15 @@ function generateWiseReply(question, summary) {
   }
 
   if (
-  lower.includes("snack") ||
-  lower.includes("between meals")
-) {
+     lower.includes("snack") ||
+  lower.includes("between meal") ||
+  lower.includes("hungry") ||
+  lower.includes("quick bite")
+) 
+   {
   return getFlavorLine({
-    sweetspot:
-      "A good snack is protein plus fiber or carbs. Try Greek yogurt and berries, apple with peanut butter, turkey roll-ups, eggs and toast, or a protein shake with a banana.",
+sweetspot:
+  "Try something simple: Greek yogurt and berries, apple with peanut butter, turkey roll-ups, eggs and toast, or a shake and banana.",
     toughguy:
       "Snack smart: protein first, then fruit or carbs. Greek yogurt, eggs, turkey roll-ups, or a shake and banana. Simple.",
     mafia:
