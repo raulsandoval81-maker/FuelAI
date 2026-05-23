@@ -763,13 +763,12 @@ setTimeout(() => {
 /* =========================
    CHARACTER FACE
 ========================= */
-
 const currentGuide =
-  localStorage.getItem("fuelai-guide") || "sweetspot";
+  setup.wiseFlavor || "sweetspot";
 
 const currentAvatar =
-  localStorage.getItem("fuelai-avatar") || "male";
-
+  setup.gender || setup.genderType || "male";
+  
 const guideConfig =
   window.GUIDES?.[currentGuide] ||
   window.GUIDES?.sweetspot;
