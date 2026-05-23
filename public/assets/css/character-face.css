@@ -1,0 +1,96 @@
+.character-face{
+  width:96px;
+  height:96px;
+
+  margin:
+    0 auto 1rem;
+
+  border-radius:50%;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  position:relative;
+
+  overflow:hidden;
+
+  border:
+    2px solid rgba(255,255,255,.14);
+
+  background:
+    radial-gradient(
+      circle at top,
+      rgba(255,255,255,.14),
+      rgba(255,255,255,.04)
+    );
+}
+
+.character-face::before{
+  content:"";
+
+  width:58px;
+  height:58px;
+
+  border-radius:50%;
+
+  background:#0f172a;
+
+  position:absolute;
+  top:16px;
+}
+
+.character-face::after{
+  content:"";
+
+  width:74px;
+  height:46px;
+
+  border-radius:
+    40px 40px 12px 12px;
+
+  background:#0f172a;
+
+  position:absolute;
+  bottom:10px;
+}
+
+/* SWEET SPOT */
+
+.character-face.sweetspot{
+  box-shadow:
+    0 0 30px rgba(96,165,250,.18);
+
+  border-color:
+    rgba(96,165,250,.35);
+}
+
+/* MAFIA */
+
+.character-face.mafia{
+  box-shadow:
+    0 0 30px rgba(220,38,38,.18);
+
+  border-color:
+    rgba(220,38,38,.35);
+}
+
+/* TOUGH GUY */
+
+.character-face.toughguy{
+  box-shadow:
+    0 0 30px rgba(249,115,22,.18);
+
+  border-color:
+    rgba(249,115,22,.35);
+}
+
+/* INTERNET */
+
+.character-face.internet{
+  box-shadow:
+    0 0 30px rgba(139,92,246,.18);
+
+  border-color:
+    rgba(139,92,246,.35);
+}
