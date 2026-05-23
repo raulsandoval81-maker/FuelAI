@@ -23,14 +23,41 @@ function applyCharacterFlavor(target) {
   const flavor =
     getCharacterFlavor();
 
-  target.classList.remove(
-    "sweetspot",
-    "mafia",
-    "toughguy",
-    "internet"
-  );
+  target.className =
+    "character-face";
 
-  target.classList.add(flavor);
+  target.innerHTML = `
+    <div class="face-head"></div>
+    <div class="face-body"></div>
+  `;
+
+  if (flavor === "mafia") {
+
+    target.classList.add("mafia");
+
+    target.innerHTML += `
+      <span class="hat"></span>
+    `;
+
+  }
+
+  else if (flavor === "toughguy") {
+
+    target.classList.add("toughguy");
+
+  }
+
+  else if (flavor === "internet") {
+
+    target.classList.add("internet");
+
+  }
+
+  else {
+
+    target.classList.add("sweetspot");
+
+  }
 
 }
 
@@ -40,11 +67,6 @@ function renderCharacterFace(targetId) {
     document.getElementById(targetId);
 
   if (!target) return;
-
-  target.innerHTML = `
-    <div class="face-head"></div>
-    <div class="face-body"></div>
-  `;
 
   applyCharacterFlavor(target);
 

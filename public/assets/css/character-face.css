@@ -14,18 +14,9 @@
   position:relative;
   border-radius:50%;
   overflow:hidden;
-
-  background:radial-gradient(
-    circle at 50% 35%,
-    rgba(255,255,255,.35),
-    rgba(255,255,255,.08)
-  );
-
+  background:radial-gradient(circle at 50% 35%, rgba(255,255,255,.35), rgba(255,255,255,.08));
   border:3px solid rgba(255,255,255,.35);
-
-  box-shadow:
-    0 10px 30px rgba(0,0,0,.25),
-    inset 0 0 25px rgba(255,255,255,.08);
+  box-shadow:0 10px 30px rgba(0,0,0,.25), inset 0 0 25px rgba(255,255,255,.08);
 }
 
 .face-head{
@@ -34,9 +25,10 @@
   height:42px;
   border-radius:50%;
   background:#061224;
-  top:28px;
+  top:30px;
   left:50%;
   transform:translateX(-50%);
+  z-index:2;
 }
 
 .face-body{
@@ -48,26 +40,74 @@
   bottom:-2px;
   left:50%;
   transform:translateX(-50%);
+  z-index:1;
 }
 
 .character-face.sweetspot{
-  border-color:rgba(96,165,250,.45);
-  box-shadow:0 10px 30px rgba(96,165,250,.22);
+  border-color:rgba(96,165,250,.55);
+  box-shadow:0 10px 30px rgba(96,165,250,.3);
 }
 
 .character-face.mafia{
-  border-color:rgba(220,38,38,.45);
-  box-shadow:0 10px 30px rgba(220,38,38,.22);
+  border-color:rgba(220,38,38,.6);
+  box-shadow:0 10px 30px rgba(220,38,38,.34);
+}
+
+.character-face.mafia .hat{
+  position:absolute;
+  width:74px;
+  height:12px;
+  background:#061224;
+  top:31px;
+  left:50%;
+  transform:translateX(-50%) rotate(-4deg);
+  border-radius:999px;
+  z-index:4;
+}
+
+.character-face.mafia .hat::before{
+  content:"";
+  position:absolute;
+  width:42px;
+  height:24px;
+  background:#061224;
+  top:-17px;
+  left:50%;
+  transform:translateX(-50%);
+  border-radius:10px 10px 4px 4px;
 }
 
 .character-face.toughguy{
-  border-color:rgba(249,115,22,.45);
-  box-shadow:0 10px 30px rgba(249,115,22,.22);
+  border-color:rgba(249,115,22,.6);
+  box-shadow:0 10px 30px rgba(249,115,22,.34);
+}
+
+.character-face.toughguy .face-body{
+  width:88px;
+  height:52px;
+}
+
+.character-face.toughguy .face-head{
+  width:40px;
+  height:40px;
+  top:30px;
 }
 
 .character-face.internet{
-  border-color:rgba(139,92,246,.45);
-  box-shadow:0 10px 30px rgba(139,92,246,.22);
+  border-color:rgba(139,92,246,.6);
+  box-shadow:0 10px 30px rgba(139,92,246,.34);
+}
+
+.character-face.internet .face-head::before{
+  content:"";
+  position:absolute;
+  width:54px;
+  height:20px;
+  background:#061224;
+  top:-8px;
+  left:50%;
+  transform:translateX(-50%) rotate(-8deg);
+  border-radius:60% 40% 45% 55%;
 }
 
 .guide-chat-box{
