@@ -14,9 +14,19 @@
   position:relative;
   border-radius:50%;
   overflow:hidden;
-  background:radial-gradient(circle at 50% 35%, rgba(255,255,255,.34), rgba(255,255,255,.06));
+
+  background:
+    radial-gradient(
+      circle at 50% 35%,
+      rgba(255,255,255,.34),
+      rgba(255,255,255,.06)
+    );
+
   border:3px solid rgba(255,255,255,.35);
-  box-shadow:0 10px 30px rgba(0,0,0,.25), inset 0 0 25px rgba(255,255,255,.08);
+
+  box-shadow:
+    0 10px 30px rgba(0,0,0,.25),
+    inset 0 0 25px rgba(255,255,255,.08);
 }
 
 .face-glow,
@@ -33,32 +43,46 @@
 .face-head{
   width:38px;
   height:44px;
+
   border-radius:50%;
+
   background:#061224;
+
   top:31px;
   left:50%;
+
   transform:translateX(-50%);
+
   z-index:4;
 }
 
 .face-neck{
   width:20px;
   height:20px;
+
   background:#061224;
+
   top:67px;
   left:50%;
+
   transform:translateX(-50%);
+
   z-index:3;
 }
 
 .face-body{
   width:82px;
   height:48px;
+
   border-radius:48px 48px 0 0;
+
   background:#061224;
+
   bottom:-3px;
   left:50%;
+
   transform:translateX(-50%);
+
   z-index:2;
 }
 
@@ -70,85 +94,162 @@
 }
 
 /* SWEET SPOT */
+
 .character-face.sweetspot{
   border-color:rgba(96,165,250,.6);
-  box-shadow:0 10px 32px rgba(96,165,250,.32);
+
+  box-shadow:
+    0 10px 32px rgba(96,165,250,.32);
 }
 
 .character-face.sweetspot .face-hat{
   display:block;
-  width:58px;
-  height:16px;
+
+  width:62px;
+  height:18px;
+
   background:#061224;
-  top:29px;
+
+  top:27px;
   left:50%;
-  transform:translateX(-50%) rotate(-8deg);
-  border-radius:60% 45% 35% 35%;
+
+  transform:
+    translateX(-50%)
+    rotate(-10deg);
+
+  border-radius:
+    60% 50% 40% 40%;
+
   z-index:6;
 }
 
-.character-face.sweetspot .face-hat::after{
+.character-face.sweetspot .face-hat::before{
   content:"";
+
   position:absolute;
-  width:36px;
-  height:8px;
+
+  width:42px;
+  height:10px;
+
   background:#061224;
-  right:-24px;
-  top:8px;
+
+  bottom:-2px;
+  right:-22px;
+
   border-radius:999px;
 }
 
+.character-face.sweetspot .face-collar{
+  display:block;
+
+  width:72px;
+  height:34px;
+
+  background:#061224;
+
+  bottom:2px;
+  left:50%;
+
+  transform:translateX(-50%);
+
+  border-radius:28px 28px 0 0;
+
+  z-index:5;
+}
+
 /* MAFIA */
+
 .character-face.mafia{
   border-color:rgba(220,38,38,.68);
-  box-shadow:0 10px 34px rgba(220,38,38,.38);
+
+  box-shadow:
+    0 10px 34px rgba(220,38,38,.38);
+}
+
+.character-face.mafia .face-head{
+  transform:
+    translateX(-50%)
+    rotate(-2deg);
 }
 
 .character-face.mafia .face-hat{
   display:block;
+
   width:78px;
   height:12px;
+
   background:#061224;
+
   top:32px;
   left:50%;
-  transform:translateX(-50%) rotate(-4deg);
+
+  transform:
+    translateX(-50%)
+    rotate(-4deg);
+
   border-radius:999px;
+
   z-index:7;
 }
 
 .character-face.mafia .face-hat::before{
   content:"";
+
   position:absolute;
+
   width:44px;
   height:25px;
+
   background:#061224;
+
   top:-18px;
   left:50%;
+
   transform:translateX(-50%);
-  border-radius:12px 12px 5px 5px;
+
+  border-radius:
+    12px 12px 5px 5px;
 }
 
 .character-face.mafia .face-collar{
   display:block;
-  width:92px;
-  height:38px;
+
+  width:98px;
+  height:42px;
+
   background:#061224;
-  bottom:-4px;
+
+  bottom:-5px;
   left:50%;
+
   transform:translateX(-50%);
-  clip-path:polygon(0 100%, 16% 18%, 38% 55%, 50% 22%, 62% 55%, 84% 18%, 100% 100%);
+
+  clip-path:polygon(
+    0 100%,
+    12% 10%,
+    36% 58%,
+    50% 18%,
+    64% 58%,
+    88% 10%,
+    100% 100%
+  );
+
   z-index:5;
 }
 
 /* TOUGH GUY */
+
 .character-face.toughguy{
   border-color:rgba(249,115,22,.68);
-  box-shadow:0 10px 34px rgba(249,115,22,.38);
+
+  box-shadow:
+    0 10px 34px rgba(249,115,22,.38);
 }
 
 .character-face.toughguy .face-head{
   width:42px;
   height:42px;
+
   top:31px;
 }
 
@@ -160,84 +261,124 @@
 .character-face.toughguy .face-body{
   width:98px;
   height:54px;
+
   border-radius:55px 55px 0 0;
+}
+
+.character-face.toughguy .face-hat{
+  display:block;
+
+  width:76px;
+  height:36px;
+
+  background:#061224;
+
+  top:20px;
+  left:50%;
+
+  transform:translateX(-50%);
+
+  border-radius:
+    40px 40px 18px 18px;
+
+  z-index:3;
 }
 
 .character-face.toughguy .face-collar{
   display:block;
+
   width:86px;
   height:30px;
+
   background:#061224;
+
   bottom:4px;
   left:50%;
+
   transform:translateX(-50%);
-  clip-path:polygon(0 100%, 24% 0, 50% 45%, 76% 0, 100% 100%);
+
+  clip-path:polygon(
+    0 100%,
+    24% 0,
+    50% 45%,
+    76% 0,
+    100% 100%
+  );
+
   z-index:5;
 }
 
 /* INTERNET */
+
 .character-face.internet{
   border-color:rgba(139,92,246,.68);
-  box-shadow:0 10px 34px rgba(139,92,246,.38);
+
+  box-shadow:
+    0 10px 34px rgba(139,92,246,.38);
 }
 
 .character-face.internet .face-hair{
   display:block;
-  width:64px;
-  height:28px;
+
+  width:66px;
+  height:32px;
+
   background:#061224;
-  top:22px;
+
+  top:18px;
   left:50%;
-  transform:translateX(-50%) rotate(-6deg);
-  border-radius:60% 45% 55% 40%;
+
+  transform:
+    translateX(-50%)
+    rotate(-8deg);
+
+  clip-path:polygon(
+    0 100%,
+    8% 30%,
+    18% 55%,
+    28% 12%,
+    40% 48%,
+    55% 0,
+    72% 42%,
+    88% 18%,
+    100% 100%
+  );
+
   z-index:6;
-}
-
-.character-face.internet .face-hair::before{
-  content:"";
-  position:absolute;
-  width:18px;
-  height:22px;
-  background:#061224;
-  left:2px;
-  top:-2px;
-  transform:rotate(-32deg);
-  border-radius:12px 12px 2px 12px;
-}
-
-.character-face.internet .face-hair::after{
-  content:"";
-  position:absolute;
-  width:20px;
-  height:22px;
-  background:#061224;
-  right:0;
-  top:-3px;
-  transform:rotate(32deg);
-  border-radius:12px 12px 12px 2px;
 }
 
 .character-face.internet .face-headphones{
   display:block;
+
   width:70px;
   height:48px;
+
   top:31px;
   left:50%;
+
   transform:translateX(-50%);
+
   border:5px solid #061224;
   border-bottom:none;
+
   border-radius:40px 40px 0 0;
+
   z-index:5;
 }
 
 .character-face.internet .face-headphones::before,
 .character-face.internet .face-headphones::after{
   content:"";
+
   position:absolute;
+
   width:10px;
   height:24px;
+
   background:#061224;
+
   top:26px;
+
   border-radius:8px;
 }
 
