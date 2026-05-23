@@ -904,8 +904,9 @@ body[data-theme="day"] .top-link{
 
   text-decoration:none;
 }
+
 .profile-avatar{
-  font-size:4rem !important;
+  font-size:2.5rem !important;
   line-height:1;
-  margin-bottom:0.75rem;
+  margin-bottom:0.5rem;
 }
