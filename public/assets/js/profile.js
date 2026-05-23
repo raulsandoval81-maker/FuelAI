@@ -27,15 +27,17 @@ if (profileCard) {
 
     <div class="profile-header">
 
+          <h2 class="profile-name">
+        ${setup.nickname || "Your Profile"}
+      </h2>
+
+
       <div class="profile-avatar">
         ${setup.gender === "female"
           ?  "♀"
           :  "♂" }
       </div>
 
-      <h2 class="profile-name">
-        ${setup.nickname || "Your Profile"}
-      </h2>
 
       <p class="profile-goal">
         ${displayGoal[setup.goal] || "FuelWise"}
