@@ -619,5 +619,12 @@ if (sendWiseChatBtn) {
     wiseChatInput.value = "";
   });
 }
+/* =========================
+   CHARACTER FACE
+========================= */
+
+window.FuelAICharacter?.renderCharacterFace(
+  "characterFace"
+);
 
 renderWise();
