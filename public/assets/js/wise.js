@@ -768,7 +768,7 @@ const currentGuide =
 
 const currentAvatar =
   setup.gender || setup.genderType || "male";
-  
+
 const guideConfig =
   window.GUIDES?.[currentGuide] ||
   window.GUIDES?.sweetspot;
@@ -787,10 +787,9 @@ const guideImage =
 
 if (guideImage && guideConfig) {
 
-  guideImage.src =
-    currentAvatar === "female"
-      ? guideConfig.female
-      : guideConfig.male;
-
+guideImage.src =
+  currentAvatar === "female"
+    ? (guideConfig.female || guideConfig.male)
+    : (guideConfig.male || guideConfig.female);
 }
 renderWise();
