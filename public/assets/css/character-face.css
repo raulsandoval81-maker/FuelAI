@@ -490,4 +490,25 @@
 
 .character-face.sweetspot{
   animation-duration:4.4s;
+}.character-face.is-listening{
+  transform:scale(1.03);
+  filter:brightness(1.1);
+}
+
+.character-face.is-listening .face-glow{
+  opacity:.45;
+}
+
+.character-face.is-thinking{
+  animation:guideThinking 1.2s ease-in-out infinite;
+}
+
+@keyframes guideThinking{
+  0%,100%{
+    transform:translateY(0) rotate(0deg);
+  }
+
+  50%{
+    transform:translateY(-2px) rotate(1deg);
+  }
 }

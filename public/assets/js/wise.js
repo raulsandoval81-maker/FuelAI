@@ -47,6 +47,35 @@ const wiseChatInput =
 const sendWiseChatBtn =
   document.getElementById("sendWiseChatBtn");
 
+const characterFace =
+  document.getElementById("characterFace");
+
+if (wiseChatInput && characterFace) {
+
+  wiseChatInput.addEventListener(
+    "focus",
+    () => {
+
+      characterFace.classList.add(
+        "is-listening"
+      );
+
+    }
+  );
+
+  wiseChatInput.addEventListener(
+    "blur",
+    () => {
+
+      characterFace.classList.remove(
+        "is-listening"
+      );
+
+    }
+  );
+
+}
+
 const wiseChatReply =
   document.getElementById("wiseChatReply");
 
@@ -609,12 +638,23 @@ if (sendWiseChatBtn) {
       wiseChatInput.value.trim();
 
     if (!question) return;
+    characterFace?.classList.add(
+  "is-thinking"
+);
 
     const summary =
       window.FuelAILog.getFuelSummary();
 
     wiseChatReply.textContent =
       generateWiseReply(question, summary);
+
+      setTimeout(() => {
+
+  characterFace?.classList.remove(
+    "is-thinking"
+  );
+
+}, 700);
 
     wiseChatInput.value = "";
   });
