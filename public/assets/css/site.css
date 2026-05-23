@@ -884,3 +884,23 @@ body[data-theme="day"] .top-link{
 
   text-align:center;
 }
+
+.profile-links{
+  display:flex;
+  flex-direction:column;
+
+  gap:14px;
+
+  margin-top:1.75rem;
+  padding-bottom:1rem;
+}
+
+.profile-links .secondary-btn{
+  width:100%;
+
+  padding:1rem 1.2rem;
+
+  border-radius:18px;
+
+  text-decoration:none;
+}
