@@ -443,3 +443,51 @@
 .character-face.wisegal.toughguy .face-hat{
   border-radius:46px 46px 22px 22px;
 }
+.character-face{
+  animation:guideBreath 4s ease-in-out infinite;
+}
+
+@keyframes guideBreath{
+  0%,100%{
+    transform:translateY(0);
+  }
+
+  50%{
+    transform:translateY(-2px);
+  }
+}
+
+.character-face .face-glow{
+  width:100%;
+  height:100%;
+  inset:0;
+  border-radius:50%;
+  opacity:.28;
+  animation:guidePulse 3.5s ease-in-out infinite;
+}
+
+@keyframes guidePulse{
+  0%,100%{
+    box-shadow:inset 0 0 18px rgba(255,255,255,.08);
+  }
+
+  50%{
+    box-shadow:inset 0 0 28px rgba(255,255,255,.18);
+  }
+}
+
+.character-face.mafia{
+  animation-duration:4.8s;
+}
+
+.character-face.toughguy{
+  animation-duration:3.6s;
+}
+
+.character-face.internet{
+  animation-duration:2.8s;
+}
+
+.character-face.sweetspot{
+  animation-duration:4.4s;
+}
