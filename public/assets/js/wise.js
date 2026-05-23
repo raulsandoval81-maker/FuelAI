@@ -783,19 +783,15 @@ if (guideConfig) {
 
 }
 
-window.FuelAICharacter?.renderCharacterFace(
-  "characterFace"
-);
-
 const guideImage =
   document.getElementById("guideImage");
 
 if (guideImage && guideConfig) {
 
   guideImage.src =
-    guideConfig[currentAvatar] ||
-    guideConfig.male;
+    currentAvatar === "female"
+      ? guideConfig.female
+      : guideConfig.male;
 
 }
-
 renderWise();
