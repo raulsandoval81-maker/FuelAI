@@ -90,6 +90,21 @@ function buildDailyLogForDate(dateKey) {
       return sum + Number(entry.calories || 0);
     }, 0);
 
+  const protein =
+    logs.reduce((sum, entry) => {
+      return sum + Number(entry.protein || 0);
+    }, 0);
+
+  const carbs =
+    logs.reduce((sum, entry) => {
+      return sum + Number(entry.carbs || 0);
+    }, 0);
+
+  const fats =
+    logs.reduce((sum, entry) => {
+      return sum + Number(entry.fats || 0);
+    }, 0);
+
   const water =
     logs.reduce((sum, entry) => {
       return sum + Number(entry.water || 0);
@@ -119,6 +134,9 @@ function buildDailyLogForDate(dateKey) {
     wiseFlavor: setup.wiseFlavor || "sweetspot",
     activityLevel: setup.activityLevel || "low",
     calories,
+    protein,
+    carbs,
+    fats,
     water,
     trainingCount,
     latestWeight,
@@ -172,6 +190,9 @@ function getFuelSummary() {
   return {
     totalDays: allDays.length,
     caloriesToday: today.calories || 0,
+    proteinToday: today.protein || 0,
+    carbsToday: today.carbs || 0,
+    fatsToday: today.fats || 0,
     waterToday: today.water || 0,
     trainingToday: today.trainingCount > 0,
     todayCount: today.totalEntries || 0,
