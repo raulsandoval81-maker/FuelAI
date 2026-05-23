@@ -120,7 +120,7 @@ function handleFoodFile(file) {
         );
 
         analyzeBtn.textContent =
-          "Pre-Scan Meal";
+          "Scan Meal";
       }
 
       if (scanMealBtn) {
@@ -684,7 +684,7 @@ if (analyzeBtn) {
               );
 
               analyzeBtn.textContent =
-                "Pre-Scan Meal";
+                "Scan Meal";
 
               scanMode =
                 "prescan";
