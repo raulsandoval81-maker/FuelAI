@@ -9,11 +9,6 @@ const setup =
     localStorage.getItem("fuelai-setup") || "{}"
   );
 
-const scans =
-  JSON.parse(
-    localStorage.getItem("fuelai-history") || "[]"
-  );
-
 function getMacroTargets() {
 
   const weight =
@@ -59,32 +54,30 @@ function getMacroTargets() {
 
 function getMacroProgress() {
 
-  let calories = 0;
-  let protein = 0;
-  let carbs = 0;
-  let fats = 0;
+  if (!window.FuelAILog) {
+    return {
+      calories: 0,
+      protein: 0,
+      carbs: 0,
+      fats: 0
+    };
+  }
 
-  scans.forEach(scan => {
-
-    calories +=
-      Number(scan.calories || 0);
-
-    protein +=
-      Number(scan.protein) || 0;
-
-    carbs +=
-      Number(scan.carbs) || 0;
-
-    fats +=
-      Number(scan.fats) || 0;
-
-  });
+  const summary =
+    window.FuelAILog.getFuelSummary();
 
   return {
-    calories,
-    protein,
-    carbs,
-    fats
+    calories:
+      summary.caloriesToday || 0,
+
+    protein:
+      summary.proteinToday || 0,
+
+    carbs:
+      summary.carbsToday || 0,
+
+    fats:
+      summary.fatsToday || 0
   };
 
 }
