@@ -732,8 +732,8 @@ setTimeout(() => {
     "is-thinking"
   );
 
-}, 1200);
-    wiseChatInput.value = "";
+}, 900 + Math.random() * 700);
+  wiseChatInput.value = "";
   });
 }
 /* =========================
