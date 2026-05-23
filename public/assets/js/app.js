@@ -36,21 +36,60 @@ const setup =
     localStorage.getItem("fuelai-setup") || "{}"
   );
 
+  function resetMealScan() {
+
+  selectedImageBase64 =
+    null;
+
+  if (previewImage) {
+    previewImage.src = "";
+    previewImage.classList.add("hidden");
+  }
+
+  if (foodInput) {
+    foodInput.value = "";
+  }
+
+  if (foodUploadInput) {
+    foodUploadInput.value = "";
+  }
+
+  if (extraIngredients) {
+    extraIngredients.value = "";
+  }
+
+  uploadBox?.classList.remove("hidden");
+  resultCard?.classList.add("hidden");
+  loadingCard?.classList.add("hidden");
+
+  if (analyzeBtn) {
+    analyzeBtn.textContent = "Scan Meal";
+    analyzeBtn.classList.add("hidden");
+  }
+}
+
 function handleFoodFile(file) {
 
   if (!file) return;
 
-  const img = new Image();
-  const reader = new FileReader();
+  const img =
+    new Image();
+
+  const reader =
+    new FileReader();
 
   reader.onload = () => {
 
     img.onload = () => {
 
-      const maxSize = 1200;
+      const maxSize =
+        1200;
 
-      let width = img.width;
-      let height = img.height;
+      let width =
+        img.width;
+
+      let height =
+        img.height;
 
       if (
         width > height &&
@@ -62,26 +101,33 @@ function handleFoodFile(file) {
             (height * maxSize) / width
           );
 
-        width = maxSize;
+        width =
+          maxSize;
 
       }
 
-      else if (height > maxSize) {
+      else if (
+        height > maxSize
+      ) {
 
         width =
           Math.round(
             (width * maxSize) / height
           );
 
-        height = maxSize;
+        height =
+          maxSize;
 
       }
 
       const canvas =
         document.createElement("canvas");
 
-      canvas.width = width;
-      canvas.height = height;
+      canvas.width =
+        width;
+
+      canvas.height =
+        height;
 
       const ctx =
         canvas.getContext("2d");
@@ -107,11 +153,17 @@ function handleFoodFile(file) {
         "hidden"
       );
 
-      if (uploadBox) {
-        uploadBox.classList.add(
-          "hidden"
-        );
-      }
+      uploadBox?.classList.add(
+        "hidden"
+      );
+
+      resultCard?.classList.add(
+        "hidden"
+      );
+
+      loadingCard?.classList.add(
+        "hidden"
+      );
 
       if (analyzeBtn) {
 
@@ -121,29 +173,19 @@ function handleFoodFile(file) {
 
         analyzeBtn.textContent =
           "Scan Meal";
+
       }
-
-      if (scanMealBtn) {
-        scanMealBtn.classList.remove(
-          "hidden"
-        );
-      }
-
-      resultCard.classList.add(
-        "hidden"
-      );
-
-      loadingCard.classList.add(
-        "hidden"
-      );
 
     };
 
-    img.src = reader.result;
+    img.src =
+      reader.result;
 
   };
 
-  reader.readAsDataURL(file);
+  reader.readAsDataURL(
+    file
+  );
 
 }
 
@@ -177,20 +219,6 @@ if (foodUploadInput) {
 
 }
 
-if (scanMealBtn) {
-
-  scanMealBtn.addEventListener(
-    "click",
-    () => {
-
-      scanMode = "scan";
-
-      analyzeBtn.click();
-
-    }
-  );
-
-}
 
 function saveScan(scan) {
 
@@ -273,7 +301,7 @@ if (analyzeBtn) {
         "Analyzing...";
 
       if (scanMealBtn) {
-        scanMealBtn.disabled = true;
+        scanMealBtn.disabled = false;
       }
 
       resultCard.classList.add(
@@ -384,6 +412,8 @@ if (analyzeBtn) {
           data.result;
 
         resultCard.innerHTML = `
+
+        
 
           <h2>
             ${
@@ -695,7 +725,11 @@ if (analyzeBtn) {
         }
 
         analyzeBtn.textContent =
-          "Pre-Scan Another Meal";
+  "Pre-Scan Another Meal";
+
+analyzeBtn.onclick =
+  resetMealScan;
+
 
       }
 
