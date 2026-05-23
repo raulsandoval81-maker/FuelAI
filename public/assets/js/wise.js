@@ -429,6 +429,28 @@ function generateWiseReply(question, summary) {
     });
   }
 
+  if (
+  lastQuestion &&
+  lower.includes("what about")
+) {
+
+  return getFlavorLine({
+
+    sweetspot:
+      "That could work too. The bigger goal is choosing something balanced you can stay consistent with.",
+
+    toughguy:
+      "Still solid. Don’t get stuck over-optimizing food choices.",
+
+    mafia:
+      "Yeah, that works too. Dinner doesn’t need a committee meeting.",
+
+    internet:
+      "Honestly still fine. Your meal doesn’t need patch notes."
+  });
+
+}
+
   if (lower.includes("water")) {
     if (summary.waterToday < 32) {
       return getFlavorLine({
@@ -733,6 +755,8 @@ setTimeout(() => {
   );
 
 }, 900 + Math.random() * 700);
+
+  lastQuestion = question;
   wiseChatInput.value = "";
   });
 }
