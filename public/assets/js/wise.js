@@ -260,7 +260,35 @@ ${
       ? "WiseGalAI"
       : "WiseGuyAI";
   }
+characterFace?.classList.remove(
+  "state-alert",
+  "state-calm",
+  "state-focused"
+);
 
+if (summary.waterToday < 32) {
+
+  characterFace?.classList.add(
+    "state-alert"
+  );
+
+}
+
+else if (summary.trainingToday) {
+
+  characterFace?.classList.add(
+    "state-focused"
+  );
+
+}
+
+else {
+
+  characterFace?.classList.add(
+    "state-calm"
+  );
+
+}
   wiseAdvice.textContent =
     getAdvice(summary);
 }

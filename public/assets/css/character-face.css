@@ -518,3 +518,31 @@
     transform:translateY(-5px) rotate(2deg) scale(1.08);
   }
 }
+/* =========================
+   GUIDE STATES
+========================= */
+
+.character-face.state-alert{
+  filter:saturate(.9) brightness(.92);
+}
+
+.character-face.state-alert .face-glow{
+  opacity:.18;
+}
+
+.character-face.state-focused{
+  transform:translateY(-2px);
+  filter:brightness(1.08);
+}
+
+.character-face.state-focused .face-glow{
+  opacity:.42;
+}
+
+.character-face.state-calm{
+  opacity:.94;
+}
+
+.character-face.state-calm .face-glow{
+  opacity:.24;
+}
