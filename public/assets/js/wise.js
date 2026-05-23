@@ -645,17 +645,19 @@ if (sendWiseChatBtn) {
     const summary =
       window.FuelAILog.getFuelSummary();
 
-    wiseChatReply.textContent =
-      generateWiseReply(question, summary);
+wiseChatReply.textContent =
+  "Thinking...";
 
-      setTimeout(() => {
+setTimeout(() => {
+
+  wiseChatReply.textContent =
+    generateWiseReply(question, summary);
 
   characterFace?.classList.remove(
     "is-thinking"
   );
 
-}, 700);
-
+}, 1200);
     wiseChatInput.value = "";
   });
 }
