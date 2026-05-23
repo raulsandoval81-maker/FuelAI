@@ -27,17 +27,19 @@ function applyCharacterFlavor(target) {
     "character-face";
 
   target.innerHTML = `
+    <div class="face-glow"></div>
+    <div class="face-hair"></div>
+    <div class="face-hat"></div>
+    <div class="face-headphones"></div>
     <div class="face-head"></div>
+    <div class="face-neck"></div>
     <div class="face-body"></div>
+    <div class="face-collar"></div>
   `;
 
   if (flavor === "mafia") {
 
     target.classList.add("mafia");
-
-    target.innerHTML += `
-      <span class="hat"></span>
-    `;
 
   }
 
