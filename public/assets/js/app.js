@@ -652,39 +652,34 @@ window.FuelAILog.addFuelLog({
 
               if (window.FuelAILog) {
 
-                window.FuelAILog.addFuelLog({
+window.FuelAILog.addFuelLog({
+  type: "meal",
 
-                  type: "meal",
+  calories:
+    Number(
+      String(parsed.calories).replace(/[^0-9]/g, "")
+    ) || 0,
 
-                  calories:
-                    Number(
-                      String(
-                        parsed.calories
-                      ).replace(
-                        /[^0-9]/g,
-                        ""
-                      )
-                    ) || 0,
+  protein:
+    Number(
+      String(parsed.protein).replace(/[^0-9]/g, "")
+    ) || 0,
 
-                  protein:
-                    Number(
-                      String(
-                        parsed.protein
-                      ).replace(
-                        /[^0-9]/g,
-                        ""
-                      )
-                    ) || 0,
+  carbs:
+    Number(
+      String(parsed.carbs).replace(/[^0-9]/g, "")
+    ) || 0,
 
-                  goal:
-                    setup.goal ||
-                    "fuelwise",
+  fats:
+    Number(
+      String(parsed.fat || parsed.fats).replace(/[^0-9]/g, "")
+    ) || 0,
 
-                  source:
-                    "meal-scan"
+  goal:
+    setup.goal || "fuelwise",
 
-                });
-
+  source: "meal-scan"
+});
               }
 
               commitMealBtn.textContent =
