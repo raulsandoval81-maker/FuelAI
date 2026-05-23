@@ -27,118 +27,76 @@
 
     <section class="scan-card">
 
-      <p
-        id="wiseSub"
-        class="sub"
-      >
+      <p id="wiseSub" class="sub">
         Your daily food, water, and training check-in.
       </p>
 
       <section class="range-card">
-
-        <p class="range-label">
-          Current Plan
-        </p>
-
-        <p
-          id="planOutput"
-          class="range-output"
-        >
-          Loading...
-        </p>
-
+        <p class="range-label">Current Plan</p>
+        <p id="planOutput" class="range-output">Loading...</p>
       </section>
 
-      <section class="range-card">
+      <div class="wise-links">
 
-        <p class="range-label">
-          Goal Target
-        </p>
+        <a class="secondary-btn" href="/app.html">
+          🍽️ Scan Meal
+        </a>
 
-        <p
-          id="goalTargetOutput"
-          class="range-output"
-        >
-          Loading targets...
-        </p>
-
-      </section>
-
-      <section class="range-card">
-
-        <p class="range-label">
-          Today
-        </p>
-
-        <p
-          id="todayOutput"
-          class="range-output"
-        >
-          Loading...
-        </p>
-
-      </section>
-
-      <div class="quick-log-grid">
-
-        <button
-          class="start-btn"
-          id="addWaterBtn"
-          type="button"
-        >
+        <button class="start-btn" id="addWaterBtn" type="button">
           💧 + 8 oz Water
         </button>
 
-        <button
-          class="start-btn"
-          id="addTrainingBtn"
-          type="button"
-        >
+        <button class="start-btn" id="addTrainingBtn" type="button">
           🏋️ + Training Logged
         </button>
 
-        <button
-          class="start-btn"
-          id="addWeightBtn"
-          type="button"
-        >
+        <button class="start-btn" id="addWeightBtn" type="button">
           ⚖️ + Daily Weight Log
         </button>
 
       </div>
 
+      <section class="range-card">
+        <p class="range-label">Today</p>
+        <p id="todayOutput" class="range-output">Loading...</p>
+      </section>
+
+      <div class="wise-links">
+
+        <a class="secondary-btn" href="/fridgewise.html">
+          🧊 Open FridgeWise
+        </a>
+
+        <a class="secondary-btn" href="/cabinet-drawer.html">
+          🗄️ Cabinet Drawer
+        </a>
+
+        <a class="secondary-btn" href="/profile.html">
+          👤 Profile
+        </a>
+
+      </div>
+
+      <section class="range-card">
+        <p class="range-label">Goal Target</p>
+        <p id="goalTargetOutput" class="range-output">
+          Loading targets...
+        </p>
+      </section>
+
       <section class="range-card guide-card">
 
-        <h1 id="wiseTitle">
-          WiseGuy
-        </h1>
+        <h1 id="wiseTitle">WiseGuy</h1>
 
         <div class="guide-face-wrap">
-
-          <div
-            id="characterFace"
-            class="character-face image-face"
-          >
-
-            <img
-              id="guideImage"
-              class="guide-image"
-              src=""
-              alt="Guide"
-            />
-
+          <div id="characterFace" class="character-face image-face">
+            <img id="guideImage" class="guide-image" src="" alt="Guide" />
           </div>
-
         </div>
 
-        <p class="range-label">
-          🧠 Wise Check
-        </p>
+        <p class="range-label">🧠 Wise Check</p>
 
-        <p
-          id="wiseAdvice"
-          class="range-output"
-        >
+        <p id="wiseAdvice" class="range-output">
           Loading guidance...
         </p>
 
@@ -149,56 +107,15 @@
           rows="4"
         ></textarea>
 
-
-        <p
-          id="wiseChatReply"
-          class="range-output guide-listening"
-        >
+        <p id="wiseChatReply" class="range-output guide-listening">
           Your guide is listening.
         </p>
 
-                <button
-          class="start-btn"
-          id="sendWiseChatBtn"
-          type="button"
-        >
+        <button class="start-btn" id="sendWiseChatBtn" type="button">
           Ask
         </button>
 
-
       </section>
-
-      <div class="wise-links">
-
-        <a
-          class="secondary-btn"
-          href="/app.html"
-        >
-          🍽️ Scan Meal
-        </a>
-
-        <a
-          class="secondary-btn"
-          href="/fridgewise.html"
-        >
-          🧊 Open FridgeWise
-        </a>
-
-        <a
-          class="secondary-btn"
-          href="/cabinet-drawer.html"
-        >
-          🗄️ Cabinet Drawer
-        </a>
-
-        <a
-          class="secondary-btn"
-          href="/profile.html"
-        >
-          👤 Profile
-        </a>
-
-      </div>
 
       <p class="hero-note">
         FuelAI • Less overthinking. Better decisions.
@@ -207,10 +124,12 @@
     </section>
 
   </main>
-<script src="/assets/js/auth-soft.js"></script>
-<script>
-  window.FuelAIAuth.requireSoftLogin();
-</script>
+
+  <script src="/assets/js/auth-soft.js"></script>
+  <script>
+    window.FuelAIAuth.requireSoftLogin();
+  </script>
+
   <script src="/assets/js/preferences.js"></script>
   <script src="/assets/js/fuelai-log.js"></script>
   <script src="/assets/js/character-face.js"></script>
@@ -218,4 +137,3 @@
   <script src="/assets/js/wise.js"></script>
 
 </body>
-</html>
