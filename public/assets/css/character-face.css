@@ -399,3 +399,47 @@
   font-size:.95rem;
   opacity:.8;
 }
+/* =========================================
+   WISEGAL VARIANTS
+========================================= */
+
+.character-face.wisegal .face-head{
+  width:34px;
+  height:46px;
+}
+
+.character-face.wisegal .face-neck{
+  width:16px;
+}
+
+.character-face.wisegal .face-body{
+  width:74px;
+  border-radius:40px 40px 0 0;
+}
+
+.character-face.wisegal.sweetspot .face-hat{
+  width:68px;
+  height:20px;
+}
+
+.character-face.wisegal.mafia .face-hat{
+  width:88px;
+  height:13px;
+}
+
+.character-face.wisegal.internet .face-hair{
+  width:76px;
+  height:38px;
+}
+
+.character-face.wisegal.internet .face-headphones{
+  width:74px;
+}
+
+.character-face.wisegal.toughguy .face-body{
+  width:86px;
+}
+
+.character-face.wisegal.toughguy .face-hat{
+  border-radius:46px 46px 22px 22px;
+}

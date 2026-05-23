@@ -18,13 +18,32 @@ function getCharacterFlavor() {
 
 }
 
+function getGuideType() {
+
+  const setup =
+    getFuelAISetup();
+
+  return (
+    setup.guideType ||
+    "wiseguy"
+  );
+
+}
+
 function applyCharacterFlavor(target) {
 
   const flavor =
     getCharacterFlavor();
 
+  const guideType =
+    getGuideType();
+
   target.className =
     "character-face";
+
+  target.classList.add(flavor);
+
+  target.classList.add(guideType);
 
   target.innerHTML = `
     <div class="face-glow"></div>
@@ -36,30 +55,6 @@ function applyCharacterFlavor(target) {
     <div class="face-body"></div>
     <div class="face-collar"></div>
   `;
-
-  if (flavor === "mafia") {
-
-    target.classList.add("mafia");
-
-  }
-
-  else if (flavor === "toughguy") {
-
-    target.classList.add("toughguy");
-
-  }
-
-  else if (flavor === "internet") {
-
-    target.classList.add("internet");
-
-  }
-
-  else {
-
-    target.classList.add("sweetspot");
-
-  }
 
 }
 
@@ -76,5 +71,6 @@ function renderCharacterFace(targetId) {
 
 window.FuelAICharacter = {
   getCharacterFlavor,
+  getGuideType,
   renderCharacterFace
 };
