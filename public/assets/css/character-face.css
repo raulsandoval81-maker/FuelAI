@@ -9,450 +9,39 @@
 }
 
 .character-face{
-  width:118px;
-  height:118px;
+  width:140px;
+  height:140px;
   position:relative;
   border-radius:50%;
   overflow:hidden;
 
-  background:
-    radial-gradient(
-      circle at 50% 35%,
-      rgba(255,255,255,.34),
-      rgba(255,255,255,.06)
-    );
-
-  border:3px solid rgba(255,255,255,.35);
-
-  box-shadow:
-    0 10px 30px rgba(0,0,0,.25),
-    inset 0 0 25px rgba(255,255,255,.08);
-}
-
-.face-glow,
-.face-hair,
-.face-hat,
-.face-headphones,
-.face-head,
-.face-neck,
-.face-body,
-.face-collar{
-  position:absolute;
-}
-
-.face-head{
-  width:38px;
-  height:44px;
-
-  border-radius:50%;
-
-  background:#061224;
-
-  top:31px;
-  left:50%;
-
-  transform:translateX(-50%);
-
-  z-index:4;
-}
-
-.face-neck{
-  width:20px;
-  height:20px;
-
-  background:#061224;
-
-  top:67px;
-  left:50%;
-
-  transform:translateX(-50%);
-
-  z-index:3;
-}
-
-.face-body{
-  width:86px;
-  height:54px;
-
-  background:#061224;
-
-  bottom:-6px;
-  left:50%;
-
-  transform:
-    translateX(-50%);
-
-  clip-path:polygon(
-    8% 100%,
-    18% 24%,
-    38% 8%,
-    50% 20%,
-    62% 8%,
-    82% 24%,
-    92% 100%
+  background:radial-gradient(
+    circle at 50% 35%,
+    rgba(255,255,255,.28),
+    rgba(255,255,255,.06)
   );
 
-  z-index:2;
-}
-.face-collar,
-.face-hair,
-.face-hat,
-.face-headphones{
-  display:none;
-}
-
-/* SWEET SPOT */
-
-.character-face.sweetspot{
-  border-color:rgba(96,165,250,.6);
+  border:3px solid var(--guide-color, rgba(255,255,255,.35));
 
   box-shadow:
-    0 10px 32px rgba(96,165,250,.32);
-}
+    0 10px 34px color-mix(in srgb, var(--guide-color, #2dd4bf) 40%, transparent),
+    inset 0 0 22px rgba(255,255,255,.10);
 
-.character-face.sweetspot .face-hat{
-  display:block;
-
-  width:62px;
-  height:18px;
-
-  background:#061224;
-
-  top:27px;
-  left:50%;
-
-  transform:
-    translateX(-50%)
-    rotate(-10deg);
-
-  border-radius:
-    60% 50% 40% 40%;
-
-  z-index:6;
-}
-
-.character-face.sweetspot .face-hat::before{
-  content:"";
-
-  position:absolute;
-
-  width:42px;
-  height:10px;
-
-  background:#061224;
-
-  bottom:-2px;
-  right:-22px;
-
-  border-radius:999px;
-}
-
-.character-face.sweetspot .face-collar{
-  display:block;
-
-  width:72px;
-  height:34px;
-
-  background:#061224;
-
-  bottom:2px;
-  left:50%;
-
-  transform:translateX(-50%);
-
-  border-radius:28px 28px 0 0;
-
-  z-index:5;
-}
-
-/* MAFIA */
-
-.character-face.mafia{
-  border-color:rgba(220,38,38,.68);
-
-  box-shadow:
-    0 10px 34px rgba(220,38,38,.38);
-}
-
-.character-face.mafia .face-head{
-  transform:
-    translateX(-50%)
-    rotate(-2deg);
-}
-
-.character-face.mafia .face-hat{
-  display:block;
-
-  width:78px;
-  height:12px;
-
-  background:#061224;
-
-  top:32px;
-  left:50%;
-
-  transform:
-    translateX(-50%)
-    rotate(-4deg);
-
-  border-radius:999px;
-
-  z-index:7;
-}
-
-.character-face.mafia .face-hat::before{
-  content:"";
-
-  position:absolute;
-
-  width:44px;
-  height:25px;
-
-  background:#061224;
-
-  top:-18px;
-  left:50%;
-
-  transform:translateX(-50%);
-
-  border-radius:
-    12px 12px 5px 5px;
-}
-
-.character-face.mafia .face-collar{
-  display:block;
-
-  width:98px;
-  height:42px;
-
-  background:#061224;
-
-  bottom:-5px;
-  left:50%;
-
-  transform:translateX(-50%);
-
-  clip-path:polygon(
-    0 100%,
-    12% 10%,
-    36% 58%,
-    50% 18%,
-    64% 58%,
-    88% 10%,
-    100% 100%
-  );
-
-  z-index:5;
-}
-
-/* TOUGH GUY */
-
-.character-face.toughguy{
-  border-color:rgba(249,115,22,.68);
-
-  box-shadow:
-    0 10px 34px rgba(249,115,22,.38);
-}
-
-.character-face.toughguy .face-head{
-  width:42px;
-  height:42px;
-
-  top:31px;
-}
-
-.character-face.toughguy .face-neck{
-  width:28px;
-  height:22px;
-}
-
-.character-face.toughguy .face-body{
-  width:98px;
-  height:54px;
-
-  border-radius:55px 55px 0 0;
-}
-
-.character-face.toughguy .face-hat{
-  display:block;
-
-  width:76px;
-  height:36px;
-
-  background:#061224;
-
-  top:20px;
-  left:50%;
-
-  transform:translateX(-50%);
-
-  border-radius:
-    40px 40px 18px 18px;
-
-  z-index:3;
-}
-
-.character-face.toughguy .face-collar{
-  display:block;
-
-  width:86px;
-  height:30px;
-
-  background:#061224;
-
-  bottom:4px;
-  left:50%;
-
-  transform:translateX(-50%);
-
-  clip-path:polygon(
-    0 100%,
-    24% 0,
-    50% 45%,
-    76% 0,
-    100% 100%
-  );
-
-  z-index:5;
-}
-
-/* INTERNET */
-
-.character-face.internet{
-  border-color:rgba(139,92,246,.68);
-
-  box-shadow:
-    0 10px 34px rgba(139,92,246,.38);
-}
-
-.character-face.internet .face-hair{
-  display:block;
-
-  width:66px;
-  height:32px;
-
-  background:#061224;
-
-  top:18px;
-  left:50%;
-
-  transform:
-    translateX(-50%)
-    rotate(-8deg);
-
-  clip-path:polygon(
-    0 100%,
-    8% 30%,
-    18% 55%,
-    28% 12%,
-    40% 48%,
-    55% 0,
-    72% 42%,
-    88% 18%,
-    100% 100%
-  );
-
-  z-index:6;
-}
-
-.character-face.internet .face-headphones{
-  display:block;
-
-  width:70px;
-  height:48px;
-
-  top:31px;
-  left:50%;
-
-  transform:translateX(-50%);
-
-  border:5px solid #061224;
-  border-bottom:none;
-
-  border-radius:40px 40px 0 0;
-
-  z-index:5;
-}
-
-.character-face.internet .face-headphones::before,
-.character-face.internet .face-headphones::after{
-  content:"";
-
-  position:absolute;
-
-  width:10px;
-  height:24px;
-
-  background:#061224;
-
-  top:26px;
-
-  border-radius:8px;
-}
-
-.character-face.internet .face-headphones::before{
-  left:-9px;
-}
-
-.character-face.internet .face-headphones::after{
-  right:-9px;
-}
-
-.guide-chat-box{
-  margin-top:1.25rem;
-}
-
-.guide-listening{
-  margin-top:1rem;
-  font-size:.95rem;
-  opacity:.8;
-}
-/* =========================================
-   WISEGAL VARIANTS
-========================================= */
-
-.character-face.wisegal .face-head{
-  width:34px;
-  height:46px;
-}
-
-.character-face.wisegal .face-neck{
-  width:16px;
-}
-
-.character-face.wisegal .face-body{
-  width:74px;
-  border-radius:40px 40px 0 0;
-}
-
-.character-face.wisegal.sweetspot .face-hat{
-  width:68px;
-  height:20px;
-}
-
-.character-face.wisegal.mafia .face-hat{
-  width:88px;
-  height:13px;
-}
-
-.character-face.wisegal.internet .face-hair{
-  width:76px;
-  height:38px;
-}
-
-.character-face.wisegal.internet .face-headphones{
-  width:74px;
-}
-
-.character-face.wisegal.toughguy .face-body{
-  width:86px;
-}
-
-.character-face.wisegal.toughguy .face-hat{
-  border-radius:46px 46px 22px 22px;
-}
-.character-face{
   animation:guideBreath 4s ease-in-out infinite;
+}
+
+.image-face{
+  position:relative;
+}
+
+.guide-image{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+  position:absolute;
+  inset:0;
+  z-index:1;
 }
 
 @keyframes guideBreath{
@@ -465,51 +54,10 @@
   }
 }
 
-.character-face .face-glow{
-  width:100%;
-  height:100%;
-  inset:0;
-  border-radius:50%;
-  opacity:.28;
-  animation:guidePulse 3.5s ease-in-out infinite;
-}
-
-@keyframes guidePulse{
-  0%,100%{
-    box-shadow:inset 0 0 18px rgba(255,255,255,.08);
-  }
-
-  50%{
-    box-shadow:inset 0 0 28px rgba(255,255,255,.18);
-  }
-}
-
-.character-face.mafia{
-  animation-duration:4.8s;
-}
-
-.character-face.toughguy{
-  animation-duration:3.6s;
-}
-
-.character-face.internet{
-  animation-duration:2.8s;
-}
-
-.character-face.sweetspot{
-  animation-duration:4.4s;
-}.character-face.is-listening{
-  transform:scale(1.03);
-  filter:brightness(1.1);
-}
-
 .character-face.is-listening{
   transform:scale(1.08);
   outline:3px solid rgba(255,255,255,.55);
-}
-
-.character-face.is-listening .face-glow{
-  opacity:.45;
+  filter:brightness(1.1);
 }
 
 .character-face.is-thinking{
@@ -526,37 +74,25 @@
     transform:translateY(-5px) rotate(2deg) scale(1.08);
   }
 }
-/* =========================
-   GUIDE STATES
-========================= */
 
 .character-face.state-alert{
   filter:saturate(.9) brightness(.92);
 }
 
-.character-face.state-alert .face-glow{
-  opacity:.18;
-}
-
 .character-face.state-focused{
-  transform:translateY(-2px);
   filter:brightness(1.08);
-}
-
-.character-face.state-focused .face-glow{
-  opacity:.42;
 }
 
 .character-face.state-calm{
   opacity:.94;
 }
 
-.character-face.state-calm .face-glow{
-  opacity:.24;
-}.guide-image{
-  width:220px;
-  max-width:100%;
-  display:block;
-  margin:0 auto 1rem;
-  border-radius:24px;
+.guide-chat-box{
+  margin-top:1.25rem;
+}
+
+.guide-listening{
+  margin-top:1rem;
+  font-size:.95rem;
+  opacity:.8;
 }
