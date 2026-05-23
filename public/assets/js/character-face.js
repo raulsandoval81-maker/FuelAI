@@ -1,3 +1,39 @@
+function getFuelAISetup() {
+
+  return JSON.parse(
+    localStorage.getItem("fuelai-setup") || "{}"
+  );
+
+}
+
+function getCharacterFlavor() {
+
+  const setup =
+    getFuelAISetup();
+
+  return (
+    setup.wiseFlavor ||
+    "sweetspot"
+  );
+
+}
+
+function applyCharacterFlavor(target) {
+
+  const flavor =
+    getCharacterFlavor();
+
+  target.classList.remove(
+    "sweetspot",
+    "mafia",
+    "toughguy",
+    "internet"
+  );
+
+  target.classList.add(flavor);
+
+}
+
 function renderCharacterFace(targetId) {
 
   const target =
@@ -5,14 +41,16 @@ function renderCharacterFace(targetId) {
 
   if (!target) return;
 
-  const setup =
-    JSON.parse(
-      localStorage.getItem("fuelai-setup") || "{}"
-    );
+  target.innerHTML = `
+    <div class="face-head"></div>
+    <div class="face-body"></div>
+  `;
 
-  const flavor =
-    setup.wiseFlavor || "sweetspot";
+  applyCharacterFlavor(target);
 
-  target.className =
-    `character-face ${flavor}`;
 }
+
+window.FuelAICharacter = {
+  getCharacterFlavor,
+  renderCharacterFace
+};
