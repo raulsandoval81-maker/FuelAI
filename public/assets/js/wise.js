@@ -458,6 +458,34 @@ function generateWiseReply(question, summary) {
         "Muscles need snacks too. Unfortunately, science."
     });
   }
+  if (
+  lower.includes("chicken") ||
+  lower.includes("fish") ||
+  lower.includes("salmon") ||
+  lower.includes("pork") ||
+  lower.includes("protein")
+) {
+
+  return getFlavorLine({
+
+    sweetspot:
+      "All of those can work. Chicken is simple and reliable, fish is lighter with healthy fats, and lean pork is fine too. Pick the option you’ll enjoy and stay consistent with.",
+
+    toughguy:
+      "Protein is protein. Pick the cleaner option you’ll actually eat consistently.",
+
+    mafia:
+      "Chicken keeps it simple. Fish is clean. Pork’s fine if the portion isn’t wild. Don’t overcomplicate dinner.",
+
+    internet:
+      "Honestly all three can work. Just don’t turn dinner into a full identity crisis."
+  });
+
+}
+
+
+
+
 
   if (
      lower.includes("snack") ||
