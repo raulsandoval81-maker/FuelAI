@@ -495,20 +495,26 @@
   filter:brightness(1.1);
 }
 
+.character-face.is-listening{
+  transform:scale(1.08);
+  outline:3px solid rgba(255,255,255,.55);
+}
+
 .character-face.is-listening .face-glow{
   opacity:.45;
 }
 
 .character-face.is-thinking{
-  animation:guideThinking 1.2s ease-in-out infinite;
+  animation:guideThinking .7s ease-in-out infinite;
+  filter:brightness(1.35);
 }
 
 @keyframes guideThinking{
   0%,100%{
-    transform:translateY(0) rotate(0deg);
+    transform:translateY(0) rotate(-2deg) scale(1.04);
   }
 
   50%{
-    transform:translateY(-2px) rotate(1deg);
+    transform:translateY(-5px) rotate(2deg) scale(1.08);
   }
 }
