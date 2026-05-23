@@ -764,8 +764,38 @@ setTimeout(() => {
    CHARACTER FACE
 ========================= */
 
+const currentGuide =
+  localStorage.getItem("fuelai-guide") || "sweetspot";
+
+const currentAvatar =
+  localStorage.getItem("fuelai-avatar") || "male";
+
+const guideConfig =
+  window.GUIDES?.[currentGuide] ||
+  window.GUIDES?.sweetspot;
+
+if (guideConfig) {
+
+  document.documentElement.style.setProperty(
+    "--guide-color",
+    guideConfig.color
+  );
+
+}
+
 window.FuelAICharacter?.renderCharacterFace(
   "characterFace"
 );
+
+const guideImage =
+  document.getElementById("guideImage");
+
+if (guideImage && guideConfig) {
+
+  guideImage.src =
+    guideConfig[currentAvatar] ||
+    guideConfig.male;
+
+}
 
 renderWise();

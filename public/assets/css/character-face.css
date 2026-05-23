@@ -71,21 +71,29 @@
 }
 
 .face-body{
-  width:82px;
-  height:48px;
-
-  border-radius:48px 48px 0 0;
+  width:86px;
+  height:54px;
 
   background:#061224;
 
-  bottom:-3px;
+  bottom:-6px;
   left:50%;
 
-  transform:translateX(-50%);
+  transform:
+    translateX(-50%);
+
+  clip-path:polygon(
+    8% 100%,
+    18% 24%,
+    38% 8%,
+    50% 20%,
+    62% 8%,
+    82% 24%,
+    92% 100%
+  );
 
   z-index:2;
 }
-
 .face-collar,
 .face-hair,
 .face-hat,
@@ -545,4 +553,10 @@
 
 .character-face.state-calm .face-glow{
   opacity:.24;
+}.guide-image{
+  width:220px;
+  max-width:100%;
+  display:block;
+  margin:0 auto 1rem;
+  border-radius:24px;
 }
