@@ -70,13 +70,13 @@ function getMacroProgress() {
       Number(scan.calories || 0);
 
     protein +=
-      Number(scan.protein || 0);
+      Number(scan.protein) || 0;
 
     carbs +=
-      Number(scan.carbs || 0);
+      Number(scan.carbs) || 0;
 
     fats +=
-      Number(scan.fats || 0);
+      Number(scan.fats) || 0;
 
   });
 
