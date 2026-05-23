@@ -211,36 +211,41 @@ if (goalTargetOutput) {
   `;
 
 }
-  todayOutput.innerHTML = `
-   🔥 Calories logged:
-    ${summary.caloriesToday || 0}
+todayOutput.innerHTML = `
+ 🔥 Calories logged:
+  ${summary.caloriesToday || 0}
 
-    <br><br>
+ <br><br>
 
-   💧 Water logged:
-    ${summary.waterToday || 0} oz
+ 🥩 Protein logged:
+  ${summary.proteinToday || 0}g
 
-    <br><br>
+ <br><br>
 
-   🏋️  Training:
-    ${summary.trainingToday ? "Logged" : "Not logged"}
+ 💧 Water logged:
+  ${summary.waterToday || 0} oz
 
-    <br><br>
+ <br><br>
 
+ 🏋️ Training:
+  ${summary.trainingToday ? "Logged" : "Not logged"}
 
-Daily Weight Log:
-${
-  summary.today?.latestWeight
-    ? `${summary.today.latestWeight} lbs`
-    : "Not logged"
-}
-    <br><br>
+ <br><br>
 
-    90-day days tracked:
-    ${summary.totalDays || 0}
-  `;
+ ⚖️ Daily Weight Log:
+ ${
+   summary.today?.latestWeight
+     ? `${summary.today.latestWeight} lbs`
+     : "Not logged"
+ }
 
-  if (addTrainingBtn) {
+ <br><br>
+
+ 📅 90-day days tracked:
+ ${summary.totalDays || 0}
+`;
+
+if (addTrainingBtn) {
     addTrainingBtn.classList.toggle(
       "hidden",
       hasTrainingToday()
