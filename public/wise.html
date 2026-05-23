@@ -2,130 +2,209 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
 
   <title>Wise Guide</title>
 
-  <link rel="stylesheet" href="/assets/css/site.css" />
-  <link rel="stylesheet"href="/assets/css/character-face.css"/>
+  <link
+    rel="stylesheet"
+    href="/assets/css/site.css"
+  />
+
+  <link
+    rel="stylesheet"
+    href="/assets/css/character-face.css"
+  />
 </head>
 
 <body data-theme="day">
+
   <main class="scan-wrap">
 
     <section class="scan-card">
 
-      <h1 id="wiseTitle">WiseGuy</h1>
-    <div id="characterFace" class="character-face"></div>
+      <h1 id="wiseTitle">
+        WiseGuy
+      </h1>
 
-
-      <p id="wiseSub" class="sub">
+      <p
+        id="wiseSub"
+        class="sub"
+      >
         Your daily food, water, and training check-in.
       </p>
-<section class="range-card">
-  <p class="range-label">Current Plan</p>
-  <p id="planOutput" class="range-output">Loading...</p>
-</section>
 
-<section class="range-card">
+      <section class="range-card">
 
-  <p class="range-label">
-    Goal Target
-  </p>
+        <p class="range-label">
+          Current Plan
+        </p>
 
-  <p
-    id="goalTargetOutput"
-    class="range-output"
-  >
-    Loading targets...
-  </p>
+        <p
+          id="planOutput"
+          class="range-output"
+        >
+          Loading...
+        </p>
 
-</section>
+      </section>
 
-<section class="range-card">
-  <p class="range-label">Today</p>
-  <p id="todayOutput" class="range-output">Loading...</p>
-</section>
+      <section class="range-card">
+
+        <p class="range-label">
+          Goal Target
+        </p>
+
+        <p
+          id="goalTargetOutput"
+          class="range-output"
+        >
+          Loading targets...
+        </p>
+
+      </section>
+
+      <section class="range-card">
+
+        <p class="range-label">
+          Today
+        </p>
+
+        <p
+          id="todayOutput"
+          class="range-output"
+        >
+          Loading...
+        </p>
+
+      </section>
 
       <div class="quick-log-grid">
 
-        <button class="start-btn" id="addWaterBtn" type="button">
+        <button
+          class="start-btn"
+          id="addWaterBtn"
+          type="button"
+        >
           💧 + 8 oz Water
         </button>
 
-        <button class="start-btn" id="addTrainingBtn" type="button">
-         🏋️  + Training Logged
+        <button
+          class="start-btn"
+          id="addTrainingBtn"
+          type="button"
+        >
+          🏋️ + Training Logged
         </button>
 
-        <button class="start-btn" id="addWeightBtn" type="button">
-         ⚖️ + Daily Weight Log
+        <button
+          class="start-btn"
+          id="addWeightBtn"
+          type="button"
+        >
+          ⚖️ + Daily Weight Log
         </button>
 
       </div>
 
+      <section class="range-card guide-card">
 
-<section class="range-card">
+        <div class="guide-face-wrap">
 
-  <p class="range-label">
-   🧠 Wise Check
-  </p>
+          <div
+            id="characterFace"
+            class="character-face"
+          >
 
-  <p id="wiseAdvice" class="range-output">
+            <div class="face-head"></div>
 
-    Loading guidance...
-  </p>
+            <div class="face-body"></div>
 
-</section>
+          </div>
 
-<section class="range-card">
- <div id="characterFace" class="character-face"></div>
-  <textarea
-    id="wiseChatInput"
-    class="goal-select"
-    placeholder="Ask WiseGuyAI something..."
-    rows="4"
-  ></textarea>
+        </div>
 
-  <button
-    class="start-btn"
-    id="sendWiseChatBtn"
-    type="button"
-  >
-    Ask
-  </button>
+        <p class="range-label">
+          🧠 Wise Check
+        </p>
 
-  <p id="wiseChatReply" class="range-output">
-    Your guide is listening.
-  </p>
+        <p
+          id="wiseAdvice"
+          class="range-output"
+        >
+          Loading guidance...
+        </p>
 
-</section>
+        <textarea
+          id="wiseChatInput"
+          class="goal-select guide-chat-box"
+          placeholder="Ask WiseGuyAI something..."
+          rows="4"
+        ></textarea>
+
+        <button
+          class="start-btn"
+          id="sendWiseChatBtn"
+          type="button"
+        >
+          Ask
+        </button>
+
+        <p
+          id="wiseChatReply"
+          class="range-output guide-listening"
+        >
+          Your guide is listening.
+        </p>
+
+      </section>
 
       <div class="wise-links">
 
-        <a class="secondary-btn" href="/app.html">
-         🍽️ Scan Meal
+        <a
+          class="secondary-btn"
+          href="/app.html"
+        >
+          🍽️ Scan Meal
         </a>
 
-        <a class="secondary-btn" href="/fridgewise.html">
-         🧊 Open FridgeWise
+        <a
+          class="secondary-btn"
+          href="/fridgewise.html"
+        >
+          🧊 Open FridgeWise
         </a>
 
-        <a class="secondary-btn" href="/cabinet-drawer.html">
+        <a
+          class="secondary-btn"
+          href="/cabinet-drawer.html"
+        >
           🗄️ Cabinet Drawer
-         </a>
+        </a>
 
-         <a class="secondary-btn" href="/profile.html">
+        <a
+          class="secondary-btn"
+          href="/profile.html"
+        >
           👤 Profile
         </a>
 
-
-        <a class="secondary-btn" href="/logs.html">
-         📅 View 90-Day Log
+        <a
+          class="secondary-btn"
+          href="/logs.html"
+        >
+          📅 View 90-Day Log
         </a>
 
-
-        <a class="secondary-btn" href="/setup.html">
-         ⚙️ Edit Setup
+        <a
+          class="secondary-btn"
+          href="/setup.html"
+        >
+          ⚙️ Edit Setup
         </a>
 
       </div>
@@ -135,11 +214,15 @@
       </p>
 
     </section>
+
   </main>
 
   <script src="/assets/js/preferences.js"></script>
+
   <script src="/assets/js/fuelai-log.js"></script>
+
   <script src="/assets/js/character-face.js"></script>
+
   <script src="/assets/js/wise.js"></script>
 
 </body>
