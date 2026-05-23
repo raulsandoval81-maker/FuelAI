@@ -52,6 +52,14 @@ let fridgeLoadingInterval = null;
 let selectedImage = null;
 let pantryCompanion = [];
 
+
+pantryCompanion =
+  JSON.parse(
+    localStorage.getItem(
+      "fuelai-pantry"
+    ) || "[]"
+  );
+
 /* Pantry toggle */
 
 if (pantryToggle && pantryPanel) {
@@ -70,41 +78,86 @@ if (pantryToggle && pantryPanel) {
 /* Pantry chips */
 
 if (pantryChips) {
-  pantryChips.addEventListener("click", (e) => {
-    const btn = e.target.closest("button");
 
-    if (!btn) return;
+  pantryChips.addEventListener(
+    "click",
+    (e) => {
 
-    const item = btn.dataset.item;
+      const btn =
+        e.target.closest("button");
 
-    if (!item) return;
+      if (!btn) return;
 
-    if (pantryCompanion.includes(item)) {
-      pantryCompanion =
-        pantryCompanion.filter((i) => i !== item);
+      const item =
+        btn.dataset.item;
 
-      btn.classList.remove("active");
-    } else {
-      pantryCompanion.push(item);
+      if (!item) return;
 
-      btn.classList.add("active");
+      if (
+        pantryCompanion.includes(item)
+      ) {
+
+        pantryCompanion =
+          pantryCompanion.filter(
+            (i) => i !== item
+          );
+
+        btn.classList.remove(
+          "active"
+        );
+
+      }
+
+      else {
+
+        pantryCompanion.push(item);
+
+        btn.classList.add(
+          "active"
+        );
+
+      }
+
+      localStorage.setItem(
+        "fuelai-pantry",
+        JSON.stringify(
+          pantryCompanion
+        )
+      );
+
     }
-  });
-}
+  );
 
+}
 /* Add pantry item */
 
 if (addPantryItem && pantryInput) {
-  addPantryItem.addEventListener("click", () => {
-    const value = pantryInput.value.trim();
 
-    if (!value) return;
+  addPantryItem.addEventListener(
+    "click",
+    () => {
 
-    pantryCompanion.push(value);
+      const value =
+        pantryInput.value.trim();
 
-    pantryInput.value = "";
-  });
+      if (!value) return;
+
+      pantryCompanion.push(value);
+
+      localStorage.setItem(
+        "fuelai-pantry",
+        JSON.stringify(
+          pantryCompanion
+        )
+      );
+
+      pantryInput.value = "";
+
+    }
+  );
+
 }
+
 function startFridgeLoadingMessages() {
   let index = 0;
 
