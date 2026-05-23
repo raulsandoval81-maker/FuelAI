@@ -22,7 +22,7 @@ window.GUIDES = {
       "/assets/img/guides/mafia-f.png"
   },
 
-  tough: {
+  toughguy: {
     label: "Tough Guy",
     color: "#ef4444",
 
