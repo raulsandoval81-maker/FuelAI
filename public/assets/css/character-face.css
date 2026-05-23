@@ -9,25 +9,36 @@
 }
 
 .character-face{
-  width:140px;
-  height:140px;
+  width:170px;
+  height:170px;
+
   position:relative;
-  border-radius:50%;
+
   overflow:hidden;
 
-  background:radial-gradient(
-    circle at 50% 35%,
-    rgba(255,255,255,.28),
-    rgba(255,255,255,.06)
-  );
+  border-radius:28px;
 
-  border:3px solid var(--guide-color, rgba(255,255,255,.35));
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255,255,255,.08),
+      rgba(255,255,255,.02)
+    );
+
+  border:2px solid
+    rgba(255,255,255,.12);
 
   box-shadow:
-    0 10px 34px color-mix(in srgb, var(--guide-color, #2dd4bf) 40%, transparent),
-    inset 0 0 22px rgba(255,255,255,.10);
+    0 12px 34px rgba(0,0,0,.34),
+    0 0 24px var(--guide-color);
 
-  animation:guideBreath 4s ease-in-out infinite;
+  animation:
+    guideBreath 4s ease-in-out infinite;
+
+  transition:
+    transform .25s ease,
+    filter .25s ease,
+    box-shadow .25s ease;
 }
 
 .image-face{
@@ -37,55 +48,114 @@
 .guide-image{
   width:100%;
   height:100%;
+
   object-fit:cover;
+
   display:block;
+
   position:absolute;
   inset:0;
+
   z-index:1;
 }
 
+/* =========================
+   BREATHING
+========================= */
+
 @keyframes guideBreath{
+
   0%,100%{
     transform:translateY(0);
   }
 
   50%{
-    transform:translateY(-2px);
+    transform:translateY(-3px);
   }
+
 }
+
+/* =========================
+   LISTENING
+========================= */
 
 .character-face.is-listening{
-  transform:scale(1.08);
-  outline:3px solid rgba(255,255,255,.55);
-  filter:brightness(1.1);
+
+  transform:
+    scale(1.04);
+
+  outline:
+    2px solid rgba(255,255,255,.38);
+
+  filter:
+    brightness(1.08);
+
 }
 
+/* =========================
+   THINKING
+========================= */
+
 .character-face.is-thinking{
-  animation:guideThinking .7s ease-in-out infinite;
-  filter:brightness(1.35);
+
+  animation:
+    guideThinking .7s ease-in-out infinite;
+
+  filter:
+    brightness(1.18);
+
 }
 
 @keyframes guideThinking{
+
   0%,100%{
-    transform:translateY(0) rotate(-2deg) scale(1.04);
+    transform:
+      translateY(0)
+      rotate(-1deg)
+      scale(1.02);
   }
 
   50%{
-    transform:translateY(-5px) rotate(2deg) scale(1.08);
+    transform:
+      translateY(-4px)
+      rotate(1deg)
+      scale(1.04);
   }
+
 }
 
+/* =========================
+   GUIDE STATES
+========================= */
+
 .character-face.state-alert{
-  filter:saturate(.9) brightness(.92);
+
+  filter:
+    saturate(.92)
+    brightness(.92);
+
 }
 
 .character-face.state-focused{
-  filter:brightness(1.08);
+
+  filter:
+    brightness(1.08);
+
+  box-shadow:
+    0 16px 40px rgba(0,0,0,.42),
+    0 0 34px var(--guide-color);
+
 }
 
 .character-face.state-calm{
-  opacity:.94;
+
+  opacity:.96;
+
 }
+
+/* =========================
+   CHAT
+========================= */
 
 .guide-chat-box{
   margin-top:1.25rem;
