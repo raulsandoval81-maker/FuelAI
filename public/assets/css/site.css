@@ -911,3 +911,147 @@ body[data-theme="day"] .top-link{
   line-height:1;
   margin-bottom:0.5rem;
 }
+.hub-wrap{
+  max-width:1180px;
+  margin:0 auto;
+  padding:2rem 1rem 5rem;
+  color:#f8fafc;
+}
+
+.hub-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:3rem;
+}
+
+.hub-header h1{
+  margin:0;
+  font-size:2rem;
+}
+
+.hub-header p{
+  margin:.25rem 0 0;
+  color:#94a3b8;
+}
+
+.hub-profile{
+  color:#f8fafc;
+  text-decoration:none;
+  font-weight:800;
+}
+
+.hub-hero{
+  margin-bottom:2rem;
+}
+
+.hub-hero h2{
+  font-size:clamp(2.4rem, 7vw, 5rem);
+  line-height:.95;
+  margin:0 0 1rem;
+}
+
+.hub-hero p{
+  color:#cbd5e1;
+  font-size:1.15rem;
+}
+
+.hub-grid{
+  display:grid;
+  grid-template-columns:repeat(4, 1fr);
+  gap:1rem;
+}
+
+.hub-card{
+  display:flex;
+  flex-direction:column;
+  gap:1rem;
+  padding:1rem;
+  min-height:420px;
+  border-radius:24px;
+  background:rgba(15,23,42,.88);
+  border:1px solid rgba(255,255,255,.1);
+  text-decoration:none;
+  color:#f8fafc;
+  box-shadow:0 24px 60px rgba(0,0,0,.28);
+}
+
+.hub-card img{
+  width:100%;
+  aspect-ratio:1 / 1;
+  object-fit:cover;
+  border-radius:18px;
+}
+
+.hub-card h3{
+  margin:0;
+  font-size:1.4rem;
+}
+
+.hub-card p{
+  margin:0;
+  color:#cbd5e1;
+  line-height:1.5;
+}
+
+.hub-card span{
+  margin-top:auto;
+  font-weight:900;
+}
+
+.hub-card.green h3,
+.hub-card.green span{
+  color:#22c55e;
+}
+
+.hub-card.blue h3,
+.hub-card.blue span{
+  color:#38bdf8;
+}
+
+.hub-card.purple h3,
+.hub-card.purple span{
+  color:#a855f7;
+}
+
+.hub-card.gold h3,
+.hub-card.gold span{
+  color:#f59e0b;
+}
+
+.hub-note{
+  margin-top:2rem;
+  padding:1.5rem;
+  border-radius:24px;
+  background:rgba(15,23,42,.72);
+  border:1px solid rgba(255,255,255,.08);
+}
+
+.hub-note h3{
+  margin:0 0 .5rem;
+}
+
+.hub-note p{
+  margin:0;
+  color:#cbd5e1;
+}
+
+@media (max-width:900px){
+  .hub-grid{
+    grid-template-columns:1fr 1fr;
+  }
+}
+
+@media (max-width:560px){
+  .hub-header{
+    margin-bottom:2rem;
+  }
+
+  .hub-grid{
+    grid-template-columns:1fr;
+  }
+
+  .hub-card{
+    min-height:auto;
+  }
+}
