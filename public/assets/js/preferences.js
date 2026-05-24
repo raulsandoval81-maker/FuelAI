@@ -3,7 +3,7 @@
 ========================= */
 
 function getTheme() {
-  return localStorage.getItem("fuelai-theme") || "day";
+  return localStorage.getItem("fuelai-theme") || "night";
 }
 
 function applyTheme(theme) {
