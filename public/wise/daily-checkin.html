@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+
+  <title>Daily Check-In</title>
+
+  <link
+    rel="stylesheet"
+    href="/public/assets/css/site.css"
+  />
+</head>
+
+<body data-theme="night">
+
+  <main class="scan-wrap">
+
+    <section class="scan-card">
+
+      <p class="range-label">
+        FuelAI
+      </p>
+
+      <h1>
+        ✅ Daily Check-In
+      </h1>
+
+      <p class="sub">
+        Take a quick read on your day before asking Wise for guidance.
+      </p>
+
+      <label class="range-label">
+        How are you feeling?
+      </label>
+
+      <select class="goal-select">
+        <option>Good</option>
+        <option>Okay</option>
+        <option>Off track</option>
+        <option>Stressed</option>
+        <option>Tired</option>
+      </select>
+
+      <label class="range-label">
+        Food today
+      </label>
+
+      <select class="goal-select">
+        <option>On track</option>
+        <option>Mixed</option>
+        <option>Not enough</option>
+        <option>Too much</option>
+        <option>Need help deciding</option>
+      </select>
+
+      <label class="range-label">
+        Water today
+      </label>
+
+      <select class="goal-select">
+        <option>Good</option>
+        <option>Some</option>
+        <option>Low</option>
+      </select>
+
+      <label class="range-label">
+        Sleep
+      </label>
+
+      <select class="goal-select">
+        <option>Good</option>
+        <option>Okay</option>
+        <option>Poor</option>
+      </select>
+
+      <label class="range-label">
+        Anything Wise should know?
+      </label>
+
+      <textarea
+        class="goal-select"
+        rows="4"
+        placeholder="Example: I skipped breakfast, trained hard, and feel drained."
+      ></textarea>
+
+      <a
+        class="start-btn"
+        href="/public/wise/wise.html"
+      >
+        Signal Start
+      </a>
+
+      <div class="wise-links">
+
+        <a
+          class="secondary-btn"
+          href="/public/wise/stay-on-track.html"
+        >
+          ↩️ Back to Stay On Track
+        </a>
+
+        <a
+          class="secondary-btn"
+          href="/public/hub.html"
+        >
+          🏠 Return to Hub
+        </a>
+
+      </div>
+
+    </section>
+
+  </main>
+
+  <footer class="app-footer">
+
+    <p>
+      FuelAI • Small check-ins. Better decisions.
+    </p>
+
+  </footer>
+
+  <script src="/public/assets/js/auth-soft.js"></script>
+
+  <script>
+    window.FuelAIAuth?.requireSoftLogin();
+  </script>
+
+  <script src="/public/assets/js/preferences.js"></script>
+
+</body>
+</html>

@@ -1,6 +1,8 @@
 
 
-
+.account-card .hub-card-img {
+  transform: scale(1.15);
+}
 
 *{
   box-sizing:border-box;
@@ -14,7 +16,21 @@ body{
   color:white;
   min-height:100vh;
 }
+.account-card .hub-card-preview {
+  overflow: hidden;
+  border-radius: 22px;
+}
+.hub-card img{
+  width:100%;
+  height:180px;
 
+  object-fit:cover;
+  object-position:center;
+
+  border-radius:18px;
+
+  display:block;
+}
 /* =========================
    GLOBAL LAYOUT
 ========================= */
@@ -56,7 +72,12 @@ h1{
   margin-bottom:1.5rem;
 }
 
-
+.hub-card img{
+  width:100%;
+  height:240px;
+  object-fit:cover;
+  object-position:center;
+}
 /* =========================
    BUTTONS
 ========================= */
@@ -1058,4 +1079,71 @@ body[data-theme="day"] .top-link{
   .hub-card{
     min-height:auto;
   }
+}.house-image{
+  width:100%;
+  max-width:520px;
+  display:block;
+  margin:1.5rem auto;
+  border-radius:24px;
+  box-shadow:0 24px 60px rgba(0,0,0,.35);
 }
+.goal-select{
+  width:100%;
+
+  margin-top:1rem;
+  padding:1rem 1.1rem;
+
+  border-radius:18px;
+
+  border:
+    1px solid rgba(255,255,255,.12);
+
+  background:
+    rgba(255,255,255,.06);
+
+  color:#fff;
+
+  font-size:1rem;
+  font-weight:600;
+  line-height:1.4;
+
+  outline:none;
+
+  resize:none;
+
+  transition:
+    border .2s ease,
+    background .2s ease,
+    transform .2s ease,
+    box-shadow .2s ease;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.05),
+    0 8px 24px rgba(0,0,0,.22);
+
+  backdrop-filter:blur(10px);
+}
+
+.goal-select::placeholder{
+  color:
+    rgba(255,255,255,.45);
+
+  font-weight:500;
+}
+
+.goal-select:focus{
+  border:
+    1px solid rgba(96,165,250,.7);
+
+  background:
+    rgba(255,255,255,.09);
+
+  box-shadow:
+    0 0 0 4px rgba(59,130,246,.15),
+    0 12px 30px rgba(0,0,0,.28);
+
+  transform:
+    translateY(-1px);
+}
+
+

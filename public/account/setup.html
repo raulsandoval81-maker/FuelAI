@@ -2,19 +2,33 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
 
   <title>FuelAI Setup</title>
 
-  <link rel="stylesheet" href="/assets/css/site.css" />
+  <link
+    rel="stylesheet"
+    href="/public/assets/css/site.css"
+  />
 </head>
 
-<body>
+<body data-theme="night">
+
   <main class="scan-wrap">
 
     <section class="scan-card">
 
-      <h1>Setup</h1>
+      <p class="range-label">
+        FuelAI
+      </p>
+
+      <h1>
+        Setup
+      </h1>
 
       <p class="sub">
         Give FuelAI a little context before your scan.
@@ -69,71 +83,28 @@
       />
 
       <select id="ageRange" class="goal-select">
-
-        <option value="13-18">
-          Ages 13–18
-        </option>
-
-        <option value="19-30">
-          Ages 19–30
-        </option>
-
-        <option value="31-45">
-          Ages 31–45
-        </option>
-
-        <option value="46-60">
-          Ages 46–60
-        </option>
-
-        <option value="60+">
-          Ages 60+
-        </option>
-
+        <option value="13-18">Ages 13–18</option>
+        <option value="19-30">Ages 19–30</option>
+        <option value="31-45">Ages 31–45</option>
+        <option value="46-60">Ages 46–60</option>
+        <option value="60+">Ages 60+</option>
       </select>
 
       <select id="genderType" class="goal-select">
-
-        <option value="">
-          Body type
-        </option>
-
-        <option value="male">
-          Male
-        </option>
-
-        <option value="female">
-          Female
-        </option>
-
+        <option value="">Body type</option>
+        <option value="male">Male</option>
+        <option value="female">Female</option>
       </select>
 
       <select id="activityLevel" class="goal-select">
-
-        <option value="low">
-          Activity / Training Level
-        </option>
-
-        <option value="0-1">
-          0–1 days per week
-        </option>
-
-        <option value="2-3">
-          2–3 days per week
-        </option>
-
-        <option value="4-5">
-          4–5 days per week
-        </option>
-
-        <option value="6plus">
-          6+ days per week
-        </option>
-
+        <option value="low">Activity / Training Level</option>
+        <option value="0-1">0–1 days per week</option>
+        <option value="2-3">2–3 days per week</option>
+        <option value="4-5">4–5 days per week</option>
+        <option value="6plus">6+ days per week</option>
       </select>
 
       <select id="goalSelect" class="goal-select">
-
         <option value="fuelwise">
           FuelWise — Maintain / Balance
         </option>
@@ -145,7 +116,6 @@
         <option value="gainwise">
           GainWise — Build / Recover
         </option>
-
       </select>
 
       <select id="wiseFlavor" class="goal-select">
@@ -167,7 +137,6 @@
         </option>
 
       </select>
-
 
       <section class="range-card">
 
@@ -191,17 +160,30 @@
       <button
         id="saveSetupBtn"
         class="start-btn"
+        type="button"
       >
-        Continue to Your Guide
+        Continue to Hub
       </button>
 
     </section>
 
   </main>
-<script src="/assets/js/auth-soft.js"></script>
-<script>
-  window.FuelAIAuth.requireSoftLogin();
-</script>
-  <script src="/assets/js/setup.js?v=3"></script>
+
+  <footer class="app-footer">
+
+    <p>
+      FuelAI • Less overthinking. Better decisions.
+    </p>
+
+  </footer>
+
+  <script src="/public/assets/js/auth-soft.js"></script>
+
+  <script>
+    window.FuelAIAuth?.requireSoftLogin();
+  </script>
+
+  <script src="/public/assets/js/setup.js?v=4"></script>
+
 </body>
 </html>

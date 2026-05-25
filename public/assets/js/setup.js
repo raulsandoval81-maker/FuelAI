@@ -318,7 +318,7 @@ if (saveSetupBtn) {
       JSON.stringify(setup)
     );
 
-    window.location.href = "/wise.html";
+    window.location.href = "/public/hub.html";
   });
 }
 

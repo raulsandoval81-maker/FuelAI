@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+
+  <title>Ingredient Scan</title>
+
+  <link
+    rel="stylesheet"
+    href="/public/assets/css/site.css"
+  />
+</head>
+
+<body data-theme="night">
+
+  <main class="scan-wrap">
+
+    <section class="scan-card">
+
+      <p class="range-label">
+        FuelAI
+      </p>
+
+      <h1>
+        🔍 Ingredient Scan
+      </h1>
+
+      <p class="sub">
+        Scan a food item, ingredient, label, or grocery product and get a simple breakdown.
+      </p>
+
+      <div class="upload-actions">
+
+        <label class="upload-half">
+          <span class="upload-title">
+            📸 Take Photo
+          </span>
+
+          <span class="upload-sub">
+            Camera
+          </span>
+
+          <input
+            id="ingredientInput"
+            type="file"
+            accept="image/*"
+            capture="environment"
+          />
+        </label>
+
+        <label class="upload-half">
+          <span class="upload-title">
+            🖼 Upload Photo
+          </span>
+
+          <span class="upload-sub">
+            Gallery
+          </span>
+
+          <input
+            id="ingredientUpload"
+            type="file"
+            accept="image/*"
+          />
+        </label>
+
+      </div>
+
+      <img
+        id="previewImage"
+        class="preview hidden"
+        alt="Ingredient preview"
+      />
+
+      <textarea
+        id="ingredientNotes"
+        class="goal-select"
+        placeholder="Optional: type the item name or question..."
+        rows="3"
+      ></textarea>
+
+      <button
+        id="scanBtn"
+        class="start-btn hidden"
+        type="button"
+      >
+        Analyze Ingredient
+      </button>
+
+      <section
+        id="loadingCard"
+        class="loading-card hidden"
+      >
+
+        <div class="scanner"></div>
+
+        <p>
+          Reading the item and simplifying the decision...
+        </p>
+
+      </section>
+
+      <section
+        id="resultCard"
+        class="result-card hidden"
+      >
+
+        <p class="range-label">
+          FuelAI Breakdown
+        </p>
+
+        <div id="resultOutput"></div>
+
+      </section>
+
+      <div class="wise-links">
+
+        <button
+          id="resetBtn"
+          class="secondary-btn"
+          type="button"
+        >
+          Scan Another
+        </button>
+
+        <a
+          class="secondary-btn"
+          href="/public/wise/wise.html"
+        >
+          Ask Wiseguy
+        </a>
+
+        <a
+          class="secondary-btn"
+          href="/public/food/what-can-i-eat"
+        >
+          Back to What Can I Eat
+        </a>
+
+        <a
+          class="secondary-btn"
+          href="/public/hub.html"
+        >
+          Return to Hub
+        </a>
+
+      </div>
+
+    </section>
+
+  </main>
+
+  <footer class="app-footer">
+
+    <p>
+      FuelAI • Ingredient help without overthinking.
+    </p>
+
+  </footer>
+
+  <script src="/public/assets/js/auth-soft.js"></script>
+
+  <script>
+    window.FuelAIAuth?.requireSoftLogin();
+  </script>
+
+  <script src="/public/assets/js/preferences.js"></script>
+
+  <script>
+    const ingredientInput =
+      document.getElementById("ingredientInput");
+
+    const ingredientUpload =
+      document.getElementById("ingredientUpload");
+
+    const previewImage =
+      document.getElementById("previewImage");
+
+    const ingredientNotes =
+      document.getElementById("ingredientNotes");
+
+    const scanBtn =
+      document.getElementById("scanBtn");
+
+    const resetBtn =
+      document.getElementById("resetBtn");
+
+    const loadingCard =
+      document.getElementById("loadingCard");
+
+    const resultCard =
+      document.getElementById("resultCard");
+
+    const resultOutput =
+      document.getElementById("resultOutput");
+
+    let selectedImageBase64 = null;
+
+    function handleFile(file) {
+      if (!file) return;
+
+      const reader = new FileReader();
+
+      reader.onload = () => {
+        selectedImageBase64 = reader.result;
+
+        previewImage.src = selectedImageBase64;
+        previewImage.classList.remove("hidden");
+
+        scanBtn.classList.remove("hidden");
+        resultCard.classList.add("hidden");
+        loadingCard.classList.add("hidden");
+      };
+
+      reader.readAsDataURL(file);
+    }
+
+    function resetIngredientScan() {
+      selectedImageBase64 = null;
+
+      ingredientInput.value = "";
+      ingredientUpload.value = "";
+      ingredientNotes.value = "";
+
+      previewImage.src = "";
+      previewImage.classList.add("hidden");
+
+      scanBtn.classList.add("hidden");
+      scanBtn.disabled = false;
+
+      resultCard.classList.add("hidden");
+      loadingCard.classList.add("hidden");
+
+      resultOutput.innerHTML = "";
+    }
+
+    ingredientInput.addEventListener("change", event => {
+      handleFile(event.target.files[0]);
+    });
+
+    ingredientUpload.addEventListener("change", event => {
+      handleFile(event.target.files[0]);
+    });
+
+    scanBtn.addEventListener("click", async () => {
+      if (!selectedImageBase64) return;
+
+      loadingCard.classList.remove("hidden");
+      resultCard.classList.add("hidden");
+      scanBtn.disabled = true;
+
+      try {
+        const response = await fetch("/api/analyze", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            mode: "ingredient_scan",
+            imageBase64: selectedImageBase64,
+            notes: ingredientNotes.value || ""
+          })
+        });
+
+        const data = await response.json();
+
+        resultOutput.innerHTML =
+          data.result ||
+          data.message ||
+          `
+            <p><strong>I could not read this clearly.</strong></p>
+            <p>Try a closer photo of the item, ingredient list, or nutrition label.</p>
+          `;
+
+      } catch (error) {
+        resultOutput.innerHTML = `
+          <p><strong>Scanner ready.</strong></p>
+          <p>The page is built, but the AI endpoint did not answer yet.</p>
+          <p>Next step: connect <code>ingredient_scan</code> mode inside <code>/api/analyze</code>.</p>
+        `;
+      }
+
+      loadingCard.classList.add("hidden");
+      resultCard.classList.remove("hidden");
+      scanBtn.disabled = false;
+    });
+
+    resetBtn.addEventListener("click", resetIngredientScan);
+  </script>
+
+</body>
+</html>

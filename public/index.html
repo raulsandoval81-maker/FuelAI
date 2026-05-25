@@ -12,7 +12,7 @@
 
   <link
     rel="stylesheet"
-    href="/assets/css/site.css"
+    href="/public/assets/css/site.css"
   />
 </head>
 
@@ -28,13 +28,15 @@
 
   </main>
 
-  <script src="/assets/js/auth-soft.js"></script>
+  <script src="/public/assets/js/auth-soft.js"></script>
 
   <script>
     window.FuelAIAuth.requireSoftLogin();
 
     const setup =
-      JSON.parse(localStorage.getItem("fuelai-setup") || "{}");
+      JSON.parse(
+        localStorage.getItem("fuelai-setup") || "{}"
+      );
 
     const hasSetup =
       setup.goal &&
@@ -42,8 +44,8 @@
 
     window.location.href =
       hasSetup
-        ? "/wise.html"
-        : "/setup.html";
+        ? "/public/hub.html"
+        : "/public/account/setup.html";
   </script>
 
 </body>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <meta charset="UTF-8" />
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+
+  <title>FuelAI Profile</title>
+
+  <link
+    rel="stylesheet"
+    href="/public/assets/css/site.css"
+  />
+
+  <link
+    rel="stylesheet"
+    href="/public/assets/css/hub-screen.css"
+  />
+
+</head>
+
+<body data-theme="night">
+
+  <main class="scan-wrap">
+
+    <section class="scan-card">
+
+      <p class="range-label">
+        ACCOUNT
+      </p>
+
+      <h1>
+        Profile
+      </h1>
+
+      <p class="sub">
+        Your identity, goals, and setup live here.
+      </p>
+
+      <div class="hub-screen profile-map">
+
+        <img
+          class="hub-screen-img"
+          src="/public/assets/img/hub/account-center2.png"
+          alt="Account Center"
+        />
+
+        <a
+          class="hub-hotspot one"
+          href="/public/account/setup.html"
+          aria-label="Edit Setup"
+        ></a>
+
+        <a
+          class="hub-hotspot two"
+          href="/public/account/macros.html"
+          aria-label="Macro Targets"
+        ></a>
+
+        <a
+          class="hub-hotspot three"
+          href="/public/fuel/logs.html"
+          aria-label="View Logs"
+        ></a>
+
+        <a
+          class="hub-hotspot four"
+          href="/public/hub.html"
+          aria-label="Return to Hub"
+        ></a>
+
+      </div>
+
+      <section
+        id="profileCard"
+        class="result-card"
+        style="display:none;"
+      ></section>
+
+      <p class="hero-note">
+        FuelAI • Less overthinking. Better decisions.
+      </p>
+
+    </section>
+
+  </main>
+
+  <footer class="app-footer">
+
+    <p>
+      FuelAI • Profile and setup center.
+    </p>
+
+  </footer>
+
+  <script src="/public/assets/js/auth-soft.js"></script>
+
+  <script>
+    window.FuelAIAuth?.requireSoftLogin();
+  </script>
+
+  <script src="/public/assets/js/profile.js"></script>
+
+</body>
+</html>

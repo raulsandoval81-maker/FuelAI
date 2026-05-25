@@ -12,7 +12,7 @@
 
   <link
     rel="stylesheet"
-    href="/assets/css/site.css"
+    href="/public/assets/css/site.css"
   />
 </head>
 
@@ -55,7 +55,7 @@
 
   </main>
 
-<script src="/assets/js/auth-soft.js"></script>
+<script src="/public/assets/js/auth-soft.js"></script>
 
 <script>
 
@@ -72,17 +72,27 @@ continueBtn?.addEventListener(
     const email =
       emailInput.value.trim();
 
-    if (!email) return;
+    if (!email.includes("@")) return;
 
     window.FuelAIAuth.softLogin(email);
 
     window.location.href =
-      "/index.html";
+      "/public/index.html";
+
+  }
+);
+
+emailInput.addEventListener(
+  "keydown",
+  (e) => {
+
+    if (e.key === "Enter") {
+      continueBtn.click();
+    }
 
   }
 );
 
 </script>
-
 </body>
 </html>

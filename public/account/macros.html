@@ -12,7 +12,7 @@
 
   <link
     rel="stylesheet"
-    href="/assets/css/site.css"
+    href="/public/assets/css/site.css"
   />
 </head>
 
@@ -22,7 +22,13 @@
 
     <section class="scan-card">
 
-      <h1>Advanced Macro Tracking</h1>
+      <p class="range-label">
+        FuelAI
+      </p>
+
+      <h1>
+        Advanced Macro Tracking
+      </h1>
 
       <p class="sub">
         Optional deeper nutrition tracking.
@@ -58,20 +64,14 @@
 
       </section>
 
-      <div class="profile-links">
+      <div class="wise-links">
+
 
         <a
           class="secondary-btn"
-          href="/profile.html"
+          href="/public/hub.html"
         >
-          ↩️ Back to Profile
-        </a>
-
-        <a
-          class="secondary-btn"
-          href="/wise.html"
-        >
-          🧠 Return to Guide
+          🏠 Return to Hub
         </a>
 
       </div>
@@ -84,14 +84,22 @@
 
   </main>
 
-<script src="/assets/js/auth-soft.js"></script>
+  <footer class="app-footer">
 
-<script>
-  window.FuelAIAuth.requireSoftLogin();
-</script>
+    <p>
+      FuelAI • Less overthinking. Better decisions.
+    </p>
 
-<script src="/assets/js/fuelai-log.js"></script>
-<script src="/assets/js/macros.js"></script>
+  </footer>
+
+  <script src="/public/assets/js/auth-soft.js"></script>
+
+  <script>
+    window.FuelAIAuth?.requireSoftLogin();
+  </script>
+
+  <script src="/public/assets/js/fuelai-log.js"></script>
+  <script src="/public/assets/js/macros.js"></script>
 
 </body>
 </html>

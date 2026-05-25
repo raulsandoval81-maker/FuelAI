@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+
+  <title>Recovery</title>
+
+  <link
+    rel="stylesheet"
+    href="/public/assets/css/site.css"
+  />
+</head>
+
+<body data-theme="night">
+
+  <main class="scan-wrap">
+
+    <section class="scan-card">
+
+      <p class="range-label">FuelAI</p>
+
+      <h1>Recovery</h1>
+
+      <p class="sub">
+        Hydration, electrolytes, protein, sleep,
+        soreness, and post-training reset.
+      </p>
+
+      <textarea
+        id="recoveryInput"
+        class="goal-select"
+        placeholder="What do you need help with? Hydration, soreness, low energy, poor sleep, hard practice, weight cut..."
+        rows="5"
+      ></textarea>
+
+      <button
+        id="recoveryBtn"
+        class="start-btn"
+        type="button"
+      >
+        Get Recovery Guidance
+      </button>
+
+      <section
+        id="recoveryOutput"
+        class="result-card hidden"
+      >
+        <p class="range-label">Recovery Direction</p>
+
+        <p
+          id="recoveryResponse"
+          class="range-output"
+        >
+          Start simple.
+        </p>
+      </section>
+
+      <section class="result-card">
+
+        <p class="range-label">
+          Recovery Basics
+        </p>
+
+        <div class="guide-list">
+
+          <p>💧 Water — first recovery move.</p>
+          <p>🧂 Electrolytes — useful after heavy sweat.</p>
+          <p>🥥 Coconut water — fluid + potassium support.</p>
+          <p>🥚 Eggs / Greek yogurt — easy protein.</p>
+          <p>🍚 Rice / potatoes — refill training energy.</p>
+          <p>🍌 Banana — fast carbs + potassium.</p>
+          <p>🍓 Berries / spinach — recovery support.</p>
+          <p>😴 Sleep — the real performance booster.</p>
+
+        </div>
+
+      </section>
+
+      <div class="wise-links">
+
+        <a
+          class="secondary-btn"
+          href="/public/fuel/fuel-my-body.html"
+        >
+          ↩️ Back to Fuel My Body
+        </a>
+
+        <a
+          class="secondary-btn"
+          href="/public/account/reset.html"
+        >
+          ⚡ Reset
+        </a>
+
+        <a
+          class="secondary-btn"
+          href="/public/hub.html"
+        >
+          🏠 Return to Hub
+        </a>
+
+      </div>
+
+    </section>
+
+  </main>
+
+  <footer class="app-footer">
+    <p>
+      FuelAI • Less overthinking. Better decisions.
+    </p>
+  </footer>
+
+  <script src="/public/assets/js/auth-soft.js"></script>
+
+  <script>
+    window.FuelAIAuth?.requireSoftLogin();
+
+    const recoveryInput =
+      document.getElementById("recoveryInput");
+
+    const recoveryBtn =
+      document.getElementById("recoveryBtn");
+
+    const recoveryOutput =
+      document.getElementById("recoveryOutput");
+
+    const recoveryResponse =
+      document.getElementById("recoveryResponse");
+
+    function getRecoveryGuidance(text) {
+      const input =
+        text.toLowerCase();
+
+      if (
+        input.includes("hydration") ||
+        input.includes("dehydrated") ||
+        input.includes("thirst") ||
+        input.includes("sweat") ||
+        input.includes("cramp")
+      ) {
+        return "Start with water. If you trained hard or sweated a lot, add electrolytes. Coconut water can help with fluid and potassium, but pair it with real food if this is after practice.";
+      }
+
+      if (
+        input.includes("sore") ||
+        input.includes("soreness") ||
+        input.includes("aches") ||
+        input.includes("legs")
+      ) {
+        return "Soreness needs basics: protein, fluids, sleep, and light movement. Good move: water + eggs or Greek yogurt + berries. Do not panic-train through everything.";
+      }
+
+      if (
+        input.includes("low energy") ||
+        input.includes("tired") ||
+        input.includes("flat") ||
+        input.includes("exhausted")
+      ) {
+        return "You probably need fuel, not punishment. Try water, electrolytes if needed, and simple carbs with protein. Example: banana + Greek yogurt, rice + eggs, or potatoes + chicken.";
+      }
+
+      if (
+        input.includes("sleep") ||
+        input.includes("slept") ||
+        input.includes("poor sleep")
+      ) {
+        return "Poor sleep changes the day. Keep food simple, hydrate early, avoid overcorrecting, and aim for a calmer reset tonight. Recovery starts with sleep consistency.";
+      }
+
+      if (
+        input.includes("practice") ||
+        input.includes("workout") ||
+        input.includes("training") ||
+        input.includes("lift")
+      ) {
+        return "Post-training recovery: water first, then protein plus carbs. Simple plate: chicken or eggs, rice or potatoes, fruit, and electrolytes if you sweated hard.";
+      }
+
+      if (
+        input.includes("cut") ||
+        input.includes("weight") ||
+        input.includes("weigh")
+      ) {
+        return "Do not panic cut. Stabilize first: water, sodium balance, simple protein, and controlled carbs. Big swings usually create worse decisions.";
+      }
+
+      return "Start simple: water first, then protein, then carbs if you trained hard. A good reset is water + electrolytes, banana, and eggs or Greek yogurt. Pick one grounded next move.";
+    }
+
+    recoveryBtn.onclick = () => {
+      const text =
+        recoveryInput.value.trim();
+
+      recoveryOutput.classList.remove("hidden");
+
+      recoveryResponse.textContent =
+        getRecoveryGuidance(text);
+    };
+  </script>
+
+</body>
+</html>

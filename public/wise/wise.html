@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Wise Guide</title>
+
+  <link rel="stylesheet" href="/public/assets/css/site.css" />
+  <link rel="stylesheet" href="/public/assets/css/character-face.css" />
+</head>
+
+<body data-theme="night">
+
+<main class="scan-wrap">
+
+  <section class="scan-card">
+
+    <p id="wiseSub" class="sub">
+      Your daily check-in and guidance room.
+    </p>
+
+    <section class="range-card">
+      <p class="range-label">Current Plan</p>
+      <p id="planOutput" class="range-output">Loading...</p>
+    </section>
+
+    <section class="range-card">
+      <p class="range-label">Today</p>
+      <p id="todayOutput" class="range-output">Loading...</p>
+    </section>
+
+    <section class="range-card guide-card">
+
+      <h1 id="wiseTitle">WiseGuy</h1>
+
+      <div class="guide-face-wrap">
+        <div id="characterFace" class="character-face image-face">
+          <img id="guideImage" class="guide-image" src="" alt="Guide" />
+        </div>
+      </div>
+
+      <p class="range-label">🧠 Wise Check</p>
+
+      <p id="wiseAdvice" class="range-output">
+        Loading guidance...
+      </p>
+
+      <textarea
+        id="wiseChatInput"
+        class="goal-select guide-chat-box"
+        placeholder="Ask WiseGuyAI something..."
+        rows="4"
+      ></textarea>
+
+      <p id="wiseChatReply" class="range-output guide-listening">
+        Your guide is listening.
+      </p>
+
+      <button class="start-btn" id="sendWiseChatBtn" type="button">
+        Ask
+      </button>
+
+    </section>
+
+    <div class="wise-links">
+
+      <a class="secondary-btn" href="/public/hub.html">
+        🏠 Return to Hub
+      </a>
+
+      <a class="secondary-btn" href="/public/wise/stay-on-track.html">
+        🎯 Stay On Track
+      </a>
+
+    </div>
+
+    <p class="hero-note">
+      FuelAI • Less overthinking. Better decisions.
+    </p>
+
+  </section>
+
+</main>
+
+<script src="/public/assets/js/auth-soft.js"></script>
+<script>
+  window.FuelAIAuth?.requireSoftLogin();
+</script>
+
+<script src="/public/assets/js/preferences.js"></script>
+<script src="/public/assets/js/fuelai-log.js"></script>
+<script src="/public/assets/js/character-face.js"></script>
+<script src="/public/assets/js/guides.js"></script>
+<script src="/public/assets/js/wise.js"></script>
+
+</body>
+</html>

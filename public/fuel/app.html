@@ -8,12 +8,9 @@
     content="width=device-width, initial-scale=1.0"
   />
 
-  <title>FridgeWise</title>
+  <title>FuelWise Scanner</title>
 
-  <link
-    rel="stylesheet"
-    href="/assets/css/site.css"
-  />
+  <link rel="stylesheet" href="/public/assets/css/site.css" />
 </head>
 
 <body data-theme="night">
@@ -22,21 +19,27 @@
 
     <section class="scan-card">
 
-      <h1>FridgeWise</h1>
+      <p class="range-label">
+        FuelAI
+      </p>
+
+      <h1>
+        FuelWise
+      </h1>
 
       <p class="sub">
-        Scan your fridge. Get simple dinner ideas.
+        Scan a meal. Get simple food guidance.
       </p>
 
       <div
-        id="fridgeUploadBox"
+        id="uploadBox"
         class="upload-actions"
       >
 
         <label class="upload-half">
 
           <span class="upload-title">
-            📸 Take Fridge Photo
+            📸 Take Photo
           </span>
 
           <span class="upload-sub">
@@ -44,7 +47,7 @@
           </span>
 
           <input
-            id="fridgeInput"
+            id="foodInput"
             type="file"
             accept="image/*"
             capture="environment"
@@ -55,7 +58,7 @@
         <label class="upload-half">
 
           <span class="upload-title">
-            🖼 Upload Fridge Photo
+            🖼️ Upload Photo
           </span>
 
           <span class="upload-sub">
@@ -63,7 +66,7 @@
           </span>
 
           <input
-            id="fridgeUploadInput"
+            id="foodUploadInput"
             type="file"
             accept="image/*"
           />
@@ -73,41 +76,41 @@
       </div>
 
       <textarea
-        id="pantryNotes"
+        id="extraIngredients"
         class="goal-select"
-        placeholder="Anything important not visible in the photo?"
+        placeholder="Anything else in this meal? Oil, sauce, cheese, dressing..."
         rows="3"
       ></textarea>
 
       <img
-        id="fridgePreview"
+        id="previewImage"
         class="preview hidden"
-        alt="Fridge preview"
+        alt="Food preview"
       />
 
       <button
-        id="fridgeAnalyzeBtn"
+        id="analyzeBtn"
         class="start-btn hidden"
         type="button"
       >
-        🧊 Build Dinner Ideas
+        🔍 Scan Meal
       </button>
 
       <div
-        id="fridgeLoadingCard"
+        id="loadingCard"
         class="loading-card hidden"
       >
 
         <div class="scanner"></div>
 
-        <p id="fridgeLoadingText">
-          Checking fridge...
+        <p id="loadingText">
+          Loading...
         </p>
 
       </div>
 
       <section
-        id="fridgeResultCard"
+        id="resultCard"
         class="result-card hidden"
       ></section>
 
@@ -115,9 +118,16 @@
 
         <a
           class="secondary-btn"
-          href="/wise.html"
+          href="/public/wise/wise.html"
         >
           ↩️ Return to Guide
+        </a>
+
+        <a
+          class="secondary-btn"
+          href="/public/hub.html"
+        >
+          🏠 Return to Hub
         </a>
 
       </div>
@@ -126,9 +136,23 @@
 
   </main>
 
-  <script src="/assets/js/preferences.js"></script>
+  <footer class="app-footer">
 
-  <script src="/assets/js/fridgewise/fridgewise-page.js?v=7"></script>
+    <p>
+      FuelAI • Less overthinking. Better decisions.
+    </p>
+
+  </footer>
+
+  <script src="/public/assets/js/auth-soft.js"></script>
+
+  <script>
+    window.FuelAIAuth?.requireSoftLogin();
+  </script>
+
+  <script src="/public/assets/js/preferences.js"></script>
+  <script src="/public/assets/js/fuelai-log.js"></script>
+  <script src="/public/assets/js/app.js"></script>
 
 </body>
 </html>

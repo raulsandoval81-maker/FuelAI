@@ -30,7 +30,7 @@ function softLogout() {
 
 function requireSoftLogin() {
   if (!isSoftLoggedIn()) {
-    window.location.href = "/login.html";
+    window.location.href = "/public/account/login.html";
   }
 }
 

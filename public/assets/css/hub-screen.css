@@ -1,0 +1,187 @@
+.hub-screen{
+  position:relative;
+  width:100%;
+  max-width:430px;
+  aspect-ratio:9 / 16;
+  margin:1.5rem auto;
+  overflow:hidden;
+  border-radius:28px;
+  background:#111827;
+}
+
+.hub-screen-img{
+  width:100%;
+  height:100%;
+  display:block;
+  object-fit:cover;
+  border-radius:28px;
+}
+
+.hub-hotspot{
+  position:absolute;
+  left:14%;
+  width:72%;
+  height:5.2%;
+  border-radius:18px;
+  cursor:pointer;
+  z-index:5;
+}
+
+/* DEBUG */
+.hub-screen.debug .hub-hotspot{
+  background:rgba(255,255,255,.18);
+  border:1px solid rgba(255,255,255,.4);
+}
+
+/* STAY ON TRACK PAGE */
+.track-map .hub-hotspot.one{ top:41%; }
+.track-map .hub-hotspot.two{ top:54%; }
+.track-map .hub-hotspot.three{ top:68%; }
+.track-map .hub-hotspot.four{ top:80%; }
+
+/* FUEL MY BODY PAGE */
+.fuel-map .hub-hotspot.one{ top:41%; }
+.fuel-map .hub-hotspot.two{ top:54%; }
+.fuel-map .hub-hotspot.three{ top:68%; }
+.fuel-map .hub-hotspot.four{ top:8%; }
+
+
+/* PROFILE PAGE */
+
+.profile-map .hub-hotspot.one{
+  top:49%;
+}
+
+.profile-map .hub-hotspot.two{
+  top:61%;
+}
+
+.profile-map .hub-hotspot.three{
+  top:72%;
+}
+
+.profile-map .hub-hotspot.four{
+  top:84%;
+}
+.hub-screen{
+  position:relative;
+  width:100%;
+  max-width:520px;
+  margin:1.5rem auto;
+}
+
+.hub-screen-img{
+  width:100%;
+  display:block;
+  border-radius:28px;
+}
+
+.hub-hotspot{
+  position:absolute;
+  display:block;
+  z-index:20;
+  left:14%;
+  width:72%;
+  height:8%;
+  border-radius:18px;
+  cursor:pointer;
+}
+
+.food-map .hub-hotspot.one,
+.fuel-map .hub-hotspot.one,
+.track-map .hub-hotspot.one,
+.profile-map .hub-hotspot.one{
+  top:39%;
+}
+
+.food-map .hub-hotspot.two,
+.fuel-map .hub-hotspot.two,
+.track-map .hub-hotspot.two,
+.profile-map .hub-hotspot.two{
+  top:50%;
+}
+
+.food-map .hub-hotspot.three,
+.fuel-map .hub-hotspot.three,
+.track-map .hub-hotspot.three,
+.profile-map .hub-hotspot.three{
+  top:61%;
+}
+
+.food-map .hub-hotspot.four,
+.fuel-map .hub-hotspot.four,
+.track-map .hub-hotspot.four,
+.profile-map .hub-hotspot.four{
+  top:72%;
+}
+
+.hub-screen.debug .hub-hotspot{
+  background:rgba(255,255,255,.22);
+  border:2px solid white;
+}/* FOOD PAGE */
+
+.food-map .hub-hotspot.one{
+  top:39%;
+}
+
+.food-map .hub-hotspot.two{
+  top:53%;
+}
+
+.food-map .hub-hotspot.three{
+  top:66%;
+}
+
+.food-map .hub-hotspot.four{
+  top:79%;
+}
+/* STAY ON TRACK PAGE */
+
+.track-map .hub-hotspot.one{
+  top:41%;
+}
+
+.track-map .hub-hotspot.two{
+  top:54%;
+}
+
+.track-map .hub-hotspot.three{
+  top:67%;
+}
+
+.track-map .hub-hotspot.four{
+  top:81%;
+}
+/* PROFILE PAGE */
+
+.profile-map .hub-hotspot.one{
+  top:48%;
+}
+
+.profile-map .hub-hotspot.two{
+  top:59%;
+}
+
+.profile-map .hub-hotspot.three{
+  top:71%;
+}
+
+.profile-map .hub-hotspot.four{
+  top:83%;
+}
+/* FUEL MY BODY PAGE */
+.fuel-map .hub-hotspot.one{
+  top:41%;
+}
+
+.fuel-map .hub-hotspot.two{
+  top:54%;
+}
+
+.fuel-map .hub-hotspot.three{
+  top:68%;
+}
+
+.fuel-map .hub-hotspot.four{
+  top:82%;
+}
