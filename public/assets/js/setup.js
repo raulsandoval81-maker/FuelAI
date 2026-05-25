@@ -318,7 +318,7 @@ if (saveSetupBtn) {
       JSON.stringify(setup)
     );
 
-    window.location.href = "/public/hub.html";
+    window.location.href = "/hub.html";
   });
 }
 
