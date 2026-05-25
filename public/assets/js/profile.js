@@ -6,13 +6,13 @@ const historyList =
 
 const setup =
   JSON.parse(
-    localStorage.getItem("fuelai-setup")
-  ) || {};
+    localStorage.getItem("fuelai-setup") || "{}"
+  );
 
 const scans =
   JSON.parse(
-    localStorage.getItem("fuelai-history")
-  ) || [];
+    localStorage.getItem("fuelai-history") || "[]"
+  );
 
 const displayGoal = {
   fuelwise: "FuelWise Maintain",
@@ -21,114 +21,167 @@ const displayGoal = {
   hydratewise: "HydrateWise H2O"
 };
 
+const guideIcons = {
+  sweetspot: "●",
+  toughguy: "▲",
+  mafia: "◆",
+  internet: "■",
+
+  wiseguy: "●",
+  wisegal: "●"
+};
+
+const guideLabels = {
+  sweetspot: "Sweet Spot",
+  toughguy: "Tough Guy",
+  mafia: "Mafia",
+  internet: "Internet",
+
+  wiseguy: "WiseGuy",
+  wisegal: "WiseGal"
+};
+
+const guideKey =
+  setup.wiseFlavor ||
+  setup.guide ||
+  "sweetspot";
+
+const guideIcon =
+  guideIcons[guideKey] || "●";
+
+const guideLabel =
+  guideLabels[guideKey] || "Sweet Spot";
+
+const genderStamp =
+  setup.gender === "female"
+    ? "♀"
+    : "♂";
+
 if (profileCard) {
 
-  profileCard.innerHTML = `
+  if (!setup.nickname && !setup.goal) {
 
-    <div class="profile-header">
+    profileCard.innerHTML = `
+      <div class="empty-profile">
+        <h2>No Athlete / User Setup Yet</h2>
 
-          <h2 class="profile-name">
-        ${setup.nickname || "Your Profile"}
-      </h2>
+        <p>
+          Complete setup to personalize FuelAI.
+        </p>
+      </div>
+    `;
 
+  } else {
 
-      <div class="profile-avatar">
-        ${setup.gender === "female"
-          ?  "♀"
-          :  "♂" }
+    profileCard.innerHTML = `
+      <div class="profile-header">
+
+        <div
+          class="profile-avatar guide-symbol"
+          data-guide="${guideKey}"
+        >
+          <span class="guide-shape">
+            ${guideIcon}
+          </span>
+
+          <span class="gender-stamp">
+            ${genderStamp}
+          </span>
+        </div>
+
+        <h2 class="profile-name">
+          ${setup.nickname || "FuelAI User"}
+        </h2>
+
+        <p class="profile-goal">
+          ${displayGoal[setup.goal] || "FuelWise"}
+        </p>
+
+        <p class="profile-guide">
+          ${guideLabel}
+        </p>
+
       </div>
 
+      <div class="profile-grid">
 
-      <p class="profile-goal">
-        ${displayGoal[setup.goal] || "FuelWise"}
-      </p>
+        <div class="profile-stat">
+          <span>Height</span>
+          <strong>${setup.height || "--"}</strong>
+        </div>
 
-    </div>
+        <div class="profile-stat">
+          <span>Weight</span>
+          <strong>${setup.weight || "--"}</strong>
+        </div>
 
-    <div class="profile-grid">
+        <div class="profile-stat">
+          <span>Target</span>
+          <strong>${setup.targetWeight || "--"}</strong>
+        </div>
 
-      <div class="profile-stat">
-        <span>Height</span>
+        <div class="profile-stat">
+          <span>Age Range</span>
+          <strong>${setup.ageRange || "--"}</strong>
+        </div>
 
-        <strong>
-          ${setup.height || "--"}
-        </strong>
       </div>
+    `;
 
-      <div class="profile-stat">
-        <span>Weight</span>
-
-        <strong>
-          ${setup.weight || "--"}
-        </strong>
-      </div>
-
-      <div class="profile-stat">
-        <span>Target</span>
-
-        <strong>
-          ${setup.targetWeight || "--"}
-        </strong>
-      </div>
-
-      <div class="profile-stat">
-        <span>Age Range</span>
-
-        <strong>
-          ${setup.ageRange || "--"}
-        </strong>
-      </div>
-
-    </div>
-
-  `;
+  }
 
 }
 
 if (historyList) {
 
-  historyList.innerHTML =
-    scans.map(scan => `
+  if (!scans.length) {
 
-      <div class="history-item">
+    historyList.innerHTML = `
+      <div class="history-empty">
+        No recent scans yet.
+      </div>
+    `;
 
-        ${scan.image
-          ? `
-            <img
-              class="history-thumb"
-              src="${scan.image}"
-              alt="Meal scan"
-            />
-          `
-          : ""
-        }
+  } else {
 
-        <div>
+    historyList.innerHTML =
+      scans.map(scan => `
+        <div class="history-item">
 
-          <strong>
-            ${scan.mealName}
-          </strong>
+          ${scan.image
+            ? `
+              <img
+                class="history-thumb"
+                src="${scan.image}"
+                alt="Meal scan"
+              />
+            `
+            : ""
+          }
 
-          <div class="history-meta">
-            ${scan.calories} Calories ·
-            ${displayGoal[scan.goal] || scan.goal}
-          </div>
+          <div>
+            <strong>
+              ${scan.mealName || "Meal Scan"}
+            </strong>
 
-          <div class="history-meta">
+            <div class="history-meta">
+              ${scan.calories || "--"} Calories ·
+              ${displayGoal[scan.goal] || scan.goal || "FuelWise"}
+            </div>
 
-            ${scan.confidence
-              ? `${scan.confidence} confidence · `
-              : ""
-            }
+            <div class="history-meta">
+              ${scan.confidence
+                ? `${scan.confidence} confidence · `
+                : ""
+              }
 
-            ${scan.createdAt || ""}
-
+              ${scan.createdAt || ""}
+            </div>
           </div>
 
         </div>
+      `).join("");
 
-      </div>
-
-    `).join("");
+  }
 
 }
