@@ -8,130 +8,306 @@
     content="width=device-width, initial-scale=1.0"
   />
 
-  <title>Daily Check-In</title>
+  <title>Nightly Check-In</title>
 
-  <link
-    rel="stylesheet"
-    href="/assets/css/site.css"
-  />
+  <link rel="stylesheet" href="/assets/css/site.css" />
 </head>
 
 <body data-theme="night">
 
-  <main class="scan-wrap">
+<main class="scan-wrap">
 
-    <section class="scan-card">
+  <section class="scan-card">
 
-      <p class="range-label">
-        FuelAI
-      </p>
+    <p class="range-label">FuelAI</p>
 
-      <h1>
-        ✅ Daily Check-In
-      </h1>
+<h1>🌙 Nightly Check-In</h1>
 
-      <p class="sub">
-        Take a quick read on your day before asking Wise for guidance.
-      </p>
+    <p class="sub">
+      
+      Complete today’s accountability inputs. Once logged, each item closes for the day.
+    </p>
 
-      <label class="range-label">
-        How are you feeling?
-      </label>
-
-      <select class="goal-select">
-        <option>Good</option>
-        <option>Okay</option>
-        <option>Off track</option>
-        <option>Stressed</option>
-        <option>Tired</option>
-      </select>
-
-      <label class="range-label">
-        Food today
-      </label>
-
-      <select class="goal-select">
-        <option>On track</option>
-        <option>Mixed</option>
-        <option>Not enough</option>
-        <option>Too much</option>
-        <option>Need help deciding</option>
-      </select>
-
-      <label class="range-label">
-        Water today
-      </label>
-
-      <select class="goal-select">
-        <option>Good</option>
-        <option>Some</option>
-        <option>Low</option>
-      </select>
-
-      <label class="range-label">
-        Sleep
-      </label>
-
-      <select class="goal-select">
-        <option>Good</option>
-        <option>Okay</option>
-        <option>Poor</option>
-      </select>
-
-      <label class="range-label">
-        Anything Wise should know?
-      </label>
-
-      <textarea
-        class="goal-select"
-        rows="4"
-        placeholder="Example: I skipped breakfast, trained hard, and feel drained."
-      ></textarea>
-
-      <a
-        class="start-btn"
-        href="/wise/wise.html"
-      >
-        Signal Start
-      </a>
+    <section class="range-card">
+      <p class="range-label">Today’s Inputs</p>
 
       <div class="wise-links">
 
-        <a
-          class="secondary-btn"
-          href="/wise/stay-on-track.html"
+        <button
+          class="start-btn"
+          id="logWorkoutBtn"
+          type="button"
         >
-          ↩️ Back to Stay On Track
-        </a>
+          🏋️ Log Workout Session
+        </button>
 
-        <a
-          class="secondary-btn"
-          href="/hub.html"
+        <button
+          class="start-btn"
+          id="logWeightBtn"
+          type="button"
         >
-          🏠 Return to Hub
-        </a>
+          ⚖️ Log Daily Weight
+        </button>
 
       </div>
 
+      <input
+        id="weightInput"
+        class="goal-select hidden"
+        type="number"
+        inputmode="decimal"
+        placeholder="Enter today’s weight"
+      />
+
+      <p
+        id="dailyInputStatus"
+        class="range-output"
+      >
+        Loading today’s status...
+      </p>
     </section>
 
-  </main>
+    <label class="range-label">How are you feeling?</label>
+    <select id="feelingInput" class="goal-select">
+      <option>Good</option>
+      <option>Okay</option>
+      <option>Off track</option>
+      <option>Stressed</option>
+      <option>Tired</option>
+    </select>
 
-  <footer class="app-footer">
+    <label class="range-label">How did food feel today?</label>
+    <select id="foodTodayInput" class="goal-select">
+      <option>On track</option>
+      <option>Mixed</option>
+      <option>Not enough</option>
+      <option>Too much</option>
+      <option>Need help deciding</option>
+    </select>
 
-    <p>
-      FuelAI • Small check-ins. Better decisions.
-    </p>
+    <label class="range-label">How was hydration today?</label>
+    <select id="waterTodayInput" class="goal-select">
+      <option>Good</option>
+      <option>Some</option>
+      <option>Low</option>
+    </select>
 
-  </footer>
+    <label class="range-label">How does recovery feel tonight?</label>
+    <select id="sleepInput" class="goal-select">
+      <option>Good</option>
+      <option>Okay</option>
+      <option>Poor</option>
+    </select>
 
-  <script src="/assets/js/auth-soft.js"></script>
+    <label class="range-label">Anything W. should know?</label>
+    <textarea
+      id="wiseNoteInput"
+      class="goal-select"
+      rows="4"
+      placeholder="Example: I skipped breakfast, trained hard, and feel drained."
+    ></textarea>
 
-  <script>
-    window.FuelAIAuth?.requireSoftLogin();
-  </script>
+    <button
+      class="start-btn"
+      id="saveCheckInBtn"
+      type="button"
+    >
+      Save Check-In
+    </button>
 
-  <script src="/assets/js/preferences.js"></script>
+    <a
+      class="start-btn"
+      href="/wise/wise.html"
+    >
+      Talk to W.
+    </a>
+
+    <div class="wise-links">
+
+      <a
+        class="secondary-btn"
+        href="/wise/stay-on-track.html"
+      >
+        ↩️ Back to Stay On Track
+      </a>
+
+    </div>
+
+  </section>
+
+</main>
+
+<footer class="app-footer">
+  <p>FuelAI • Small check-ins. Better decisions.</p>
+</footer>
+
+<script src="/assets/js/auth-soft.js"></script>
+<script>
+  window.FuelAIAuth?.requireSoftLogin();
+</script>
+
+<script src="/assets/js/preferences.js"></script>
+<script src="/assets/js/fuelai-log.js"></script>
+
+<script>
+  const logWorkoutBtn =
+    document.getElementById("logWorkoutBtn");
+
+  const logWeightBtn =
+    document.getElementById("logWeightBtn");
+
+  const weightInput =
+    document.getElementById("weightInput");
+
+  const dailyInputStatus =
+    document.getElementById("dailyInputStatus");
+
+  const saveCheckInBtn =
+    document.getElementById("saveCheckInBtn");
+
+  function todayKey() {
+    return new Date().toISOString().slice(0, 10);
+  }
+
+  function getTodayLogs() {
+    if (!window.FuelAILog) return [];
+
+    return window.FuelAILog.getTodayLogs();
+  }
+
+  function hasLogged(type) {
+    return getTodayLogs().some((entry) => {
+      return entry.type === type;
+    });
+  }
+
+  function renderDailyStatus() {
+    const workoutDone =
+      hasLogged("training");
+
+    const weightDone =
+      hasLogged("weight");
+
+    if (workoutDone) {
+      logWorkoutBtn.textContent =
+        "✅ Workout Logged Today";
+
+      logWorkoutBtn.disabled = true;
+      logWorkoutBtn.classList.add("disabled");
+    }
+
+    if (weightDone) {
+      logWeightBtn.textContent =
+        "✅ Weight Logged Today";
+
+      logWeightBtn.disabled = true;
+      logWeightBtn.classList.add("disabled");
+
+      weightInput.classList.add("hidden");
+    }
+
+    const completeCount =
+      Number(workoutDone) + Number(weightDone);
+
+    dailyInputStatus.textContent =
+      `${completeCount}/2 daily inputs complete.`;
+  }
+
+  if (logWorkoutBtn) {
+    logWorkoutBtn.addEventListener(
+      "click",
+      () => {
+        if (!window.FuelAILog || hasLogged("training")) return;
+
+        window.FuelAILog.addFuelLog({
+          type: "training",
+          sessions: 1,
+          source: "daily-checkin"
+        });
+
+        renderDailyStatus();
+      }
+    );
+  }
+
+  if (logWeightBtn) {
+    logWeightBtn.addEventListener(
+      "click",
+      () => {
+        if (hasLogged("weight")) return;
+
+        weightInput.classList.toggle("hidden");
+
+        if (!weightInput.classList.contains("hidden")) {
+          weightInput.focus();
+          logWeightBtn.textContent = "Save Weight";
+          return;
+        }
+
+        const weight =
+          Number(weightInput.value);
+
+        if (!weight) {
+          weightInput.classList.remove("hidden");
+          logWeightBtn.textContent = "Save Weight";
+          return;
+        }
+
+        if (window.FuelAILog) {
+          window.FuelAILog.addFuelLog({
+            type: "weight",
+            weight,
+            source: "daily-checkin"
+          });
+        }
+
+        renderDailyStatus();
+      }
+    );
+  }
+
+  if (weightInput) {
+    weightInput.addEventListener(
+      "keydown",
+      (event) => {
+        if (event.key !== "Enter") return;
+
+        logWeightBtn.click();
+      }
+    );
+  }
+
+  if (saveCheckInBtn) {
+    saveCheckInBtn.addEventListener(
+      "click",
+      () => {
+        if (!window.FuelAILog) return;
+
+        window.FuelAILog.addFuelLog({
+          type: "daily-checkin",
+          feeling:
+            document.getElementById("feelingInput")?.value || "",
+          foodToday:
+            document.getElementById("foodTodayInput")?.value || "",
+          waterToday:
+            document.getElementById("waterTodayInput")?.value || "",
+          sleep:
+            document.getElementById("sleepInput")?.value || "",
+          note:
+            document.getElementById("wiseNoteInput")?.value || "",
+          source: "daily-checkin"
+        });
+
+        saveCheckInBtn.textContent =
+          "✅ Check-In Saved";
+
+        saveCheckInBtn.disabled = true;
+      }
+    );
+  }
+
+  renderDailyStatus();
+</script>
 
 </body>
 </html>
