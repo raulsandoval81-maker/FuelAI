@@ -84,11 +84,20 @@ const guideKey =
   "sweetspot";
 
 const guideLabel =
-  guideLabels[guideKey] || "Sweet Spot";
+  guideLabels[guideKey] ||
+  "Sweet Spot";
+
+const genderKey =
+  setup.gender === "female"
+    ? "Female"
+    : "Male";
+
+const markKey =
+  `${guideKey}${genderKey}`;
 
 const guideMark =
-  guideMarks[guideKey] ||
-  guideMarks.sweetspot;
+  guideMarks[markKey] ||
+  guideMarks.sweetspotMale;
 
 const genderStamp =
   setup.gender === "female"
