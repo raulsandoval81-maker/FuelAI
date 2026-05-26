@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <link rel="icon" href="data:," />
+
+  <title>Recovery</title>
+
+  <link rel="stylesheet" href="/assets/css/site.css" />
+</head>
+
+<body data-theme="night">
+
+  <main class="scan-wrap">
+    <section class="scan-card">
+
+      <p class="range-label">ACCOUNT</p>
+
+      <h1>Recovery</h1>
+
+      <p class="sub">
+        Hydration, electrolytes, protein, sleep, soreness, and post-training reset.
+      </p>
+
+      <textarea
+        id="recoveryInput"
+        class="goal-select"
+        placeholder="What do you need help with? Hydration, soreness, low energy, poor sleep, hard practice, weight cut..."
+        rows="5"
+      ></textarea>
+
+      <button
+        id="recoveryBtn"
+        class="start-btn"
+        type="button"
+      >
+        Get Recovery Guidance
+      </button>
+
+      <section
+        id="recoveryOutput"
+        class="result-card hidden"
+      >
+        <p class="range-label">Recovery Direction</p>
+
+        <p
+          id="recoveryResponse"
+          class="range-output"
+        >
+          Start simple.
+        </p>
+      </section>
+
+      <section class="result-card">
+
+        <p class="range-label">
+          Recovery Basics
+        </p>
+
+        <div class="recovery-grid">
+
+          <div class="recovery-tip">
+            <strong>💧 Water</strong>
+            <span>First recovery move.</span>
+          </div>
+
+          <div class="recovery-tip">
+            <strong>🧂 Electrolytes</strong>
+            <span>Useful after heavy sweat.</span>
+          </div>
+
+          <div class="recovery-tip">
+            <strong>🥥 Coconut Water</strong>
+            <span>Fluid + potassium support.</span>
+          </div>
+
+          <div class="recovery-tip">
+            <strong>🥚 Protein</strong>
+            <span>Eggs or Greek yogurt work well.</span>
+          </div>
+
+          <div class="recovery-tip">
+            <strong>🍚 Carbs</strong>
+            <span>Rice or potatoes refill energy.</span>
+          </div>
+
+          <div class="recovery-tip">
+            <strong>🍌 Banana</strong>
+            <span>Fast carbs + potassium.</span>
+          </div>
+
+          <div class="recovery-tip">
+            <strong>🍓 Recovery Foods</strong>
+            <span>Berries and spinach support recovery.</span>
+          </div>
+
+          <div class="recovery-tip">
+            <strong>😴 Sleep</strong>
+            <span>The real performance booster.</span>
+          </div>
+
+        </div>
+
+      </section>
+
+      <div class="wise-links">
+
+        <a
+          class="secondary-btn"
+          href="/account/reset-recovery.html"
+        >
+          ⚡ Reset
+        </a>
+
+
+        <a
+          class="secondary-btn"
+          href="/account/"
+        >
+          ↩️ Return to Account
+        </a>
+
+      </div>
+
+      <p class="hero-note">
+        FuelAI • Recovery starts simple.
+      </p>
+
+    </section>
+  </main>
+
+  <footer class="app-footer">
+    <p>FuelAI • Less overthinking. Better decisions.</p>
+  </footer>
+
+  <script src="/assets/js/core/auth-soft.js"></script>
+
+  <script>
+    window.FuelAIAuth?.requireSoftLogin();
+  </script>
+
+  <script src="/assets/js/core/preferences.js"></script>
+  <script src="/assets/js/account/recovery.js"></script>
+
+</body>
+</html>

@@ -9,16 +9,13 @@
     content="width=device-width, initial-scale=1.0"
   />
 
-<title>FuelAI Athlete / User Info</title>
+  <link rel="icon" href="data:," />
+
+  <title>Account Profile</title>
 
   <link
     rel="stylesheet"
     href="/assets/css/site.css"
-  />
-
-  <link
-    rel="stylesheet"
-    href="/assets/css/hub-screen.css"
   />
 
 </head>
@@ -34,52 +31,69 @@
       </p>
 
       <h1>
-        Profile
+        👤 Account Profile
       </h1>
 
-      <p class="sub">
-        Your identity, goals, and setup live here.
-      </p>
-
-      <div class="hub-screen profile-map">
-
-        <img
-          class="hub-screen-img"
-          src="/assets/img/hub/account-center2.png"
-          alt="Account Center"
-        />
-
-        <a
-          class="hub-hotspot one"
-          href="/account/setup.html"
-          aria-label="Edit Setup"
-        ></a>
-
-        <a
-          class="hub-hotspot two"
-          href="/account/macros.html"
-          aria-label="Macro Targets"
-        ></a>
-
-        <a
-          class="hub-hotspot three"
-          href="/account/"
-          aria-label="View Logs"
-        ></a>
-
-        <a
-          class="hub-hotspot four"
-          href="/hub.html"
-          aria-label="Return to Hub"
-        ></a>
-
-      </div>
+<p class="sub">
+  Your setup, targets, preferences, and account tools live here.
+</p>
 
       <section
         id="profileCard"
         class="result-card"
         style="display:none;"
       ></section>
+
+      <section class="range-card">
+
+        <p class="range-label">
+          Account Center
+        </p>
+
+        <div class="wise-links">
+
+          <a
+            class="secondary-btn"
+            href="/account/macros.html"
+          >
+            🥩 Macro Breakdown
+          </a>
+
+          <a
+            class="secondary-btn"
+            href="/account/logs.html"
+          >
+            📋 90-Day Logs
+          </a>
+
+          <a
+            class="secondary-btn"
+            href="/account/reset-recovery.html"
+          >
+            🧠 Reset + Recovery
+          </a>
+
+          <a
+            class="secondary-btn"
+            href="/account/setup.html"
+          >
+            ⚙️ Edit Setup
+          </a>
+
+        </div>
+
+      </section>
+
+      <div class="wise-links">
+
+        <a
+          class="secondary-btn"
+          href="/hub.html"
+        >
+          🏠 Return to Hub
+        </a>
+
+      </div>
 
       <p class="hero-note">
         FuelAI • Less overthinking. Better decisions.
@@ -91,10 +105,10 @@
 
   <footer class="app-footer">
 
-
     <p>
-  FuelAI • Athlete and user setup center.
-</p>
+      FuelAI • Athlete and user setup center.
+    </p>
+
   </footer>
 
   <script src="/assets/js/core/auth-soft.js"></script>
@@ -102,7 +116,7 @@
   <script>
     window.FuelAIAuth?.requireSoftLogin();
   </script>
-
+  <script src="/assets/js/core/preferences.js"></script>
   <script src="/assets/js/account/profile.js"></script>
 
 </body>

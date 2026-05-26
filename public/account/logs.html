@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+
+  <link rel="icon" href="data:," />
+
+  <title>FuelAI Logs</title>
+
+  <link
+    rel="stylesheet"
+    href="/assets/css/site.css"
+  />
+</head>
+
+<body data-theme="night">
+
+  <main class="scan-wrap">
+
+    <section class="scan-card">
+
+      <p class="range-label">
+        ACCOUNT
+      </p>
+
+      <h1>
+        📋 90-Day Log
+      </h1>
+
+      <p class="sub">
+        Track calories, protein, hydration, training, weight, and daily target snapshots.
+      </p>
+
+      <section class="range-card">
+
+        <p class="range-label">
+          Today Snapshot
+        </p>
+
+        <p
+          id="todaySnapshot"
+          class="range-output"
+        >
+          Loading today...
+        </p>
+
+      </section>
+
+      <section class="range-card">
+
+        <p class="range-label">
+          90-Day History
+        </p>
+
+        <div id="logsContainer">
+          Loading logs...
+        </div>
+
+      </section>
+
+      <section class="range-card">
+
+        <p class="range-label">
+          What This Tracks
+        </p>
+
+        <div class="meal-plan">
+          <ul class="meal-list">
+            <li>🔥 Daily calories</li>
+            <li>🥩 Daily protein</li>
+            <li>💧 Daily hydration</li>
+            <li>🏋️ Daily workout log</li>
+            <li>⚖️ Daily weight</li>
+            <li>🎯 Daily calorie + protein target snapshots</li>
+            <li>📆 Rolling 90-day history</li>
+          </ul>
+        </div>
+
+      </section>
+
+      <div class="wise-links">
+
+        <a
+          class="secondary-btn"
+          href="/account/"
+        >
+          ↩️ Return to Account
+        </a>
+
+        <a
+          class="secondary-btn"
+          href="/wise/"
+        >
+          💬 Talk to W.
+        </a>
+
+      </div>
+
+      <p class="hero-note">
+        FuelAI • Awareness without obsession.
+      </p>
+
+    </section>
+
+  </main>
+
+  <footer class="app-footer">
+    <p>
+      FuelAI • 90-day food, hydration, training, and weight awareness.
+    </p>
+  </footer>
+
+  <script src="/assets/js/core/auth-soft.js"></script>
+
+  <script>
+    window.FuelAIAuth?.requireSoftLogin();
+  </script>
+
+  <script src="/assets/js/core/preferences.js"></script>
+  <script src="/assets/js/account/fuelai-log.js"></script>
+  <script src="/assets/js/logs.js"></script>
+
+</body>
+</html>

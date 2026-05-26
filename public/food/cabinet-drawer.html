@@ -8,6 +8,8 @@
     content="width=device-width, initial-scale=1.0"
   />
 
+  <link rel="icon" href="data:," />
+
   <title>Cabinet Drawer</title>
 
   <link rel="stylesheet" href="/assets/css/site.css" />
@@ -21,110 +23,249 @@
     <section class="scan-card">
 
       <p class="range-label">
-        FuelAI
+        FOOD
       </p>
 
       <h1>
-        Cabinet Drawer
+        🥫 Cabinet Drawer
       </h1>
 
       <p class="sub">
-        Save what your household usually has and needs.
+        Track what you have, what you need, and the helper tools FridgeWise uses.
+      </p>
+
+      <p class="range-label">
+        What We Have
       </p>
 
       <section class="drawer-section">
-        <button class="drawer-toggle" type="button" data-drawer="pantry">
-          🥫 Pantry Log
+
+        <button
+          class="drawer-toggle"
+          type="button"
+          data-drawer="pantry"
+        >
+          🥫 Pantry
         </button>
 
-        <div id="drawer-pantry" class="drawer-panel hidden">
-          <ul id="pantryList" class="drawer-list"></ul>
+        <div
+          id="drawer-pantry"
+          class="drawer-panel hidden"
+        >
+
+          <ul
+            id="pantryList"
+            class="drawer-list"
+          ></ul>
 
           <div class="drawer-add-row">
-            <input id="pantryInput" type="text" placeholder="Add pantry item..." />
-            <button type="button" data-add="pantry">Add</button>
+
+            <input
+              id="pantryInput"
+              type="text"
+              placeholder="Add pantry item..."
+            />
+
+            <button
+              type="button"
+              data-add="pantry"
+            >
+              Add
+            </button>
+
           </div>
+
         </div>
+
       </section>
 
       <section class="drawer-section">
-        <button class="drawer-toggle" type="button" data-drawer="freezer">
-          ❄️ Freezer Log
+
+        <button
+          class="drawer-toggle"
+          type="button"
+          data-drawer="freezer"
+        >
+          ❄️ Freezer
         </button>
 
-        <div id="drawer-freezer" class="drawer-panel hidden">
-          <ul id="freezerList" class="drawer-list"></ul>
+        <div
+          id="drawer-freezer"
+          class="drawer-panel hidden"
+        >
+
+          <ul
+            id="freezerList"
+            class="drawer-list"
+          ></ul>
 
           <div class="drawer-add-row">
-            <input id="freezerInput" type="text" placeholder="Add freezer item..." />
-            <button type="button" data-add="freezer">Add</button>
+
+            <input
+              id="freezerInput"
+              type="text"
+              placeholder="Add freezer item..."
+            />
+
+            <button
+              type="button"
+              data-add="freezer"
+            >
+              Add
+            </button>
+
           </div>
+
         </div>
+
       </section>
 
       <section class="drawer-section">
-        <button class="drawer-toggle" type="button" data-drawer="grocery">
-          🛒 Grocery Log
+
+        <button
+          class="drawer-toggle"
+          type="button"
+          data-drawer="other"
+        >
+          📦 Other
         </button>
 
-        <div id="drawer-grocery" class="drawer-panel hidden">
-          <ul id="groceryList" class="drawer-list"></ul>
+        <div
+          id="drawer-other"
+          class="drawer-panel hidden"
+        >
+
+          <ul
+            id="otherList"
+            class="drawer-list"
+          ></ul>
 
           <div class="drawer-add-row">
-            <input id="groceryInput" type="text" placeholder="Add grocery item..." />
-            <button type="button" data-add="grocery">Add</button>
+
+            <input
+              id="otherInput"
+              type="text"
+              placeholder="Add household item..."
+            />
+
+            <button
+              type="button"
+              data-add="other"
+            >
+              Add
+            </button>
+
           </div>
+
         </div>
+
       </section>
 
+
+      <p class="range-label">
+        What We Need
+      </p>
+
       <section class="drawer-section">
-        <button class="drawer-toggle" type="button" data-drawer="other">
-          📦 Other Log
+
+        <button
+          class="drawer-toggle"
+          type="button"
+          data-drawer="grocery"
+        >
+          🛒 Grocery List
         </button>
 
-        <div id="drawer-other" class="drawer-panel hidden">
-          <ul id="otherList" class="drawer-list"></ul>
+        <div
+          id="drawer-grocery"
+          class="drawer-panel hidden"
+        >
+
+          <ul
+            id="groceryList"
+            class="drawer-list"
+          ></ul>
 
           <div class="drawer-add-row">
-            <input id="otherInput" type="text" placeholder="Add other household item..." />
-            <button type="button" data-add="other">Add</button>
+
+            <input
+              id="groceryInput"
+              type="text"
+              placeholder="Add grocery item..."
+            />
+
+            <button
+              type="button"
+              data-add="grocery"
+            >
+              Add
+            </button>
+
           </div>
+
         </div>
+
       </section>
 
       <p class="range-note">
-        Pantry. Freezer. Groceries. Other. Keep it simple.
+        Missing foods FridgeWise may suggest later.
       </p>
+
+      <section class="range-card">
+
+        <p class="range-label">
+          FridgeWise Helpers
+        </p>
+
+        <div class="wise-links">
+
+          <a
+            class="secondary-btn"
+            href="/food/ingredient-scan.html"
+          >
+            🧾 Ingredient Scan
+          </a>
+
+          <a
+            class="secondary-btn"
+            href="/food/what-can-i-eat.html"
+          >
+            🍽 What Can I Eat?
+          </a>
+
+        </div>
+
+      </section>
 
       <div class="wise-links">
 
         <a
           class="secondary-btn"
-          href="/wise/wise.html"
+          href="/food/fridgewise.html"
         >
-          ↩️ Return to Guide
-        </a>
-
-        <a
-          class="secondary-btn"
-          href="/hub.html"
-        >
-          🏠 Return to Hub
+          🧊 Back to FridgeWise
         </a>
 
       </div>
+
+      <p class="hero-note">
+        FuelAI • Less overthinking. Better decisions.
+      </p>
 
     </section>
 
   </main>
 
   <footer class="app-footer">
+
     <p>
-      FuelAI • Less overthinking. Better decisions.
+      FuelAI • Household food memory for faster decisions.
     </p>
+
   </footer>
 
   <script src="/assets/js/core/auth-soft.js"></script>
+
   <script>
     window.FuelAIAuth?.requireSoftLogin();
   </script>

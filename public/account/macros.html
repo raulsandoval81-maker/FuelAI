@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
   <meta charset="UTF-8" />
 
   <meta
@@ -8,12 +9,17 @@
     content="width=device-width, initial-scale=1.0"
   />
 
-  <title>Advanced Macro Tracking</title>
+  <link rel="icon" href="data:," />
+
+  <title>
+    Macro Breakdown
+  </title>
 
   <link
     rel="stylesheet"
     href="/assets/css/site.css"
   />
+
 </head>
 
 <body data-theme="night">
@@ -23,16 +29,31 @@
     <section class="scan-card">
 
       <p class="range-label">
-        FuelAI
+        ACCOUNT
       </p>
 
       <h1>
-        Advanced Macro Tracking
+        🥩 Macro Breakdown
       </h1>
 
       <p class="sub">
-        Optional deeper nutrition tracking.
+        Optional deeper nutrition tracking for calories, protein, carbs, and fats.
       </p>
+
+      <section class="range-card">
+
+        <p class="range-label">
+          Current Plan
+        </p>
+
+        <p
+          id="macroPlan"
+          class="range-output"
+        >
+          Loading plan...
+        </p>
+
+      </section>
 
       <section class="range-card">
 
@@ -44,7 +65,7 @@
           id="macroTargets"
           class="range-output"
         >
-          Loading...
+          Loading targets...
         </p>
 
       </section>
@@ -59,25 +80,115 @@
           id="macroProgress"
           class="range-output"
         >
-          Loading...
+          Loading progress...
+        </p>
+
+      </section>
+
+      <section class="range-card">
+
+        <p class="range-label">
+          Macro Breakdown
+        </p>
+
+        <p
+          id="macroBreakdown"
+          class="range-output"
+        >
+          Calories, protein, carbs, and fats will appear here after meals are logged.
+        </p>
+
+      </section>
+
+      <section class="range-card">
+
+        <p class="range-label">
+          Suggested Macro Style
+        </p>
+
+        <div class="meal-plan">
+
+          <div class="meal-divider"></div>
+
+          <p class="meal-label">
+            FuelWise
+          </p>
+
+          <ul class="meal-list">
+            <li>
+              Balanced nutrition for energy and consistency
+            </li>
+
+            <li>
+              Approx Macro Split:
+              40 / 30 / 30
+            </li>
+          </ul>
+
+          <div class="meal-divider"></div>
+
+          <p class="meal-label">
+            CutWise
+          </p>
+
+          <ul class="meal-list">
+            <li>
+              Higher protein and controlled portions
+            </li>
+
+            <li>
+              Approx Macro Split:
+              35 / 40 / 25
+            </li>
+          </ul>
+
+          <div class="meal-divider"></div>
+
+          <p class="meal-label">
+            GainWise
+          </p>
+
+          <ul class="meal-list">
+            <li>
+              Recovery-focused meals with added carbs
+            </li>
+
+            <li>
+              Approx Macro Split:
+              45 / 30 / 25
+            </li>
+          </ul>
+
+        </div>
+
+      </section>
+
+      <section class="range-card">
+
+        <p class="range-label">
+          W. Reminder
+        </p>
+
+        <p class="range-output">
+          This page is optional. Use details when they help. Ignore details when they create stress.
         </p>
 
       </section>
 
       <div class="wise-links">
 
-
         <a
           class="secondary-btn"
-          href="/hub.html"
+          href="/account/"
         >
-          🏠 Return to Hub
+          ↩️ Return to Account
         </a>
+
 
       </div>
 
       <p class="hero-note">
-        Optional advanced nutrition tracking.
+        FuelAI • Details when useful. Simplicity when not.
       </p>
 
     </section>
@@ -87,7 +198,7 @@
   <footer class="app-footer">
 
     <p>
-      FuelAI • Less overthinking. Better decisions.
+      FuelAI • Optional advanced nutrition tracking.
     </p>
 
   </footer>
@@ -98,7 +209,7 @@
     window.FuelAIAuth?.requireSoftLogin();
   </script>
 
-  <script src="/assets/js/fuel/fuelai-log.js"></script>
+  <script src="/assets/js/account/fuelai-log.js"></script>
   <script src="/assets/js/account/macros.js"></script>
 
 </body>

@@ -83,28 +83,71 @@
       />
 
       <select id="ageRange" class="goal-select">
-        <option value="13-18">Ages 13–18</option>
-        <option value="19-30">Ages 19–30</option>
-        <option value="31-45">Ages 31–45</option>
-        <option value="46-60">Ages 46–60</option>
-        <option value="60+">Ages 60+</option>
+
+        <option value="13-18">
+          Ages 13–18
+        </option>
+
+        <option value="19-30">
+          Ages 19–30
+        </option>
+
+        <option value="31-45">
+          Ages 31–45
+        </option>
+
+        <option value="46-60">
+          Ages 46–60
+        </option>
+
+        <option value="60+">
+          Ages 60+
+        </option>
+
       </select>
 
       <select id="genderType" class="goal-select">
-        <option value="">Body type</option>
-        <option value="male">Male</option>
-        <option value="female">Female</option>
+
+        <option value="">
+          Body type
+        </option>
+
+        <option value="male">
+          Male
+        </option>
+
+        <option value="female">
+          Female
+        </option>
+
       </select>
 
       <select id="activityLevel" class="goal-select">
-        <option value="low">Activity / Training Level</option>
-        <option value="0-1">0–1 days per week</option>
-        <option value="2-3">2–3 days per week</option>
-        <option value="4-5">4–5 days per week</option>
-        <option value="6plus">6+ days per week</option>
+
+        <option value="low">
+          Activity / Training Level
+        </option>
+
+        <option value="0-1">
+          0–1 days per week
+        </option>
+
+        <option value="2-3">
+          2–3 days per week
+        </option>
+
+        <option value="4-5">
+          4–5 days per week
+        </option>
+
+        <option value="6plus">
+          6+ days per week
+        </option>
+
       </select>
 
       <select id="goalSelect" class="goal-select">
+
         <option value="fuelwise">
           FuelWise — Maintain / Balance
         </option>
@@ -116,7 +159,75 @@
         <option value="gainwise">
           GainWise — Build / Recover
         </option>
+
       </select>
+
+      <select id="sportType" class="goal-select">
+
+        <option value="general">
+          General Fitness / Lifestyle
+        </option>
+
+        <option value="wrestling">
+          Wrestling
+        </option>
+
+        <option value="mma">
+          MMA
+        </option>
+
+        <option value="boxing">
+          Boxing
+        </option>
+
+        <option value="basketball">
+          Basketball
+        </option>
+
+        <option value="football">
+          Football
+        </option>
+
+        <option value="running">
+          Running
+        </option>
+
+      </select>
+
+      <select id="foodStyle" class="goal-select">
+
+  <option value="none">
+    Food Preference
+  </option>
+
+  <option value="vegetarian">
+    Vegetarian
+  </option>
+
+  <option value="vegan">
+    Vegan
+  </option>
+
+  <option value="highprotein">
+    High Protein
+  </option>
+
+  <option value="dairyfree">
+    Dairy Free
+  </option>
+
+  <option value="glutenfree">
+    Gluten Free
+  </option>
+
+</select>
+
+<input
+  id="foodAvoid"
+  class="goal-select"
+  type="text"
+  placeholder="Allergies / Avoid — peanuts, shellfish, eggs..."
+/>
 
       <select id="wiseFlavor" class="goal-select">
 
@@ -141,6 +252,22 @@
       <section class="range-card">
 
         <p class="range-label">
+          Your Monthly Direction
+        </p>
+
+        <p class="range-output">
+          FuelAI builds a simple month-to-month rhythm focused on consistency, recovery, and better daily decisions.
+        </p>
+
+        <p class="range-note">
+          The goal is not perfection. The goal is staying with the plan.
+        </p>
+
+      </section>
+
+      <section class="range-card">
+
+        <p class="range-label">
           Suggested Guidance
         </p>
 
@@ -156,6 +283,14 @@
         </p>
 
       </section>
+
+      <button
+  id="resetSetupBtn"
+  class="secondary-btn"
+  type="button"
+>
+  Reset Setup
+</button>
 
       <button
         id="saveSetupBtn"

@@ -2,12 +2,23 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>Wise Guide</title>
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
 
-  <link rel="stylesheet" href="/assets/css/site.css" />
-  <link rel="stylesheet" href="/assets/css/character-face.css" />
+  <title>Advice with W.</title>
+
+  <link
+    rel="stylesheet"
+    href="/assets/css/site.css"
+  />
+
+  <link
+    rel="stylesheet"
+    href="/assets/css/character-face.css"
+  />
 </head>
 
 <body data-theme="night">
@@ -16,67 +27,171 @@
 
   <section class="scan-card">
 
-    <p id="wiseSub" class="sub">
-      Your daily check-in and guidance room.
+    <p class="range-label">
+      WISE
+    </p>
+
+    <h1>
+      Advice with W.
+    </h1>
+
+    <p
+      id="wiseSub"
+      class="sub"
+    >
+      Ask better questions. Get clearer guidance.
     </p>
 
     <section class="range-card">
-      <p class="range-label">Current Plan</p>
-      <p id="planOutput" class="range-output">Loading...</p>
+
+      <p class="range-label">
+        Current Plan
+      </p>
+
+      <p
+        id="planOutput"
+        class="range-output"
+      >
+        Loading...
+      </p>
+
     </section>
 
     <section class="range-card">
-      <p class="range-label">Today</p>
-      <p id="todayOutput" class="range-output">Loading...</p>
+
+      <p class="range-label">
+        Daily Targets
+      </p>
+
+      <p
+        id="goalTargetOutput"
+        class="range-output"
+      >
+        Loading targets...
+      </p>
+
+    </section>
+
+    <section class="range-card">
+
+      <p class="range-label">
+        Today
+      </p>
+
+      <p
+        id="todayOutput"
+        class="range-output"
+      >
+        Loading...
+      </p>
+
     </section>
 
     <section class="range-card guide-card">
 
-      <h1 id="wiseTitle">WiseGuy</h1>
+      <h1 id="wiseTitle">
+        WiseGuy
+      </h1>
 
       <div class="guide-face-wrap">
-        <div id="characterFace" class="character-face image-face">
-          <img id="guideImage" class="guide-image" src="" alt="Guide" />
+
+        <div
+          id="characterFace"
+          class="character-face image-face"
+        >
+
+          <img
+            id="guideImage"
+            class="guide-image"
+            src=""
+            alt="Guide"
+          />
+
         </div>
+
       </div>
 
-      <p class="range-label">🧠 Wise Check</p>
+      <p class="range-label">
+        🧠 Guidance from W.
+      </p>
 
-      <p id="wiseAdvice" class="range-output">
+      <p
+        id="wiseAdvice"
+        class="range-output"
+      >
         Loading guidance...
       </p>
 
       <textarea
         id="wiseChatInput"
         class="goal-select guide-chat-box"
-        placeholder="Ask WiseGuyAI something..."
+        placeholder="Ask W. anything..."
         rows="4"
       ></textarea>
 
-      <p id="wiseChatReply" class="range-output guide-listening">
+      <p
+        id="wiseChatReply"
+        class="range-output guide-listening"
+      >
         Your guide is listening.
       </p>
 
-      <button class="start-btn" id="sendWiseChatBtn" type="button">
-        Ask
+      <button
+        class="start-btn"
+        id="sendWiseChatBtn"
+        type="button"
+      >
+        Ask W.
       </button>
+
+    </section>
+
+    <section class="range-card">
+
+      <p class="range-label">
+        Stay On Track
+      </p>
+
+      <div class="wise-links">
+
+        <a
+          class="secondary-btn"
+          href="/wise/todays-check-in.html"
+        >
+          ✅ Today's Check-In
+        </a>
+
+        <a
+          class="secondary-btn"
+          href="/wise/quick-tools.html"
+        >
+          ⚡ Quick Tools
+        </a>
+
+        <a
+          class="secondary-btn"
+          href="/wise/stay-on-track.html"
+        >
+          📈 Stay On Track
+        </a>
+
+      </div>
 
     </section>
 
     <div class="wise-links">
 
-      <a class="secondary-btn" href="/hub.html">
+      <a
+        class="secondary-btn"
+        href="/hub.html"
+      >
         🏠 Return to Hub
-      </a>
-
-      <a class="secondary-btn" href="/wise/">
-        🎯 Stay On Track
       </a>
 
     </div>
 
     <p class="hero-note">
-      FuelAI • Less overthinking. Better decisions.
+      FuelAI • W. helps interpret the truth your account tracks.
     </p>
 
   </section>
@@ -84,12 +199,13 @@
 </main>
 
 <script src="/assets/js/core/auth-soft.js"></script>
+
 <script>
   window.FuelAIAuth?.requireSoftLogin();
 </script>
 
 <script src="/assets/js/core/preferences.js"></script>
-<script src="/assets/js/fuel/fuelai-log.js"></script>
+<script src="/assets/js/account/fuelai-log.js"></script>
 <script src="/assets/js/wise/character-face.js"></script>
 <script src="/assets/js/wise/guides.js"></script>
 <script src="/assets/js/wise/wise.js"></script>

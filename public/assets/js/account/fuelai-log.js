@@ -53,6 +53,39 @@ function saveDailyLogs(dailyLogs) {
   );
 }
 
+function getDailyTargets(setup) {
+  const weight =
+    Number(setup.weight || 0);
+
+  if (!weight) {
+    return {
+      caloriesTarget: null,
+      proteinTarget: null
+    };
+  }
+
+  let caloriesTarget =
+    Math.round(weight * 14);
+
+  if (setup.goal === "cutwise") {
+    caloriesTarget =
+      Math.round(weight * 11);
+  }
+
+  if (setup.goal === "gainwise") {
+    caloriesTarget =
+      Math.round(weight * 16);
+  }
+
+  const proteinTarget =
+    Math.round(weight * 0.8);
+
+  return {
+    caloriesTarget,
+    proteinTarget
+  };
+}
+
 function addFuelLog(entry) {
   const logs = getFuelLog();
 
@@ -79,6 +112,9 @@ function buildDailyLogForDate(dateKey) {
     JSON.parse(
       localStorage.getItem("fuelai-setup") || "{}"
     );
+
+  const targets =
+    getDailyTargets(setup);
 
   const logs =
     getFuelLog().filter((entry) => {
@@ -133,11 +169,19 @@ function buildDailyLogForDate(dateKey) {
     guide: setup.guide || "wiseguy",
     wiseFlavor: setup.wiseFlavor || "sweetspot",
     activityLevel: setup.activityLevel || "low",
+
     calories,
     protein,
     carbs,
     fats,
     water,
+
+    caloriesTarget:
+      targets.caloriesTarget,
+
+    proteinTarget:
+      targets.proteinTarget,
+
     trainingCount,
     latestWeight,
     scanCount,
@@ -189,14 +233,36 @@ function getFuelSummary() {
 
   return {
     totalDays: allDays.length,
-    caloriesToday: today.calories || 0,
-    proteinToday: today.protein || 0,
-    carbsToday: today.carbs || 0,
-    fatsToday: today.fats || 0,
-    waterToday: today.water || 0,
-    trainingToday: today.trainingCount > 0,
-    todayCount: today.totalEntries || 0,
-    weightToday: today.latestWeight || null,
+
+    caloriesToday:
+      today.calories || 0,
+
+    proteinToday:
+      today.protein || 0,
+
+    carbsToday:
+      today.carbs || 0,
+
+    fatsToday:
+      today.fats || 0,
+
+    waterToday:
+      today.water || 0,
+
+    caloriesTarget:
+      today.caloriesTarget || null,
+
+    proteinTarget:
+      today.proteinTarget || null,
+
+    trainingToday:
+      today.trainingCount > 0,
+
+    todayCount:
+      today.totalEntries || 0,
+
+    weightToday:
+      today.latestWeight || null,
 
     wiseFlavor:
       today.wiseFlavor ||

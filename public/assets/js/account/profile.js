@@ -15,20 +15,43 @@ const scans =
   );
 
 const displayGoal = {
-  fuelwise: "FuelWise Maintain",
-  cutwise: "CutWise Drop",
-  gainwise: "GainWise Add",
-  hydratewise: "HydrateWise H2O"
+  fuelwise: "FuelWise — Maintain",
+  cutwise: "CutWise — Cut",
+  gainwise: "GainWise — Gain",
+  hydratewise: "HydrateWise — Hydration"
 };
 
-const guideIcons = {
-  sweetspot: "●",
-  toughguy: "▲",
-  mafia: "◆",
-  internet: "■",
+const guideMarks = {
+  sweetspot:
+    "/assets/img/guides/sweetspot-mark.png",
 
-  wiseguy: "●",
-  wisegal: "●"
+  toughguy:
+    "/assets/img/guides/toughguy-mark.png",
+
+  mafia:
+    "/assets/img/guides/mafia-mark.png",
+
+  internet:
+    "/assets/img/guides/internet-mark.png"
+};
+
+const displayFoodStyle = {
+  none: "No Preference",
+  vegetarian: "Vegetarian",
+  vegan: "Vegan",
+  highprotein: "High Protein",
+  dairyfree: "Dairy Free",
+  glutenfree: "Gluten Free"
+};
+
+const displaySport = {
+  general: "General Fitness / Lifestyle",
+  wrestling: "Wrestling",
+  mma: "MMA",
+  boxing: "Boxing",
+  basketball: "Basketball",
+  football: "Football",
+  running: "Running"
 };
 
 const guideLabels = {
@@ -36,7 +59,6 @@ const guideLabels = {
   toughguy: "Tough Guy",
   mafia: "Mafia",
   internet: "Internet",
-
   wiseguy: "WiseGuy",
   wisegal: "WiseGal"
 };
@@ -46,11 +68,12 @@ const guideKey =
   setup.guide ||
   "sweetspot";
 
-const guideIcon =
-  guideIcons[guideKey] || "●";
-
 const guideLabel =
   guideLabels[guideKey] || "Sweet Spot";
+
+const guideMark =
+  guideMarks[guideKey] ||
+  guideMarks.sweetspot;
 
 const genderStamp =
   setup.gender === "female"
@@ -58,9 +81,9 @@ const genderStamp =
     : "♂";
 
 if (profileCard) {
+  profileCard.style.display = "block";
 
   if (!setup.nickname && !setup.goal) {
-
     profileCard.innerHTML = `
       <div class="empty-profile">
         <h2>No Athlete / User Setup Yet</h2>
@@ -68,21 +91,25 @@ if (profileCard) {
         <p>
           Complete setup to personalize FuelAI.
         </p>
+
+        <a
+          class="secondary-btn"
+          href="/account/setup.html"
+        >
+          ⚙️ Start Setup
+        </a>
       </div>
     `;
-
   } else {
-
     profileCard.innerHTML = `
       <div class="profile-header">
 
-        <div
-          class="profile-avatar guide-symbol"
-          data-guide="${guideKey}"
-        >
-          <span class="guide-shape">
-            ${guideIcon}
-          </span>
+        <div class="profile-avatar">
+          <img
+            class="profile-guide-mark"
+            src="${guideMark}"
+            alt="${guideLabel}"
+          />
 
           <span class="gender-stamp">
             ${genderStamp}
@@ -94,7 +121,7 @@ if (profileCard) {
         </h2>
 
         <p class="profile-goal">
-          ${displayGoal[setup.goal] || "FuelWise"}
+          ${displayGoal[setup.goal] || "FuelWise — Maintain"}
         </p>
 
         <p class="profile-guide">
@@ -103,47 +130,71 @@ if (profileCard) {
 
       </div>
 
-      <div class="profile-grid">
+      <div class="profile-details">
 
-        <div class="profile-stat">
-          <span>Height</span>
-          <strong>${setup.height || "--"}</strong>
+        <div class="profile-row">
+          <span class="profile-label">Goal</span>
+          <span class="profile-value">${displayGoal[setup.goal] || "FuelWise — Maintain"}</span>
         </div>
 
-        <div class="profile-stat">
-          <span>Weight</span>
-          <strong>${setup.weight || "--"}</strong>
+        <div class="profile-row">
+          <span class="profile-label">Weekly Focus</span>
+          <span class="profile-value">${setup.weeklyFocus || "Steady Energy Week"}</span>
         </div>
 
-        <div class="profile-stat">
-          <span>Target</span>
-          <strong>${setup.targetWeight || "--"}</strong>
+        <div class="profile-row">
+          <span class="profile-label">Sport</span>
+          <span class="profile-value">${displaySport[setup.sportType] || "General Fitness / Lifestyle"}</span>
         </div>
 
-        <div class="profile-stat">
-          <span>Age Range</span>
-          <strong>${setup.ageRange || "--"}</strong>
+        <div class="profile-row">
+          <span class="profile-label">Activity</span>
+          <span class="profile-value">${setup.activityLevel || "--"}</span>
+        </div>
+
+        <div class="profile-row">
+          <span class="profile-label">Food Style</span>
+          <span class="profile-value">${displayFoodStyle[setup.foodStyle] || "No Preference"}</span>
+        </div>
+
+        <div class="profile-row">
+          <span class="profile-label">Avoids</span>
+          <span class="profile-value">${setup.foodAvoid || "None"}</span>
+        </div>
+
+        <div class="profile-row">
+          <span class="profile-label">Height</span>
+          <span class="profile-value">${setup.height || "--"}</span>
+        </div>
+
+        <div class="profile-row">
+          <span class="profile-label">Weight</span>
+          <span class="profile-value">${setup.weight || "--"}</span>
+        </div>
+
+        <div class="profile-row">
+          <span class="profile-label">Target</span>
+          <span class="profile-value">${setup.targetWeight || "--"}</span>
+        </div>
+
+        <div class="profile-row">
+          <span class="profile-label">Age Range</span>
+          <span class="profile-value">${setup.ageRange || "--"}</span>
         </div>
 
       </div>
     `;
-
   }
-
 }
 
 if (historyList) {
-
   if (!scans.length) {
-
     historyList.innerHTML = `
       <div class="history-empty">
         No recent scans yet.
       </div>
     `;
-
   } else {
-
     historyList.innerHTML =
       scans.map(scan => `
         <div class="history-item">
@@ -181,7 +232,5 @@ if (historyList) {
 
         </div>
       `).join("");
-
   }
-
 }

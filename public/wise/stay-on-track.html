@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+
+  <link rel="icon" href="data:," />
+
+  <title>Stay On Track</title>
+
+  <link
+    rel="stylesheet"
+    href="/assets/css/site.css"
+  />
+</head>
+
+<body data-theme="night">
+
+  <main class="scan-wrap">
+
+    <section class="scan-card">
+
+      <p class="range-label">
+        FUELAI
+      </p>
+
+      <h1>
+        🎯 Stay On Track
+      </h1>
+
+      <p class="sub">
+        See your weekly focus, check your momentum, and choose the next simple step.
+      </p>
+
+      <section class="range-card">
+        <p class="range-label">
+          Current Weekly Focus
+        </p>
+
+        <p
+          id="weeklyFocusOutput"
+          class="range-output"
+        >
+          Loading focus...
+        </p>
+      </section>
+
+      <section class="range-card">
+        <p class="range-label">
+          Today's Momentum
+        </p>
+
+        <p
+          id="momentumOutput"
+          class="range-output"
+        >
+          Checking today's progress...
+        </p>
+      </section>
+
+      <section class="range-card">
+        <p class="range-label">
+          Next Best Step
+        </p>
+
+        <p
+          id="nextStepOutput"
+          class="range-output"
+        >
+          Stay connected. One small action is enough to keep the day alive.
+        </p>
+      </section>
+
+      <div class="wise-links">
+
+        <a
+          class="secondary-btn"
+          href="/wise/todays-check-in.html"
+        >
+          ✅ Today's Check-In
+        </a>
+
+        <a
+          class="secondary-btn"
+          href="/wise/quick-tools.html"
+        >
+          ⚡ Quick Tools
+        </a>
+
+        <a
+          class="secondary-btn"
+          href="/wise/"
+        >
+          💬 Talk to W.
+        </a>
+
+      </div>
+
+      <p class="hero-note">
+        Don’t chase perfect. Stay connected.
+      </p>
+
+    </section>
+
+  </main>
+
+  <footer class="app-footer">
+    <p>
+      FuelAI • Guidance and accountability center.
+    </p>
+  </footer>
+
+  <script src="/assets/js/core/auth-soft.js"></script>
+
+  <script>
+    window.FuelAIAuth?.requireSoftLogin();
+  </script>
+
+  <script src="/assets/js/core/preferences.js"></script>
+  <script src="/assets/js/account/fuelai-log.js"></script>
+
+  <script>
+    const weeklyFocusOutput =
+      document.getElementById("weeklyFocusOutput");
+
+    const momentumOutput =
+      document.getElementById("momentumOutput");
+
+    const nextStepOutput =
+      document.getElementById("nextStepOutput");
+
+    const setup =
+      JSON.parse(
+        localStorage.getItem("fuelai-setup") || "{}"
+      );
+
+    const goal =
+      setup.goal ||
+      setup.monthlyPlan ||
+      "fuelwise";
+
+    const WEEKLY_FOCUS_BY_GOAL = {
+      fuelwise:
+        "Steady Energy Week",
+
+      cutwise:
+        "Simple Cut Week",
+
+      gainwise:
+        "Build and Recover Week"
+    };
+
+    const NEXT_STEPS_BY_GOAL = {
+      fuelwise:
+        "Eat a simple protein meal, drink water, and keep the day steady.",
+
+      cutwise:
+        "Choose protein first, keep the next meal simple, and do not punish yourself.",
+
+      gainwise:
+        "Add an easy recovery meal or snack: protein plus carbs."
+    };
+
+    function getTodayLogs() {
+      if (!window.FuelAILog) {
+        return [];
+      }
+
+      return window.FuelAILog.getTodayLogs();
+    }
+
+    function hasLogged(type) {
+      return getTodayLogs().some((entry) => {
+        return entry.type === type;
+      });
+    }
+
+    function renderStayOnTrack() {
+      const weeklyFocus =
+        setup.weeklyFocus ||
+        WEEKLY_FOCUS_BY_GOAL[goal] ||
+        "Steady Energy Week";
+
+      const checkInDone =
+        hasLogged("todays-check-in");
+
+      const trainingDone =
+        hasLogged("training");
+
+      const weightDone =
+        hasLogged("weight");
+
+      const completeCount =
+        Number(checkInDone) +
+        Number(trainingDone) +
+        Number(weightDone);
+
+      weeklyFocusOutput.textContent =
+        weeklyFocus;
+
+      momentumOutput.innerHTML = `
+        ${checkInDone ? "✅" : "⬜"} Today's Check-In<br>
+        ${trainingDone ? "✅" : "⬜"} Training Logged<br>
+        ${weightDone ? "✅" : "⬜"} Weight Logged<br><br>
+        ${completeCount}/3 momentum items complete.
+      `;
+
+      nextStepOutput.textContent =
+        NEXT_STEPS_BY_GOAL[goal] ||
+        NEXT_STEPS_BY_GOAL.fuelwise;
+    }
+
+    renderStayOnTrack();
+  </script>
+
+</body>
+</html>

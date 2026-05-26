@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <meta charset="UTF-8" />
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+
+  <link rel="icon" href="data:," />
+
+  <title>
+    Reset + Recovery
+  </title>
+
+  <link
+    rel="stylesheet"
+    href="/assets/css/site.css"
+  />
+
+</head>
+
+<body data-theme="night">
+
+  <main class="scan-wrap">
+
+    <section class="scan-card">
+
+      <p class="range-label">
+        ACCOUNT
+      </p>
+
+      <h1>
+        🧠 Reset + Recovery
+      </h1>
+
+      <p class="sub">
+        Calm the spiral. Recover the body. Simplify the next move.
+      </p>
+
+      <section class="range-card">
+
+        <p class="range-label">
+          What’s Going On?
+        </p>
+
+        <textarea
+          id="recoveryInput"
+          class="goal-select"
+          placeholder="Stress, soreness, poor sleep, low energy, food spiral..."
+          rows="6"
+        ></textarea>
+
+        <button
+          id="recoveryBtn"
+          class="start-btn"
+          type="button"
+        >
+          Reset + Recover
+        </button>
+
+      </section>
+
+      <section
+        id="recoveryOutput"
+        class="range-card hidden"
+      >
+
+        <p class="range-label">
+          Reorient
+        </p>
+
+        <div
+          id="recoveryResponse"
+          class="range-output"
+        >
+          One grounded next step.
+        </div>
+
+      </section>
+
+      <section class="range-card">
+
+        <p class="range-label">
+          Common Recovery Areas
+        </p>
+
+        <div class="meal-plan">
+
+          <ul class="meal-list">
+
+            <li>
+              💧 Hydration + electrolytes
+            </li>
+
+            <li>
+              😴 Sleep + nervous system reset
+            </li>
+
+            <li>
+              🍚 Food + recovery fuel
+            </li>
+
+            <li>
+              🏋️ Training soreness
+            </li>
+
+            <li>
+              ⚖️ Weight cut stabilization
+            </li>
+
+            <li>
+              🧠 Stress + overwhelm
+            </li>
+
+          </ul>
+
+        </div>
+
+      </section>
+
+      <div class="wise-links">
+
+        <a
+          class="secondary-btn"
+          href="/account/"
+        >
+          ↩️ Return to Account
+        </a>
+
+      </div>
+
+      <p class="hero-note">
+        FuelAI • Slow the spiral. Simplify the next move.
+      </p>
+
+    </section>
+
+  </main>
+
+  <footer class="app-footer">
+
+    <p>
+      FuelAI • Recovery for the body and nervous system.
+    </p>
+
+  </footer>
+
+  <script src="/assets/js/core/auth-soft.js"></script>
+
+  <script>
+    window.FuelAIAuth?.requireSoftLogin();
+  </script>
+
+  <script src="/assets/js/core/preferences.js"></script>
+
+  <script src="/assets/js/account/reset-recovery.js"></script>
+
+</body>
+</html>

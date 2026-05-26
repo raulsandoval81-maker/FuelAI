@@ -5,105 +5,23 @@
   <meta charset="UTF-8" />
 
   <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
+    http-equiv="refresh"
+    content="0; url=/account/profile.html"
   />
 
-<title>FuelAI Athlete / User Info</title>
-
-  <link
-    rel="stylesheet"
-    href="/assets/css/site.css"
-  />
-
-  <link
-    rel="stylesheet"
-    href="/assets/css/hub-screen.css"
-  />
+  <title>
+    Account
+  </title>
 
 </head>
 
-<body data-theme="night">
-
-  <main class="scan-wrap">
-
-    <section class="scan-card">
-
-      <p class="range-label">
-        ACCOUNT
-      </p>
-
-      <h1>
-        Profile
-      </h1>
-
-      <p class="sub">
-        Your identity, goals, and setup live here.
-      </p>
-
-      <div class="hub-screen profile-map">
-
-        <img
-          class="hub-screen-img"
-          src="/assets/img/hub/account-center2.png"
-          alt="Account Center"
-        />
-
-        <a
-          class="hub-hotspot one"
-          href="/account/setup.html"
-          aria-label="Edit Setup"
-        ></a>
-
-        <a
-          class="hub-hotspot two"
-          href="/account/macros.html"
-          aria-label="Macro Targets"
-        ></a>
-
-        <a
-          class="hub-hotspot three"
-          href="/account/"
-          aria-label="View Logs"
-        ></a>
-
-        <a
-          class="hub-hotspot four"
-          href="/hub.html"
-          aria-label="Return to Hub"
-        ></a>
-
-      </div>
-
-      <section
-        id="profileCard"
-        class="result-card"
-        style="display:none;"
-      ></section>
-
-      <p class="hero-note">
-        FuelAI • Less overthinking. Better decisions.
-      </p>
-
-    </section>
-
-  </main>
-
-  <footer class="app-footer">
-
-
-    <p>
-  FuelAI • Athlete and user setup center.
-</p>
-  </footer>
-
-  <script src="/assets/js/core/auth-soft.js"></script>
+<body>
 
   <script>
-    window.FuelAIAuth?.requireSoftLogin();
+    window.location.replace(
+      "/account/profile.html"
+    );
   </script>
-
-  <script src="/assets/js/account/profile.js"></script>
 
 </body>
 </html>

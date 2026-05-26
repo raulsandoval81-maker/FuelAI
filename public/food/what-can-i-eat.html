@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+
+  <link rel="icon" href="data:," />
+
+  <title>What Can I Eat?</title>
+
+  <link
+    rel="stylesheet"
+    href="/assets/css/site.css"
+  />
+</head>
+
+<body data-theme="night">
+
+  <main class="scan-wrap">
+
+    <section class="scan-card">
+
+      <p class="range-label">
+        FUELAI
+      </p>
+
+      <h1>
+        🍽 What Can I Eat?
+      </h1>
+
+      <p class="sub">
+        Simple food direction based on your current FuelAI plan.
+      </p>
+
+      <section class="range-card">
+
+        <p class="range-label">
+          This Week’s Focus
+        </p>
+
+        <p
+          id="goalOutput"
+          class="range-output"
+        >
+          Loading your plan...
+        </p>
+
+      </section>
+
+      <section class="range-card">
+
+        <p class="range-label">
+          Suggested Meals
+        </p>
+
+        <p
+          id="eatOutput"
+          class="range-output"
+        >
+          Build a simple food direction from your current plan.
+        </p>
+
+        <button
+          id="eatBtn"
+          class="start-btn"
+          type="button"
+        >
+          Build Mini Plan
+        </button>
+
+      </section>
+
+      <div class="wise-links">
+
+
+        <a
+          class="secondary-btn"
+          href="/food/cabinet-drawer.html"
+        >
+          🥫 Return to Cabinet Drawer
+        </a>
+
+
+      </div>
+
+      <p class="hero-note">
+        FuelAI • Less overthinking. Better decisions.
+      </p>
+
+    </section>
+
+  </main>
+
+  <footer class="app-footer">
+
+    <p>
+      FuelAI • Simple meals matched to your goal.
+    </p>
+
+  </footer>
+
+  <script src="/assets/js/core/auth-soft.js"></script>
+
+  <script>
+    window.FuelAIAuth?.requireSoftLogin();
+  </script>
+
+  <script src="/assets/js/core/preferences.js"></script>
+
+  <script>
+    const goalOutput =
+      document.getElementById("goalOutput");
+
+    const eatOutput =
+      document.getElementById("eatOutput");
+
+    const eatBtn =
+      document.getElementById("eatBtn");
+
+    const setup =
+      JSON.parse(
+        localStorage.getItem("fuelai-setup") || "{}"
+      );
+
+    const goal =
+      setup.goal ||
+      setup.monthlyPlan ||
+      "fuelwise";
+
+    const WEEKLY_PLANS = {
+      fuelwise: {
+        focus: "Steady Energy Week",
+        line:
+          "Maintain: boring, steady meals that keep energy stable.",
+        meals: [
+          "Eggs + toast",
+          "Chicken rice bowl",
+          "Greek yogurt + fruit",
+          "Turkey sandwich",
+          "Protein shake after training"
+        ]
+      },
+
+      cutwise: {
+        focus: "Simple Cut Week",
+        line:
+          "Cut: protein first, lighter carbs, no punishment meals.",
+        meals: [
+          "Eggs + fruit",
+          "Chicken salad bowl",
+          "Turkey lettuce wrap",
+          "Greek yogurt",
+          "Lean protein + vegetables"
+        ]
+      },
+
+      gainwise: {
+        focus: "Build and Recover Week",
+        line:
+          "Gain: protein first, bigger carbs, easy calories added.",
+        meals: [
+          "Oatmeal + peanut butter",
+          "Chicken rice bowl",
+          "Protein shake + banana",
+          "Eggs + tortillas",
+          "Milk + sandwich"
+        ]
+      }
+    };
+
+    const plan =
+      WEEKLY_PLANS[goal] ||
+      WEEKLY_PLANS.fuelwise;
+
+    if (goalOutput) {
+      goalOutput.textContent =
+        setup.weeklyFocus ||
+        plan.focus;
+    }
+
+function buildMiniPlan() {
+
+  return `
+    <div class="meal-plan">
+
+      <p class="meal-line">
+        ${plan.line}
+      </p>
+
+      <div class="meal-divider"></div>
+
+      <p class="meal-label">
+        Suggested meals
+      </p>
+
+      <ul class="meal-list">
+        ${plan.meals.map(meal => `
+          <li>${meal}</li>
+        `).join("")}
+      </ul>
+
+    </div>
+  `;
+}
+
+eatBtn?.addEventListener("click", () => {
+
+  eatOutput.innerHTML =
+    buildMiniPlan();
+
+});
+
+</script>
+
+</body>
+</html>

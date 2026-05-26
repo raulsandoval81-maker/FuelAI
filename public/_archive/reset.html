@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+
+  <link rel="icon" href="data:," />
+
+  <title>Reset</title>
+
+  <link
+    rel="stylesheet"
+    href="/assets/css/site.css"
+  />
+</head>
+
+<body data-theme="night">
+
+  <main class="scan-wrap">
+
+    <section class="scan-card">
+
+      <p class="range-label">
+        ACCOUNT
+      </p>
+
+      <h1>
+        Reset
+      </h1>
+
+      <p class="sub">
+        Slow the spiral. Breathe. Pick the next simple move.
+      </p>
+
+      <label
+        class="range-label"
+        for="resetType"
+      >
+        Reset Type
+      </label>
+
+      <select
+        id="resetType"
+        class="goal-select"
+      >
+        <option value="general">
+          General overwhelm
+        </option>
+
+        <option value="food">
+          Food / weight spiral
+        </option>
+
+        <option value="stress">
+          Stress / life pressure
+        </option>
+
+        <option value="sleep">
+          Sleep / recovery
+        </option>
+
+        <option value="money">
+          Money / bills
+        </option>
+      </select>
+
+      <textarea
+        id="resetInput"
+        class="goal-select"
+        placeholder="What’s piling up right now?"
+        rows="6"
+      ></textarea>
+
+      <button
+        id="resetBtn"
+        class="start-btn"
+        type="button"
+      >
+        Reset Me
+      </button>
+
+      <section
+        id="loadingCard"
+        class="range-card hidden"
+      >
+        <p class="range-label">
+          Resetting...
+        </p>
+
+        <p class="range-output">
+          Slowing the spiral down.
+        </p>
+      </section>
+
+      <section
+        id="resetOutput"
+        class="range-card hidden"
+      >
+        <p class="range-label">
+          Reorient
+        </p>
+
+        <div
+          id="resetResponse"
+          class="range-output"
+        >
+          One thing at a time.
+        </div>
+      </section>
+
+      <div class="wise-links">
+
+        <a
+          class="secondary-btn"
+          href="/account/"
+        >
+          ↩️ Back to Account
+        </a>
+
+
+      </div>
+
+      <p class="hero-note">
+        FuelAI • Less overthinking. Better decisions.
+      </p>
+
+    </section>
+
+  </main>
+
+  <footer class="app-footer">
+    <p>
+      FuelAI • Reset the next move, not your whole life.
+    </p>
+  </footer>
+
+  <script src="/assets/js/core/auth-soft.js"></script>
+
+  <script>
+    window.FuelAIAuth?.requireSoftLogin();
+  </script>
+
+  <script src="/assets/js/core/preferences.js"></script>
+  <script src="/assets/js/account/reset.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+
+  <title>Fuel My Body</title>
+
+  <link
+    rel="stylesheet"
+    href="/assets/css/site.css"
+  />
+</head>
+
+<body data-theme="night">
+
+  <main class="scan-wrap">
+    <section class="scan-card">
+
+      <p class="range-label">FUEL</p>
+
+      <h1>💪 Fuel My Body</h1>
+
+      <p class="sub">
+        Simple sport fuel support for before, during, or after training.
+      </p>
+
+      <section class="range-card">
+        <p class="range-label">Sport Fuel Check</p>
+
+        <label class="range-label" for="sportInput">
+          Sport
+        </label>
+
+        <select id="sportInput" class="goal-select">
+          <option value="wrestling">Wrestling • Weight + Recovery</option>
+          <option value="boxing">Boxing • Fast Fuel + Recovery</option>
+          <option value="mma">MMA • Weight + Recovery</option>
+          <option value="soccer">Soccer • Endurance + Hydration</option>
+          <option value="track">Track • Speed + Hydration</option>
+          <option value="marathon">Marathon • Carbs + Sodium</option>
+          <option value="baseball">Baseball • Long Game Fuel</option>
+          <option value="basketball">Basketball • Quick Burst Fuel</option>
+          <option value="football">Football • Power + Recovery</option>
+          <option value="fitness">General Fitness • Balanced Fuel</option>
+        </select>
+
+        <label class="range-label" for="timingInput">
+          Timing
+        </label>
+
+        <select id="timingInput" class="goal-select">
+          <option value="Pregame">Pregame</option>
+          <option value="During">During</option>
+          <option value="Postgame">Postgame</option>
+        </select>
+      </section>
+
+      <section class="range-card">
+        <p class="range-label">W. Suggests</p>
+
+        <p id="fuelBodyOutput" class="range-output">
+          Pick your sport and timing for a simple fuel direction.
+        </p>
+
+        <button id="fuelBodyBtn" class="start-btn" type="button">
+          Get Fuel Advice
+        </button>
+      </section>
+
+      <div class="wise-links">
+        <a class="secondary-btn" href="/fuel/app/">
+          🍽 Return to MealWise
+        </a>
+
+      </div>
+
+      <p class="hero-note">
+        FuelAI • Less overthinking. Better decisions.
+      </p>
+
+    </section>
+  </main>
+
+  <footer class="app-footer">
+    <p>FuelAI • Pregame, during, and postgame fuel support.</p>
+  </footer>
+
+  <script src="/assets/js/core/auth-soft.js"></script>
+
+  <script>
+    window.FuelAIAuth?.requireSoftLogin();
+
+    const sportInput = document.getElementById("sportInput");
+    const timingInput = document.getElementById("timingInput");
+    const fuelBodyOutput = document.getElementById("fuelBodyOutput");
+    const fuelBodyBtn = document.getElementById("fuelBodyBtn");
+
+    const SPORT_FUEL_TYPES = {
+      wrestling: "Weight + Recovery",
+      boxing: "Fast Fuel + Recovery",
+      mma: "Weight + Recovery",
+      soccer: "Endurance + Hydration",
+      track: "Speed + Hydration",
+      marathon: "Carbs + Sodium",
+      baseball: "Long Game Fuel",
+      basketball: "Quick Burst Fuel",
+      football: "Power + Recovery",
+      fitness: "Balanced Fuel"
+    };
+
+    const SPORT_LABELS = {
+      wrestling: "Wrestling",
+      boxing: "Boxing",
+      mma: "MMA",
+      soccer: "Soccer",
+      track: "Track",
+      marathon: "Marathon",
+      baseball: "Baseball",
+      basketball: "Basketball",
+      football: "Football",
+      fitness: "General Fitness"
+    };
+
+    function getSportFuelContext() {
+      const sportKey = sportInput?.value || "fitness";
+
+      return {
+        sportKey,
+        sportLabel: SPORT_LABELS[sportKey] || "General Fitness",
+        fuelType: SPORT_FUEL_TYPES[sportKey] || "Balanced Fuel"
+      };
+    }
+
+    function buildFuelBodyMessage() {
+      const { sportLabel, fuelType } = getSportFuelContext();
+      const timing = timingInput?.value || "Pregame";
+
+      if (timing === "Pregame") {
+        return `${sportLabel} (${fuelType}): hydrate early, keep food light, and build steady energy before activity.`;
+      }
+
+      if (timing === "During") {
+        return `${sportLabel} (${fuelType}): sip fluids consistently, stay steady, and avoid heavy foods while active.`;
+      }
+
+      if (timing === "Postgame") {
+        return `${sportLabel} (${fuelType}): recovery starts with fluids, protein, carbs, and slowing your system back down.`;
+      }
+
+      return "Keep it simple. Hydrate, fuel, and recover.";
+    }
+
+    fuelBodyBtn?.addEventListener("click", () => {
+      fuelBodyOutput.textContent = buildFuelBodyMessage();
+    });
+  </script>
+
+</body>
+</html>
