@@ -12,7 +12,7 @@
 
   <link
     rel="stylesheet"
-    href="/assets/css/site.css"
+    href="/public/assets/css/site.css"
   />
 </head>
 
@@ -23,15 +23,16 @@
     <h1>FuelAI</h1>
 
     <p class="sub">
-      Opening your experience...
+      Loading...
     </p>
 
   </main>
 
-  <script src="/assets/js/auth-soft.js"></script>
+  <script src="/public/assets/js/auth-soft.js"></script>
 
   <script>
-    window.FuelAIAuth.requireSoftLogin();
+
+    window.FuelAIAuth?.requireSoftLogin();
 
     const setup =
       JSON.parse(
@@ -44,8 +45,9 @@
 
     window.location.href =
       hasSetup
-        ? "/hub.html"
-        : "/account/setup.html";
+        ? "/public/hub.html"
+        : "/public/account/setup.html";
+
   </script>
 
 </body>

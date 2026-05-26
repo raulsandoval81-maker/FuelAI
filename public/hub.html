@@ -2,79 +2,160 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
 
   <title>FuelAI Hub</title>
 
-  <link rel="stylesheet" href="/assets/css/site.css" />
+  <link
+    rel="stylesheet"
+    href="/public/assets/css/site.css"
+  />
 </head>
 
 <body data-theme="night">
 
-<main class="hub-wrap">
+  <main class="hub-wrap">
 
-  <header class="hub-header">
-    <div>
-      <h1>FuelAI</h1>
-      <p>Less overthinking. Better decisions.</p>
-    </div>
+    <header class="hub-header">
 
-  </header>
+      <div>
 
-  <section class="hub-hero">
-    <div>
-      <h2>What can I help you with today?</h2>
-      <p>Pick a focus. FuelAI will guide you to the right tool.</p>
-    </div>
-  </section>
+        <h1>
+          FuelAI
+        </h1>
 
-  <section class="hub-grid">
+        <p>
+          Less overthinking. Better decisions.
+        </p>
 
-        <a class="hub-card purple" href="/wise/stay-on-track.html">
-      <img src="/assets/img/hub/stay-on-track.png" alt="Stay On Track" />
-      <h3>Stay On Track</h3>
-      <p>Check in with your guide, review your day, and stay consistent.</p>
-      <span>Open Wise Guide →</span>
-    </a>
+      </div>
 
+    </header>
 
+    <section class="hub-hero">
 
-    <a class="hub-card green" href="/fuel/fuel-my-body.html">
-      <img src="/assets/img/hub/fuel-my-body.png" alt="Fuel My Body" />
-      <h3>Fuel My Body</h3>
-      <p>Log meals, track calories, protein, water, and macros.</p>
-      <span>Go to FuelWise →</span>
-    </a>
+      <div>
 
-    <a class="hub-card blue" href="/food/what-can-i-eat.html">
-      <img src="/assets/img/hub/what-can-i-eat.png" alt="What Can I Eat" />
-      <h3>What Can I Make?</h3>
-      <p>Scan your fridge, cabinet, or ingredients for simple meal ideas.</p>
-      <span>Open Food Tools →</span>
-    </a>
+        <h2>
+          What do you need today?
+        </h2>
 
-    <a class="hub-card silver" href="/account/profile.html">
-      <img src="/assets/img/hub/account-center.png" alt="Account Center" />
-      <h3>Account Center</h3>
-      <p>Manage your profile, recovery, goals, preferences, and personal settings.</p>
-      <span>Open Account →</span>
-    </a>
+        <p>
+          Choose one focus. FuelAI keeps it simple.
+        </p>
 
-  </section>
+      </div>
 
-  <section class="hub-note">
-    <h3>One app. Simple support.</h3>
-    <p>
-      FuelAI helps athletes, parents, and busy humans make better food decisions without turning nutrition into homework.
-    </p>
-  </section>
+    </section>
 
-</main>
+    <section class="hub-grid">
 
-<script src="/assets/js/auth-soft.js"></script>
-<script>
-  window.FuelAIAuth?.requireSoftLogin();
-</script>
+      <a
+        class="hub-card green"
+        href="/public/fuel/app.html"
+      >
+
+        <img
+          src="/public/assets/img/hub/mealwise.png"
+          alt="MealWise"
+        />
+
+        <div class="hub-card-copy">
+
+<h3>
+  Scan your meals
+</h3>
+
+<p>
+  Let W. track it for you.
+</p>
+
+        </div>
+
+      </a>
+
+      <a
+        class="hub-card blue"
+        href="/public/food/fridgewise.html"
+      >
+
+        <img
+          src="/public/assets/img/hub/fridgewise.png"
+          alt="FridgeWise"
+        />
+
+        <div class="hub-card-copy">
+
+<h3>
+  Scan your fridge
+</h3>
+
+<p>
+  Let W. build ideas from what you have.
+</p>
+        </div>
+
+      </a>
+
+      <a
+        class="hub-card gold"
+        href="/public/wise/wise.html"
+      >
+
+        <img
+          src="/public/assets/img/hub/wise.png"
+          alt="Advice with W"
+        />
+
+        <div class="hub-card-copy">
+
+<h3>
+  Ask better questions
+</h3>
+
+<p>
+  Let W. guide your decisions.
+</p>
+        </div>
+
+      </a>
+
+      <a
+        class="hub-card purple"
+        href="/public/wise/"
+      >
+
+        <img
+          src="/public/assets/img/hub/stayontrack.png"
+          alt="Stay On Track"
+        />
+
+        <div class="hub-card-copy">
+
+<h3>
+  Daily progress log
+</h3>
+
+<p>
+  Track habits. Build a better lifestyle.
+</p>
+        </div>
+
+      </a>
+
+    </section>
+
+  </main>
+
+  <script src="/public/assets/js/auth-soft.js"></script>
+
+  <script>
+    window.FuelAIAuth?.requireSoftLogin();
+  </script>
 
 </body>
 </html>
