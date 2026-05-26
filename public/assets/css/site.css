@@ -601,6 +601,33 @@ body[data-theme="day"] .macro-grid div{
   background:#eef4ff;
 }
 
+body[data-theme="day"]{
+  color:#111827;
+}
+
+body[data-theme="day"] .scan-card,
+body[data-theme="day"] .range-card,
+body[data-theme="day"] .result-card{
+  color:#111827;
+}
+
+body[data-theme="day"] .sub,
+body[data-theme="day"] .range-output,
+body[data-theme="day"] .hero-note,
+body[data-theme="day"] .app-footer,
+body[data-theme="day"] .profile-value{
+  color:#1f2937;
+}
+
+body[data-theme="day"] .range-label,
+body[data-theme="day"] .profile-label{
+  color:#4b5563;
+}
+
+body[data-theme="day"] .secondary-btn{
+  color:#111827;
+}
+
 /* =========================
    NIGHT MODE
 ========================= */
