@@ -5,10 +5,10 @@ window.GUIDES = {
     color: "#5eead4",
 
     male:
-      "/public/assets/img/guides/sweetspot-male.png",
+      "/assets/img/guides/sweetspot-male.png",
 
     female:
-      "/public/assets/img/guides/sweetspot-female.png"
+      "/assets/img/guides/sweetspot-female.png"
   },
 
   mafia: {
@@ -16,10 +16,10 @@ window.GUIDES = {
     color: "#a855f7",
 
     male:
-      "/public/assets/img/guides/mafia-male.png",
+      "/assets/img/guides/mafia-male.png",
 
     female:
-      "/public/assets/img/guides/mafia-female.png"
+      "/assets/img/guides/mafia-female.png"
   },
 
   toughguy: {
@@ -27,10 +27,10 @@ window.GUIDES = {
     color: "#ef4444",
 
     male:
-      "/public/assets/img/guides/tough-male.png",
+      "/assets/img/guides/tough-male.png",
 
     female:
-      "/public/assets/img/guides/tough-female.png"
+      "/assets/img/guides/tough-female.png"
   },
 
   internet: {
@@ -38,10 +38,10 @@ window.GUIDES = {
     color: "#38bdf8",
 
     male:
-      "/public/assets/img/guides/internet-male.png",
+      "/assets/img/guides/internet-male.png",
 
     female:
-      "/public/assets/img/guides/internet-female.png"
+      "/assets/img/guides/internet-female.png"
   }
 
 };
