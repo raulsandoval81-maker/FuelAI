@@ -22,17 +22,32 @@ const displayGoal = {
 };
 
 const guideMarks = {
-  sweetspot:
-    "/assets/img/guides/sweetspot-mark.png",
 
-  toughguy:
-    "/assets/img/guides/toughguy-mark.png",
+  sweetspotMale:
+    "/assets/img/guides/marks/spade-male.png",
 
-  mafia:
-    "/assets/img/guides/mafia-mark.png",
+  sweetspotFemale:
+     "/assets/img/guides/marks/spade-female.png",
 
-  internet:
-    "/assets/img/guides/internet-mark.png"
+
+  toughguyMale:
+    "/assets/img/guides/marks/heart-male.png",
+
+  toughguyFemale:
+    "/assets/img/guides/marks/heart-female.png",
+
+
+  mafiaMale:
+    "/assets/img/guides/marks/diamond-male.png",
+  mafiaFemale:
+    "/assets/img/guides/marks/diamond-female.png",
+
+  internetMale:
+    "/assets/img/guides/marks/club-male.png",
+
+  internetFemale:
+    "/assets/img/guides/marks/club-female.png"
+
 };
 
 const displayFoodStyle = {
