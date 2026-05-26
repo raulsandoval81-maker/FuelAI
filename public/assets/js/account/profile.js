@@ -94,12 +94,19 @@ const genderKey =
 
 const markKey =
   `${guideKey}${genderKey}`;
-
+console.log({
+  guideKey,
+  genderKey,
+  markKey,
+  guideMark:
+    guideMarks[markKey]
+});
 const guideMark =
   guideMarks[markKey] ||
   guideMarks.sweetspotMale;
 
-const genderStamp =
+
+  const genderStamp =
   setup.gender === "female"
     ? "♀"
     : "♂";
