@@ -1295,3 +1295,22 @@ body[data-theme="day"] .top-link{
 .profile-value{
   font-weight:700;
 }
+.profile-avatar{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+
+  margin-bottom:1rem;
+}
+
+.profile-guide-mark{
+  width:48px;
+  height:auto;
+
+  display:block;
+  margin:0 auto;
+}
+
+.profile-header{
+  text-align:center;
+}
