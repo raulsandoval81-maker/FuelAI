@@ -1314,3 +1314,6 @@ body[data-theme="day"] .top-link{
 .profile-header{
   text-align:center;
 }
+.reset-wrap{
+  margin-bottom:1rem;
+}
