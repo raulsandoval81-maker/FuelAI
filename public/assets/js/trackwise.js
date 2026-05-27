@@ -88,6 +88,8 @@ function renderData() {
 
   const calories = Number(summary.calories || 0);
   const protein = Number(summary.protein || 0);
+  const carbs = Number(summary.carbs || 0);
+  const fats = Number(summary.fats || 0);
 
   if (calorieOutput) {
     calorieOutput.textContent = `${calories} / ${targets.calories}`;
@@ -117,6 +119,13 @@ function renderData() {
   if (proteinMeter) {
     proteinMeter.style.width = `${pct(protein, targets.protein)}%`;
   }
+
+
+  if (carbOutput) { carbOutput.textContent = `${carbs}g`;
+   }
+
+  if (fatOutput) { fatOutput.textContent = `${fats}g`;
+   }
 
   renderStreak();
 }
