@@ -10,7 +10,10 @@
 
   <title>Quick Actions</title>
 
-  <link rel="stylesheet" href="/assets/css/site.css" />
+  <link
+    rel="stylesheet"
+    href="/assets/css/site.css"
+  />
 </head>
 
 <body data-theme="night">
@@ -31,37 +34,42 @@
         Fast access when you already know what you need.
       </p>
 
+      <div class="quick-actions-board">
+
+        <img
+          src="/assets/img/hub/QuickDashAction.png"
+          alt="Quick Actions"
+          class="quick-actions-image"
+        />
+
+        <a
+          class="quick-hotspot quick-hotspot-fridge"
+          href="/food/fridgewise.html?quick=fridge"
+          aria-label="Scan Fridge"
+        ></a>
+
+        <a
+          class="quick-hotspot quick-hotspot-meal"
+          href="/fuel/app.html?quick=meal"
+          aria-label="Scan Meal"
+        ></a>
+
+        <a
+          class="quick-hotspot quick-hotspot-track"
+          href="/account/macros.html"
+          aria-label="Track Progress"
+        ></a>
+
+      </div>
+
       <div class="wise-links">
 
         <a
           class="secondary-btn"
-          href="/fuel/app.html"
+          href="/hub.html"
         >
-          🍽 Scan Meal
+          🏠 Return to Hub
         </a>
-
-        <a
-          class="secondary-btn"
-          href="/food/fridgewise.html"
-        >
-          🧊 Scan Fridge
-        </a>
-        <a
-  class="secondary-btn"
-  href="/food/ingredient-scan.html"
->
-  🧾 Ingredient Scan
-</a>
-
-        <a
-  class="secondary-btn"
-  href="/wise/"
->
-  ↩️ Return to Wise
-</a>
-
-
-
 
       </div>
 
@@ -70,9 +78,11 @@
   </main>
 
   <footer class="app-footer">
+
     <p>
       FuelAI • Fast help. Less overthinking.
     </p>
+
   </footer>
 
   <script src="/assets/js/core/auth-soft.js"></script>

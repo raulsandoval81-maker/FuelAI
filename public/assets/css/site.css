@@ -902,26 +902,27 @@ body[data-theme="day"] .top-link{
   flex-direction:column;
   gap:1rem;
 }
-
 .pantry-btn{
   width:100%;
+}
+
 .pantry-panel{
   flex-direction:column;
   gap:1rem;
-
   padding:1rem;
-
   border-radius:20px;
-
   background:rgba(255,255,255,.05);
-
   border:1px solid rgba(255,255,255,.08);
 }
 
 .pantry-panel:not(.hidden){
   display:flex;
 }
+
+.pantry-panel:not(.hidden){
+  display:flex;
 }
+
 .hidden{
   display:none !important;
 }
@@ -1316,4 +1317,38 @@ body[data-theme="day"] .top-link{
 }.reset-wrap{
   margin-top:1.25rem;
   margin-bottom:1rem;
+}
+.quick-actions-board{
+  position:relative;
+  width:100%;
+  margin-top:1.5rem;
+}
+
+.quick-actions-image{
+  width:100%;
+  display:block;
+  border-radius:24px;
+}
+
+.quick-hotspot{
+  position:absolute;
+  top:18%;
+  height:52%;
+  z-index:5;
+  display:block;
+}
+
+.quick-hotspot-fridge{
+  left:4%;
+  width:29%;
+}
+
+.quick-hotspot-meal{
+  left:35.5%;
+  width:29%;
+}
+
+.quick-hotspot-track{
+  left:67%;
+  width:29%;
 }
