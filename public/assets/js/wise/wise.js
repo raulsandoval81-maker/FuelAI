@@ -1,8 +1,8 @@
 const setup =
   JSON.parse(localStorage.getItem("fuelai-setup") || "{}");
 
-const guide =
-  setup.guide || "wiseguy";
+const coachStyle =
+  setup.coachStyle || "sweetspot";
 
   const flavor =
   setup.wiseFlavor || "sweetspot";
@@ -89,15 +89,8 @@ if (window.FuelAILog) {
   window.FuelAILog.syncDailyLogs();
 }
 
-function getWiseName() {
-  const gender =
-    setup.gender ||
-    setup.genderType ||
-    "";
-
-  return gender === "female"
-    ? "WiseGal"
-    : "WiseGuy";
+function getCoachName() {
+  return "Coach Wright";
 }
 
 function getPlanName(goal) {
@@ -186,7 +179,7 @@ function renderWise() {
     window.FuelAILog.getFuelSummary();
 
 wiseTitle.textContent =
-  getWiseName();
+  getCoachName();
 
     wiseSub.textContent =
     `${getGreeting()}. Your daily food, water, and training check-in.`;
@@ -258,8 +251,7 @@ if (addTrainingBtn) {
     );
   }
 wiseChatLabel.textContent =
-  `${getWiseName()}AI`;
-
+  "Coach Wright";
 
 characterFace?.classList.remove(
   "state-alert",
@@ -764,21 +756,22 @@ setTimeout(() => {
 /* =========================
    CHARACTER FACE
 ========================= */
-const currentGuide =
+const currentCoachStyle =
   setup.wiseFlavor || "sweetspot";
 
 const currentAvatar =
   setup.gender || setup.genderType || "male";
 
-const guideConfig =
-  window.GUIDES?.[currentGuide] ||
+
+const coachStyleConfig =
+  window.GUIDES?.[currentCoachStyle] ||
   window.GUIDES?.sweetspot;
 
-if (guideConfig) {
+if (coachStyleConfig) {
 
   document.documentElement.style.setProperty(
     "--guide-color",
-    guideConfig.color
+    coachStyleConfig.color
   );
 
 }
@@ -786,12 +779,18 @@ if (guideConfig) {
 const guideImage =
   document.getElementById("guideImage");
 
-if (guideImage && guideConfig) {
+if (guideImage && coachStyleConfig) {
 
   const imagePath =
     currentAvatar === "female"
-      ? (guideConfig.female || guideConfig.male)
-      : (guideConfig.male || guideConfig.female);
+? (
+    coachStyleConfig.female ||
+    coachStyleConfig.male
+  )
+: (
+    coachStyleConfig.male ||
+    coachStyleConfig.female
+  );
 
   guideImage.onload = () => {
 
