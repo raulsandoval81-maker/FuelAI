@@ -38,7 +38,7 @@ const trackwiseDateKey =
 
 const waterKey =
   `fuelai-water-oz-${trackwiseDateKey}`;
-  
+
 let waterOz =
   Number(localStorage.getItem(waterKey)) || 0;
 
@@ -165,7 +165,21 @@ function renderHydration() {
         ? "💦"
         : "💧";
 
-    waterDrops.appendChild(drop);
+const cell =
+  document.createElement("div");
+
+cell.className =
+  "week-cell";
+
+cell.innerHTML = `
+  <span class="week-label">
+    ${i + 1}
+  </span>
+`;
+
+cell.appendChild(drop);
+
+waterDrops.appendChild(cell);
 
   }
 
@@ -248,7 +262,7 @@ cell.className =
 
 cell.innerHTML = `
   <span class="week-label">
-    Day ${7 - i}
+     ${i - i}
   </span>
 `;
 
