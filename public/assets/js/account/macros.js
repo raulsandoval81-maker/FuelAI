@@ -4,13 +4,15 @@ const macroTargets =
 const macroProgress =
   document.getElementById("macroProgress");
 
+const macroStyleOutput =
+  document.getElementById("macroStyleOutput");
+
 const setup =
   JSON.parse(
     localStorage.getItem("fuelai-setup") || "{}"
   );
 
 function getMacroTargets() {
-
   const weight =
     Number(setup.weight || 0);
 
@@ -34,26 +36,15 @@ function getMacroTargets() {
     calories = weight * 16;
   }
 
-  const protein =
-    Math.round(weight * 0.9);
-
-  const carbs =
-    Math.round(weight * 1.5);
-
-  const fats =
-    Math.round(weight * 0.35);
-
   return {
     calories: Math.round(calories),
-    protein,
-    carbs,
-    fats
+    protein: Math.round(weight * 0.9),
+    carbs: Math.round(weight * 1.5),
+    fats: Math.round(weight * 0.35)
   };
-
 }
 
 function getMacroProgress() {
-
   if (!window.FuelAILog) {
     return {
       calories: 0,
@@ -67,19 +58,43 @@ function getMacroProgress() {
     window.FuelAILog.getFuelSummary();
 
   return {
-    calories:
-      summary.caloriesToday || 0,
-
-    protein:
-      summary.proteinToday || 0,
-
-    carbs:
-      summary.carbsToday || 0,
-
-    fats:
-      summary.fatsToday || 0
+    calories: summary.caloriesToday || 0,
+    protein: summary.proteinToday || 0,
+    carbs: summary.carbsToday || 0,
+    fats: summary.fatsToday || 0
   };
+}
 
+const macroStyles = {
+  fuelwise: `
+FuelWise
+
+Balanced nutrition for energy and consistency.
+
+Approx Macro Split: 40 / 30 / 30
+  `,
+
+  cutwise: `
+CutWise
+
+Higher protein and controlled portions.
+
+Approx Macro Split: 35 / 40 / 25
+  `,
+
+  gainwise: `
+GainWise
+
+Recovery-focused meals with added carbs.
+
+Approx Macro Split: 45 / 30 / 25
+  `
+};
+
+if (macroStyleOutput) {
+  macroStyleOutput.textContent =
+    macroStyles[setup.goal] ||
+    macroStyles.fuelwise;
 }
 
 const targets =
@@ -89,49 +104,37 @@ const progress =
   getMacroProgress();
 
 if (macroTargets) {
-
   macroTargets.innerHTML = `
-    🔥 Calories:
-    ${targets.calories}
+    🔥 Calories: ${targets.calories}
 
     <br><br>
 
-    🥩 Protein:
-    ${targets.protein}g
+    🥩 Protein: ${targets.protein}g
 
     <br><br>
 
-    🍞 Carbs:
-    ${targets.carbs}g
+    🍞 Carbs: ${targets.carbs}g
 
     <br><br>
 
-    🥑 Fats:
-    ${targets.fats}g
+    🥑 Fats: ${targets.fats}g
   `;
-
 }
 
 if (macroProgress) {
-
   macroProgress.innerHTML = `
-    🔥 Calories:
-    ${progress.calories}
+    🔥 Calories: ${progress.calories}
 
     <br><br>
 
-    🥩 Protein:
-    ${progress.protein}g
+    🥩 Protein: ${progress.protein}g
 
     <br><br>
 
-    🍞 Carbs:
-    ${progress.carbs}g
+    🍞 Carbs: ${progress.carbs}g
 
     <br><br>
 
-    🥑 Fats:
-    ${progress.fats}g
+    🥑 Fats: ${progress.fats}g
   `;
-
 }

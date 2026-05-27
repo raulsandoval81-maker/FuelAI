@@ -106,60 +106,12 @@
           Suggested Macro Style
         </p>
 
-        <div class="meal-plan">
-
-          <div class="meal-divider"></div>
-
-          <p class="meal-label">
-            FuelWise
-          </p>
-
-          <ul class="meal-list">
-            <li>
-              Balanced nutrition for energy and consistency
-            </li>
-
-            <li>
-              Approx Macro Split:
-              40 / 30 / 30
-            </li>
-          </ul>
-
-          <div class="meal-divider"></div>
-
-          <p class="meal-label">
-            CutWise
-          </p>
-
-          <ul class="meal-list">
-            <li>
-              Higher protein and controlled portions
-            </li>
-
-            <li>
-              Approx Macro Split:
-              35 / 40 / 25
-            </li>
-          </ul>
-
-          <div class="meal-divider"></div>
-
-          <p class="meal-label">
-            GainWise
-          </p>
-
-          <ul class="meal-list">
-            <li>
-              Recovery-focused meals with added carbs
-            </li>
-
-            <li>
-              Approx Macro Split:
-              45 / 30 / 25
-            </li>
-          </ul>
-
-        </div>
+        <p
+          id="macroStyleOutput"
+          class="range-output"
+        >
+          Loading macro style...
+        </p>
 
       </section>
 
@@ -183,7 +135,6 @@
         >
           ↩️ Return to Account
         </a>
-
 
       </div>
 
@@ -209,6 +160,7 @@
     window.FuelAIAuth?.requireSoftLogin();
   </script>
 
+  <script src="/assets/js/core/preferences.js"></script>
   <script src="/assets/js/account/fuelai-log.js"></script>
   <script src="/assets/js/account/macros.js"></script>
 

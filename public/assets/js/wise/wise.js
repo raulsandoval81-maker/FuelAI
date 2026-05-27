@@ -89,12 +89,16 @@ if (window.FuelAILog) {
   window.FuelAILog.syncDailyLogs();
 }
 
-function getGuideName() {
-  return guide === "wisegal"
+function getWiseName() {
+  const gender =
+    setup.gender ||
+    setup.genderType ||
+    "";
+
+  return gender === "female"
     ? "WiseGal"
     : "WiseGuy";
 }
-
 
 function getPlanName(goal) {
   if (goal === "cutwise") return "CutWise — Cut";
@@ -181,8 +185,8 @@ function renderWise() {
   const summary =
     window.FuelAILog.getFuelSummary();
 
-  wiseTitle.textContent =
-    getGuideName();
+wiseTitle.textContent =
+  `Hi, I'm ${getWiseName()}.`;
 
   wiseSub.textContent =
     `${getGreeting()}. Your daily food, water, and training check-in.`;
@@ -253,13 +257,10 @@ if (addTrainingBtn) {
       hasWeightToday()
     );
   }
+wiseChatLabel.textContent =
+  `${getWiseName()}AI`;
 
-  if (wiseChatLabel) {
-  wiseChatLabel.textContent =
-    guide === "wisegal"
-      ? "WiseGalAI"
-      : "WiseGuyAI";
-  }
+  
 characterFace?.classList.remove(
   "state-alert",
   "state-calm",
