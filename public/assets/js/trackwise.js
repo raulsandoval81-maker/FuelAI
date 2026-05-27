@@ -4,6 +4,10 @@ const streakOutput =
 const waterOutput =
   document.getElementById("waterOutput");
 
+const waterDrops =
+  document.getElementById("waterDrops");  
+
+
 const waterMeter =
   document.getElementById("waterMeter");
 
@@ -13,17 +17,12 @@ const calorieOutput =
 const calorieGoalOutput =
   document.getElementById("calorieGoalOutput");
 
-const calorieMeter =
-  document.getElementById("calorieMeter");
-
 const proteinOutput =
   document.getElementById("proteinOutput");
 
 const proteinGoalOutput =
   document.getElementById("proteinGoalOutput");
 
-const proteinMeter =
-  document.getElementById("proteinMeter");
 
 const workoutOutput =
   document.getElementById("workoutOutput");
@@ -141,15 +140,38 @@ function renderStreak() {
 }
 
 function renderHydration() {
+
   if (waterOutput) {
     waterOutput.textContent =
       `${waterOz} / 128 oz`;
   }
 
-  if (waterMeter) {
-    waterMeter.style.width =
-      `${pct(waterOz, 128)}%`;
+  if (!waterDrops) return;
+
+  waterDrops.innerHTML = "";
+
+  const completed =
+    Math.floor(waterOz / 16);
+
+  for (let i = 0; i < completed; i++) {
+
+    const drop =
+      document.createElement("span");
+
+    drop.className =
+      i === 7
+        ? "water-drop final"
+        : "water-drop";
+
+    drop.textContent =
+      i === 7
+        ? "💦"
+        : "💧";
+
+    waterDrops.appendChild(drop);
+
   }
+
 }
 
 function renderCaloriesAndProtein() {
@@ -180,16 +202,6 @@ function renderCaloriesAndProtein() {
         : setup.goal === "gainwise"
           ? "GainWise calorie target"
           : "FuelWise calorie target";
-  }
-
-  if (calorieMeter) {
-    calorieMeter.style.width =
-      `${pct(calories, targets.calories)}%`;
-  }
-
-  if (proteinOutput) {
-    proteinOutput.textContent =
-      `${protein}g / ${targets.protein}g`;
   }
 
   if (proteinGoalOutput) {
