@@ -159,12 +159,6 @@ function applyLanguage(lang) {
   goalSelect.options[1].textContent = t.cutwise;
   goalSelect.options[2].textContent = t.gainwise;
 
-  if (wiseFlavor) {
-    wiseFlavor.options[0].textContent = t.sweetspot;
-    wiseFlavor.options[1].textContent = t.mafia;
-    wiseFlavor.options[2].textContent = t.toughguy;
-    wiseFlavor.options[3].textContent = t.internet;
-  }
 
   const guidanceLabel =
     document.querySelector(
@@ -383,10 +377,6 @@ function loadSavedSetup() {
       saved.sportType || "general";
   }
 
-  if (wiseFlavor) {
-    wiseFlavor.value =
-      saved.wiseFlavor || "sweetspot";
-  }
 if (foodStyle) {
   foodStyle.value =
     saved.foodStyle || "none";
@@ -399,42 +389,7 @@ if (foodAvoid) {
 
 }
 
-if (langToggle) {
 
-  langToggle.addEventListener(
-    "click",
-    () => {
-
-      const nextLang =
-        getLang() === "en"
-          ? "es"
-          : "en";
-
-      applyLanguage(nextLang);
-    }
-  );
-}
-
-if (themeToggle) {
-
-  themeToggle.addEventListener(
-    "click",
-    () => {
-
-      const current =
-        document.body.getAttribute(
-          "data-theme"
-        ) || "day";
-
-      const nextTheme =
-        current === "day"
-          ? "night"
-          : "day";
-
-      applyTheme(nextTheme);
-    }
-  );
-}
 
 if (saveSetupBtn) {
 
@@ -442,9 +397,6 @@ if (saveSetupBtn) {
     "click",
     () => {
 
-      const flavor =
-        wiseFlavor?.value ||
-        "sweetspot";
 
       const goal =
         goalSelect?.value ||
@@ -489,19 +441,12 @@ if (saveSetupBtn) {
   foodAvoid:
     foodAvoid?.value.trim() || "",
 
-        wiseFlavor:
-          flavor,
 
         guide:
           genderType.value === "female"
             ? "wisegal"
             : "wiseguy",
 
-        lang:
-          getLang(),
-
-        theme:
-          getTheme(),
 
         monthlyPlan:
           goal,
@@ -536,9 +481,6 @@ if (resetSetupBtn) {
       sportType.value = "general";
     }
 
-    if (wiseFlavor) {
-      wiseFlavor.value = "sweetspot";
-    }
 
     if (foodStyle) {
       foodStyle.value = "none";
@@ -596,10 +538,3 @@ sportType?.addEventListener(
 
 loadSavedSetup();
 
-applyTheme(
-  getTheme()
-);
-
-applyLanguage(
-  getLang()
-);

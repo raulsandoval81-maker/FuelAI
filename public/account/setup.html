@@ -34,26 +34,6 @@
         Give FuelAI a little context before your scan.
       </p>
 
-      <div class="setup-toggles">
-
-        <button
-          id="langToggle"
-          class="mini-toggle"
-          type="button"
-        >
-          Español
-        </button>
-
-        <button
-          id="themeToggle"
-          class="mini-toggle"
-          type="button"
-        >
-          Night
-        </button>
-
-      </div>
-
       <input
         id="nicknameInput"
         class="goal-select"
@@ -109,7 +89,7 @@
       <select id="genderType" class="goal-select">
 
         <option value="">
-          Body type
+          Body Type
         </option>
 
         <option value="male">
@@ -122,10 +102,42 @@
 
       </select>
 
+      <select id="sportType" class="goal-select">
+
+        <option value="general">
+          Your Sport / Activity
+        </option>
+
+        <option value="wrestling">
+          Wrestling
+        </option>
+
+        <option value="mma">
+          MMA
+        </option>
+
+        <option value="boxing">
+          Boxing
+        </option>
+
+        <option value="basketball">
+          Basketball
+        </option>
+
+        <option value="football">
+          Football
+        </option>
+
+        <option value="running">
+          Running
+        </option>
+
+      </select>
+
       <select id="activityLevel" class="goal-select">
 
         <option value="low">
-          Activity / Training Level
+          Training Level
         </option>
 
         <option value="0-1">
@@ -162,92 +174,40 @@
 
       </select>
 
-      <select id="sportType" class="goal-select">
-
-        <option value="general">
-          General Fitness / Lifestyle
-        </option>
-
-        <option value="wrestling">
-          Wrestling
-        </option>
-
-        <option value="mma">
-          MMA
-        </option>
-
-        <option value="boxing">
-          Boxing
-        </option>
-
-        <option value="basketball">
-          Basketball
-        </option>
-
-        <option value="football">
-          Football
-        </option>
-
-        <option value="running">
-          Running
-        </option>
-
-      </select>
-
       <select id="foodStyle" class="goal-select">
 
-  <option value="none">
-    Food Preference
-  </option>
-
-  <option value="vegetarian">
-    Vegetarian
-  </option>
-
-  <option value="vegan">
-    Vegan
-  </option>
-
-  <option value="highprotein">
-    High Protein
-  </option>
-
-  <option value="dairyfree">
-    Dairy Free
-  </option>
-
-  <option value="glutenfree">
-    Gluten Free
-  </option>
-
-</select>
-
-<input
-  id="foodAvoid"
-  class="goal-select"
-  type="text"
-  placeholder="Allergies / Avoid — peanuts, shellfish, eggs..."
-/>
-
-      <select id="wiseFlavor" class="goal-select">
-
-        <option value="sweetspot" selected>
-          Sweet Spot — Calm + Balanced
+        <option value="none">
+          Food Preference
         </option>
 
-        <option value="mafia">
-          Mafia — Funny Movie Flavor
+        <option value="vegetarian">
+          Vegetarian
         </option>
 
-        <option value="toughguy">
-          Tough Guy — Direct Coach Energy
+        <option value="vegan">
+          Vegan
         </option>
 
-        <option value="internet">
-          Internet — Meme / Teen Slang
+        <option value="highprotein">
+          High Protein
+        </option>
+
+        <option value="dairyfree">
+          Dairy Free
+        </option>
+
+        <option value="glutenfree">
+          Gluten Free
         </option>
 
       </select>
+
+      <input
+        id="foodAvoid"
+        class="goal-select"
+        type="text"
+        placeholder="Allergies / Avoid — peanuts, shellfish, eggs..."
+      />
 
       <section class="range-card">
 
@@ -284,17 +244,18 @@
 
       </section>
 
-<div class="reset-wrap">
+      <div class="reset-wrap">
 
-  <button
-    id="resetSetupBtn"
-    class="secondary-btn"
-    type="button"
-  >
-    Reset Setup
-  </button>
+        <button
+          id="resetSetupBtn"
+          class="secondary-btn"
+          type="button"
+        >
+          Reset Setup
+        </button>
 
-</div>
+      </div>
+
       <button
         id="saveSetupBtn"
         class="start-btn"
