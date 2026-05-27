@@ -158,13 +158,13 @@ function renderHydration() {
     cell.className =
       "week-cell";
 
-    cell.innerHTML = `
-      <span class="week-label">
-        ${i + 1}
-      </span>
-    `;
+cell.innerHTML = `
+  <span class="week-label">
+    ${7 - i}
+  </span>
+`;
 
-    const drop =
+      const drop =
       document.createElement("span");
 
     const isComplete =
