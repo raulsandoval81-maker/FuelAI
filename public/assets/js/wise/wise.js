@@ -186,9 +186,9 @@ function renderWise() {
     window.FuelAILog.getFuelSummary();
 
 wiseTitle.textContent =
-  `Hi, I'm ${getWiseName()}.`;
+  getWiseName();
 
-  wiseSub.textContent =
+    wiseSub.textContent =
     `${getGreeting()}. Your daily food, water, and training check-in.`;
 
   planOutput.innerHTML = `
@@ -260,7 +260,7 @@ if (addTrainingBtn) {
 wiseChatLabel.textContent =
   `${getWiseName()}AI`;
 
-  
+
 characterFace?.classList.remove(
   "state-alert",
   "state-calm",
