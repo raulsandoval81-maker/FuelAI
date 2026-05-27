@@ -33,12 +33,12 @@ const workoutWeek =
 const sleepWeek =
   document.getElementById("sleepWeek");
 
-const todayKey =
+const trackwiseDateKey =
   new Date().toISOString().slice(0, 10);
 
 const waterKey =
-  `fuelai-water-oz-${todayKey}`;
-
+  `fuelai-water-oz-${trackwiseDateKey}`;
+  
 let waterOz =
   Number(localStorage.getItem(waterKey)) || 0;
 
