@@ -241,8 +241,23 @@ function renderWorkoutWeek() {
     dot.title =
       `Day ${7 - i}: ${logged ? "Logged" : "Not Logged"}`;
 
-    workoutWeek.appendChild(dot);
-  }
+const cell =
+  document.createElement("div");
+
+cell.className =
+  "week-cell";
+
+cell.innerHTML = `
+  <span class="week-label">
+    Day ${7 - i}
+  </span>
+`;
+
+cell.appendChild(dot);
+
+workoutWeek.appendChild(cell);
+
+    }
 
   if (workoutOutput) {
     workoutOutput.textContent =
@@ -294,8 +309,21 @@ function renderSleepWeek() {
     dot.title =
       `Day ${7 - i}: ${value || "Not Logged"}`;
 
-    sleepWeek.appendChild(dot);
+const cell =
+  document.createElement("div");
 
+cell.className =
+  "week-cell";
+
+cell.innerHTML = `
+  <span class="week-label">
+    Day ${7 - i}
+  </span>
+`;
+
+cell.appendChild(dot);
+
+sleepWeek.appendChild(cell);
   }
 
   if (sleepOutput) {

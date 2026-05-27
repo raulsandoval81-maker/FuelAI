@@ -442,3 +442,23 @@
     grid-column:auto;
   }
 }
+.week-dots{
+  display:grid;
+  grid-template-columns:repeat(7, 1fr);
+  gap:.45rem;
+  margin-top:.85rem;
+}
+
+.week-cell{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:.3rem;
+}
+
+.week-label{
+  font-size:.62rem;
+  opacity:.55;
+  text-transform:uppercase;
+  white-space:nowrap;
+}
