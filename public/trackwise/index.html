@@ -64,78 +64,47 @@
       <section class="trackwise-main-grid">
 
 
-        <!-- HYDRATION CARD -->
-<article class="metric-card hydration-card tracker-lane">
-  <p class="range-label">Hydration</p>
-
-  <div class="lane-main">
-    <div class="metric-icon h2o-mark">
-  H<sub>2</sub>O
-</div>
-    <h2 id="waterOutput">0 / 128 oz</h2>
-  </div>
-
-  <p>Updated from MealWise.</p>
-
-  <div id="waterDrops" class="hydration-drops"></div>
-</article>
-
-<!-- CALORIES CARD -->
-<article class="metric-card calories-card tracker-lane">
+<!-- TOP NUMBERS -->
+<article class="metric-card tracker-lane stat-card">
   <p class="range-label">Calories</p>
-
   <div class="lane-main">
     <div class="metric-icon">🔥</div>
     <h2 id="calorieOutput">0 / 0</h2>
   </div>
-
   <p id="calorieGoalOutput">Daily calorie target</p>
-
 </article>
 
-<!-- PROTEIN CARD -->
-<article class="metric-card protein-card tracker-lane">
+<article class="metric-card tracker-lane stat-card">
   <p class="range-label">Protein</p>
-
   <div class="lane-main">
     <div class="metric-icon">🥩</div>
     <h2 id="proteinOutput">0g / 0g</h2>
   </div>
-
   <p id="proteinGoalOutput">Daily protein target</p>
-
 </article>
 
-<!-- WORKOUT CARD -->
-<article class="metric-card workout-card tracker-lane">
-  <p class="range-label">Workout Week</p>
-
+<!-- BEHAVIOR LANES -->
+<article class="metric-card tracker-lane full-lane hydration-card">
+  <p class="range-label">Hydration</p>
   <div class="lane-main">
-    <div class="metric-icon">🏋️</div>
-    <h2 id="workoutOutput">7-Day Log</h2>
+    <div class="metric-icon h2o-mark">H<sub>2</sub>O</div>
+    <h2 id="waterOutput">0 / 128 oz</h2>
   </div>
+  <div id="waterDrops" class="hydration-drops"></div>
+</article>
 
-  <p>Updated from Daily Check-In.</p>
-
+<article class="metric-card tracker-lane full-lane workout-card">
+  <p class="range-label">Workout Week</p>
   <div id="workoutWeek" class="week-dots"></div>
 </article>
 
-<!-- SLEEP CARD -->
-<article class="metric-card sleep-card tracker-lane">
+<article class="metric-card tracker-lane full-lane sleep-card">
   <p class="range-label">Sleep Week</p>
-
-  <div class="lane-main">
-    <div class="metric-icon">😴</div>
-    <h2 id="sleepOutput">7-Day Log</h2>
-  </div>
-
-  <p>Poor / Okay / Great from Check-In.</p>
-
   <div id="sleepWeek" class="week-dots"></div>
 </article>
 
 
-      </section>
+    </section>
 
       <section class="trackwise-action-row">
 

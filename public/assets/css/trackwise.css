@@ -355,3 +355,90 @@
     font-size:1.3rem;
   }
 }
+.trackwise-main-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:1rem;
+}
+
+.full-lane{
+  grid-column:1 / -1;
+}
+
+.tracker-lane{
+  display:block;
+  min-height:auto;
+}
+
+.lane-main{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:1rem;
+}
+
+.lane-main h2{
+  margin:0;
+  white-space:nowrap;
+  text-align:right;
+}
+
+.hydration-drops,
+.week-dots{
+  display:flex;
+  align-items:center;
+  gap:.55rem;
+  margin-top:.85rem;
+  min-height:24px;
+}
+
+.water-drop{
+  font-size:1rem;
+  line-height:1;
+}
+
+.water-drop.final{
+  font-size:1.55rem;
+}
+
+.week-dot,
+.sleep-dot{
+  width:13px;
+  height:13px;
+  border-radius:999px;
+  display:inline-block;
+  background:rgba(255,255,255,.16);
+}
+
+.week-dot.good,
+.sleep-dot.good{
+  background:#22c55e;
+}
+
+.sleep-dot.okay{
+  background:#facc15;
+}
+
+.sleep-dot.poor{
+  background:#ef4444;
+}
+
+.h2o-mark{
+  font-size:1rem;
+  font-weight:900;
+  color:#38bdf8;
+}
+
+.h2o-mark sub{
+  font-size:.55rem;
+}
+
+@media(max-width:720px){
+  .trackwise-main-grid{
+    grid-template-columns:1fr;
+  }
+
+  .full-lane{
+    grid-column:auto;
+  }
+}
