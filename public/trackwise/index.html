@@ -63,147 +63,81 @@
 
       <section class="trackwise-main-grid">
 
-        <article class="metric-card hydration-card">
 
-          <div class="metric-icon">
-            💧
-          </div>
+        <!-- HYDRATION CARD -->
+<article class="metric-card hydration-card tracker-lane">
+  <p class="range-label">Hydration</p>
 
-          <div>
+  <div class="lane-main">
+    <div class="metric-icon">H2O</div>
+    <h2 id="waterOutput">0 / 128 oz</h2>
+  </div>
 
-            <p class="range-label">
-              Hydration
-            </p>
+  <p>Updated from MealWise.</p>
 
-            <h2 id="waterOutput">
-              0 / 128 oz
-            </h2>
+  <div id="waterDrops" class="hydration-drops"></div>
+</article>
 
-            <p>
-              Updated from MealWise.
-            </p>
+<!-- CALORIES CARD -->
+<article class="metric-card calories-card tracker-lane">
+  <p class="range-label">Calories</p>
 
-            <div class="meter blue">
-              <span id="waterMeter"></span>
-            </div>
+  <div class="lane-main">
+    <div class="metric-icon">🔥</div>
+    <h2 id="calorieOutput">0 / 0</h2>
+  </div>
 
-          </div>
+  <p id="calorieGoalOutput">Daily calorie target</p>
 
-        </article>
+  <div class="meter">
+    <span id="calorieMeter"></span>
+  </div>
+</article>
 
-        <article class="metric-card calories-card">
+<!-- PROTEIN CARD -->
+<article class="metric-card protein-card tracker-lane">
+  <p class="range-label">Protein</p>
 
-          <div class="metric-icon">
-            🔥
-          </div>
+  <div class="lane-main">
+    <div class="metric-icon">🥩</div>
+    <h2 id="proteinOutput">0g / 0g</h2>
+  </div>
 
-          <div>
+  <p id="proteinGoalOutput">Daily protein target</p>
 
-            <p class="range-label">
-              Calories
-            </p>
+  <div class="meter green">
+    <span id="proteinMeter"></span>
+  </div>
+</article>
 
-            <h2 id="calorieOutput">
-              0 / 0
-            </h2>
+<!-- WORKOUT CARD -->
+<article class="metric-card workout-card tracker-lane">
+  <p class="range-label">Workout Week</p>
 
-            <p id="calorieGoalOutput">
-              Daily calorie target
-            </p>
+  <div class="lane-main">
+    <div class="metric-icon">🏋️</div>
+    <h2 id="workoutOutput">7-Day Log</h2>
+  </div>
 
-            <div class="meter">
-              <span id="calorieMeter"></span>
-            </div>
+  <p>Updated from Daily Check-In.</p>
 
-          </div>
+  <div id="workoutWeek" class="week-dots"></div>
+</article>
 
-        </article>
+<!-- SLEEP CARD -->
+<article class="metric-card sleep-card tracker-lane">
+  <p class="range-label">Sleep Week</p>
 
-        <article class="metric-card protein-card">
+  <div class="lane-main">
+    <div class="metric-icon">😴</div>
+    <h2 id="sleepOutput">7-Day Log</h2>
+  </div>
 
-          <div class="metric-icon">
-            🥩
-          </div>
+  <p>Poor / Okay / Great from Check-In.</p>
 
-          <div>
+  <div id="sleepWeek" class="week-dots"></div>
+</article>
 
-            <p class="range-label">
-              Protein
-            </p>
-
-            <h2 id="proteinOutput">
-              0g / 0g
-            </h2>
-
-            <p id="proteinGoalOutput">
-              Daily protein target
-            </p>
-
-            <div class="meter green">
-              <span id="proteinMeter"></span>
-            </div>
-
-          </div>
-
-        </article>
-
-        <article class="metric-card workout-card">
-
-          <div class="metric-icon">
-            🏋️
-          </div>
-
-          <div>
-
-            <p class="range-label">
-              Workout Week
-            </p>
-
-            <h2 id="workoutOutput">
-              7-Day Log
-            </h2>
-
-            <p>
-              Updated from Daily Check-In.
-            </p>
-
-            <div
-              id="workoutWeek"
-              class="week-dots"
-            ></div>
-
-          </div>
-
-        </article>
-
-        <article class="metric-card sleep-card">
-
-          <div class="metric-icon">
-            😴
-          </div>
-
-          <div>
-
-            <p class="range-label">
-              Sleep Week
-            </p>
-
-            <h2 id="sleepOutput">
-              7-Day Log
-            </h2>
-
-            <p>
-              Poor / Okay / Great from Check-In.
-            </p>
-
-            <div
-              id="sleepWeek"
-              class="week-dots"
-            ></div>
-
-          </div>
-
-        </article>
 
       </section>
 

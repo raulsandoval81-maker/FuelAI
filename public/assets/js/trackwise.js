@@ -239,11 +239,13 @@ function renderWorkoutWeek() {
 }
 
 function renderSleepWeek() {
+
   if (!sleepWeek) return;
 
   sleepWeek.innerHTML = "";
 
   for (let i = 6; i >= 0; i--) {
+
     const dateKey =
       getPastDateKey(i);
 
@@ -275,18 +277,20 @@ function renderSleepWeek() {
       document.createElement("span");
 
     dot.className =
-      `week-dot ${status}`;
+      `sleep-dot ${status}`;
 
     dot.title =
       `Day ${7 - i}: ${value || "Not Logged"}`;
 
     sleepWeek.appendChild(dot);
+
   }
 
   if (sleepOutput) {
     sleepOutput.textContent =
       "7-Day Log";
   }
+
 }
 
 renderStreak();

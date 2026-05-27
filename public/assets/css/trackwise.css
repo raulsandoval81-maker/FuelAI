@@ -203,3 +203,34 @@
   grid-template-columns:1fr 1fr;
   gap:1rem;
 }
+.sleep-dot{
+  width:14px;
+  height:14px;
+
+  border-radius:999px;
+
+  display:inline-block;
+
+  background:
+    rgba(255,255,255,.12);
+
+  border:
+    1px solid rgba(255,255,255,.08);
+}
+
+.sleep-dot.poor{
+  background:#ef4444;
+}
+
+.sleep-dot.okay{
+  background:#facc15;
+}
+
+.sleep-dot.good{
+  background:#22c55e;
+}
+
+.sleep-dot.empty{
+  background:
+    rgba(255,255,255,.12);
+}
