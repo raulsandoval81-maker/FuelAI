@@ -25,176 +25,205 @@
 
 <body data-theme="night">
 
-  <main class="scan-wrap">
+  <main class="trackwise-wrap">
 
-    <section class="scan-card trackwise-card">
+    <section class="trackwise-board">
 
-      <p class="range-label">
-        TRACKWISE
-      </p>
-
-      <h1>
-        TrackWise
-      </h1>
-
-      <p class="sub">
-        Monitor today. Go deeper only when it helps.
-      </p>
-
-      <section class="trackwise-hero">
+      <header class="trackwise-top">
 
         <div>
           <p class="range-label">
-            Today
+            TRACKWISE
           </p>
 
-          <h2 id="todayStatus">
-            Loading...
+          <h1>
+            TrackWise
+          </h1>
+
+          <p class="trackwise-tag">
+            Monitor today. Go deeper only when it helps.
+          </p>
+        </div>
+
+        <div class="streak-card">
+
+          <p class="range-label">
+            Current Streak
+          </p>
+
+          <strong id="streakOutput">
+            0 Days
+          </strong>
+
+          <p>
+            Keep building.
+          </p>
+
+        </div>
+
+      </header>
+
+      <section class="trackwise-main-grid">
+
+        <article class="metric-card hydration-card">
+
+          <div class="metric-icon">
+            💧
+          </div>
+
+          <div>
+
+            <p class="range-label">
+              Hydration
+            </p>
+
+            <h2 id="waterOutput">
+              0 / 8
+            </h2>
+
+            <p>
+              Daily cups
+            </p>
+
+            <button
+              id="addWaterBtn"
+              class="secondary-btn"
+              type="button"
+            >
+              + Add Water
+            </button>
+
+          </div>
+
+        </article>
+
+        <article class="metric-card calories-card">
+
+          <div class="metric-icon">
+            🔥
+          </div>
+
+          <div>
+
+            <p class="range-label">
+              Calories
+            </p>
+
+            <h2 id="calorieOutput">
+              0 / 0
+            </h2>
+
+            <p id="calorieGoalOutput">
+              Daily calorie target
+            </p>
+
+            <div class="meter">
+              <span id="calorieMeter"></span>
+            </div>
+
+          </div>
+
+        </article>
+
+        <article class="metric-card protein-card">
+
+          <div class="metric-icon">
+            🥩
+          </div>
+
+          <div>
+
+            <p class="range-label">
+              Protein
+            </p>
+
+            <h2 id="proteinOutput">
+              0g / 0g
+            </h2>
+
+            <p id="proteinGoalOutput">
+              Daily protein target
+            </p>
+
+            <div class="meter green">
+              <span id="proteinMeter"></span>
+            </div>
+
+          </div>
+
+        </article>
+
+      </section>
+
+      <section class="trackwise-action-row">
+
+        <div>
+          <p class="range-label">
+            Daily Check-In
+          </p>
+
+          <h2>
+            Stay consistent. Win the day.
           </h2>
-
-          <p id="todayNote">
-            Checking your daily fuel and consistency.
-          </p>
         </div>
-
-      </section>
-
-      <section class="trackwise-grid">
-
-        <article class="trackwise-tile">
-          <p class="range-label">
-            Calories
-          </p>
-
-          <strong id="calorieOutput">
-            0
-          </strong>
-        </article>
-
-        <article class="trackwise-tile">
-          <p class="range-label">
-            Protein
-          </p>
-
-          <strong id="proteinOutput">
-            0g
-          </strong>
-        </article>
-
-        <article class="trackwise-tile">
-          <p class="range-label">
-            Carbs
-          </p>
-
-          <strong id="carbOutput">
-            0g
-          </strong>
-        </article>
-
-        <article class="trackwise-tile">
-          <p class="range-label">
-            Fats
-          </p>
-
-          <strong id="fatOutput">
-            0g
-          </strong>
-        </article>
-
-      </section>
-
-      <section class="range-card">
-
-        <p class="range-label">
-          Hydration
-        </p>
-
-        <p
-          id="waterOutput"
-          class="range-output"
-        >
-          0 / 8 Cups
-        </p>
-
-        <button
-          id="addWaterBtn"
-          class="secondary-btn"
-          type="button"
-        >
-          💧 Add Water
-        </button>
-
-      </section>
-
-      <section class="range-card">
-
-        <p class="range-label">
-          Consistency
-        </p>
-
-        <p
-          id="streakOutput"
-          class="range-output"
-        >
-          0 Day Streak
-        </p>
-
-      </section>
-
-      <section class="range-card">
-
-        <p class="range-label">
-          TrackWise Tools
-        </p>
-
-        <div class="wise-links">
-
-          <a
-            class="start-btn"
-            href="/account/checkin.html"
-          >
-            ✅ Daily Check-In
-          </a>
-
-          <a
-            class="secondary-btn"
-            href="/account/macros.html"
-          >
-            🥩 Macro Breakdown
-          </a>
-
-          <a
-            class="secondary-btn"
-            href="/account/logs.html"
-          >
-            📋 Progress Logs
-          </a>
-
-          <a
-            class="secondary-btn"
-            href="/trackwise/library.html"
-          >
-            📚 Go Deeper
-          </a>
-
-        </div>
-
-      </section>
-
-      <div class="wise-links">
 
         <a
-          class="secondary-btn"
-          href="/hub.html"
+          class="start-btn compact-btn"
+          href="/account/checkin.html"
         >
-          🏠 Return to Hub
+          Check In →
         </a>
 
-      </div>
+      </section>
 
-      <p class="hero-note">
-        FuelAI • Less overthinking. Better decisions.
-      </p>
+      <section class="trackwise-action-row">
+
+        <div>
+          <p class="range-label">
+            Want to go deeper?
+          </p>
+
+          <h2>
+            Macros, logs, setup, and library.
+          </h2>
+        </div>
+
+        <a
+          class="secondary-btn compact-btn"
+          href="/account/macros.html"
+        >
+          Explore →
+        </a>
+
+      </section>
+
+      <section class="trackwise-action-row">
+
+        <div>
+          <p class="range-label">
+            Setup
+          </p>
+
+          <h2>
+            Adjust your goal, sport, weight, and preferences.
+          </h2>
+        </div>
+
+        <a
+          class="secondary-btn compact-btn"
+          href="/account/setup.html"
+        >
+          Adjust Setup →
+        </a>
+
+      </section>
+
+      <a
+        class="secondary-btn"
+        href="/hub.html"
+      >
+        🏠 Return to Hub
+      </a>
 
     </section>
 
