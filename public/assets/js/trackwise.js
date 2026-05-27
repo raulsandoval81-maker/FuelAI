@@ -26,12 +26,12 @@ const streakOutput =
   document.getElementById("streakOutput");
 
 
-const todayKey =
+
+const trackwiseTodayKey =
   new Date().toISOString().slice(0, 10);
 
 const waterKey =
-  `fuelai-water-${todayKey}`;
-
+  `fuelai-water-${trackwiseTodayKey}`;
 
 let water =
   Number(localStorage.getItem(waterKey)) || 0;
