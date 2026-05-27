@@ -8,55 +8,100 @@
     content="width=device-width, initial-scale=1.0"
   />
 
-  <title>
-    TrackWise
-  </title>
+  <link rel="icon" href="data:," />
+
+  <title>TrackWise</title>
 
   <link
     rel="stylesheet"
     href="/assets/css/site.css"
   />
 
-    </title>
-<link
-  rel="stylesheet"
-  href="/assets/css/trackwise.css"
-/>
-
+  <link
+    rel="stylesheet"
+    href="/assets/css/trackwise.css"
+  />
 </head>
 
 <body data-theme="night">
 
   <main class="scan-wrap">
 
-    <section class="scan-card">
+    <section class="scan-card trackwise-card">
+
+      <p class="range-label">
+        TRACKWISE
+      </p>
 
       <h1>
         TrackWise
       </h1>
 
       <p class="sub">
-        Track your habits, fuel, hydration, and consistency.
+        Monitor today. Go deeper only when it helps.
       </p>
 
-      <!-- STREAK -->
+      <section class="trackwise-hero">
 
-      <section class="range-card">
+        <div>
+          <p class="range-label">
+            Today
+          </p>
 
-        <p class="range-label">
-          Current Streak
-        </p>
+          <h2 id="todayStatus">
+            Loading...
+          </h2>
 
-        <p
-          id="streakOutput"
-          class="range-output"
-        >
-          0 Days
-        </p>
+          <p id="todayNote">
+            Checking your daily fuel and consistency.
+          </p>
+        </div>
 
       </section>
 
-      <!-- HYDRATION -->
+      <section class="trackwise-grid">
+
+        <article class="trackwise-tile">
+          <p class="range-label">
+            Calories
+          </p>
+
+          <strong id="calorieOutput">
+            0
+          </strong>
+        </article>
+
+        <article class="trackwise-tile">
+          <p class="range-label">
+            Protein
+          </p>
+
+          <strong id="proteinOutput">
+            0g
+          </strong>
+        </article>
+
+        <article class="trackwise-tile">
+          <p class="range-label">
+            Carbs
+          </p>
+
+          <strong id="carbOutput">
+            0g
+          </strong>
+        </article>
+
+        <article class="trackwise-tile">
+          <p class="range-label">
+            Fats
+          </p>
+
+          <strong id="fatOutput">
+            0g
+          </strong>
+        </article>
+
+      </section>
 
       <section class="range-card">
 
@@ -81,91 +126,88 @@
 
       </section>
 
-      <!-- MACROS -->
+      <section class="range-card">
+
+        <p class="range-label">
+          Consistency
+        </p>
+
+        <p
+          id="streakOutput"
+          class="range-output"
+        >
+          0 Day Streak
+        </p>
+
+      </section>
 
       <section class="range-card">
 
         <p class="range-label">
-          Calories
+          TrackWise Tools
         </p>
 
-        <p
-          id="calorieOutput"
-          class="range-output"
-        >
-          0
-        </p>
+        <div class="wise-links">
 
-      </section>
-
-      <section class="macro-grid">
-
-        <div class="range-card">
-          <p class="range-label">
-            Protein
-          </p>
-
-          <p
-            id="proteinOutput"
-            class="range-output"
+          <a
+            class="start-btn"
+            href="/account/checkin.html"
           >
-            0g
-          </p>
-        </div>
+            ✅ Daily Check-In
+          </a>
 
-        <div class="range-card">
-          <p class="range-label">
-            Carbs
-          </p>
-
-          <p
-            id="carbOutput"
-            class="range-output"
+          <a
+            class="secondary-btn"
+            href="/account/macros.html"
           >
-            0g
-          </p>
-        </div>
+            🥩 Macro Breakdown
+          </a>
 
-        <div class="range-card">
-          <p class="range-label">
-            Fats
-          </p>
-
-          <p
-            id="fatOutput"
-            class="range-output"
+          <a
+            class="secondary-btn"
+            href="/account/logs.html"
           >
-            0g
-          </p>
+            📋 Progress Logs
+          </a>
+
+          <a
+            class="secondary-btn"
+            href="/trackwise/library.html"
+          >
+            📚 Go Deeper
+          </a>
+
         </div>
 
       </section>
 
-      <!-- BUTTONS -->
-
-      <div class="scan-actions">
-
-        <a
-          class="start-btn"
-          href="/account/checkin.html"
-        >
-          ✅ Daily Check-In
-        </a>
+      <div class="wise-links">
 
         <a
           class="secondary-btn"
-          href="/trackwise/library.html"
+          href="/hub.html"
         >
-          📚 Go Deeper
+          🏠 Return to Hub
         </a>
 
       </div>
+
+      <p class="hero-note">
+        FuelAI • Less overthinking. Better decisions.
+      </p>
 
     </section>
 
   </main>
 
-  <script src="/assets/js/fuelai-log.js"></script>
+  <script src="/assets/js/core/auth-soft.js"></script>
+
+  <script>
+    window.FuelAIAuth?.requireSoftLogin();
+  </script>
+
+  <script src="/assets/js/core/preferences.js"></script>
+  <script src="/assets/js/account/fuelai-log.js"></script>
   <script src="/assets/js/trackwise.js"></script>
 
 </body>

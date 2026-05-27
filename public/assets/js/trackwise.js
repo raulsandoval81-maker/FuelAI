@@ -1,8 +1,8 @@
-const streakOutput =
-  document.getElementById("streakOutput");
+const todayStatus =
+  document.getElementById("todayStatus");
 
-const waterOutput =
-  document.getElementById("waterOutput");
+const todayNote =
+  document.getElementById("todayNote");
 
 const calorieOutput =
   document.getElementById("calorieOutput");
@@ -16,73 +16,182 @@ const carbOutput =
 const fatOutput =
   document.getElementById("fatOutput");
 
+const waterOutput =
+  document.getElementById("waterOutput");
+
 const addWaterBtn =
   document.getElementById("addWaterBtn");
 
+const streakOutput =
+  document.getElementById("streakOutput");
+
+
+const todayKey =
+  new Date().toISOString().slice(0, 10);
+
+const waterKey =
+  `fuelai-water-${todayKey}`;
+
 
 let water =
-  Number(
-    localStorage.getItem("fuelai-water")
-  ) || 0;
+  Number(localStorage.getItem(waterKey)) || 0;
+
 
 function renderWater() {
+  if (!waterOutput) return;
 
   waterOutput.textContent =
     `${water} / 8 Cups`;
-
 }
+
+
+function addWater() {
+  water =
+    Math.min(water + 1, 8);
+
+  localStorage.setItem(
+    waterKey,
+    String(water)
+  );
+
+  renderWater();
+  renderTodayStatus();
+}
+
+
+function getDailySummary() {
+  if (
+    window.FuelAILog &&
+    typeof window.FuelAILog.getDailySummary === "function"
+  ) {
+    return window.FuelAILog.getDailySummary() || {};
+  }
+
+  return {};
+}
+
+
+function renderMacros() {
+  const summary =
+    getDailySummary();
+
+  const calories =
+    Number(summary.calories || 0);
+
+  const protein =
+    Number(summary.protein || 0);
+
+  const carbs =
+    Number(summary.carbs || 0);
+
+  const fats =
+    Number(summary.fats || 0);
+
+  if (calorieOutput) {
+    calorieOutput.textContent =
+      calories;
+  }
+
+  if (proteinOutput) {
+    proteinOutput.textContent =
+      `${protein}g`;
+  }
+
+  if (carbOutput) {
+    carbOutput.textContent =
+      `${carbs}g`;
+  }
+
+  if (fatOutput) {
+    fatOutput.textContent =
+      `${fats}g`;
+  }
+
+  return {
+    calories,
+    protein,
+    carbs,
+    fats
+  };
+}
+
+
+function getStreak() {
+  return (
+    Number(localStorage.getItem("fuelai-streak")) ||
+    Number(localStorage.getItem("fuelai-checkin-streak")) ||
+    0
+  );
+}
+
+
+function renderStreak() {
+  const streak =
+    getStreak();
+
+  if (!streakOutput) return;
+
+  streakOutput.textContent =
+    `${streak} Day${streak === 1 ? "" : "s"} Streak`;
+}
+
+
+function renderTodayStatus() {
+  const macros =
+    renderMacros();
+
+  const hasFuel =
+    macros.calories > 0 ||
+    macros.protein > 0 ||
+    macros.carbs > 0 ||
+    macros.fats > 0;
+
+  const hasWater =
+    water > 0;
+
+  if (!todayStatus || !todayNote) return;
+
+  if (hasFuel && hasWater) {
+    todayStatus.textContent =
+      "You have started today.";
+
+    todayNote.textContent =
+      "Fuel and hydration are both moving.";
+    return;
+  }
+
+  if (hasFuel) {
+    todayStatus.textContent =
+      "Fuel logged.";
+
+    todayNote.textContent =
+      "Hydration still needs attention.";
+    return;
+  }
+
+  if (hasWater) {
+    todayStatus.textContent =
+      "Hydration started.";
+
+    todayNote.textContent =
+      "Log food when you are ready.";
+    return;
+  }
+
+  todayStatus.textContent =
+    "Nothing logged yet.";
+
+  todayNote.textContent =
+    "Start with water, a meal scan, or your daily check-in.";
+}
+
 
 addWaterBtn?.addEventListener(
   "click",
-  () => {
-
-    water++;
-
-    if (water > 8) {
-      water = 8;
-    }
-
-    localStorage.setItem(
-      "fuelai-water",
-      water
-    );
-
-    renderWater();
-
-  }
+  addWater
 );
 
 renderWater();
-
-
-// FUELAI LOG
-
-if (window.FuelAILog) {
-
-  const summary =
-    FuelAILog.getDailySummary?.() || {};
-
-  calorieOutput.textContent =
-    summary.calories || 0;
-
-  proteinOutput.textContent =
-    `${summary.protein || 0}g`;
-
-  carbOutput.textContent =
-    `${summary.carbs || 0}g`;
-
-  fatOutput.textContent =
-    `${summary.fats || 0}g`;
-
-}
-
-
-// TEMP STREAK
-
-const streak =
-  Number(
-    localStorage.getItem("fuelai-streak")
-  ) || 0;
-
-streakOutput.textContent =
-  `${streak} Days`;
+renderMacros();
+renderStreak();
+renderTodayStatus();
