@@ -483,8 +483,6 @@ analyzeBtn?.addEventListener(
                 activityLevel:
                   setup.activityLevel || "",
 
-                lang:
-                  setup.lang || "en",
 
                 extraIngredients:
                   extraIngredients?.value.trim() || ""

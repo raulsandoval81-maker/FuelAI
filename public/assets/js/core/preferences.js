@@ -7,24 +7,12 @@ function getTheme() {
 }
 
 function applyTheme(theme) {
-
-  document.body.setAttribute(
-    "data-theme",
-    theme
-  );
+  document.body.setAttribute("data-theme", theme);
 
   localStorage.setItem(
     "fuelai-theme",
     theme
   );
-}
-
-/* =========================
-   LANGUAGE
-========================= */
-
-function getLanguage() {
-  return localStorage.getItem("fuelai-lang") || "en";
 }
 
 /* =========================
@@ -35,17 +23,11 @@ applyTheme(
   getTheme()
 );
 
-applyLanguage(
-  getLanguage()
-);
-
 /* =========================
    GLOBAL
 ========================= */
 
 window.FuelAIPreferences = {
   getTheme,
-  applyTheme,
-  getLanguage,
-  applyLanguage
+  applyTheme
 };
