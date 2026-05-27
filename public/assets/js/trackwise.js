@@ -1,30 +1,56 @@
-const streakOutput = document.getElementById("streakOutput");
+const streakOutput =
+  document.getElementById("streakOutput");
 
-const waterOutput = document.getElementById("waterOutput");
-const addWaterBtn = document.getElementById("addWaterBtn");
+const waterOutput =
+  document.getElementById("waterOutput");
 
-const calorieOutput = document.getElementById("calorieOutput");
-const calorieGoalOutput = document.getElementById("calorieGoalOutput");
-const calorieMeter = document.getElementById("calorieMeter");
+const waterMeter =
+  document.getElementById("waterMeter");
 
-const proteinOutput = document.getElementById("proteinOutput");
-const proteinGoalOutput = document.getElementById("proteinGoalOutput");
-const proteinMeter = document.getElementById("proteinMeter");
+const calorieOutput =
+  document.getElementById("calorieOutput");
 
-const workoutOutput = document.getElementById("workoutOutput");
-const sleepOutput = document.getElementById("sleepOutput");
+const calorieGoalOutput =
+  document.getElementById("calorieGoalOutput");
 
-const todayKey = new Date().toISOString().slice(0, 10);
+const calorieMeter =
+  document.getElementById("calorieMeter");
 
-const waterKey = `fuelai-water-oz-${todayKey}`;
-const workoutKey = `fuelai-workout-${todayKey}`;
-const sleepKey = `fuelai-sleep-${todayKey}`;
+const proteinOutput =
+  document.getElementById("proteinOutput");
 
-let waterOz = Number(localStorage.getItem(waterKey)) || 0;
+const proteinGoalOutput =
+  document.getElementById("proteinGoalOutput");
+
+const proteinMeter =
+  document.getElementById("proteinMeter");
+
+const workoutOutput =
+  document.getElementById("workoutOutput");
+
+const sleepOutput =
+  document.getElementById("sleepOutput");
+
+const workoutWeek =
+  document.getElementById("workoutWeek");
+
+const sleepWeek =
+  document.getElementById("sleepWeek");
+
+const todayKey =
+  new Date().toISOString().slice(0, 10);
+
+const waterKey =
+  `fuelai-water-oz-${todayKey}`;
+
+let waterOz =
+  Number(localStorage.getItem(waterKey)) || 0;
 
 function getSetup() {
   try {
-    return JSON.parse(localStorage.getItem("fuelai-setup") || "{}");
+    return JSON.parse(
+      localStorage.getItem("fuelai-setup") || "{}"
+    );
   } catch {
     return {};
   }
@@ -42,36 +68,64 @@ function getDailySummary() {
 }
 
 function cleanNumber(value) {
-  return Number(String(value || "").replace(/[^\d.]/g, "")) || 0;
+  return (
+    Number(
+      String(value || "").replace(/[^\d.]/g, "")
+    ) || 0
+  );
 }
 
 function estimateTargets(setup) {
-  const weight = cleanNumber(setup.weight);
-  const goal = setup.goal || "fuelwise";
-  const activity = setup.activityLevel || "low";
+  const weight =
+    cleanNumber(setup.weight);
 
-  let multiplier = 14;
+  const goal =
+    setup.goal || "fuelwise";
+
+  const activity =
+    setup.activityLevel || "low";
+
+  let multiplier =
+    14;
 
   if (activity === "0-1") multiplier = 13;
   if (activity === "2-3") multiplier = 14;
   if (activity === "4-5") multiplier = 15;
   if (activity === "6plus") multiplier = 16;
 
-  let calories = weight ? weight * multiplier : 2200;
+  let calories =
+    weight ? weight * multiplier : 2200;
 
   if (goal === "cutwise") calories -= 300;
   if (goal === "gainwise") calories += 300;
 
   return {
-    calories: Math.round(calories),
-    protein: weight ? Math.round(weight) : 160
+    calories:
+      Math.round(calories),
+
+    protein:
+      weight ? Math.round(weight) : 160
   };
 }
 
 function pct(value, target) {
   if (!target) return 0;
 
-  return Math.min(100, Math.round((value / target) * 100));
+  return Math.min(
+    100,
+    Math.round((value / target) * 100)
+  );
+}
+
+function getPastDateKey(daysBack) {
+  const date =
+    new Date();
+
+  date.setDate(
+    date.getDate() - daysBack
+  );
+
+  return date.toISOString().slice(0, 10);
 }
 
 function renderStreak() {
@@ -87,19 +141,32 @@ function renderStreak() {
 }
 
 function renderHydration() {
-  if (!waterOutput) return;
+  if (waterOutput) {
+    waterOutput.textContent =
+      `${waterOz} / 128 oz`;
+  }
 
-  waterOutput.textContent =
-    `${waterOz} / 128 oz`;
+  if (waterMeter) {
+    waterMeter.style.width =
+      `${pct(waterOz, 128)}%`;
+  }
 }
 
 function renderCaloriesAndProtein() {
-  const setup = getSetup();
-  const targets = estimateTargets(setup);
-  const summary = getDailySummary();
+  const setup =
+    getSetup();
 
-  const calories = Number(summary.calories || 0);
-  const protein = Number(summary.protein || 0);
+  const targets =
+    estimateTargets(setup);
+
+  const summary =
+    getDailySummary();
+
+  const calories =
+    Number(summary.calories || 0);
+
+  const protein =
+    Number(summary.protein || 0);
 
   if (calorieOutput) {
     calorieOutput.textContent =
@@ -136,39 +203,94 @@ function renderCaloriesAndProtein() {
   }
 }
 
-function renderWorkout() {
-  const complete =
-    localStorage.getItem(workoutKey) === "complete";
+function renderWorkoutWeek() {
+  if (!workoutWeek) return;
 
-  if (!workoutOutput) return;
+  workoutWeek.innerHTML = "";
 
-  workoutOutput.textContent =
-    complete ? "Logged" : "Not Logged";
+  for (let i = 6; i >= 0; i--) {
+    const dateKey =
+      getPastDateKey(i);
+
+    const key =
+      `fuelai-workout-${dateKey}`;
+
+    const logged =
+      localStorage.getItem(key) === "complete";
+
+    const dot =
+      document.createElement("span");
+
+    dot.className =
+      logged
+        ? "week-dot good"
+        : "week-dot empty";
+
+    dot.title =
+      `Day ${7 - i}: ${logged ? "Logged" : "Not Logged"}`;
+
+    workoutWeek.appendChild(dot);
+  }
+
+  if (workoutOutput) {
+    workoutOutput.textContent =
+      "7-Day Log";
+  }
 }
 
-function renderSleep() {
-  const sleep =
-    localStorage.getItem(sleepKey) || "Not Logged";
+function renderSleepWeek() {
+  if (!sleepWeek) return;
 
-  if (!sleepOutput) return;
+  sleepWeek.innerHTML = "";
 
-  sleepOutput.textContent =
-    sleep;
+  for (let i = 6; i >= 0; i--) {
+    const dateKey =
+      getPastDateKey(i);
+
+    const key =
+      `fuelai-sleep-${dateKey}`;
+
+    const value =
+      localStorage.getItem(key);
+
+    let status =
+      "empty";
+
+    if (value === "Poor") {
+      status = "poor";
+    }
+
+    if (
+      value === "Okay" ||
+      value === "Good"
+    ) {
+      status = "okay";
+    }
+
+    if (value === "Great") {
+      status = "good";
+    }
+
+    const dot =
+      document.createElement("span");
+
+    dot.className =
+      `week-dot ${status}`;
+
+    dot.title =
+      `Day ${7 - i}: ${value || "Not Logged"}`;
+
+    sleepWeek.appendChild(dot);
+  }
+
+  if (sleepOutput) {
+    sleepOutput.textContent =
+      "7-Day Log";
+  }
 }
-
-addWaterBtn?.addEventListener("click", () => {
-  waterOz = Math.min(waterOz + 8, 128);
-
-  localStorage.setItem(
-    waterKey,
-    String(waterOz)
-  );
-
-  renderHydration();
-});
 
 renderStreak();
 renderHydration();
 renderCaloriesAndProtein();
-renderWorkout();
-renderSleep();
+renderWorkoutWeek();
+renderSleepWeek();

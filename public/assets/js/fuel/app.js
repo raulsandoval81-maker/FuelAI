@@ -28,15 +28,28 @@ const uploadBox =
 const extraIngredients =
   document.getElementById("extraIngredients");
 
-let selectedImageBase64 = null;
-let scanMode = "prescan";
+const addWaterBtn =
+  document.getElementById("addWaterBtn");
+
+const todayKey =
+  new Date().toISOString().slice(0, 10);
+
+const waterKey =
+  `fuelai-water-oz-${todayKey}`;
+
+let selectedImageBase64 =
+  null;
+
+let scanMode =
+  "prescan";
 
 const setup =
   JSON.parse(
     localStorage.getItem("fuelai-setup") || "{}"
   );
 
-  function resetMealScan() {
+
+function resetMealScan() {
 
   selectedImageBase64 =
     null;
@@ -66,7 +79,40 @@ const setup =
     analyzeBtn.textContent = "Scan Meal";
     analyzeBtn.classList.add("hidden");
   }
+
 }
+
+
+addWaterBtn?.addEventListener(
+  "click",
+  () => {
+
+    const current =
+      Number(
+        localStorage.getItem(waterKey)
+      ) || 0;
+
+    const updated =
+      Math.min(current + 8, 128);
+
+    localStorage.setItem(
+      waterKey,
+      String(updated)
+    );
+
+    addWaterBtn.textContent =
+      `💧 ${updated} oz Logged`;
+
+    setTimeout(() => {
+
+      addWaterBtn.textContent =
+        "💧 + 8 oz Water";
+
+    }, 1400);
+
+  }
+);
+
 
 function handleFoodFile(file) {
 
@@ -183,41 +229,27 @@ function handleFoodFile(file) {
 
   };
 
-  reader.readAsDataURL(
-    file
-  );
+  reader.readAsDataURL(file);
 
 }
 
-if (foodInput) {
 
-  foodInput.addEventListener(
-    "change",
-    () => {
+foodInput?.addEventListener(
+  "change",
+  () => {
+    handleFoodFile(foodInput.files[0]);
+  }
+);
 
-      handleFoodFile(
-        foodInput.files[0]
-      );
 
-    }
-  );
+foodUploadInput?.addEventListener(
+  "change",
+  () => {
+    handleFoodFile(foodUploadInput.files[0]);
+  }
+);
 
-}
 
-if (foodUploadInput) {
-
-  foodUploadInput.addEventListener(
-    "change",
-    () => {
-
-      handleFoodFile(
-        foodUploadInput.files[0]
-      );
-
-    }
-  );
-
-}
 /* Quick Actions auto-open */
 
 const quickParams =
@@ -238,18 +270,13 @@ function saveScan(scan) {
 
   const scans =
     JSON.parse(
-      localStorage.getItem(
-        "fuelai-history"
-      ) || "[]"
+      localStorage.getItem("fuelai-history") || "[]"
     );
 
   scans.unshift({
-
     ...scan,
-
     createdAt:
       new Date().toLocaleString()
-
   });
 
   const trimmed =
@@ -261,6 +288,7 @@ function saveScan(scan) {
   );
 
 }
+
 
 function showError(message) {
 
@@ -275,94 +303,160 @@ function showError(message) {
     </p>
   `;
 
-  resultCard.classList.remove(
-    "hidden"
-  );
+  resultCard.classList.remove("hidden");
 
 }
 
-if (analyzeBtn) {
 
-  analyzeBtn.addEventListener(
-    "click",
-    async () => {
+function addMealToFuelLog(parsed) {
 
-      if (!selectedImageBase64)
-        return;
+  if (!window.FuelAILog) return;
 
-      const isDirectScan =
-        scanMode === "scan";
+  window.FuelAILog.addFuelLog({
 
-      if (!isDirectScan) {
-        scanMode = "prescan";
-      }
+    type:
+      "meal",
 
-      const loadingMessages = [
+    calories:
+      Number(
+        String(parsed.calories).replace(/[^0-9]/g, "")
+      ) || 0,
 
-        "Detecting ingredients...",
-        "Estimating calories...",
-        "Checking balance...",
-        "Building guidance...",
-        "Finishing scan..."
+    protein:
+      Number(
+        String(parsed.protein).replace(/[^0-9]/g, "")
+      ) || 0,
 
-      ];
+    carbs:
+      Number(
+        String(parsed.carbs).replace(/[^0-9]/g, "")
+      ) || 0,
 
-      let loadingIndex = 0;
+    fats:
+      Number(
+        String(parsed.fat || parsed.fats).replace(/[^0-9]/g, "")
+      ) || 0,
 
-      analyzeBtn.disabled = true;
+    goal:
+      setup.goal || "fuelwise",
 
-      analyzeBtn.textContent =
-        "Analyzing...";
+    source:
+      "meal-scan"
 
-      if (scanMealBtn) {
-        scanMealBtn.disabled = false;
-      }
+  });
 
-      resultCard.classList.add(
-        "hidden"
-      );
+}
 
-      loadingCard.classList.remove(
-        "hidden"
-      );
 
-      loadingText.textContent =
-        loadingMessages[0];
+function saveParsedMeal(parsed) {
 
-      const loadingInterval =
-        setInterval(() => {
+  saveScan({
 
-          loadingIndex++;
+    mealName:
+      parsed.mealName ||
+      "Meal Scan",
 
-          if (
-            loadingIndex >=
-            loadingMessages.length
-          ) {
-            loadingIndex = 0;
-          }
+    calories:
+      parsed.calories || "",
 
-          loadingText.textContent =
-            loadingMessages[
-              loadingIndex
-            ];
+    protein:
+      parsed.protein || "",
 
-        }, 1200);
+    carbs:
+      parsed.carbs || "",
 
-      try {
+    fats:
+      parsed.fat ||
+      parsed.fats || "",
 
-        const response =
-          await fetch(
-            "/api/analyze",
-            {
+    goal:
+      setup.goal ||
+      "fuelwise",
 
-              method: "POST",
+    confidence:
+      parsed.confidence || ""
 
-              headers: {
-                "Content-Type":
-                  "application/json"
-              },
+  });
 
-              body: JSON.stringify({
+  addMealToFuelLog(parsed);
+
+}
+
+
+analyzeBtn?.addEventListener(
+  "click",
+  async () => {
+
+    if (!selectedImageBase64) return;
+
+    const isDirectScan =
+      scanMode === "scan";
+
+    if (!isDirectScan) {
+      scanMode = "prescan";
+    }
+
+    const loadingMessages = [
+      "Detecting ingredients...",
+      "Estimating calories...",
+      "Checking balance...",
+      "Building guidance...",
+      "Finishing scan..."
+    ];
+
+    let loadingIndex =
+      0;
+
+    analyzeBtn.disabled =
+      true;
+
+    analyzeBtn.textContent =
+      "Analyzing...";
+
+    if (scanMealBtn) {
+      scanMealBtn.disabled = false;
+    }
+
+    resultCard.classList.add("hidden");
+    loadingCard.classList.remove("hidden");
+
+    loadingText.textContent =
+      loadingMessages[0];
+
+    const loadingInterval =
+      setInterval(() => {
+
+        loadingIndex++;
+
+        if (
+          loadingIndex >=
+          loadingMessages.length
+        ) {
+          loadingIndex = 0;
+        }
+
+        loadingText.textContent =
+          loadingMessages[loadingIndex];
+
+      }, 1200);
+
+    try {
+
+      const response =
+        await fetch(
+          "/api/analyze",
+          {
+
+            method:
+              "POST",
+
+            headers: {
+              "Content-Type":
+                "application/json"
+            },
+
+            body:
+              JSON.stringify({
 
                 image:
                   selectedImageBase64,
@@ -393,383 +487,211 @@ if (analyzeBtn) {
                   setup.lang || "en",
 
                 extraIngredients:
-                  extraIngredients
-                    ?.value
-                    .trim() || ""
+                  extraIngredients?.value.trim() || ""
 
               })
 
-            }
-          );
-
-        const data =
-          await response.json();
-
-        if (!response.ok) {
-
-          throw new Error(
-            data.error ||
-            "API request failed"
-          );
-
-        }
-
-        if (!data.result) {
-
-          throw new Error(
-            "No AI result returned"
-          );
-
-        }
-
-        const parsed =
-          data.result;
-
-        resultCard.innerHTML = `
-
-        
-
-          <h2>
-            ${
-              parsed.mealName ||
-              "Meal Scan"
-            }
-          </h2>
-
-          <div class="calories">
-            ${
-              parsed.calories ||
-              "Unknown"
-            } Calories
-          </div>
-
-          <div class="macro-grid">
-
-            <div>
-              <strong>🥩 Protein</strong>
-
-              <span>
-                ${
-                  parsed.protein || "—"
-                }
-              </span>
-            </div>
-
-            <div>
-              <strong>🍞 Carbs</strong>
-
-              <span>
-                ${
-                  parsed.carbs || "—"
-                }
-              </span>
-            </div>
-
-            <div>
-              <strong>🥑 Fat</strong>
-
-              <span>
-                ${
-                  parsed.fat || "—"
-                }
-              </span>
-            </div>
-
-          </div>
-
-          <p class="feedback">
-            ${
-              parsed.feedback || ""
-            }
-          </p>
-
-          ${
-            parsed.extraNoteResponse
-              ? `
-                <p class="feedback">
-                  ${parsed.extraNoteResponse}
-                </p>
-              `
-              : ""
           }
+        );
 
-          <p class="feedback">
-            Fuel Check:
-            ${
-              parsed.score || "—"
-            }/10
-          </p>
+      const data =
+        await response.json();
 
-          <p class="feedback">
-            Confidence Level:
-            ${
-              parsed.confidence || "—"
-            }
-          </p>
+      if (!response.ok) {
+        throw new Error(
+          data.error ||
+          "API request failed"
+        );
+      }
 
-          <p class="caution">
-            ${
-              parsed.caution || ""
-            }
-          </p>
+      if (!data.result) {
+        throw new Error(
+          "No AI result returned"
+        );
+      }
 
-          <div class="commit-actions">
+      const parsed =
+        data.result;
 
+      resultCard.innerHTML = `
+        <h2>
+          ${
+            parsed.mealName ||
+            "Meal Scan"
+          }
+        </h2>
+
+        <div class="calories">
+          ${
+            parsed.calories ||
+            "Unknown"
+          } Calories
+        </div>
+
+        <div class="macro-grid">
+
+          <div>
+            <strong>🥩 Protein</strong>
+            <span>${parsed.protein || "—"}</span>
+          </div>
+
+          <div>
+            <strong>🍞 Carbs</strong>
+            <span>${parsed.carbs || "—"}</span>
+          </div>
+
+          <div>
+            <strong>🥑 Fat</strong>
+            <span>${parsed.fat || "—"}</span>
+          </div>
+
+        </div>
+
+        <p class="feedback">
+          ${parsed.feedback || ""}
+        </p>
+
+        ${
+          parsed.extraNoteResponse
+            ? `
+              <p class="feedback">
+                ${parsed.extraNoteResponse}
+              </p>
+            `
+            : ""
+        }
+
+        <p class="feedback">
+          Fuel Check:
+          ${parsed.score || "—"}/10
+        </p>
+
+        <p class="feedback">
+          Confidence Level:
+          ${parsed.confidence || "—"}
+        </p>
+
+        <p class="caution">
+          ${parsed.caution || ""}
+        </p>
+
+        <div class="commit-actions">
+
+          <button
+            id="commitMealBtn"
+            class="start-btn"
+            type="button"
+          >
+            👍 Commit Meal
+          </button>
+
+          <button
+            id="discardMealBtn"
+            class="secondary-btn"
+            type="button"
+          >
+            ✕ Never Mind
+          </button>
+
+        </div>
+      `;
+
+      resultCard.classList.remove("hidden");
+
+      const commitMealBtn =
+        document.getElementById("commitMealBtn");
+
+      const discardMealBtn =
+        document.getElementById("discardMealBtn");
+
+      if (isDirectScan) {
+
+        saveParsedMeal(parsed);
+
+        const commitActions =
+          document.querySelector(".commit-actions");
+
+        if (commitActions) {
+
+          commitActions.innerHTML = `
             <button
-              id="commitMealBtn"
               class="start-btn"
               type="button"
+              disabled
             >
-              👍 Commit Meal
+              Meal added to your log.
             </button>
-
-            <button
-              id="discardMealBtn"
-              class="secondary-btn"
-              type="button"
-            >
-              ✕ Never Mind
-            </button>
-
-          </div>
-
-        `;
-
-        resultCard.classList.remove(
-          "hidden"
-        );
-
-        const commitMealBtn =
-          document.getElementById(
-            "commitMealBtn"
-          );
-
-        const discardMealBtn =
-          document.getElementById(
-            "discardMealBtn"
-          );
-
-        if (isDirectScan) {
-
-          saveScan({
-
-            mealName:
-              parsed.mealName ||
-              "Meal Scan",
-
-            calories:
-              parsed.calories || "",
-
-            protein:
-              parsed.protein || "",
-
-            carbs:
-              parsed.carbs || "",
-
-            fats:
-              parsed.fat ||
-              parsed.fats || "",
-
-            goal:
-              setup.goal ||
-              "fuelwise",
-
-            confidence:
-              parsed.confidence || ""
-
-          });
-
-          if (window.FuelAILog) {
-window.FuelAILog.addFuelLog({
-  type: "meal",
-
-  calories:
-    Number(
-      String(parsed.calories).replace(/[^0-9]/g, "")
-    ) || 0,
-
-  protein:
-    Number(
-      String(parsed.protein).replace(/[^0-9]/g, "")
-    ) || 0,
-
-  carbs:
-    Number(
-      String(parsed.carbs).replace(/[^0-9]/g, "")
-    ) || 0,
-
-  fats:
-    Number(
-      String(parsed.fat || parsed.fats).replace(/[^0-9]/g, "")
-    ) || 0,
-
-  goal:
-    setup.goal || "fuelwise",
-
-  source: "meal-scan"
-});
-          }
-
-          const commitActions =
-            document.querySelector(
-              ".commit-actions"
-            );
-
-          if (commitActions) {
-
-            commitActions.innerHTML = `
-              <button
-                class="start-btn"
-                type="button"
-                disabled
-              >
-                Meal added to your log.
-              </button>
-            `;
-          }
+          `;
 
         }
-
-        if (commitMealBtn) {
-
-          commitMealBtn.addEventListener(
-            "click",
-            () => {
-
-              saveScan({
-
-                mealName:
-                  parsed.mealName ||
-                  "Meal Scan",
-
-                calories:
-                  parsed.calories || "",
-
-                protein:
-                  parsed.protein || "",
-
-                carbs:
-                  parsed.carbs || "",
-
-                fats:
-                  parsed.fat ||
-                  parsed.fats || "",
-
-                goal:
-                  setup.goal ||
-                  "fuelwise",
-
-                confidence:
-                  parsed.confidence || ""
-
-              });
-
-              if (window.FuelAILog) {
-
-window.FuelAILog.addFuelLog({
-  type: "meal",
-
-  calories:
-    Number(
-      String(parsed.calories).replace(/[^0-9]/g, "")
-    ) || 0,
-
-  protein:
-    Number(
-      String(parsed.protein).replace(/[^0-9]/g, "")
-    ) || 0,
-
-  carbs:
-    Number(
-      String(parsed.carbs).replace(/[^0-9]/g, "")
-    ) || 0,
-
-  fats:
-    Number(
-      String(parsed.fat || parsed.fats).replace(/[^0-9]/g, "")
-    ) || 0,
-
-  goal:
-    setup.goal || "fuelwise",
-
-  source: "meal-scan"
-});
-              }
-
-              commitMealBtn.textContent =
-                "Meal Committed";
-
-              commitMealBtn.disabled = true;
-
-            }
-          );
-
-        }
-
-        if (discardMealBtn) {
-
-          discardMealBtn.addEventListener(
-            "click",
-            () => {
-
-              resultCard.classList.add(
-                "hidden"
-              );
-
-              analyzeBtn.textContent =
-                "Scan Meal";
-
-                resetMealScan();
-
-            }
-          );
-
-        }
-
 
       }
 
-      catch (err) {
+      commitMealBtn?.addEventListener(
+        "click",
+        () => {
 
-        console.error(
-          "SCAN ERROR:",
-          err
-        );
+          saveParsedMeal(parsed);
 
-        showError(
-          "Could not analyze meal. Try another photo."
-        );
+          commitMealBtn.textContent =
+            "Meal Committed";
 
-        analyzeBtn.textContent =
-          "Try Again";
+          commitMealBtn.disabled =
+            true;
 
+        }
+      );
+
+      discardMealBtn?.addEventListener(
+        "click",
+        () => {
+
+          resultCard.classList.add("hidden");
+
+          analyzeBtn.textContent =
+            "Scan Meal";
+
+          resetMealScan();
+
+        }
+      );
+
+    }
+
+    catch (err) {
+
+      console.error(
+        "SCAN ERROR:",
+        err
+      );
+
+      showError(
+        "Could not analyze meal. Try another photo."
+      );
+
+      analyzeBtn.textContent =
+        "Try Again";
+
+    }
+
+    finally {
+
+      clearInterval(loadingInterval);
+
+      loadingCard.classList.add("hidden");
+
+      analyzeBtn.disabled =
+        false;
+
+      if (scanMealBtn) {
+        scanMealBtn.disabled = false;
       }
 
-      finally {
-
-        clearInterval(
-          loadingInterval
-        );
-
-        loadingCard.classList.add(
-          "hidden"
-        );
-
-        analyzeBtn.disabled = false;
-
-        if (scanMealBtn) {
-          scanMealBtn.disabled = false;
-        }
-
-        if (
-          scanMode === "scan"
-        ) {
-          scanMode = "prescan";
-        }
-
+      if (scanMode === "scan") {
+        scanMode = "prescan";
       }
 
     }
-  );
 
-}
+  }
+);

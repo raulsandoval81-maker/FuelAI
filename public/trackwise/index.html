@@ -80,16 +80,12 @@
             </h2>
 
             <p>
-              Daily gallon goal
+              Updated from MealWise.
             </p>
 
-            <button
-              id="addWaterBtn"
-              class="secondary-btn"
-              type="button"
-            >
-              + 8 oz Water
-            </button>
+            <div class="meter blue">
+              <span id="waterMeter"></span>
+            </div>
 
           </div>
 
@@ -160,16 +156,21 @@
           <div>
 
             <p class="range-label">
-              Workout
+              Workout Week
             </p>
 
             <h2 id="workoutOutput">
-              Not Logged
+              7-Day Log
             </h2>
 
             <p>
               Updated from Daily Check-In.
             </p>
+
+            <div
+              id="workoutWeek"
+              class="week-dots"
+            ></div>
 
           </div>
 
@@ -184,16 +185,21 @@
           <div>
 
             <p class="range-label">
-              Sleep Quality
+              Sleep Week
             </p>
 
             <h2 id="sleepOutput">
-              Not Logged
+              7-Day Log
             </h2>
 
             <p>
-              Updated from Daily Check-In.
+              Poor / Okay / Great from Check-In.
             </p>
+
+            <div
+              id="sleepWeek"
+              class="week-dots"
+            ></div>
 
           </div>
 
