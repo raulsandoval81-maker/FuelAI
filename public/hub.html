@@ -36,25 +36,25 @@
 
     </header>
 
-<section class="hub-hero">
+    <section class="hub-hero">
 
-  <div>
+      <div>
 
-    <h2>
-      Hi, I’m WiseGuy.
-    </h2>
+        <h2 id="heroTitle">
+          Hi, I’m WiseGuy.
+        </h2>
 
-    <p>
-      My friends call me W.
-    </p>
+        <p>
+          My friends call me W.
+        </p>
 
-    <p class="hero-note">
-      I’m here to simplify food, help with recovery, and guide the next step.
-    </p>
+        <p class="hero-note">
+          I’m here to simplify food, help with recovery, and guide the next step.
+        </p>
 
-  </div>
+      </div>
 
-</section>
+    </section>
 
     <section class="hub-grid">
 
@@ -70,13 +70,13 @@
 
         <div class="hub-card-copy">
 
-<h3>
-  Scan your meals
-</h3>
+          <h3>
+            Scan your meals
+          </h3>
 
-<p>
-  Track calories, macros, and patterns automatically.
-</p>
+          <p>
+            Track calories, macros, and patterns automatically.
+          </p>
 
         </div>
 
@@ -94,13 +94,14 @@
 
         <div class="hub-card-copy">
 
-<h3>
-  Scan your fridge
-</h3>
+          <h3>
+            Scan your fridge
+          </h3>
 
-<p>
-  Build meal ideas from what you already have.
-</p>
+          <p>
+            Build meal ideas from what you already have.
+          </p>
+
         </div>
 
       </a>
@@ -117,13 +118,13 @@
 
         <div class="hub-card-copy">
 
-<h3>
-  Ask better questions
-</h3>
+          <h3>
+            Ask better questions
+          </h3>
 
-<p>
-  Talk with W. for deeper guidance and direction.
-</p>
+          <p>
+            Talk with W. for deeper guidance and direction.
+          </p>
 
         </div>
 
@@ -141,13 +142,14 @@
 
         <div class="hub-card-copy">
 
-<h3>
-  Daily progress log
-</h3>
+          <h3>
+            Daily progress log
+          </h3>
 
-<p>
-  Track habits. Build a better lifestyle.
-</p>
+          <p>
+            Track habits. Build a better lifestyle.
+          </p>
+
         </div>
 
       </a>
@@ -160,6 +162,30 @@
 
   <script>
     window.FuelAIAuth?.requireSoftLogin();
+  </script>
+
+  <script>
+
+    const setup =
+      JSON.parse(
+        localStorage.getItem("fuelai-setup") || "{}"
+      );
+
+    const heroTitle =
+      document.getElementById("heroTitle");
+
+    if (heroTitle) {
+
+      const wiseName =
+        setup.gender === "female"
+          ? "WiseGal"
+          : "WiseGuy";
+
+      heroTitle.textContent =
+        `Hi, I’m ${wiseName}.`;
+
+    }
+
   </script>
 
 </body>
