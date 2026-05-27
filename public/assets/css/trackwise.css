@@ -157,12 +157,18 @@
 .water-drop{
   font-size:1rem;
   line-height:1;
+  opacity:.18;
+  filter:grayscale(1);
+}
+
+.water-drop.filled{
+  opacity:1;
+  filter:none;
 }
 
 .water-drop.final{
   font-size:1.55rem;
 }
-
 .week-dot,
 .sleep-dot{
   width:13px;

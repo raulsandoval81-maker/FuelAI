@@ -150,36 +150,42 @@ function renderHydration() {
   const completed =
     Math.floor(waterOz / 16);
 
-  for (let i = 0; i < completed; i++) {
+  for (let i = 0; i < 8; i++) {
+
+    const cell =
+      document.createElement("div");
+
+    cell.className =
+      "week-cell";
+
+    cell.innerHTML = `
+      <span class="week-label">
+        ${i + 1}
+      </span>
+    `;
 
     const drop =
       document.createElement("span");
 
+    const isComplete =
+      i < completed;
+
     drop.className =
-      i === 7
-        ? "water-drop final"
-        : "water-drop";
+      isComplete
+        ? i === 7
+          ? "water-drop final filled"
+          : "water-drop filled"
+        : i === 7
+          ? "water-drop final empty"
+          : "water-drop empty";
 
     drop.textContent =
       i === 7
         ? "💦"
         : "💧";
 
-const cell =
-  document.createElement("div");
-
-cell.className =
-  "week-cell";
-
-cell.innerHTML = `
-  <span class="week-label">
-    ${i + 1}
-  </span>
-`;
-
-cell.appendChild(drop);
-
-waterDrops.appendChild(cell);
+    cell.appendChild(drop);
+    waterDrops.appendChild(cell);
 
   }
 
