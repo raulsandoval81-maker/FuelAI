@@ -218,6 +218,20 @@ if (foodUploadInput) {
   );
 
 }
+/* Quick Actions auto-open */
+
+const quickParams =
+  new URLSearchParams(window.location.search);
+
+if (
+  quickParams.get("quick") === "meal"
+) {
+
+  setTimeout(() => {
+    foodInput?.click();
+  }, 300);
+
+}
 
 
 function saveScan(scan) {

@@ -219,6 +219,20 @@ if (fridgeUploadInput) {
     handleImage(e.target.files?.[0]);
   });
 }
+/* Quick Actions auto-open */
+
+const quickParams =
+  new URLSearchParams(window.location.search);
+
+if (
+  quickParams.get("quick") === "fridge"
+) {
+
+  setTimeout(() => {
+    fridgeInput?.click();
+  }, 300);
+
+}
 
 /* Analyze fridge */
 
