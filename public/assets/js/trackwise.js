@@ -12,10 +12,7 @@ const proteinGoalOutput = document.getElementById("proteinGoalOutput");
 const proteinMeter = document.getElementById("proteinMeter");
 
 const workoutOutput = document.getElementById("workoutOutput");
-const workoutBtn = document.getElementById("workoutBtn");
-
 const sleepOutput = document.getElementById("sleepOutput");
-const sleepBtns = document.querySelectorAll(".sleep-btn");
 
 const todayKey = new Date().toISOString().slice(0, 10);
 
@@ -73,6 +70,7 @@ function estimateTargets(setup) {
 
 function pct(value, target) {
   if (!target) return 0;
+
   return Math.min(100, Math.round((value / target) * 100));
 }
 
@@ -82,17 +80,17 @@ function renderStreak() {
     Number(localStorage.getItem("fuelai-streak")) ||
     0;
 
-  if (streakOutput) {
-    streakOutput.textContent =
-      `${streak} Day${streak === 1 ? "" : "s"}`;
-  }
+  if (!streakOutput) return;
+
+  streakOutput.textContent =
+    `${streak} Day${streak === 1 ? "" : "s"}`;
 }
 
 function renderHydration() {
-  if (waterOutput) {
-    waterOutput.textContent =
-      `${waterOz} / 128 oz`;
-  }
+  if (!waterOutput) return;
+
+  waterOutput.textContent =
+    `${waterOz} / 128 oz`;
 }
 
 function renderCaloriesAndProtein() {
@@ -142,47 +140,31 @@ function renderWorkout() {
   const complete =
     localStorage.getItem(workoutKey) === "complete";
 
-  if (workoutOutput) {
-    workoutOutput.textContent =
-      complete ? "Complete" : "Not Logged";
-  }
+  if (!workoutOutput) return;
 
-  if (workoutBtn) {
-    workoutBtn.textContent =
-      complete ? "Workout Logged" : "Mark Complete";
-  }
+  workoutOutput.textContent =
+    complete ? "Logged" : "Not Logged";
 }
 
 function renderSleep() {
   const sleep =
     localStorage.getItem(sleepKey) || "Not Logged";
 
-  if (sleepOutput) {
-    sleepOutput.textContent = sleep;
-  }
+  if (!sleepOutput) return;
+
+  sleepOutput.textContent =
+    sleep;
 }
 
 addWaterBtn?.addEventListener("click", () => {
   waterOz = Math.min(waterOz + 8, 128);
 
-  localStorage.setItem(waterKey, String(waterOz));
+  localStorage.setItem(
+    waterKey,
+    String(waterOz)
+  );
 
   renderHydration();
-});
-
-workoutBtn?.addEventListener("click", () => {
-  localStorage.setItem(workoutKey, "complete");
-  renderWorkout();
-});
-
-sleepBtns.forEach((btn) => {
-  btn.addEventListener("click", () => {
-    const value = btn.dataset.sleep || "Okay";
-
-    localStorage.setItem(sleepKey, value);
-
-    renderSleep();
-  });
 });
 
 renderStreak();
