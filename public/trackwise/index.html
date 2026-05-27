@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+
+  <title>
+    TrackWise
+  </title>
+
+  <link
+    rel="stylesheet"
+    href="/assets/css/site.css"
+  />
+</head>
+
+<body data-theme="night">
+
+  <main class="scan-wrap">
+
+    <section class="scan-card">
+
+      <img
+        src="/assets/img/hub/trackwise.png"
+        alt="TrackWise"
+        class="hub-preview"
+      />
+
+      <h1>
+        TrackWise
+      </h1>
+
+      <p class="sub">
+        Track your habits, fuel, hydration, and consistency.
+      </p>
+
+      <!-- STREAK -->
+
+      <section class="range-card">
+
+        <p class="range-label">
+          Current Streak
+        </p>
+
+        <p
+          id="streakOutput"
+          class="range-output"
+        >
+          0 Days
+        </p>
+
+      </section>
+
+      <!-- HYDRATION -->
+
+      <section class="range-card">
+
+        <p class="range-label">
+          Hydration
+        </p>
+
+        <p
+          id="waterOutput"
+          class="range-output"
+        >
+          0 / 8 Cups
+        </p>
+
+        <button
+          id="addWaterBtn"
+          class="secondary-btn"
+          type="button"
+        >
+          💧 Add Water
+        </button>
+
+      </section>
+
+      <!-- MACROS -->
+
+      <section class="range-card">
+
+        <p class="range-label">
+          Calories
+        </p>
+
+        <p
+          id="calorieOutput"
+          class="range-output"
+        >
+          0
+        </p>
+
+      </section>
+
+      <section class="macro-grid">
+
+        <div class="range-card">
+          <p class="range-label">
+            Protein
+          </p>
+
+          <p
+            id="proteinOutput"
+            class="range-output"
+          >
+            0g
+          </p>
+        </div>
+
+        <div class="range-card">
+          <p class="range-label">
+            Carbs
+          </p>
+
+          <p
+            id="carbOutput"
+            class="range-output"
+          >
+            0g
+          </p>
+        </div>
+
+        <div class="range-card">
+          <p class="range-label">
+            Fats
+          </p>
+
+          <p
+            id="fatOutput"
+            class="range-output"
+          >
+            0g
+          </p>
+        </div>
+
+      </section>
+
+      <!-- BUTTONS -->
+
+      <div class="scan-actions">
+
+        <a
+          class="start-btn"
+          href="/account/checkin.html"
+        >
+          ✅ Daily Check-In
+        </a>
+
+        <a
+          class="secondary-btn"
+          href="/trackwise/library.html"
+        >
+          📚 Go Deeper
+        </a>
+
+      </div>
+
+    </section>
+
+  </main>
+
+  <script src="/assets/js/fuelai-log.js"></script>
+  <script src="/assets/js/trackwise.js"></script>
+
+</body>
+</html>
