@@ -107,25 +107,48 @@
       </a>
 
       <a
+        class="hub-card yellow"
+        href="/wise/quick-tools.html"
+      >
+
+        <img
+          src="/assets/img/hub/QuickDashAction.png"
+          alt="Quick Actions"
+        />
+
+        <div class="hub-card-copy">
+
+          <h3>
+            Quick Actions
+          </h3>
+
+          <p>
+            Fast access to scans, tracking, and daily tools.
+          </p>
+
+        </div>
+
+      </a>
+
+      <a
         class="hub-card gold"
         href="/wise/"
       >
 
         <img
           src="/assets/img/hub/wright.png"
-          alt="Advice with W"
+          alt="Coach Wright"
         />
 
         <div class="hub-card-copy">
 
-<h3>
-  Lifestyle and Sports Coaching
-</h3>
+          <h3>
+            Lifestyle and Sports Coaching
+          </h3>
 
-<p>
-  Guidance for recovery, habits, nutrition, and better daily decisions.
-</p>
-
+          <p>
+            Guidance for recovery, habits, nutrition, and better daily decisions.
+          </p>
 
         </div>
 
@@ -167,23 +190,16 @@
 
   <script>
 
-    const setup =
-      JSON.parse(
-        localStorage.getItem("fuelai-setup") || "{}"
-      );
-
     const heroTitle =
       document.getElementById("heroTitle");
 
     if (heroTitle) {
 
-      const wiseName =
-        setup.gender === "female"
-          ? "Coach Wright"
-          : "Coach Wright";
+      const coachName =
+        "Coach Wright";
 
       heroTitle.textContent =
-        `Hi, I’m ${wiseName}.`;
+        `Hi, I’m ${coachName}.`;
 
     }
 
