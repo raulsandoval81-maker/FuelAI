@@ -2,25 +2,14 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <link rel="icon" href="data:," />
 
   <title>TrackWise</title>
 
-  <link
-    rel="stylesheet"
-    href="/assets/css/site.css"
-  />
-
-  <link
-    rel="stylesheet"
-    href="/assets/css/trackwise.css"
-  />
+  <link rel="stylesheet" href="/assets/css/site.css" />
+  <link rel="stylesheet" href="/assets/css/trackwise.css" />
 </head>
 
 <body data-theme="night">
@@ -32,29 +21,17 @@
       <header class="trackwise-top">
 
         <div>
-          <h1>
-            TrackWise
-          </h1>
+          <h1>TrackWise</h1>
 
           <p class="trackwise-tag">
-            Monitor today. Go deeper only when it helps.
+            Daily habits. Simple tracking. Better consistency.
           </p>
         </div>
 
         <div class="streak-card">
-
-          <p class="range-label">
-            Current Streak
-          </p>
-
-          <strong id="streakOutput">
-            0 Days
-          </strong>
-
-          <p>
-            Keep building.
-          </p>
-
+          <p class="range-label">Check-In Streak</p>
+          <strong id="streakOutput">0 Days</strong>
+          <p>Keep building.</p>
         </div>
 
       </header>
@@ -62,210 +39,121 @@
       <section class="trackwise-main-grid">
 
         <article class="metric-card hydration-card">
-
-          <div class="metric-icon">
-            💧
-          </div>
+          <div class="metric-icon">💧</div>
 
           <div>
-
-            <p class="range-label">
-              Hydration
-            </p>
-
-            <h2 id="waterOutput">
-              0 / 8
-            </h2>
-
-            <p>
-              Daily cups
-            </p>
+            <p class="range-label">Hydration</p>
+            <h2 id="waterOutput">0 / 128 oz</h2>
+            <p>Daily gallon goal</p>
 
             <button
               id="addWaterBtn"
               class="secondary-btn"
               type="button"
             >
-              + Add Water
+              + 8 oz Water
             </button>
-
           </div>
-
         </article>
 
         <article class="metric-card calories-card">
-
-          <div class="metric-icon">
-            🔥
-          </div>
+          <div class="metric-icon">🔥</div>
 
           <div>
-
-            <p class="range-label">
-              Calories
-            </p>
-
-            <h2 id="calorieOutput">
-              0 / 0
-            </h2>
-
-            <p id="calorieGoalOutput">
-              Daily calorie target
-            </p>
+            <p class="range-label">Calories</p>
+            <h2 id="calorieOutput">0 / 0</h2>
+            <p id="calorieGoalOutput">Daily calorie target</p>
 
             <div class="meter">
               <span id="calorieMeter"></span>
             </div>
-
           </div>
-
         </article>
 
         <article class="metric-card protein-card">
-
-          <div class="metric-icon">
-            🥩
-          </div>
+          <div class="metric-icon">🥩</div>
 
           <div>
-
-            <p class="range-label">
-              Protein
-            </p>
-
-            <h2 id="proteinOutput">
-              0g / 0g
-            </h2>
-
-            <p id="proteinGoalOutput">
-              Daily protein target
-            </p>
+            <p class="range-label">Protein</p>
+            <h2 id="proteinOutput">0g / 0g</h2>
+            <p id="proteinGoalOutput">Daily protein target</p>
 
             <div class="meter green">
               <span id="proteinMeter"></span>
             </div>
-
           </div>
-
         </article>
 
-        <article class="metric-card carbs-card">
-
-          <div class="metric-icon">
-            🍚
-          </div>
+        <article class="metric-card workout-card">
+          <div class="metric-icon">🏋️</div>
 
           <div>
+            <p class="range-label">Workout</p>
+            <h2 id="workoutOutput">Not Logged</h2>
+            <p>Daily training session</p>
 
-            <p class="range-label">
-              Carbs
-            </p>
-
-            <h2 id="carbOutput">
-              0g
-            </h2>
-
-            <p>
-              Daily carbs
-            </p>
-
+            <button
+              id="workoutBtn"
+              class="secondary-btn"
+              type="button"
+            >
+              Mark Complete
+            </button>
           </div>
-
         </article>
 
-        <article class="metric-card fats-card">
-
-          <div class="metric-icon">
-            🥑
-          </div>
+        <article class="metric-card sleep-card">
+          <div class="metric-icon">😴</div>
 
           <div>
+            <p class="range-label">Sleep Quality</p>
+            <h2 id="sleepOutput">Not Logged</h2>
+            <p>How did you recover?</p>
 
-            <p class="range-label">
-              Fats
-            </p>
-
-            <h2 id="fatOutput">
-              0g
-            </h2>
-
-            <p>
-              Daily fats
-            </p>
-
+            <div class="sleep-buttons">
+              <button class="mini-toggle sleep-btn" data-sleep="Poor" type="button">Poor</button>
+              <button class="mini-toggle sleep-btn" data-sleep="Okay" type="button">Okay</button>
+              <button class="mini-toggle sleep-btn" data-sleep="Good" type="button">Good</button>
+            </div>
           </div>
-
         </article>
 
       </section>
 
       <section class="trackwise-action-row">
-
         <div>
-          <p class="range-label">
-            Daily Check-In
-          </p>
-
-          <h2>
-            Stay consistent. Win the day.
-          </h2>
+          <p class="range-label">Daily Check-In</p>
+          <h2>Stay consistent. Win the day.</h2>
         </div>
 
-        <a
-          class="start-btn compact-btn"
-          href="/account/checkin.html"
-        >
+        <a class="start-btn compact-btn" href="/account/checkin.html">
           Check In →
         </a>
-
       </section>
 
       <section class="trackwise-action-row">
-
         <div>
-          <p class="range-label">
-            Want to go deeper?
-          </p>
-
-          <h2>
-            Macros, logs, setup, and library.
-          </h2>
+          <p class="range-label">Want to go deeper?</p>
+          <h2>Macros, logs, setup, and library.</h2>
         </div>
 
-        <a
-          class="secondary-btn compact-btn"
-          href="/account/macros.html"
-        >
+        <a class="secondary-btn compact-btn" href="/account/macros.html">
           Explore →
         </a>
-
       </section>
 
       <section class="trackwise-action-row">
-
         <div>
-          <p class="range-label">
-            Setup
-          </p>
-
-          <h2>
-            Adjust your goal, sport, weight, and preferences.
-          </h2>
+          <p class="range-label">Setup</p>
+          <h2>Adjust your goal, sport, weight, and preferences.</h2>
         </div>
 
-        <a
-          class="secondary-btn compact-btn"
-          href="/account/setup.html"
-        >
+        <a class="secondary-btn compact-btn" href="/account/setup.html">
           Adjust Setup →
         </a>
-
       </section>
 
-      <a
-        class="secondary-btn"
-        href="/hub.html"
-      >
+      <a class="secondary-btn" href="/hub.html">
         🏠 Return to Hub
       </a>
 
