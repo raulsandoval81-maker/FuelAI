@@ -31,12 +31,12 @@ const extraIngredients =
 const addWaterBtn =
   document.getElementById("addWaterBtn");
 
-const todayKey =
+const mealwiseTodayKey =
   new Date().toISOString().slice(0, 10);
 
 const waterKey =
-  `fuelai-water-oz-${todayKey}`;
-
+  `fuelai-water-oz-${mealwiseTodayKey}`;
+  
 let selectedImageBase64 =
   null;
 
