@@ -8,9 +8,6 @@ const waterDrops =
   document.getElementById("waterDrops");  
 
 
-const waterMeter =
-  document.getElementById("waterMeter");
-
 const calorieOutput =
   document.getElementById("calorieOutput");
 
@@ -204,15 +201,17 @@ function renderCaloriesAndProtein() {
           : "FuelWise calorie target";
   }
 
+if (proteinOutput) {
+  proteinOutput.textContent =
+    `${protein}g / ${targets.protein}g`;
+}
+  
   if (proteinGoalOutput) {
     proteinGoalOutput.textContent =
       "Daily protein target";
   }
+  
 
-  if (proteinMeter) {
-    proteinMeter.style.width =
-      `${pct(protein, targets.protein)}%`;
-  }
 }
 
 function renderWorkoutWeek() {
