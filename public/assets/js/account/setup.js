@@ -291,15 +291,24 @@ foodAvoid:
         weeklyFocus
       };
 
-      localStorage.setItem(
-        "fuelai-setup",
-        JSON.stringify(setup)
-      );
+localStorage.setItem(
+  "fuelai-setup",
+  JSON.stringify(setup)
+);
 
-      renderSetupButtons();
+renderSetupButtons();
 
-      window.location.href =
-        "/hub.html";
+rangeOutput.textContent =
+  "Setup approved. You are ready to use FuelAI.";
+
+saveSetupBtn.textContent =
+  "Approved ✓";
+
+setTimeout(() => {
+  window.location.href =
+    "/hub.html";
+}, 900);
+
     }
   );
 }
