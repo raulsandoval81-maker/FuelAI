@@ -251,3 +251,18 @@
 .water-drop.final{
   font-size:1.5rem;
 }
+.h2o-mark{
+  font-size:1.15rem;
+  font-weight:800;
+
+  letter-spacing:.08em;
+
+  color:#38bdf8;
+}
+
+.h2o-mark sub{
+  font-size:.58rem;
+
+  position:relative;
+  bottom:-.1rem;
+}
