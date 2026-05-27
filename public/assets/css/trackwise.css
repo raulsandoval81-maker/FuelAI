@@ -266,3 +266,92 @@
   position:relative;
   bottom:-.1rem;
 }
+/* TrackWise lane cleanup */
+
+.tracker-lane{
+  display:block;
+  min-height:auto;
+}
+
+.tracker-lane .range-label{
+  margin-bottom:.55rem;
+}
+
+.lane-main{
+  display:grid;
+  grid-template-columns:56px 1fr auto;
+  align-items:center;
+  gap:1rem;
+  width:100%;
+}
+
+.lane-main .metric-icon{
+  grid-column:1;
+}
+
+.lane-main h2{
+  grid-column:2 / 4;
+  margin:0;
+  text-align:left;
+  font-size:1.45rem;
+}
+
+.tracker-lane p:not(.range-label){
+  margin:.55rem 0 0;
+  color:rgba(255,255,255,.68);
+}
+
+.hydration-drops,
+.week-dots{
+  display:flex;
+  align-items:center;
+  gap:.5rem;
+  margin-top:.8rem;
+  min-height:18px;
+}
+
+.week-dot,
+.sleep-dot{
+  width:12px;
+  height:12px;
+  border-radius:999px;
+  display:inline-block;
+}
+
+.week-dot.empty,
+.sleep-dot.empty{
+  background:rgba(255,255,255,.16);
+}
+
+.week-dot.good,
+.sleep-dot.good{
+  background:#22c55e;
+}
+
+.sleep-dot.okay{
+  background:#facc15;
+}
+
+.sleep-dot.poor{
+  background:#ef4444;
+}
+
+.water-drop{
+  font-size:1rem;
+  line-height:1;
+}
+
+.water-drop.final{
+  font-size:1.45rem;
+}
+
+@media(max-width:720px){
+  .lane-main{
+    grid-template-columns:48px 1fr;
+  }
+
+  .lane-main h2{
+    grid-column:2;
+    font-size:1.3rem;
+  }
+}
