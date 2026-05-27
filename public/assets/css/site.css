@@ -1352,3 +1352,16 @@ body[data-theme="day"] .top-link{
   left:67%;
   width:29%;
 }
+#dailyNote,
+#reflectionNote{
+  margin-bottom:1rem;
+}
+
+#saveCheckInBtn{
+  margin-top:.75rem;
+  margin-bottom:1rem;
+}
+
+.wise-links{
+  margin-top:1rem;
+}
