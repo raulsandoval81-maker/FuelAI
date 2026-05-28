@@ -4,8 +4,17 @@ const macroTargets =
 const macroProgress =
   document.getElementById("macroProgress");
 
-const macroStyleOutput =
-  document.getElementById("macroStyleOutput");
+const macroSuggestion =
+  document.getElementById("macroSuggestion");
+
+const macroStyleNote =
+  document.getElementById("macroStyleNote");
+
+const macroBreakdown =
+  document.getElementById("macroBreakdown");
+
+const macroBreakdownCard =
+  document.getElementById("macroBreakdownCard");
 
 const setup =
   JSON.parse(
@@ -37,10 +46,17 @@ function getMacroTargets() {
   }
 
   return {
-    calories: Math.round(calories),
-    protein: Math.round(weight * 0.9),
-    carbs: Math.round(weight * 1.5),
-    fats: Math.round(weight * 0.35)
+    calories:
+      Math.round(calories),
+
+    protein:
+      Math.round(weight * 0.9),
+
+    carbs:
+      Math.round(weight * 1.5),
+
+    fats:
+      Math.round(weight * 0.35)
   };
 }
 
@@ -58,43 +74,59 @@ function getMacroProgress() {
     window.FuelAILog.getFuelSummary();
 
   return {
-    calories: summary.caloriesToday || 0,
-    protein: summary.proteinToday || 0,
-    carbs: summary.carbsToday || 0,
-    fats: summary.fatsToday || 0
+    calories:
+      summary.caloriesToday || 0,
+
+    protein:
+      summary.proteinToday || 0,
+
+    carbs:
+      summary.carbsToday || 0,
+
+    fats:
+      summary.fatsToday || 0
   };
 }
 
 const macroStyles = {
-  fuelwise: `
-FuelWise
 
-Balanced nutrition for energy and consistency.
+  fuelwise: {
+    split:
+      "40 / 30 / 30",
 
-Approx Macro Split: 40 / 30 / 30
-  `,
+    note:
+      "FuelWise: balanced nutrition for energy and consistency."
+  },
 
-  cutwise: `
-CutWise
+  cutwise: {
+    split:
+      "35 / 40 / 25",
 
-Higher protein and controlled portions.
+    note:
+      "CutWise: higher protein. Controlled portions."
+  },
 
-Approx Macro Split: 35 / 40 / 25
-  `,
+  gainwise: {
+    split:
+      "45 / 30 / 25",
 
-  gainwise: `
-GainWise
-
-Recovery-focused meals with added carbs.
-
-Approx Macro Split: 45 / 30 / 25
-  `
+    note:
+      "GainWise: recovery-focused meals with added carbs."
+  }
 };
 
-if (macroStyleOutput) {
-  macroStyleOutput.textContent =
-    macroStyles[setup.goal] ||
-    macroStyles.fuelwise;
+const currentStyle =
+  macroStyles[setup.goal] ||
+  macroStyles.fuelwise;
+
+if (macroSuggestion) {
+  macroSuggestion.textContent =
+    currentStyle.split;
+}
+
+if (macroStyleNote) {
+  macroStyleNote.textContent =
+    currentStyle.note;
 }
 
 const targets =
@@ -103,21 +135,17 @@ const targets =
 const progress =
   getMacroProgress();
 
-  const macroBreakdownCard =
-  document.getElementById(
-    "macroBreakdownCard"
-  );
-
-if (
+const hasMacroProgress =
   progress.calories > 0 ||
   progress.protein > 0 ||
   progress.carbs > 0 ||
-  progress.fats > 0
-) {
+  progress.fats > 0;
 
-  macroBreakdownCard
-    ?.classList.remove("hidden");
-
+if (macroBreakdownCard) {
+  macroBreakdownCard.classList.toggle(
+    "hidden",
+    !hasMacroProgress
+  );
 }
 
 if (macroTargets) {
@@ -153,5 +181,19 @@ if (macroProgress) {
     <br><br>
 
     🥑 Fats: ${progress.fats}g
+  `;
+}
+
+if (macroBreakdown) {
+  macroBreakdown.innerHTML = `
+    Current logged totals:<br><br>
+
+    🔥 ${progress.calories} calories<br><br>
+
+    🥩 ${progress.protein}g protein<br><br>
+
+    🍞 ${progress.carbs}g carbs<br><br>
+
+    🥑 ${progress.fats}g fats
   `;
 }

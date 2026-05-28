@@ -1470,3 +1470,15 @@ body[data-theme="day"] .top-link{
   text-align:center;
   opacity:.72;
 }
+#macroSuggestion{
+  font-size:2rem;
+  line-height:1.1;
+  margin-top:.75rem;
+  margin-bottom:.85rem;
+}
+
+.macro-style-note{
+  font-size:1rem;
+  line-height:1.55;
+  opacity:.82;
+}
