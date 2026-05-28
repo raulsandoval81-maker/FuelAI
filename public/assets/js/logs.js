@@ -36,6 +36,14 @@ function renderLogs() {
 
   <br><br>
 
+
+  🎯 Targets:
+${day.caloriesTarget || "—"} cal /
+${day.proteinTarget || "—"}g protein
+
+
+  <br><br>
+
   🔥 Calories:
   ${day.calories || 0}
 
@@ -46,11 +54,6 @@ ${day.protein || 0}g
 
 <br><br>
 
-🎯 Targets:
-${day.caloriesTarget || "—"} cal /
-
-<br><br>
-${day.proteinTarget || "—"}g protein
 
 
   <br><br>
