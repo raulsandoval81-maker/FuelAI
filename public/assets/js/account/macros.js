@@ -97,7 +97,7 @@ const macroStyles = {
   },
 
   cutwise: {
-    split: "40 / 30 / 30",
+    split: "40 / 35 / 25",
     note:
       "Protein / Carbs / Fat. Higher protein with controlled carbs for cutting."
   },
