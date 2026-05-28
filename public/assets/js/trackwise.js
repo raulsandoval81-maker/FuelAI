@@ -84,19 +84,18 @@ function estimateTargets(setup) {
   const activity =
     setup.activityLevel || "low";
 
-  let multiplier =
-    14;
+let calories =
+  weight ? weight * 14 : 2200;
 
-  if (activity === "0-1") multiplier = 13;
-  if (activity === "2-3") multiplier = 14;
-  if (activity === "4-5") multiplier = 15;
-  if (activity === "6plus") multiplier = 16;
+if (goal === "cutwise") {
+  calories =
+    weight ? weight * 11 : 1800;
+}
 
-  let calories =
-    weight ? weight * multiplier : 2200;
-
-  if (goal === "cutwise") calories -= 300;
-  if (goal === "gainwise") calories += 300;
+if (goal === "gainwise") {
+  calories =
+    weight ? weight * 16 : 2600;
+}
 
   return {
     calories:
