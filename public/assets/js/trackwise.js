@@ -304,20 +304,18 @@ function renderSleepWeek() {
     let status =
       "empty";
 
-    if (value === "Poor") {
-      status = "poor";
-    }
+if (value?.includes("Poor")) {
+  status = "poor";
+}
 
-    if (
-      value === "Okay" ||
-      value === "Good"
-    ) {
-      status = "okay";
-    }
+if (value?.includes("Okay")) {
+  status = "okay";
+}
 
-    if (value === "Great") {
-      status = "good";
-    }
+if (value?.includes("Great")) {
+  status = "good";
+}
+
 
     const dot =
       document.createElement("span");
