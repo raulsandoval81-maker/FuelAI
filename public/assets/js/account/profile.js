@@ -172,9 +172,6 @@ if (profileCard) {
           }
         </p>
 
-        <p class="profile-guide">
-          Coach Wright • ${coachStyleLabel}
-        </p>
 
       </div>
 
