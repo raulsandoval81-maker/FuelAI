@@ -233,6 +233,21 @@ if (proteinOutput) {
   
 
 }
+function getWorkoutIconForDate(dateKey) {
+
+  const start =
+    new Date("2026-01-01").getTime();
+
+  const current =
+    new Date(dateKey).getTime();
+
+  const dayIndex =
+    Math.floor((current - start) / 86400000);
+
+  return dayIndex % 2 === 0
+    ? "🏋️"
+    : "💪";
+}
 
 function renderWorkoutWeek() {
   if (!workoutWeek) return;
@@ -249,17 +264,20 @@ function renderWorkoutWeek() {
     const logged =
       localStorage.getItem(key) === "complete";
 
-    const dot =
-      document.createElement("span");
+const dot =
+  document.createElement("span");
 
-    dot.className =
-      logged
-        ? "week-dot good"
-        : "week-dot empty";
+dot.textContent =
+  getWorkoutIconForDate(dateKey);
 
-    dot.title =
-      `Day ${7 - i}: ${logged ? "Logged" : "Not Logged"}`;
+dot.className =
+  logged
+    ? "workout-icon active"
+    : "workout-icon inactive";
 
+dot.title =
+  `Day ${7 - i}: ${logged ? "Logged" : "Not Logged"}`;
+  
 const cell =
   document.createElement("div");
 
