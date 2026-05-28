@@ -30,19 +30,6 @@ const displayGoal = {
 
 };
 
-const profileDecals = {
-
-  male:
-    "/assets/img/profile/male-profile.png",
-
-  female:
-    "/assets/img/profile/female-profile.png",
-
-  neutral:
-    "/assets/img/profile/neutral-profile.png"
-
-};
-
 const displayFoodStyle = {
 
   none:
@@ -68,25 +55,19 @@ const displayFoodStyle = {
 const displaySport = {
 
   general:
-    "General Fitness / Lifestyle",
+    "General Health",
 
-  wrestling:
-    "Wrestling",
+  fitness:
+    "General Fitness",
+
+  grappling:
+    "Grappling Sports",
+
+  striking:
+    "Striking Sports",
 
   mma:
-    "MMA",
-
-  boxing:
-    "Boxing",
-
-  basketball:
-    "Basketball",
-
-  football:
-    "Football",
-
-  running:
-    "Running"
+    "MMA"
 
 };
 
