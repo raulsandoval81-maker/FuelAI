@@ -71,13 +71,6 @@ const displaySport = {
 
 };
 
-const gender =
-  setup.gender || "neutral";
-
-const profileImage =
-  profileDecals[gender] ||
-  profileDecals.neutral;
-
 if (profileCard) {
 
   profileCard.style.display =
@@ -109,19 +102,11 @@ if (profileCard) {
       </div>
     `;
 
-  }
-
-  else {
+  } else {
 
     profileCard.innerHTML = `
 
       <div class="profile-header">
-
-        <img
-          class="profile-decal"
-          src="${profileImage}"
-          alt="Profile"
-        />
 
         <h2 class="profile-name">
           ${setup.nickname || "FuelAI User"}
@@ -156,13 +141,16 @@ if (profileCard) {
         <div class="profile-row">
 
           <span class="profile-label">
-            Sport
+            Lifestyle
           </span>
 
           <span class="profile-value">
             ${
-              displaySport[setup.sportType] ||
-              "General Fitness / Lifestyle"
+              displaySport[
+                setup.sportType ||
+                setup.lifestyleType
+              ] ||
+              "General Health"
             }
           </span>
 
@@ -273,9 +261,7 @@ if (historyList) {
       </div>
     `;
 
-  }
-
-  else {
+  } else {
 
     historyList.innerHTML =
       scans.map(scan => `
