@@ -125,16 +125,36 @@ function getPastDateKey(daysBack) {
 }
 
 function renderStreak() {
-  const streak =
-    Number(localStorage.getItem("fuelai-checkin-streak")) ||
-    Number(localStorage.getItem("fuelai-streak")) ||
+  if (!streakOutput || !window.FuelAILog) return;
+
+  const logs =
+    window.FuelAILog.getDailyLogs();
+
+  let streak =
     0;
 
-  if (!streakOutput) return;
+  for (let i = 0; i < 90; i++) {
+    const dateKey =
+      getPastDateKey(i);
+
+    const day =
+      logs[dateKey];
+
+    if (
+      day &&
+      Number(day.totalEntries || 0) > 0
+    ) {
+      streak++;
+    } else {
+      break;
+    }
+  }
 
   streakOutput.textContent =
     `${streak} Day${streak === 1 ? "" : "s"}`;
 }
+
+
 
 function renderHydration() {
 
