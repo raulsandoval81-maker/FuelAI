@@ -141,18 +141,66 @@ function buildDailyLogForDate(dateKey) {
       return sum + Number(entry.fats || 0);
     }, 0);
 
-  const water =
-    logs.reduce((sum, entry) => {
-      return sum + Number(entry.water || 0);
-    }, 0);
-
+const water =
+  Number(
+    localStorage.getItem(
+      `fuelai-water-oz-${dateKey}`
+    )
+  ) || 0;
 
 const trainingToday =
-  logs.some((entry) => {
-    return entry.type === "training";
-  });
+  localStorage.getItem(
+    `fuelai-workout-${dateKey}`
+  ) === "complete";
 
+const sleepHours =
+  Number(
+    localStorage.getItem(
+      `fuelai-sleep-hours-${dateKey}`
+    )
+  ) || 0;
 
+let sleepQuality =
+  "Not Logged";
+
+let sleepScore =
+  0;
+
+if (
+  sleepHours >= 8 &&
+  sleepHours <= 9
+) {
+
+  sleepQuality =
+    "Great";
+
+  sleepScore =
+    3;
+
+}
+
+else if (
+  sleepHours >= 6 &&
+  sleepHours <= 7
+) {
+
+  sleepQuality =
+    "Okay";
+
+  sleepScore =
+    2;
+
+}
+
+else if (sleepHours > 0) {
+
+  sleepQuality =
+    "Poor";
+
+  sleepScore =
+    1;
+
+}
   const latestWeight =
     logs
       .filter((entry) => entry.type === "weight")
@@ -175,6 +223,11 @@ const trainingToday =
     carbs,
     fats,
     water,
+
+
+    sleepHours,
+    sleepQuality,
+    sleepScore,
 
     caloriesTarget:
       targets.caloriesTarget,
