@@ -23,10 +23,10 @@
 
       <p class="range-label">FuelAI</p>
 
-      <h1>✅ Check-In-In</h1>
+      <h1>✅ Simple Check-In</h1>
 
       <p class="sub">
-        Log today’s food, recovery, hydration, and training in one place.
+        Log today’s recovery, food, hydration, and training in one place.
       </p>
 
       <section class="range-card">
@@ -69,7 +69,45 @@
       </section>
 
       <section class="range-card">
-        <p class="range-label">Food + Hydration</p>
+        <p class="range-label">Preview — Recovery + Energy</p>
+
+        <label class="range-label" for="sleepInput">
+          Hours slept last night
+        </label>
+
+        <input
+          id="sleepInput"
+          class="goal-select"
+          type="number"
+          inputmode="decimal"
+          step="0.5"
+          min="0"
+          max="24"
+          placeholder="Example: 7.5"
+        />
+
+        <p
+          id="sleepQualityOutput"
+          class="range-output"
+        >
+          Recovery quality will appear here.
+        </p>
+
+        <label class="range-label" for="feelingInput">
+          How are you feeling?
+        </label>
+
+        <select id="feelingInput" class="goal-select">
+          <option>Good</option>
+          <option>Okay</option>
+          <option>Off track</option>
+          <option>Stressed</option>
+          <option>Tired</option>
+        </select>
+      </section>
+
+      <section class="range-card">
+        <p class="range-label">Review — Food + Hydration</p>
 
         <label class="range-label" for="foodTodayInput">
           How did food feel today?
@@ -94,47 +132,7 @@
       </section>
 
       <section class="range-card">
-        <p class="range-label">Recovery + Energy</p>
-
-        
-
-
-        <label class="range-label" for="feelingInput">
-          How are you feeling?
-        </label>
-
-        <select id="feelingInput" class="goal-select">
-          <option>Good</option>
-          <option>Okay</option>
-          <option>Off track</option>
-          <option>Stressed</option>
-          <option>Tired</option>
-        </select>
-
- <label class="range-label" for="sleepInput">
-  Hours slept last night
-</label>
-
-<input
-  id="sleepInput"
-  class="goal-select"
-  type="number"
-  inputmode="decimal"
-  step="0.5"
-  min="0"
-  max="24"
-  placeholder="Example: 7.5"
-/>
-<p
-  id="sleepQualityOutput"
-  class="range-output"
->
-  Recovery quality will appear here.
-</p>
-
-      <section class="range-card">
-        <p class="range-label">Reflection - Daily Note</p>
-
+        <p class="range-label">Review — Daily Note</p>
 
         <textarea
           id="wiseNoteInput"
@@ -144,8 +142,6 @@
         ></textarea>
       </section>
 
-      
-
       <button
         class="start-btn"
         id="saveCheckInBtn"
@@ -154,17 +150,19 @@
         Save Check-In
       </button>
 
-              <a
-          class="secondary-btn"
-          href="/hub.html"
-        >
-          🏠 Return to Hub
-        </a>
+      <a
+        class="secondary-btn"
+        href="/trackwise/"
+      >
+        ← Return to TrackWise
+      </a>
 
-
-      <div class="wise-links">
-
-      </div>
+      <a
+        class="secondary-btn"
+        href="/hub.html"
+      >
+        🏠 Return to Hub
+      </a>
 
       <p class="hero-note">
         FuelAI • Small check-ins. Better decisions.
@@ -173,8 +171,7 @@
     </section>
 
   </main>
-
-
+  
   <script src="/assets/js/core/auth-soft.js"></script>
 
   <script>
