@@ -160,7 +160,7 @@ function renderHydration() {
 
 cell.innerHTML = `
   <span class="week-label">
-    ${7 - i}
+    ${i + 1}
   </span>
 `;
 
@@ -179,12 +179,12 @@ cell.innerHTML = `
           ? "water-drop final empty"
           : "water-drop empty";
 
-    drop.textContent =
-      i === 7
-        ? "💦"
-        : "💧";
+drop.textContent =
+  i === 0
+    ? "💦"
+    : "💧";
 
-    cell.appendChild(drop);
+          cell.appendChild(drop);
     waterDrops.appendChild(cell);
 
   }
@@ -276,7 +276,7 @@ dot.className =
     : "workout-icon inactive";
 
 dot.title =
-  `Day ${7 - i}: ${logged ? "Logged" : "Not Logged"}`;
+  `Day ${i + 1}: ${logged ? "Logged" : "Not Logged"}`;
   
 const cell =
   document.createElement("div");
