@@ -363,6 +363,29 @@ sleepInput?.addEventListener("input", () => {
         () => {
           if (!window.FuelAILog) return;
 
+          const today =
+  todayKey();
+
+const sleepHours =
+  Number(document.getElementById("sleepInput")?.value || 0);
+
+const sleepQuality =
+  getSleepQuality(sleepHours);
+
+if (sleepHours) {
+
+  localStorage.setItem(
+    `fuelai-sleep-hours-${today}`,
+    String(sleepHours)
+  );
+
+  localStorage.setItem(
+    `fuelai-sleep-quality-${today}`,
+    sleepQuality
+  );
+
+}
+
           window.FuelAILog.addFuelLog({
             type: "todays-check-in",
             feeling:
