@@ -39,7 +39,7 @@ function renderLogs() {
   🔥 Calories:
   ${day.calories || 0}
 
-  br><br>
+  <br><br>
 
 🥩 Protein:
 ${day.protein || 0}g
