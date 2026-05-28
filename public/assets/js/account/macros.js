@@ -16,10 +16,25 @@ const macroBreakdown =
 const macroBreakdownCard =
   document.getElementById("macroBreakdownCard");
 
+  const macroPlan =
+  document.getElementById("macroPlan");
+
 const setup =
   JSON.parse(
     localStorage.getItem("fuelai-setup") || "{}"
   );
+
+  const displayGoal = {
+  fuelwise: "FuelWise — Maintain",
+  cutwise: "CutWise — Cut",
+  gainwise: "GainWise — Gain"
+};
+
+if (macroPlan) {
+  macroPlan.textContent =
+    displayGoal[setup.goal] ||
+    "FuelWise — Maintain";
+}
 
 function getMacroTargets() {
   const weight =
@@ -37,12 +52,41 @@ function getMacroTargets() {
   let calories =
     weight * 14;
 
+  let proteinMultiplier =
+    0.9;
+
+  let carbMultiplier =
+    1.5;
+
+  let fatMultiplier =
+    0.35;
+
   if (setup.goal === "cutwise") {
-    calories = weight * 11;
+    calories =
+      weight * 11;
+
+    proteinMultiplier =
+      1.0;
+
+    carbMultiplier =
+      1.0;
+
+    fatMultiplier =
+      0.3;
   }
 
   if (setup.goal === "gainwise") {
-    calories = weight * 16;
+    calories =
+      weight * 16;
+
+    proteinMultiplier =
+      1.0;
+
+    carbMultiplier =
+      2.0;
+
+    fatMultiplier =
+      0.35;
   }
 
   return {
@@ -50,13 +94,13 @@ function getMacroTargets() {
       Math.round(calories),
 
     protein:
-      Math.round(weight * 0.9),
+      Math.round(weight * proteinMultiplier),
 
     carbs:
-      Math.round(weight * 1.5),
+      Math.round(weight * carbMultiplier),
 
     fats:
-      Math.round(weight * 0.35)
+      Math.round(weight * fatMultiplier)
   };
 }
 
