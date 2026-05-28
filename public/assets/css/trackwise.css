@@ -290,3 +290,8 @@
   filter:none;
   transform:scale(1.04);
 }
+.checked-in{
+  opacity:.45;
+  filter:grayscale(1);
+  cursor:not-allowed;
+}

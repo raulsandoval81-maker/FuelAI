@@ -369,9 +369,39 @@ sleepWeek.appendChild(cell);
   }
 
 }
+function renderCheckInButtonState() {
+
+  const checkInBtn =
+    document.querySelector(
+      'a[href="/wise/todays-check-in.html"]'
+    );
+
+  if (!checkInBtn || !window.FuelAILog) return;
+
+  const alreadyCheckedIn =
+    window.FuelAILog
+      .getTodayLogs()
+      .some((log) => {
+        return log.type === "todays-check-in";
+      });
+
+  if (!alreadyCheckedIn) return;
+
+  checkInBtn.textContent =
+    "✅ Checked In Today";
+
+  checkInBtn.classList.add(
+    "checked-in"
+  );
+
+  checkInBtn.style.pointerEvents =
+    "none";
+}
+
 
 renderStreak();
 renderHydration();
 renderCaloriesAndProtein();
 renderWorkoutWeek();
 renderSleepWeek();
+renderCheckInButtonState();
