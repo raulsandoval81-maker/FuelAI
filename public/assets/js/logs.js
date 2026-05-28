@@ -48,6 +48,8 @@ ${day.protein || 0}g
 
 🎯 Targets:
 ${day.caloriesTarget || "—"} cal /
+
+<br><br>
 ${day.proteinTarget || "—"}g protein
 
 
