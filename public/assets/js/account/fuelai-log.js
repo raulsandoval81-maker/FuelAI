@@ -146,12 +146,12 @@ function buildDailyLogForDate(dateKey) {
       return sum + Number(entry.water || 0);
     }, 0);
 
-  const trainingCount =
-    logs
-      .filter((entry) => entry.type === "training")
-      .reduce((sum, entry) => {
-        return sum + Number(entry.sessions || 1);
-      }, 0);
+
+const trainingToday =
+  logs.some((entry) => {
+    return entry.type === "training";
+  });
+
 
   const latestWeight =
     logs
@@ -182,7 +182,7 @@ function buildDailyLogForDate(dateKey) {
     proteinTarget:
       targets.proteinTarget,
 
-    trainingCount,
+    trainingToday,
     latestWeight,
     scanCount,
     totalEntries: logs.length,

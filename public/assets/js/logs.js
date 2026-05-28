@@ -44,12 +44,14 @@ function renderLogs() {
   💧 Water:
   ${day.water || 0} oz
 
-  <br><br>
 
-  🏋️ Training Sessions:
-  ${day.trainingCount || 0}
 
   <br><br>
+
+   🏋️ Workout:
+  ${day.trainingToday ? "Logged" : "Not Logged"}
+
+   <br><br>
 
   Weight:
   ${
