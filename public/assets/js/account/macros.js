@@ -91,30 +91,24 @@ function getMacroProgress() {
 const macroStyles = {
 
   fuelwise: {
-    split:
-      "40 / 30 / 30",
-
+    split: "35 / 40 / 25",
     note:
-      "FuelWise: balanced nutrition for energy and consistency."
+      "Protein / Carbs / Fat. Balanced eating for maintenance and consistency."
   },
 
   cutwise: {
-    split:
-      "35 / 40 / 25",
-
+    split: "40 / 30 / 30",
     note:
-      "CutWise: higher protein. Controlled portions."
+      "Protein / Carbs / Fat. Higher protein with controlled carbs for cutting."
   },
 
   gainwise: {
-    split:
-      "45 / 30 / 25",
-
+    split: "40 / 40 / 20",
     note:
-      "GainWise: recovery-focused meals with added carbs."
+      "Protein / Carbs / Fat. Higher protein and carbs for muscle growth and recovery."
   }
-};
 
+};
 const currentStyle =
   macroStyles[setup.goal] ||
   macroStyles.fuelwise;
