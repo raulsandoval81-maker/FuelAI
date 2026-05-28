@@ -103,6 +103,23 @@ const targets =
 const progress =
   getMacroProgress();
 
+  const macroBreakdownCard =
+  document.getElementById(
+    "macroBreakdownCard"
+  );
+
+if (
+  progress.calories > 0 ||
+  progress.protein > 0 ||
+  progress.carbs > 0 ||
+  progress.fats > 0
+) {
+
+  macroBreakdownCard
+    ?.classList.remove("hidden");
+
+}
+
 if (macroTargets) {
   macroTargets.innerHTML = `
     🔥 Calories: ${targets.calories}
