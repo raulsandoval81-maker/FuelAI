@@ -251,28 +251,30 @@
         `${completeCount}/2 daily basics complete.`;
     }
 
-    if (logWorkoutBtn) {
-      logWorkoutBtn.addEventListener(
-        "click",
-        () => {
-          if (!window.FuelAILog || hasLogged("training")) return;
+if (logWorkoutBtn) {
+  logWorkoutBtn.addEventListener(
+    "click",
+    () => {
+      const today =
+        todayKey();
 
-          window.FuelAILog.addFuelLog({
-            type: "training",
-            sessions: 1,
-            source: "todays-check-in"
-          });
-
-          localStorage.setItem(
-        `fuelai-workout-${todayKey()}`,
-          "complete"
-         );
-
-          renderDailyStatus();
-        }
+      localStorage.setItem(
+        `fuelai-workout-${today}`,
+        "complete"
       );
-    }
 
+      if (window.FuelAILog && !hasLogged("training")) {
+        window.FuelAILog.addFuelLog({
+          type: "training",
+          sessions: 1,
+          source: "todays-check-in"
+        });
+      }
+
+      renderDailyStatus();
+    }
+  );
+}
     if (logWeightBtn) {
       logWeightBtn.addEventListener(
         "click",
