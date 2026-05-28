@@ -55,9 +55,12 @@ function getSetup() {
 function getDailySummary() {
   if (
     window.FuelAILog &&
-    typeof window.FuelAILog.getDailySummary === "function"
+    typeof window.FuelAILog.getFuelSummary === "function"
   ) {
-    return window.FuelAILog.getDailySummary() || {};
+    const summary =
+      window.FuelAILog.getFuelSummary() || {};
+
+    return summary.today || summary;
   }
 
   return {};
