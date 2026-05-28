@@ -2,11 +2,15 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
 
   <link rel="icon" href="data:," />
 
-  <title>Simple Check-In</title>
+  <title>Check-In-In</title>
 
   <link rel="stylesheet" href="/assets/css/site.css" />
 </head>
@@ -19,7 +23,7 @@
 
       <p class="range-label">FuelAI</p>
 
-      <h1>✅ Simple Check-In</h1>
+      <h1>✅ Check-In-In</h1>
 
       <p class="sub">
         Log today’s food, recovery, hydration, and training in one place.
@@ -30,11 +34,19 @@
 
         <div class="wise-links">
 
-          <button class="start-btn" id="logWorkoutBtn" type="button">
+          <button
+            class="start-btn"
+            id="logWorkoutBtn"
+            type="button"
+          >
             🏋️ Log Workout Session
           </button>
 
-          <button class="start-btn" id="logWeightBtn" type="button">
+          <button
+            class="start-btn"
+            id="logWeightBtn"
+            type="button"
+          >
             ⚖️ Log Daily Weight
           </button>
 
@@ -48,7 +60,10 @@
           placeholder="Enter today’s weight"
         />
 
-        <p id="dailyInputStatus" class="range-output">
+        <p
+          id="dailyInputStatus"
+          class="range-output"
+        >
           Loading today’s status...
         </p>
       </section>
@@ -81,6 +96,9 @@
       <section class="range-card">
         <p class="range-label">Recovery + Energy</p>
 
+        
+
+
         <label class="range-label" for="feelingInput">
           How are you feeling?
         </label>
@@ -93,28 +111,30 @@
           <option>Tired</option>
         </select>
 
-        <label class="range-label" for="sleepInput">
-          Hours slept last night
-        </label>
+ <label class="range-label" for="sleepInput">
+  Hours slept last night
+</label>
 
-        <input
-          id="sleepInput"
-          class="goal-select"
-          type="number"
-          inputmode="decimal"
-          step="0.5"
-          min="0"
-          max="24"
-          placeholder="Example: 7.5"
-        />
-
-        <p id="sleepQualityOutput" class="range-output">
-          Recovery quality will appear here.
-        </p>
-      </section>
+<input
+  id="sleepInput"
+  class="goal-select"
+  type="number"
+  inputmode="decimal"
+  step="0.5"
+  min="0"
+  max="24"
+  placeholder="Example: 7.5"
+/>
+<p
+  id="sleepQualityOutput"
+  class="range-output"
+>
+  Recovery quality will appear here.
+</p>
 
       <section class="range-card">
-        <p class="range-label">Reflection — Daily Note</p>
+        <p class="range-label">Reflection - Daily Note</p>
+
 
         <textarea
           id="wiseNoteInput"
@@ -124,21 +144,27 @@
         ></textarea>
       </section>
 
-      <button class="start-btn" id="saveCheckInBtn" type="button">
+      
+
+      <button
+        class="start-btn"
+        id="saveCheckInBtn"
+        type="button"
+      >
         Save Check-In
       </button>
 
-      <p id="saveStatus" class="range-output">
-        Not saved yet.
-      </p>
+              <a
+          class="secondary-btn"
+          href="/hub.html"
+        >
+          🏠 Return to Hub
+        </a>
 
-      <a class="secondary-btn" href="/trackwise/">
-        ← Return to TrackWise
-      </a>
 
-      <a class="secondary-btn" href="/hub.html">
-        🏠 Return to Hub
-      </a>
+      <div class="wise-links">
+
+      </div>
 
       <p class="hero-note">
         FuelAI • Small check-ins. Better decisions.
@@ -148,9 +174,6 @@
 
   </main>
 
-  <footer class="app-footer">
-    <p>FuelAI • Small check-ins. Better decisions.</p>
-  </footer>
 
   <script src="/assets/js/core/auth-soft.js"></script>
 
@@ -162,15 +185,20 @@
   <script src="/assets/js/account/fuelai-log.js"></script>
 
   <script>
-    const logWorkoutBtn = document.getElementById("logWorkoutBtn");
-    const logWeightBtn = document.getElementById("logWeightBtn");
-    const weightInput = document.getElementById("weightInput");
-    const dailyInputStatus = document.getElementById("dailyInputStatus");
-    const saveCheckInBtn = document.getElementById("saveCheckInBtn");
-    const saveStatus = document.getElementById("saveStatus");
+    const logWorkoutBtn =
+      document.getElementById("logWorkoutBtn");
 
-    const sleepInput = document.getElementById("sleepInput");
-    const sleepQualityOutput = document.getElementById("sleepQualityOutput");
+    const logWeightBtn =
+      document.getElementById("logWeightBtn");
+
+    const weightInput =
+      document.getElementById("weightInput");
+
+    const dailyInputStatus =
+      document.getElementById("dailyInputStatus");
+
+    const saveCheckInBtn =
+      document.getElementById("saveCheckInBtn");
 
     function todayKey() {
       return new Date().toISOString().slice(0, 10);
@@ -178,46 +206,54 @@
 
     function getTodayLogs() {
       if (!window.FuelAILog) return [];
+
       return window.FuelAILog.getTodayLogs();
     }
 
     function hasLogged(type) {
-      return getTodayLogs().some((entry) => entry.type === type);
-    }
-
-    function getSleepQuality(hours) {
-      if (hours <= 5) return "Poor Recovery";
-      if (hours >= 6 && hours <= 7) return "Okay Recovery";
-      if (hours >= 8 && hours <= 9) return "Great Recovery";
-      if (hours >= 10) return "Poor Recovery";
-      return "Okay Recovery";
+      return getTodayLogs().some((entry) => {
+        return entry.type === type;
+      });
     }
 
     function renderDailyStatus() {
-      const workoutDone = hasLogged("training");
-      const weightDone = hasLogged("weight");
+      const workoutDone =
+        hasLogged("training");
+
+      const weightDone =
+        hasLogged("weight");
 
       if (workoutDone) {
-        logWorkoutBtn.textContent = "✅ Workout Logged Today";
+        logWorkoutBtn.textContent =
+          "✅ Workout Logged Today";
+
         logWorkoutBtn.disabled = true;
         logWorkoutBtn.classList.add("disabled");
       }
 
       if (weightDone) {
-        logWeightBtn.textContent = "✅ Weight Logged Today";
+        logWeightBtn.textContent =
+          "✅ Weight Logged Today";
+
         logWeightBtn.disabled = true;
         logWeightBtn.classList.add("disabled");
+
         weightInput.classList.add("hidden");
       }
 
-      const completeCount = Number(workoutDone) + Number(weightDone);
+      const completeCount =
+        Number(workoutDone) + Number(weightDone);
 
       dailyInputStatus.textContent =
         `${completeCount}/2 daily basics complete.`;
     }
 
-    logWorkoutBtn?.addEventListener("click", () => {
-      const today = todayKey();
+if (logWorkoutBtn) {
+  logWorkoutBtn.addEventListener(
+    "click",
+    () => {
+      const today =
+        todayKey();
 
       localStorage.setItem(
         `fuelai-workout-${today}`,
@@ -228,107 +264,168 @@
         window.FuelAILog.addFuelLog({
           type: "training",
           sessions: 1,
-          source: "simple-check-in"
+          source: "todays-check-in"
         });
       }
 
       renderDailyStatus();
-    });
+    }
+  );
+}
+    if (logWeightBtn) {
+      logWeightBtn.addEventListener(
+        "click",
+        () => {
+          if (hasLogged("weight")) return;
 
-    logWeightBtn?.addEventListener("click", () => {
-      if (hasLogged("weight")) return;
+          weightInput.classList.toggle("hidden");
 
-      weightInput.classList.toggle("hidden");
+          if (!weightInput.classList.contains("hidden")) {
+            weightInput.focus();
+            logWeightBtn.textContent = "Save Weight";
+            return;
+          }
 
-      if (!weightInput.classList.contains("hidden")) {
-        weightInput.focus();
-        logWeightBtn.textContent = "Save Weight";
-        return;
-      }
+          const weight =
+            Number(weightInput.value);
 
-      const weight = Number(weightInput.value);
+          if (!weight) {
+            weightInput.classList.remove("hidden");
+            logWeightBtn.textContent = "Save Weight";
+            return;
+          }
 
-      if (!weight) {
-        weightInput.classList.remove("hidden");
-        logWeightBtn.textContent = "Save Weight";
-        return;
-      }
+          if (window.FuelAILog) {
+            window.FuelAILog.addFuelLog({
+              type: "weight",
+              weight,
+              source: "todays-check-in"
+            });
+          }
 
-      if (window.FuelAILog) {
-        window.FuelAILog.addFuelLog({
-          type: "weight",
-          weight,
-          source: "simple-check-in"
-        });
-      }
+          renderDailyStatus();
+        }
+      );
+    }
 
-      renderDailyStatus();
-    });
+    if (weightInput) {
+      weightInput.addEventListener(
+        "keydown",
+        (event) => {
+          if (event.key !== "Enter") return;
 
-    weightInput?.addEventListener("keydown", (event) => {
-      if (event.key !== "Enter") return;
-      logWeightBtn.click();
-    });
+          logWeightBtn.click();
+        }
+      );
+    }
 
-    sleepInput?.addEventListener("input", () => {
-      const hours = Number(sleepInput.value || 0);
+    const sleepInput =
+  document.getElementById("sleepInput");
 
-      if (!hours) {
-        sleepQualityOutput.textContent =
-          "Recovery quality will appear here.";
-        return;
-      }
+const sleepQualityOutput =
+  document.getElementById("sleepQualityOutput");
 
-      sleepQualityOutput.textContent =
-        getSleepQuality(hours);
-    });
+function getSleepQuality(hours) {
 
-    saveCheckInBtn?.addEventListener("click", () => {
-      if (!window.FuelAILog) return;
+  if (hours <= 5) {
+    return "Poor Recovery";
+  }
 
-      const today = todayKey();
+  if (hours >= 6 && hours <= 7) {
+    return "Okay Recovery";
+  }
 
-      const sleepHours =
-        Number(document.getElementById("sleepInput")?.value || 0);
+  if (hours >= 8 && hours <= 9) {
+    return "Great Recovery";
+  }
 
-      const sleepQuality =
-        getSleepQuality(sleepHours);
+  if (hours >= 10) {
+    return "Poor Recovery";
+  }
 
-      if (sleepHours) {
-        localStorage.setItem(
-          `fuelai-sleep-hours-${today}`,
-          String(sleepHours)
-        );
+  return "Okay Recovery";
+}
 
-        localStorage.setItem(
-          `fuelai-sleep-quality-${today}`,
-          sleepQuality
-        );
-      }
+sleepInput?.addEventListener("input", () => {
 
-      window.FuelAILog.addFuelLog({
-        type: "todays-check-in",
-        feeling:
-          document.getElementById("feelingInput")?.value || "",
-        foodToday:
-          document.getElementById("foodTodayInput")?.value || "",
-        waterToday:
-          document.getElementById("waterTodayInput")?.value || "",
-        sleepHours,
-        sleepQuality,
-        note:
-          document.getElementById("wiseNoteInput")?.value || "",
-        source: "simple-check-in"
-      });
+  const hours =
+    Number(sleepInput.value || 0);
 
-      saveCheckInBtn.textContent = "✅ Check-In Saved";
-      saveStatus.textContent =
-        "Saved. You can come back and save again if you need to update it.";
+  if (!hours) {
+    sleepQualityOutput.textContent =
+      "Recovery quality will appear here.";
+    return;
+  }
 
-      setTimeout(() => {
-        saveCheckInBtn.textContent = "Save Check-In";
-      }, 1400);
-    });
+  sleepQualityOutput.textContent =
+    getSleepQuality(hours);
+});
+
+    if (saveCheckInBtn) {
+      saveCheckInBtn.addEventListener(
+        "click",
+        () => {
+          if (!window.FuelAILog) return;
+
+          const today =
+  todayKey();
+
+const sleepHours =
+  Number(document.getElementById("sleepInput")?.value || 0);
+
+const sleepQuality =
+  getSleepQuality(sleepHours);
+
+if (sleepHours) {
+
+  localStorage.setItem(
+    `fuelai-sleep-hours-${today}`,
+    String(sleepHours)
+  );
+
+  localStorage.setItem(
+    `fuelai-sleep-quality-${today}`,
+    sleepQuality
+  );
+
+}
+
+          window.FuelAILog.addFuelLog({
+            type: "todays-check-in",
+            feeling:
+              document.getElementById("feelingInput")?.value || "",
+            foodToday:
+              document.getElementById("foodTodayInput")?.value || "",
+            waterToday:
+              document.getElementById("waterTodayInput")?.value || "",
+              sleepHours:
+            Number(document.getElementById("sleepInput")?.value || 0),
+
+             sleepQuality:
+             getSleepQuality(
+             Number(document.getElementById("sleepInput")?.value || 0)
+             ),
+
+
+
+
+              note:
+              document.getElementById("wiseNoteInput")?.value || "",
+            source: "todays-check-in"
+          });
+
+          saveCheckInBtn.textContent =
+            "✅ Check-In Saved";
+
+saveCheckInBtn.textContent = "✅ Check-In Saved";
+
+setTimeout(() => {
+  saveCheckInBtn.textContent = "Save Check-In";
+}, 1400);
+
+          }
+      );
+    }
 
     renderDailyStatus();
   </script>
