@@ -106,20 +106,14 @@ if (profileCard) {
 
     profileCard.innerHTML = `
 
-      <div class="profile-header">
+<div class="profile-header">
 
-        <h2 class="profile-name">
-          ${setup.nickname || "FuelAI User"}
-        </h2>
+  <h2 class="profile-name">
+    ${setup.nickname || "FuelAI User"}
+  </h2>
 
-        <p class="profile-goal">
-          ${
-            displayGoal[setup.goal] ||
-            "FuelWise — Maintain"
-          }
-        </p>
+</div>
 
-      </div>
 
       <div class="profile-details">
 
