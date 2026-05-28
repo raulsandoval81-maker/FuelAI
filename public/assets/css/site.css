@@ -1482,3 +1482,37 @@ body[data-theme="day"] .top-link{
   line-height:1.55;
   opacity:.82;
 }
+.goal-select{
+  width:100%;
+  display:block;
+  margin:0 0 1.15rem;
+}
+
+select.goal-select{
+  height:64px;
+  padding:0 1.25rem;
+  appearance:none;
+  -webkit-appearance:none;
+}
+
+.setup-form select.goal-select,
+.scan-card select.goal-select{
+  font-size:1rem;
+  font-weight:800;
+}
+
+.setup-form .goal-select + .goal-select,
+.scan-card .goal-select + .goal-select{
+  margin-top:1rem;
+}
+
+.setup-form input,
+.setup-form select,
+.scan-card input,
+.scan-card select{
+  box-sizing:border-box;
+}
+
+.setup-form .goal-select option{
+  color:#111;
+}
