@@ -296,7 +296,7 @@ function renderSleepWeek() {
       getPastDateKey(i);
 
     const key =
-      `fuelai-sleep-${dateKey}`;
+      `fuelai-sleep-quality-${dateKey}`;
 
     const value =
       localStorage.getItem(key);
