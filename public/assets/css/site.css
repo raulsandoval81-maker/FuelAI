@@ -1365,3 +1365,44 @@ body[data-theme="day"] .top-link{
 .wise-links{
   margin-top:1rem;
 }
+.log-card{
+  display:flex;
+  flex-direction:column;
+  gap:.75rem;
+}
+
+.log-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:1rem;
+}
+
+.log-date{
+  margin:0;
+  font-weight:900;
+  letter-spacing:.08em;
+}
+
+.log-time{
+  margin:0;
+  opacity:.6;
+  font-size:.8rem;
+  white-space:nowrap;
+}
+
+.log-target{
+  margin:0;
+  opacity:.85;
+  font-weight:700;
+}
+
+.log-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:.65rem;
+}
+
+.log-grid span{
+  font-weight:700;
+}

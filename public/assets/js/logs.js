@@ -1,8 +1,44 @@
 const logsContainer =
   document.getElementById("logsContainer");
 
-function renderLogs() {
+function formatLogDate(dateValue) {
+  const date =
+    new Date(dateValue);
 
+  if (Number.isNaN(date.getTime())) {
+    return "DAY";
+  }
+
+  return date
+    .toLocaleDateString("en-US", {
+      weekday: "short",
+      month: "short",
+      day: "numeric"
+    })
+    .toUpperCase();
+}
+
+function formatLogTime(day) {
+  const raw =
+    day.updatedAt ||
+    day.lastUpdated ||
+    day.createdAt ||
+    day.date;
+
+  const date =
+    new Date(raw);
+
+  if (Number.isNaN(date.getTime())) {
+    return "";
+  }
+
+  return date.toLocaleTimeString("en-US", {
+    hour: "numeric",
+    minute: "2-digit"
+  });
+}
+
+function renderLogs() {
   const dailyLogs =
     window.FuelAILog.getDailyLogs();
 
@@ -13,9 +49,8 @@ function renderLogs() {
       );
 
   if (!days.length) {
-
     logsContainer.innerHTML = `
-      <div class="range-card">
+      <div class="range-card log-card">
         No logs yet.
       </div>
     `;
@@ -25,68 +60,55 @@ function renderLogs() {
 
   logsContainer.innerHTML =
     days.map((day) => {
+      const dateLabel =
+        formatLogDate(day.date);
+
+      const timeLabel =
+        formatLogTime(day);
 
       return `
-        <section class="range-card">
+        <section class="range-card log-card">
 
-<p class="range-output">
+          <div class="log-head">
+            <p class="log-date">
+              ${dateLabel}
+            </p>
 
-  Plan:
-  ${day.goal || "fuelwise"}
+            <p class="log-time">
+              ${timeLabel ? `Logged ${timeLabel}` : ""}
+            </p>
+          </div>
 
-  <br><br>
+          <p class="log-target">
+            🎯 ${day.caloriesTarget || "—"} cal / ${day.proteinTarget || "—"}g protein
+          </p>
 
+          <div class="log-grid">
 
-  🎯 Targets:
-${day.caloriesTarget || "—"} cal /
-${day.proteinTarget || "—"}g protein
+            <span>🔥 ${day.calories || 0}</span>
 
+            <span>🥩 ${day.protein || 0}g</span>
 
-  <br><br>
+            <span>💧 ${day.water || 0} oz</span>
 
-  🔥 Calories:
-  ${day.calories || 0}
+            <span>🏋️ ${day.trainingToday ? "Logged" : "—"}</span>
 
-  <br><br>
+            <span>
+              ⚖️ ${
+                day.latestWeight
+                  ? `${day.latestWeight} lbs`
+                  : "—"
+              }
+            </span>
 
-🥩 Protein:
-${day.protein || 0}g
+            <span>📸 ${day.scanCount || 0}</span>
 
-<br><br>
+          </div>
 
-
-
-  <br><br>
-
-  💧 Water:
-  ${day.water || 0} oz
-
-
-
-  <br><br>
-
-   🏋️ Workout:
-  ${day.trainingToday ? "Logged" : "Not Logged"}
-
-   <br><br>
-
-  Weight:
-  ${
-    day.latestWeight
-      ? `${day.latestWeight} lbs`
-      : "—"
-  }
-
-  <br><br>
-
-  🍽️ Meal Scans:
-  ${day.scanCount || 0}
-
-</p>
         </section>
       `;
-
-    }).join("");
+    })
+    .join("");
 }
 
 renderLogs();
