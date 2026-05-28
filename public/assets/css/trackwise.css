@@ -295,3 +295,52 @@
   filter:grayscale(1);
   cursor:not-allowed;
 }
+.trackwise-action-row{
+  display:flex;
+
+  align-items:center;
+  justify-content:space-between;
+
+  gap:1rem;
+
+  padding:1.2rem 1.25rem;
+
+  margin-top:1rem;
+
+  border-radius:22px;
+
+  background:
+    rgba(255,255,255,.03);
+
+  border:
+    1px solid rgba(255,255,255,.06);
+}
+
+.trackwise-action-row h2{
+  margin-top:.35rem;
+
+  font-size:1rem;
+  line-height:1.45;
+
+  font-weight:600;
+
+  opacity:.92;
+}
+
+.trackwise-action-row .range-label{
+  margin:0;
+
+  letter-spacing:.08em;
+}
+
+.compact-btn{
+  flex-shrink:0;
+
+  min-width:120px;
+
+  text-align:center;
+}
+
+.hidden{
+  display:none !important;
+}

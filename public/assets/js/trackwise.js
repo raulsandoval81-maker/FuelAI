@@ -394,33 +394,35 @@ sleepWeek.appendChild(cell);
 }
 function renderCheckInButtonState() {
 
-  const checkInBtn =
-    document.querySelector(
-      'a[href="/wise/todays-check-in.html"]'
+  const todayKey =
+    new Date().toDateString();
+
+  const previewComplete =
+    localStorage.getItem(
+      "fuelai-morning-preview"
+    ) === todayKey;
+
+  const nightReviewCard =
+    document.getElementById(
+      "nightReviewCard"
     );
 
-  if (!checkInBtn || !window.FuelAILog) return;
+  if (!nightReviewCard) return;
 
-  const alreadyCheckedIn =
-    window.FuelAILog
-      .getTodayLogs()
-      .some((log) => {
-        return log.type === "todays-check-in";
-      });
+  if (previewComplete) {
 
-  if (!alreadyCheckedIn) return;
+    nightReviewCard.classList.remove(
+      "hidden"
+    );
 
-  checkInBtn.textContent =
-    "✅ Checked In Today";
+  } else {
 
-  checkInBtn.classList.add(
-    "checked-in"
-  );
+    nightReviewCard.classList.add(
+      "hidden"
+    );
 
-  checkInBtn.style.pointerEvents =
-    "none";
+  }
 }
-
 
 renderStreak();
 renderHydration();
