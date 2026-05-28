@@ -254,7 +254,7 @@ function renderWorkoutWeek() {
 
   workoutWeek.innerHTML = "";
 
-  for (let i = 6; i >= 0; i--) {
+  for (let i = 0; i < 7; i++) {
     const dateKey =
       getPastDateKey(i);
 
@@ -286,7 +286,7 @@ cell.className =
 
 cell.innerHTML = `
   <span class="week-label">
-     ${i - i}
+     ${i + 1}
   </span>
 `;
 
@@ -308,7 +308,7 @@ function renderSleepWeek() {
 
   sleepWeek.innerHTML = "";
 
-  for (let i = 6; i >= 0; i--) {
+ for (let i = 0; i < 7; i++) {
 
     const dateKey =
       getPastDateKey(i);
@@ -341,10 +341,12 @@ if (value?.includes("Great")) {
     dot.className =
       `sleep-dot ${status}`;
 
-    dot.title =
-      `Day ${7 - i}: ${value || "Not Logged"}`;
 
-const cell =
+dot.title =
+  `Day ${i + 1}: ${value || "Not Logged"}`;
+
+
+      const cell =
   document.createElement("div");
 
 cell.className =
@@ -352,7 +354,7 @@ cell.className =
 
 cell.innerHTML = `
   <span class="week-label">
-    Day ${7 - i}
+    Day ${i + 1}
   </span>
 `;
 
