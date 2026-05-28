@@ -1406,3 +1406,30 @@ body[data-theme="day"] .top-link{
 .log-grid span{
   font-weight:700;
 }
+.welcome-feature{
+  margin-bottom:1.8rem;
+}
+
+.welcome-feature:last-child{
+  margin-bottom:0;
+}
+
+.welcome-feature-title{
+  display:block;
+
+  margin-bottom:.65rem;
+
+  font-size:.92rem;
+  font-weight:700;
+  letter-spacing:.08em;
+
+  opacity:.92;
+}
+
+.welcome-feature-text{
+  margin:0;
+
+  line-height:1.55;
+
+  opacity:.92;
+}
