@@ -294,7 +294,7 @@ function renderFullHistory(days) {
   }
 
   fullHistoryContainer.innerHTML =
-renderLogCards(days.slice(3));
+  renderLogCards(days);
 
 }
 
