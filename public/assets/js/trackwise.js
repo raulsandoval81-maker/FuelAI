@@ -33,8 +33,20 @@ const workoutWeek =
 const sleepWeek =
   document.getElementById("sleepWeek");
 
+const FUELAI_TIME_ZONE =
+  "America/Los_Angeles";
+
+function getDateKey(date = new Date()) {
+  return date.toLocaleDateString(
+    "en-CA",
+    {
+      timeZone: FUELAI_TIME_ZONE
+    }
+  );
+}
+
 const trackwiseDateKey =
-  new Date().toISOString().slice(0, 10);
+  getDateKey();
 
 const waterKey =
   `fuelai-water-oz-${trackwiseDateKey}`;
@@ -123,7 +135,7 @@ function getPastDateKey(daysBack) {
     date.getDate() - daysBack
   );
 
-  return date.toISOString().slice(0, 10);
+  return getDateKey(date);
 }
 
 function renderStreak() {
@@ -260,9 +272,11 @@ function getWorkoutIconForDate(dateKey) {
   const start =
     new Date("2026-01-01").getTime();
 
-  const current =
-    new Date(dateKey).getTime();
-
+const current =
+  new Date(
+    `${dateKey}T12:00:00`
+  ).getTime();
+  
   const dayIndex =
     Math.floor((current - start) / 86400000);
 
