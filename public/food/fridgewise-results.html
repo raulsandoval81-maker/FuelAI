@@ -2,19 +2,28 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
 
   <title>Fridge Meals</title>
 
-  <link rel="stylesheet" href="/assets/css/site.css" />
+  <link
+    rel="stylesheet"
+    href="/assets/css/site.css"
+  />
 </head>
-<body data-theme="night">
-    <main class="scan-wrap">
 
+<body data-theme="night">
+
+  <main class="scan-wrap">
 
     <section class="scan-card">
 
-      <h1>Meal Ideas</h1>
+      <h1>
+        Meal Ideas
+      </h1>
 
       <p class="sub">
         Simple dinner paths using what you already have.
@@ -25,127 +34,41 @@
         class="result-card"
       ></section>
 
+      <div class="wise-links">
+
+        <a
+          class="secondary-btn"
+          href="/food/fridgewise.html"
+        >
+          🧊 Back to FridgeWise
+        </a>
+
+        <a
+          class="secondary-btn"
+          href="/hub.html"
+        >
+          🏠 Return to Hub
+        </a>
+
+      </div>
+
+      <p class="hero-note">
+        FuelAI • Less overthinking. Better decisions.
+      </p>
+
     </section>
 
   </main>
 
+  <script src="/assets/js/core/auth-soft.js"></script>
+
   <script>
-
-    const result =
-      JSON.parse(
-        localStorage.getItem("fuelwise_fridge_result") || "{}"
-      );
-
-    const mealsContainer =
-      document.getElementById("mealsContainer");
-
-    const meals =
-      result.suggestedMeals || [];
-
-    mealsContainer.innerHTML = `
-
-      <p class="feedback">
-        <strong>🧊 Detected:</strong>
-        ${(result.detectedItems || []).join(", ") || "No clear items detected"}
-      </p>
-
-      ${
-        result.possibleItems?.length
-          ? `
-            <p class="feedback">
-              <strong>Maybe:</strong>
-              ${result.possibleItems.join(", ")}
-            </p>
-          `
-          : ""
-      }
-
-      <div class="history-section">
-
-        ${meals.map(meal => `
-
-  <div class="history-item meal-card">
-
-    <div class="meal-top">
-
-      <div>
-        <strong class="meal-title">
-          ${
-            meal.type === "snack"
-              ? "🥨 Quick Snack"
-              : "🍽️ Quick Meal"
-          }
-        </strong>
-
-        <div class="history-meta">
-          ${meal.name}
-        </div>
-      </div>
-
-      <div class="meal-time">
-        ⏱️ ${meal.time || "10 min"}
-      </div>
-
-    </div>
-
-    <p class="feedback">
-      ${meal.whyItWorks || ""}
-    </p>
-
-    <p class="feedback">
-      <strong>🧊 Uses:</strong>
-      ${(meal.uses || []).join(", ") || "Items from your fridge"}
-    </p>
-
-    <p class="feedback">
-      <strong>🛒 Needs:</strong>
-      ${(meal.needs || []).join(", ") || "Nothing extra"}
-    </p>
-
-    ${
-      meal.steps?.length
-        ? `
-          <ol class="meal-steps">
-            ${meal.steps.map(step => `
-              <li>${step}</li>
-            `).join("")}
-          </ol>
-        `
-        : ""
-    }
-
-    <button
-      class="secondary-btn make-this-btn"
-      type="button"
-    >
-      ✅ Make This
-    </button>
-
-  </div>
-
-`).join("")}
-
-
-      </div>
-
-
-<div class="history-item grocery-card">
-  <strong>
-    🛒 Quick Grocery List
-  </strong>
-
-  <p class="feedback">
-    ${(result.groceryList || []).join(", ") || "No extra groceries needed"}
-  </p>
-
-</div>
-      `;
-
+    window.FuelAIAuth?.requireSoftLogin();
   </script>
 
-  <script src="/assets/js/core/auth-soft.js"></script>
-<script>
-  window.FuelAIAuth.requireSoftLogin();
-</script>
+  <script src="/assets/js/core/preferences.js"></script>
+  <script src="/assets/js/fridgewise/fridgewise-memory.js"></script>
+  <script src="/assets/js/fridgewise/fridgewise-results.js"></script>
+
 </body>
 </html>
