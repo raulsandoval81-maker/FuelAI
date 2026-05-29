@@ -15,15 +15,23 @@ function getDailyLogsSafe() {
   return window.FuelAILog.getDailyLogs() || {};
 }
 
+const FUELAI_TIME_ZONE =
+  "America/Los_Angeles";
+
 function getTodayKey() {
   return new Date()
-    .toISOString()
-    .slice(0, 10);
+    .toLocaleDateString(
+      "en-CA",
+      {
+        timeZone: FUELAI_TIME_ZONE
+      }
+    );
 }
-
 function formatLogDate(dateValue) {
+  if (!dateValue) return "DAY";
+
   const date =
-    new Date(dateValue);
+    new Date(`${dateValue}T12:00:00`);
 
   if (Number.isNaN(date.getTime())) {
     return "DAY";

@@ -2,8 +2,17 @@ const FUELAI_LOG_KEY = "fuelai-log-v1";
 const FUELAI_DAILY_KEY = "fuelai-daily-log-v1";
 const FUELAI_LOG_DAYS = 90;
 
+const FUELAI_TIME_ZONE =
+  "America/Los_Angeles";
+
 function todayKey() {
-  return new Date().toISOString().slice(0, 10);
+  return new Date()
+    .toLocaleDateString(
+      "en-CA",
+      {
+        timeZone: FUELAI_TIME_ZONE
+      }
+    );
 }
 
 function getFuelLog() {
