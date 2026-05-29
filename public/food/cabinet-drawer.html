@@ -31,7 +31,7 @@
       </h1>
 
       <p class="sub">
-        Track what you have, what you need, and the helper tools FridgeWise uses.
+        Track what you have, what you like, and what FridgeWise may suggest next.
       </p>
 
       <p class="range-label">
@@ -39,7 +39,6 @@
       </p>
 
       <section class="drawer-section">
-
         <button
           class="drawer-toggle"
           type="button"
@@ -52,14 +51,12 @@
           id="drawer-pantry"
           class="drawer-panel hidden"
         >
-
           <ul
             id="pantryList"
             class="drawer-list"
           ></ul>
 
           <div class="drawer-add-row">
-
             <input
               id="pantryInput"
               type="text"
@@ -72,15 +69,11 @@
             >
               Add
             </button>
-
           </div>
-
         </div>
-
       </section>
 
       <section class="drawer-section">
-
         <button
           class="drawer-toggle"
           type="button"
@@ -93,14 +86,12 @@
           id="drawer-freezer"
           class="drawer-panel hidden"
         >
-
           <ul
             id="freezerList"
             class="drawer-list"
           ></ul>
 
           <div class="drawer-add-row">
-
             <input
               id="freezerInput"
               type="text"
@@ -113,39 +104,33 @@
             >
               Add
             </button>
-
           </div>
-
         </div>
-
       </section>
 
       <section class="drawer-section">
-
         <button
           class="drawer-toggle"
           type="button"
           data-drawer="other"
         >
-          📦 Other
+          📦 Extras
         </button>
 
         <div
           id="drawer-other"
           class="drawer-panel hidden"
         >
-
           <ul
             id="otherList"
             class="drawer-list"
           ></ul>
 
           <div class="drawer-add-row">
-
             <input
               id="otherInput"
               type="text"
-              placeholder="Add household item..."
+              placeholder="Add extras, sauces, seasonings..."
             />
 
             <button
@@ -154,20 +139,62 @@
             >
               Add
             </button>
-
           </div>
-
         </div>
-
       </section>
 
+      <p class="range-label">
+        What We Like
+      </p>
+
+      <section class="drawer-section">
+        <button
+          class="drawer-toggle"
+          type="button"
+          data-drawer="favoriteMeals"
+        >
+          ⭐ Favorite Meals
+        </button>
+
+        <div
+          id="drawer-favoriteMeals"
+          class="drawer-panel hidden"
+        >
+          <ul
+            id="favoriteMealsList"
+            class="drawer-list"
+          ></ul>
+
+          <div class="drawer-add-row">
+            <input
+              id="favoriteMealNameInput"
+              type="text"
+              placeholder="Meal name — chicken tacos..."
+            />
+          </div>
+
+          <div class="drawer-add-row">
+            <input
+              id="favoriteMealIngredientsInput"
+              type="text"
+              placeholder="Ingredients — chicken, tortillas, salsa..."
+            />
+
+            <button
+              type="button"
+              id="addFavoriteMealBtn"
+            >
+              Add
+            </button>
+          </div>
+        </div>
+      </section>
 
       <p class="range-label">
         What We Need
       </p>
 
       <section class="drawer-section">
-
         <button
           class="drawer-toggle"
           type="button"
@@ -180,14 +207,12 @@
           id="drawer-grocery"
           class="drawer-panel hidden"
         >
-
           <ul
             id="groceryList"
             class="drawer-list"
           ></ul>
 
           <div class="drawer-add-row">
-
             <input
               id="groceryInput"
               type="text"
@@ -200,39 +225,31 @@
             >
               Add
             </button>
-
           </div>
-
         </div>
-
       </section>
 
       <p class="range-note">
-        Missing foods FridgeWise may suggest later.
+        Grocery List can hold manual items now and missing meal items later.
       </p>
 
       <section class="range-card">
-
         <p class="range-label">
           FridgeWise Helpers
         </p>
 
-        <div class="wise-links">
-
-
-        </div>
-
+        <p class="range-output">
+          Pantry, freezer, extras, favorite meals, and grocery items help FridgeWise suggest realistic meals.
+        </p>
       </section>
 
       <div class="wise-links">
-
         <a
           class="secondary-btn"
           href="/food/fridgewise.html"
         >
           🧊 Back to FridgeWise
         </a>
-
       </div>
 
       <p class="hero-note">
@@ -243,7 +260,6 @@
 
   </main>
 
-
   <script src="/assets/js/core/auth-soft.js"></script>
 
   <script>
@@ -251,6 +267,7 @@
   </script>
 
   <script src="/assets/js/core/preferences.js"></script>
+  <script src="/assets/js/fridgewise/fridgewise-memory.js"></script>
   <script src="/assets/js/fridgewise/cabinet-drawer.js"></script>
 
 </body>

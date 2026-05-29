@@ -50,15 +50,72 @@ const fridgeLoadingMessages = [
 let fridgeLoadingInterval = null;
 
 let selectedImage = null;
+
 let pantryCompanion = [];
 
+const Memory =
+  window.FridgeWiseMemory;
 
-pantryCompanion =
-  JSON.parse(
-    localStorage.getItem(
-      "fuelai-pantry"
-    ) || "[]"
+const memory =
+  Memory?.getAll?.();
+
+const favoriteMeals =
+  memory?.favoriteMeals || [];
+
+console.log(
+  "Favorite Meals:",
+  favoriteMeals
+);
+
+function addMissingItemsToGroceryList(items) {
+  const memory =
+    window.FridgeWiseMemory?.getAll?.();
+
+  if (!memory) return;
+
+  memory.groceryList =
+    memory.groceryList || [];
+
+  items.forEach((item) => {
+    const clean =
+      String(item || "")
+        .trim()
+        .toLowerCase();
+
+    if (
+      clean &&
+      !memory.groceryList.includes(clean)
+    ) {
+      memory.groceryList.push(clean);
+    }
+  });
+
+  window.FridgeWiseMemory.save(memory);
+}
+
+const mealMatches =
+  Memory?.matchFavoriteMeals?.() || [];
+
+console.log(
+  "Meal Matches:",
+  mealMatches
+);
+
+const missingItems =
+  mealMatches.flatMap(
+    meal => meal.missing || []
   );
+
+console.log(
+  "Missing Items:",
+  missingItems
+);
+
+pantryCompanion = [
+  ...(memory?.pantry || []),
+  ...(memory?.freezer || []),
+  ...(memory?.extras || [])
+];
 
 /* Pantry toggle */
 
@@ -78,11 +135,9 @@ if (pantryToggle && pantryPanel) {
 /* Pantry chips */
 
 if (pantryChips) {
-
   pantryChips.addEventListener(
     "click",
     (e) => {
-
       const btn =
         e.target.closest("button");
 
@@ -96,7 +151,6 @@ if (pantryChips) {
       if (
         pantryCompanion.includes(item)
       ) {
-
         pantryCompanion =
           pantryCompanion.filter(
             (i) => i !== item
@@ -105,57 +159,38 @@ if (pantryChips) {
         btn.classList.remove(
           "active"
         );
-
-      }
-
-      else {
-
+      } else {
         pantryCompanion.push(item);
 
         btn.classList.add(
           "active"
         );
-
       }
-
-      localStorage.setItem(
-        "fuelai-pantry",
-        JSON.stringify(
-          pantryCompanion
-        )
-      );
-
     }
   );
-
 }
+
 /* Add pantry item */
 
 if (addPantryItem && pantryInput) {
-
   addPantryItem.addEventListener(
     "click",
     () => {
-
       const value =
         pantryInput.value.trim();
 
       if (!value) return;
 
-      pantryCompanion.push(value);
+      const clean =
+        value.toLowerCase();
 
-      localStorage.setItem(
-        "fuelai-pantry",
-        JSON.stringify(
-          pantryCompanion
-        )
-      );
+      if (!pantryCompanion.includes(clean)) {
+        pantryCompanion.push(clean);
+      }
 
       pantryInput.value = "";
-
     }
   );
-
 }
 
 function startFridgeLoadingMessages() {
@@ -185,23 +220,32 @@ function stopFridgeLoadingMessages() {
     fridgeLoadingInterval = null;
   }
 }
+
 /* Image preview */
 
 function handleImage(file) {
   if (!file) return;
 
-  const reader = new FileReader();
+  const reader =
+    new FileReader();
 
   reader.onload = (e) => {
-    selectedImage = e.target.result;
+    selectedImage =
+      e.target.result;
 
     if (fridgePreview) {
-      fridgePreview.src = selectedImage;
-      fridgePreview.classList.remove("hidden");
+      fridgePreview.src =
+        selectedImage;
+
+      fridgePreview.classList.remove(
+        "hidden"
+      );
     }
 
     if (fridgeAnalyzeBtn) {
-      fridgeAnalyzeBtn.classList.remove("hidden");
+      fridgeAnalyzeBtn.classList.remove(
+        "hidden"
+      );
     }
   };
 
@@ -209,104 +253,149 @@ function handleImage(file) {
 }
 
 if (fridgeInput) {
-  fridgeInput.addEventListener("change", (e) => {
-    handleImage(e.target.files?.[0]);
-  });
+  fridgeInput.addEventListener(
+    "change",
+    (e) => {
+      handleImage(
+        e.target.files?.[0]
+      );
+    }
+  );
 }
 
 if (fridgeUploadInput) {
-  fridgeUploadInput.addEventListener("change", (e) => {
-    handleImage(e.target.files?.[0]);
-  });
+  fridgeUploadInput.addEventListener(
+    "change",
+    (e) => {
+      handleImage(
+        e.target.files?.[0]
+      );
+    }
+  );
 }
+
 /* Quick Actions auto-open */
 
 const quickParams =
-  new URLSearchParams(window.location.search);
+  new URLSearchParams(
+    window.location.search
+  );
 
 if (
-  quickParams.get("quick") === "fridge"
+  quickParams.get("quick") ===
+  "fridge"
 ) {
-
   setTimeout(() => {
     fridgeInput?.click();
   }, 300);
-
 }
 
 /* Analyze fridge */
 
 if (fridgeAnalyzeBtn) {
-  fridgeAnalyzeBtn.addEventListener("click", async () => {
-    if (!selectedImage) return;
+  fridgeAnalyzeBtn.addEventListener(
+    "click",
+    async () => {
+      if (!selectedImage) return;
 
-    fridgeAnalyzeBtn.disabled = true;
+      fridgeAnalyzeBtn.disabled =
+        true;
 
-    if (fridgeLoadingCard) {
-      fridgeLoadingCard.classList.remove("hidden");
-    }
-      startFridgeLoadingMessages();
-    if (fridgeResultCard) {
-      fridgeResultCard.classList.add("hidden");
-    }
-
-    const setup =
-      JSON.parse(
-        localStorage.getItem("fuelai-setup") || "{}"
-      );
-
-    try {
-      const response =
-        await fetch("/api/fridge", {
-          method: "POST",
-
-          headers: {
-            "Content-Type": "application/json",
-          },
-
-          body: JSON.stringify({
-            image: selectedImage,
-            lang: setup.lang || "en",
-            wiseFlavor: setup.wiseFlavor || "sweetspot",
-            pantryCompanion,
-            pantryNotes: pantryNotes?.value || ""
-          }),
-        });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(
-          data.error || "Failed to analyze fridge"
+      if (fridgeLoadingCard) {
+        fridgeLoadingCard.classList.remove(
+          "hidden"
         );
       }
 
-      localStorage.setItem(
-        "fuelwise_fridge_result",
-        JSON.stringify(data.result)
-      );
+      startFridgeLoadingMessages();
 
-      if (fridgeLoadingText) {
-        fridgeLoadingText.textContent =
-          "Dinner ideas ready.";
-      }
-       stopFridgeLoadingMessages();
-
-      window.location.href =
-        "/fridgewise-results.html";
-
-    } catch (err) {
-      console.error(err);
-
-
-      stopFridgeLoadingMessages();
-
-      if (fridgeLoadingText) {
-        fridgeLoadingText.textContent =
-          "Something went wrong.";
+      if (fridgeResultCard) {
+        fridgeResultCard.classList.add(
+          "hidden"
+        );
       }
 
-      fridgeAnalyzeBtn.disabled = false;
+      const setup =
+        JSON.parse(
+          localStorage.getItem(
+            "fuelai-setup"
+          ) || "{}"
+        );
+
+      try {
+        const response =
+          await fetch("/api/fridge", {
+            method: "POST",
+
+            headers: {
+              "Content-Type":
+                "application/json",
+            },
+
+            body: JSON.stringify({
+              image:
+                selectedImage,
+
+              lang:
+                setup.lang || "en",
+
+              wiseFlavor:
+                setup.wiseFlavor ||
+                "sweetspot",
+
+              pantryCompanion,
+
+              favoriteMeals,
+
+              mealMatches,
+
+              missingItems,
+
+              pantryNotes:
+                pantryNotes?.value || ""
+            }),
+          });
+
+        const data =
+          await response.json();
+
+        if (!response.ok) {
+          throw new Error(
+            data.error ||
+              "Failed to analyze fridge"
+          );
+        }
+
+        localStorage.setItem(
+          "fuelwise_fridge_result",
+          JSON.stringify(
+            data.result
+          )
+        );
+
+        if (fridgeLoadingText) {
+          fridgeLoadingText.textContent =
+            "Dinner ideas ready.";
+        }
+
+        stopFridgeLoadingMessages();
+
+        window.location.href =
+          "/fridgewise-results.html";
+
+      } catch (err) {
+        console.error(err);
+
+        stopFridgeLoadingMessages();
+
+        if (fridgeLoadingText) {
+          fridgeLoadingText.textContent =
+            "Something went wrong.";
+        }
+
+        fridgeAnalyzeBtn.disabled =
+          false;
+      }
     }
-  });
+  );
 }
