@@ -1,6 +1,26 @@
 const logsContainer =
   document.getElementById("logsContainer");
 
+const todaySnapshot =
+  document.getElementById("todaySnapshot");
+
+function getDailyLogsSafe() {
+  if (
+    !window.FuelAILog ||
+    typeof window.FuelAILog.getDailyLogs !== "function"
+  ) {
+    return {};
+  }
+
+  return window.FuelAILog.getDailyLogs() || {};
+}
+
+function getTodayKey() {
+  return new Date()
+    .toISOString()
+    .slice(0, 10);
+}
+
 function formatLogDate(dateValue) {
   const date =
     new Date(dateValue);
@@ -38,15 +58,128 @@ function formatLogTime(day) {
   });
 }
 
-function renderLogs() {
+function normalizeDay(day) {
+  return {
+    date:
+      day.date || "",
+
+    calories:
+      Number(day.calories || day.caloriesToday || 0),
+
+    protein:
+      Number(day.protein || day.proteinToday || 0),
+
+    water:
+      Number(day.water || day.waterToday || 0),
+
+    caloriesTarget:
+      day.caloriesTarget || day.targetCalories || "—",
+
+    proteinTarget:
+      day.proteinTarget || day.targetProtein || "—",
+
+    trainingToday:
+      !!day.trainingToday ||
+      !!day.training ||
+      Number(day.trainingSessions || 0) > 0,
+
+    latestWeight:
+      day.latestWeight ||
+      day.weight ||
+      "",
+
+    scanCount:
+      Number(day.scanCount || day.scans || 0),
+
+    sleepQuality:
+      day.sleepQuality || "",
+
+    sleepHours:
+      day.sleepHours || "",
+
+    updatedAt:
+      day.updatedAt ||
+      day.lastUpdated ||
+      day.createdAt ||
+      day.date
+  };
+}
+
+function getSortedDays() {
   const dailyLogs =
-    window.FuelAILog.getDailyLogs();
+    getDailyLogsSafe();
+
+  return Object
+    .values(dailyLogs)
+    .map(normalizeDay)
+    .sort((a, b) =>
+      new Date(b.date) - new Date(a.date)
+    );
+}
+
+function renderTodaySnapshot(days) {
+  if (!todaySnapshot) return;
+
+  const todayKey =
+    getTodayKey();
+
+  const today =
+    days.find(day =>
+      String(day.date || "").startsWith(todayKey)
+    );
+
+  if (!today) {
+    todaySnapshot.innerHTML = `
+      No entries yet today.
+
+      <br><br>
+
+      Use Simple Check-In, Scan Meal, or TrackWise to start today.
+    `;
+
+    return;
+  }
+
+  todaySnapshot.innerHTML = `
+    🔥 Calories: ${today.calories}
+
+    <br><br>
+
+    🥩 Protein: ${today.protein}g
+
+    <br><br>
+
+    💧 Hydration: ${today.water} oz
+
+    <br><br>
+
+    🏋️ Training: ${today.trainingToday ? "Logged" : "—"}
+
+    <br><br>
+
+    ⚖️ Weight: ${
+      today.latestWeight
+        ? `${today.latestWeight} lbs`
+        : "—"
+    }
+
+    <br><br>
+
+    😴 Sleep: ${
+      today.sleepHours || today.sleepQuality
+        ? `${today.sleepHours || "—"} hrs ${today.sleepQuality || ""}`
+        : "—"
+    }
+  `;
+}
+
+function renderLogs() {
+  if (!logsContainer) return;
 
   const days =
-    Object.values(dailyLogs)
-      .sort((a, b) =>
-        new Date(b.date) - new Date(a.date)
-      );
+    getSortedDays();
+
+  renderTodaySnapshot(days);
 
   if (!days.length) {
     logsContainer.innerHTML = `
@@ -58,8 +191,11 @@ function renderLogs() {
     return;
   }
 
+  const recentDays =
+    days.slice(0, 5);
+
   logsContainer.innerHTML =
-    days.map((day) => {
+    recentDays.map((day) => {
       const dateLabel =
         formatLogDate(day.date);
 
@@ -85,11 +221,11 @@ function renderLogs() {
 
           <div class="log-grid">
 
-            <span>🔥 ${day.calories || 0}</span>
+            <span>🔥 ${day.calories}</span>
 
-            <span>🥩 ${day.protein || 0}g</span>
+            <span>🥩 ${day.protein}g</span>
 
-            <span>💧 ${day.water || 0} oz</span>
+            <span>💧 ${day.water} oz</span>
 
             <span>🏋️ ${day.trainingToday ? "Logged" : "—"}</span>
 
@@ -101,7 +237,7 @@ function renderLogs() {
               }
             </span>
 
-            <span>📸 ${day.scanCount || 0}</span>
+            <span>📸 ${day.scanCount}</span>
 
           </div>
 

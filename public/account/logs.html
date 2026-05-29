@@ -33,7 +33,7 @@
       </h1>
 
       <p class="sub">
-        Track calories, protein, hydration, training, weight, and daily target snapshots.
+        A simple recent view of your calories, protein, hydration, training, weight, and habits.
       </p>
 
       <section class="range-card">
@@ -54,12 +54,35 @@
       <section class="range-card">
 
         <p class="range-label">
-          90-Day History
+          Recent History
+        </p>
+
+        <p class="range-note">
+          Showing the last 5 days.
         </p>
 
         <div id="logsContainer">
           Loading logs...
         </div>
+
+      </section>
+
+      <section class="range-card">
+
+        <p class="range-label">
+          Full History
+        </p>
+
+        <p class="range-output">
+          Open the complete 90-day view when you want the bigger picture.
+        </p>
+
+        <a
+          class="secondary-btn"
+          href="/account/logs-full.html"
+        >
+          View Full 90-Day History →
+        </a>
 
       </section>
 
@@ -76,7 +99,7 @@
             <li>💧 Daily hydration</li>
             <li>🏋️ Daily workout log</li>
             <li>⚖️ Daily weight</li>
-            <li>🎯 Daily calorie + protein target snapshots</li>
+            <li>😴 Sleep and recovery</li>
             <li>📆 Rolling 90-day history</li>
           </ul>
         </div>
@@ -87,13 +110,18 @@
 
         <a
           class="secondary-btn"
+          href="/account/profile.html"
+        >
+          👤 Account Profile
+        </a>
+
+        <a
+          class="secondary-btn"
           href="/hub.html"
         >
           🏠 Return to Hub
         </a>
 
-
-        
       </div>
 
       <p class="hero-note">
@@ -103,12 +131,6 @@
     </section>
 
   </main>
-
-  <footer class="app-footer">
-    <p>
-      FuelAI • 90-day food, hydration, training, and weight awareness.
-    </p>
-  </footer>
 
   <script src="/assets/js/core/auth-soft.js"></script>
 

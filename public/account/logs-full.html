@@ -1,0 +1,206 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <meta charset="UTF-8" />
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+
+  <link rel="icon" href="data:," />
+
+  <title>
+    Full 90-Day History
+  </title>
+
+  <link
+    rel="stylesheet"
+    href="/assets/css/site.css"
+  />
+
+</head>
+
+<body data-theme="night">
+
+  <main class="scan-wrap">
+
+    <section class="scan-card">
+
+      <p class="range-label">
+        ACCOUNT
+      </p>
+
+      <h1>
+        📋 Full 90-Day History
+      </h1>
+
+      <p class="sub">
+        Long-term history for calories, protein, hydration, sleep, training, and daily habits.
+      </p>
+
+      <section class="range-card">
+
+        <p class="range-label">
+          History Overview
+        </p>
+
+        <p class="range-output">
+          Your most recent 90 days are stored here.
+        </p>
+
+      </section>
+
+      <section
+        id="historyList"
+        class="history-stack"
+      >
+
+        <section class="range-card">
+
+          <p class="range-label">
+            Loading History...
+          </p>
+
+          <p class="range-output">
+            Pulling your saved check-ins and logs.
+          </p>
+
+        </section>
+
+      </section>
+
+      <div class="wise-links">
+
+        <a
+          class="secondary-btn"
+          href="/account/logs.html"
+        >
+          ↩️ Return to 90-Day Log
+        </a>
+
+        <a
+          class="secondary-btn"
+          href="/account/profile.html"
+        >
+          👤 Account Profile
+        </a>
+
+      </div>
+
+      <p class="hero-note">
+        FuelAI • Consistency over perfection.
+      </p>
+
+    </section>
+
+  </main>
+
+  <footer class="app-footer">
+
+    <p>
+      FuelAI • Long-term progress tracking.
+    </p>
+
+  </footer>
+
+  <script src="/assets/js/core/auth-soft.js"></script>
+
+  <script>
+    window.FuelAIAuth?.requireSoftLogin();
+  </script>
+
+  <script src="/assets/js/core/preferences.js"></script>
+  <script src="/assets/js/account/fuelai-log.js"></script>
+
+  <script>
+
+    const historyList =
+      document.getElementById("historyList");
+
+    const logs =
+      JSON.parse(
+        localStorage.getItem("fuelai-90day-log") || "[]"
+      );
+
+    if (!logs.length) {
+
+      historyList.innerHTML = `
+
+        <section class="range-card">
+
+          <p class="range-label">
+            No History Yet
+          </p>
+
+          <p class="range-output">
+            Start using FuelAI tools to build your 90-day history.
+          </p>
+
+        </section>
+
+      `;
+
+    } else {
+
+      historyList.innerHTML =
+        logs
+          .slice()
+          .reverse()
+          .map(log => {
+
+            return `
+
+              <section class="range-card">
+
+                <p class="range-label">
+                  ${log.date || "Unknown Date"}
+                </p>
+
+                <p class="range-output">
+
+                  🔥 Calories:
+                  ${log.calories || 0}
+
+                  <br><br>
+
+                  🥩 Protein:
+                  ${log.protein || 0}g
+
+                  <br><br>
+
+                  💧 Hydration:
+                  ${log.water || 0} oz
+
+                  <br><br>
+
+                  🏋️ Training:
+                  ${log.training || "—"}
+
+                  <br><br>
+
+                  😴 Sleep:
+                  ${log.sleep || "—"}
+
+                  <br><br>
+
+                  ⚖️ Weight:
+                  ${log.weight || "—"}
+
+                </p>
+
+              </section>
+
+            `;
+
+          })
+          .join("");
+
+    }
+
+  </script>
+
+</body>
+</html>
