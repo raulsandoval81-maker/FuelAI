@@ -1532,3 +1532,41 @@ select.goal-select{
   text-align: right;
   font-weight: 800;
 }
+.log-card {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.history-stack,
+#logsContainer,
+#fullHistoryContainer {
+  width: 100%;
+}
+
+.log-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.log-date,
+.log-time {
+  margin: 0;
+}
+
+.log-target {
+  text-align: left;
+  margin: 1rem 0;
+}
+
+.log-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: .75rem 1.25rem;
+  text-align: left;
+}
+
+.log-grid span {
+  display: block;
+}
