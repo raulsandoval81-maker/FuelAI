@@ -37,14 +37,29 @@ const FUELAI_TIME_ZONE =
   "America/Los_Angeles";
 
 function getDateKey(date = new Date()) {
-  return date.toLocaleDateString(
-    "en-CA",
-    {
-      timeZone: FUELAI_TIME_ZONE
-    }
-  );
-}
 
+  const parts =
+    new Intl.DateTimeFormat(
+      "en-US",
+      {
+        timeZone: FUELAI_TIME_ZONE,
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit"
+      }
+    ).formatToParts(date);
+
+  const year =
+    parts.find(p => p.type === "year").value;
+
+  const month =
+    parts.find(p => p.type === "month").value;
+
+  const day =
+    parts.find(p => p.type === "day").value;
+
+  return `${year}-${month}-${day}`;
+}
 const trackwiseDateKey =
   getDateKey();
 
@@ -52,7 +67,10 @@ const waterKey =
   `fuelai-water-oz-${trackwiseDateKey}`;
 
 let waterOz =
-  Number(localStorage.getItem(waterKey)) || 0;
+  Number(
+    localStorage.getItem(waterKey)
+  ) || 0;
+
 
 function getSetup() {
   try {
@@ -63,6 +81,7 @@ function getSetup() {
     return {};
   }
 }
+
 
 function getDailySummary() {
   if (
@@ -276,7 +295,7 @@ const current =
   new Date(
     `${dateKey}T12:00:00`
   ).getTime();
-  
+
   const dayIndex =
     Math.floor((current - start) / 86400000);
 
