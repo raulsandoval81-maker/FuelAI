@@ -15,7 +15,7 @@ function getDailyLogsSafe() {
   return window.FuelAILog.getDailyLogs() || {};
 }
 
-const FUELAI_TIME_ZONE =
+const LOGS_TIME_ZONE =
   "America/Los_Angeles";
 
 function getTodayKey() {
@@ -23,7 +23,7 @@ function getTodayKey() {
     .toLocaleDateString(
       "en-CA",
       {
-        timeZone: FUELAI_TIME_ZONE
+        timeZone: LOGS_TIME_ZONE
       }
     );
 }

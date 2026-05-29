@@ -192,7 +192,7 @@
     const saveCheckInBtn =
       document.getElementById("saveCheckInBtn");
 
-const FUELAI_TIME_ZONE =
+const CHECKIN_TIME_ZONE =
   "America/Los_Angeles";
 
 function todayKey() {
@@ -200,7 +200,7 @@ function todayKey() {
     .toLocaleDateString(
       "en-CA",
       {
-        timeZone: FUELAI_TIME_ZONE
+        timeZone: CHECKIN_TIME_ZONE
       }
     );
 }
