@@ -381,7 +381,7 @@ if (fridgeAnalyzeBtn) {
         stopFridgeLoadingMessages();
 
         window.location.href =
-          "/fridgewise-results.html";
+           "/food/fridgewise-results.html";
 
       } catch (err) {
         console.error(err);
