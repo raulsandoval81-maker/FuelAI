@@ -94,8 +94,11 @@ function getMacroTargets() {
   };
 }
 
-function getMacroProgress() {
-  if (!window.FuelAILog) {
+function getMacroTargets() {
+  const weight =
+    Number(setup.weight || 0);
+
+  if (!weight) {
     return {
       calories: 0,
       protein: 0,
@@ -104,14 +107,55 @@ function getMacroProgress() {
     };
   }
 
-  const summary =
-    window.FuelAILog.getFuelSummary();
+  let calories =
+    weight * 14;
+
+  let split = {
+    protein: 35,
+    carbs: 40,
+    fats: 25
+  };
+
+  if (setup.goal === "cutwise") {
+    calories =
+      weight * 11;
+
+    split = {
+      protein: 40,
+      carbs: 35,
+      fats: 25
+    };
+  }
+
+  if (setup.goal === "gainwise") {
+    calories =
+      weight * 16;
+
+    split = {
+      protein: 40,
+      carbs: 40,
+      fats: 20
+    };
+  }
 
   return {
-    calories: summary.caloriesToday || 0,
-    protein: summary.proteinToday || 0,
-    carbs: summary.carbsToday || 0,
-    fats: summary.fatsToday || 0
+    calories:
+      Math.round(calories),
+
+    protein:
+      Math.round(
+        (calories * (split.protein / 100)) / 4
+      ),
+
+    carbs:
+      Math.round(
+        (calories * (split.carbs / 100)) / 4
+      ),
+
+    fats:
+      Math.round(
+        (calories * (split.fats / 100)) / 9
+      )
   };
 }
 
