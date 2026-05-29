@@ -4,6 +4,12 @@ const logsContainer =
 const todaySnapshot =
   document.getElementById("todaySnapshot");
 
+const toggleFullHistoryBtn =
+  document.getElementById("toggleFullHistoryBtn");
+
+const fullHistoryContainer =
+  document.getElementById("fullHistoryContainer");
+
 function getDailyLogsSafe() {
   if (
     !window.FuelAILog ||
@@ -19,14 +25,29 @@ const LOGS_TIME_ZONE =
   "America/Los_Angeles";
 
 function getTodayKey() {
-  return new Date()
-    .toLocaleDateString(
-      "en-CA",
+  const parts =
+    new Intl.DateTimeFormat(
+      "en-US",
       {
-        timeZone: LOGS_TIME_ZONE
+        timeZone: LOGS_TIME_ZONE,
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit"
       }
-    );
+    ).formatToParts(new Date());
+
+  const year =
+    parts.find(p => p.type === "year").value;
+
+  const month =
+    parts.find(p => p.type === "month").value;
+
+  const day =
+    parts.find(p => p.type === "day").value;
+
+  return `${year}-${month}-${day}`;
 }
+
 function formatLogDate(dateValue) {
   if (!dateValue) return "DAY";
 
@@ -121,7 +142,8 @@ function getSortedDays() {
     .values(dailyLogs)
     .map(normalizeDay)
     .sort((a, b) =>
-      new Date(b.date) - new Date(a.date)
+      new Date(`${b.date}T12:00:00`) -
+      new Date(`${a.date}T12:00:00`)
     );
 }
 
@@ -181,6 +203,59 @@ function renderTodaySnapshot(days) {
   `;
 }
 
+function renderLogCards(days) {
+  return days.map((day) => {
+    const dateLabel =
+      formatLogDate(day.date);
+
+    const timeLabel =
+      formatLogTime(day);
+
+    return `
+      <section class="range-card log-card">
+
+        <div class="log-head">
+          <p class="log-date">
+            ${dateLabel}
+          </p>
+
+          <p class="log-time">
+            ${timeLabel ? `Logged ${timeLabel}` : ""}
+          </p>
+        </div>
+
+        <p class="log-target">
+          🎯 ${day.caloriesTarget || "—"} cal / ${day.proteinTarget || "—"}g protein
+        </p>
+
+        <div class="log-grid">
+
+          <span>🔥 ${day.calories}</span>
+
+          <span>🥩 ${day.protein}g</span>
+
+          <span>💧 ${day.water} oz</span>
+
+          <span>🏋️ ${day.trainingToday ? "Logged" : "—"}</span>
+
+          <span>
+            ⚖️ ${
+              day.latestWeight
+                ? `${day.latestWeight} lbs`
+                : "—"
+            }
+          </span>
+
+          <span>📸 ${day.scanCount}</span>
+
+        </div>
+
+      </section>
+    `;
+  })
+  .join("");
+}
+
 function renderLogs() {
   if (!logsContainer) return;
 
@@ -200,59 +275,46 @@ function renderLogs() {
   }
 
   const recentDays =
-    days.slice(0, 5);
+    days.slice(0, 3);
 
   logsContainer.innerHTML =
-    recentDays.map((day) => {
-      const dateLabel =
-        formatLogDate(day.date);
-
-      const timeLabel =
-        formatLogTime(day);
-
-      return `
-        <section class="range-card log-card">
-
-          <div class="log-head">
-            <p class="log-date">
-              ${dateLabel}
-            </p>
-
-            <p class="log-time">
-              ${timeLabel ? `Logged ${timeLabel}` : ""}
-            </p>
-          </div>
-
-          <p class="log-target">
-            🎯 ${day.caloriesTarget || "—"} cal / ${day.proteinTarget || "—"}g protein
-          </p>
-
-          <div class="log-grid">
-
-            <span>🔥 ${day.calories}</span>
-
-            <span>🥩 ${day.protein}g</span>
-
-            <span>💧 ${day.water} oz</span>
-
-            <span>🏋️ ${day.trainingToday ? "Logged" : "—"}</span>
-
-            <span>
-              ⚖️ ${
-                day.latestWeight
-                  ? `${day.latestWeight} lbs`
-                  : "—"
-              }
-            </span>
-
-            <span>📸 ${day.scanCount}</span>
-
-          </div>
-
-        </section>
-      `;
-    })
-    .join("");
+    renderLogCards(recentDays);
 }
+
+function renderFullHistory(days) {
+  if (!fullHistoryContainer) return;
+
+  if (!days.length) {
+    fullHistoryContainer.innerHTML = `
+      <section class="range-card log-card">
+        No history yet.
+      </section>
+    `;
+    return;
+  }
+
+  fullHistoryContainer.innerHTML =
+    renderLogCards(days);
+}
+
+toggleFullHistoryBtn?.addEventListener(
+  "click",
+  () => {
+    const days =
+      getSortedDays();
+
+    renderFullHistory(days);
+
+    fullHistoryContainer.classList.toggle("hidden");
+
+    const isHidden =
+      fullHistoryContainer.classList.contains("hidden");
+
+    toggleFullHistoryBtn.textContent =
+      isHidden
+        ? "Show Full 90-Day History ↓"
+        : "Hide Full 90-Day History ↑";
+  }
+);
 
 renderLogs();
