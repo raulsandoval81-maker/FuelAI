@@ -30,25 +30,23 @@
 
   <script src="/assets/js/core/auth-soft.js"></script>
 
-  <script>
+<script src="/assets/js/core/auth-soft.js"></script>
 
-    window.FuelAIAuth?.requireSoftLogin();
+<script>
+  window.FuelAIAuth?.requireSoftLogin();
 
-    const setup =
-      JSON.parse(
-        localStorage.getItem("fuelai-setup") || "{}"
-      );
+  const setup =
+    JSON.parse(
+      localStorage.getItem("fuelai-setup") || "{}"
+    );
 
-    const hasSetup =
-      setup.goal &&
-      setup.wiseFlavor;
+  const hasSetup =
+    Object.keys(setup).length > 0;
 
-    window.location.href =
-      hasSetup
-        ? "/hub.html"
-        : "/account/setup.html";
-
-  </script>
-
+  window.location.href =
+    hasSetup
+      ? "/hub.html"
+      : "/account/setup.html";
+</script>
 </body>
 </html>
