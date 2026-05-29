@@ -33,8 +33,9 @@ const workoutWeek =
 const sleepWeek =
   document.getElementById("sleepWeek");
 
-const FUELAI_TIME_ZONE =
+const TRACKWISE_TIME_ZONE =
   "America/Los_Angeles";
+
 
 function getDateKey(date = new Date()) {
 
@@ -42,7 +43,7 @@ function getDateKey(date = new Date()) {
     new Intl.DateTimeFormat(
       "en-US",
       {
-        timeZone: FUELAI_TIME_ZONE,
+        timeZone: TRACKWISE_TIME_ZONE,
         year: "numeric",
         month: "2-digit",
         day: "2-digit"
