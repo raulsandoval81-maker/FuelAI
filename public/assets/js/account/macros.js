@@ -1,9 +1,3 @@
-const macroTargets =
-  document.getElementById("macroTargets");
-
-const macroProgress =
-  document.getElementById("macroProgress");
-
 const macroSuggestion =
   document.getElementById("macroSuggestion");
 
@@ -16,15 +10,18 @@ const macroBreakdown =
 const macroBreakdownCard =
   document.getElementById("macroBreakdownCard");
 
-  const macroPlan =
+const macroPlan =
   document.getElementById("macroPlan");
+
+const macroTargetProgress =
+  document.getElementById("macroTargetProgress");
 
 const setup =
   JSON.parse(
     localStorage.getItem("fuelai-setup") || "{}"
   );
 
-  const displayGoal = {
+const displayGoal = {
   fuelwise: "FuelWise — Maintain",
   cutwise: "CutWise — Cut",
   gainwise: "GainWise — Gain"
@@ -90,17 +87,10 @@ function getMacroTargets() {
   }
 
   return {
-    calories:
-      Math.round(calories),
-
-    protein:
-      Math.round(weight * proteinMultiplier),
-
-    carbs:
-      Math.round(weight * carbMultiplier),
-
-    fats:
-      Math.round(weight * fatMultiplier)
+    calories: Math.round(calories),
+    protein: Math.round(weight * proteinMultiplier),
+    carbs: Math.round(weight * carbMultiplier),
+    fats: Math.round(weight * fatMultiplier)
   };
 }
 
@@ -118,22 +108,23 @@ function getMacroProgress() {
     window.FuelAILog.getFuelSummary();
 
   return {
-    calories:
-      summary.caloriesToday || 0,
-
-    protein:
-      summary.proteinToday || 0,
-
-    carbs:
-      summary.carbsToday || 0,
-
-    fats:
-      summary.fatsToday || 0
+    calories: summary.caloriesToday || 0,
+    protein: summary.proteinToday || 0,
+    carbs: summary.carbsToday || 0,
+    fats: summary.fatsToday || 0
   };
 }
 
-const macroStyles = {
+function percent(current, target) {
+  if (!target) return 0;
 
+  return Math.min(
+    100,
+    Math.round((current / target) * 100)
+  );
+}
+
+const macroStyles = {
   fuelwise: {
     split: "35 / 40 / 25",
     note:
@@ -151,8 +142,8 @@ const macroStyles = {
     note:
       "Protein / Carbs / Fat. Higher protein and carbs for muscle growth and recovery."
   }
-
 };
+
 const currentStyle =
   macroStyles[setup.goal] ||
   macroStyles.fuelwise;
@@ -186,52 +177,46 @@ if (macroBreakdownCard) {
   );
 }
 
-if (macroTargets) {
-  macroTargets.innerHTML = `
-    🔥 Calories: ${targets.calories}
-
-    <br><br>
-
-    🥩 Protein: ${targets.protein}g
-
-    <br><br>
-
-    🍞 Carbs: ${targets.carbs}g
-
-    <br><br>
-
-    🥑 Fats: ${targets.fats}g
-  `;
-}
-
-if (macroProgress) {
-  macroProgress.innerHTML = `
-    🔥 Calories: ${progress.calories}
-
-    <br><br>
-
-    🥩 Protein: ${progress.protein}g
-
-    <br><br>
-
-    🍞 Carbs: ${progress.carbs}g
-
-    <br><br>
-
-    🥑 Fats: ${progress.fats}g
-  `;
-}
-
 if (macroBreakdown) {
   macroBreakdown.innerHTML = `
     Current logged totals:<br><br>
 
-    🔥 ${progress.calories} calories<br><br>
+    🔥 ${progress.calories} calories
+    — ${percent(progress.calories, targets.calories)}%<br><br>
 
-    🥩 ${progress.protein}g protein<br><br>
+    🥩 ${progress.protein}g protein
+    — ${percent(progress.protein, targets.protein)}%<br><br>
 
-    🍞 ${progress.carbs}g carbs<br><br>
+    🍞 ${progress.carbs}g carbs
+    — ${percent(progress.carbs, targets.carbs)}%<br><br>
 
     🥑 ${progress.fats}g fats
+    — ${percent(progress.fats, targets.fats)}%
+  `;
+}
+
+if (macroTargetProgress) {
+  macroTargetProgress.innerHTML = `
+    🔥 Calories:
+    ${progress.calories} / ${targets.calories}
+    — ${percent(progress.calories, targets.calories)}%
+
+    <br><br>
+
+    🥩 Protein:
+    ${progress.protein}g / ${targets.protein}g
+    — ${percent(progress.protein, targets.protein)}%
+
+    <br><br>
+
+    🍞 Carbs:
+    ${progress.carbs}g / ${targets.carbs}g
+    — ${percent(progress.carbs, targets.carbs)}%
+
+    <br><br>
+
+    🥑 Fats:
+    ${progress.fats}g / ${targets.fats}g
+    — ${percent(progress.fats, targets.fats)}%
   `;
 }
