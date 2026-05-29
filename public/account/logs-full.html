@@ -112,10 +112,15 @@
     const historyList =
       document.getElementById("historyList");
 
-    const logs =
-      JSON.parse(
-        localStorage.getItem("fuelai-90day-log") || "[]"
-      );
+const dailyLogs =
+  window.FuelAILog?.getDailyLogs?.() || {};
+
+const logs =
+  Object.values(dailyLogs)
+    .sort((a, b) =>
+      new Date(b.date) - new Date(a.date)
+    );
+
 
     if (!logs.length) {
 
