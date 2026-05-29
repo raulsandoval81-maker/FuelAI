@@ -141,9 +141,13 @@
       </section>
 <div class="checkin-actions">
 
-  <button class="start-btn">
-    Save Check-In
-  </button>
+<button
+  id="saveCheckInBtn"
+  class="start-btn"
+>
+  Save Check-In
+</button>
+
 
   <a class="secondary-btn" href="/trackwise/index.html">
     🎯 Return to TrackWise
@@ -188,9 +192,18 @@
     const saveCheckInBtn =
       document.getElementById("saveCheckInBtn");
 
-    function todayKey() {
-      return new Date().toISOString().slice(0, 10);
-    }
+const FUELAI_TIME_ZONE =
+  "America/Los_Angeles";
+
+function todayKey() {
+  return new Date()
+    .toLocaleDateString(
+      "en-CA",
+      {
+        timeZone: FUELAI_TIME_ZONE
+      }
+    );
+}
 
     function getTodayLogs() {
       if (!window.FuelAILog) return [];
