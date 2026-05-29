@@ -181,42 +181,48 @@ if (macroBreakdown) {
   macroBreakdown.innerHTML = `
     Current logged totals:<br><br>
 
-    🔥 ${progress.calories} calories
-    — ${percent(progress.calories, targets.calories)}%<br><br>
+    <div class="macro-row">
+      <span>🔥 Calories</span>
+      <strong>${percent(progress.calories, targets.calories)}%</strong>
+    </div>
 
-    🥩 ${progress.protein}g protein
-    — ${percent(progress.protein, targets.protein)}%<br><br>
+    <div class="macro-row">
+      <span>🥩 Protein</span>
+      <strong>${percent(progress.protein, targets.protein)}%</strong>
+    </div>
 
-    🍞 ${progress.carbs}g carbs
-    — ${percent(progress.carbs, targets.carbs)}%<br><br>
+    <div class="macro-row">
+      <span>🍞 Carbs</span>
+      <strong>${percent(progress.carbs, targets.carbs)}%</strong>
+    </div>
 
-    🥑 ${progress.fats}g fats
-    — ${percent(progress.fats, targets.fats)}%
+    <div class="macro-row">
+      <span>🥑 Fats</span>
+      <strong>${percent(progress.fats, targets.fats)}%</strong>
+    </div>
   `;
 }
 
 if (macroTargetProgress) {
   macroTargetProgress.innerHTML = `
-    🔥 Calories:
-    ${progress.calories} / ${targets.calories}
-    — ${percent(progress.calories, targets.calories)}%
+    <div class="macro-row">
+      <span>🔥 Calories</span>
+      <strong>${progress.calories} / ${targets.calories}</strong>
+    </div>
 
-    <br><br>
+    <div class="macro-row">
+      <span>🥩 Protein</span>
+      <strong>${progress.protein}g / ${targets.protein}g</strong>
+    </div>
 
-    🥩 Protein:
-    ${progress.protein}g / ${targets.protein}g
-    — ${percent(progress.protein, targets.protein)}%
+    <div class="macro-row">
+      <span>🍞 Carbs</span>
+      <strong>${progress.carbs}g / ${targets.carbs}g</strong>
+    </div>
 
-    <br><br>
-
-    🍞 Carbs:
-    ${progress.carbs}g / ${targets.carbs}g
-    — ${percent(progress.carbs, targets.carbs)}%
-
-    <br><br>
-
-    🥑 Fats:
-    ${progress.fats}g / ${targets.fats}g
-    — ${percent(progress.fats, targets.fats)}%
+    <div class="macro-row">
+      <span>🥑 Fats</span>
+      <strong>${progress.fats}g / ${targets.fats}g</strong>
+    </div>
   `;
 }

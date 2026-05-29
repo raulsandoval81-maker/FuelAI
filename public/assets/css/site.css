@@ -1516,3 +1516,19 @@ select.goal-select{
 .setup-form .goal-select option{
   color:#111;
 }
+.macro-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 1rem;
+  margin: 0.9rem 0;
+}
+
+.macro-row span {
+  text-align: left;
+}
+
+.macro-row strong {
+  text-align: right;
+  font-weight: 800;
+}
