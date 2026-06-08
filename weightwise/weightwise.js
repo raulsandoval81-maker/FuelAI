@@ -285,3 +285,115 @@ function renderDescentSchedule() {
 }
 
 renderDescentSchedule();
+function renderCompetitionMode() {
+  const output =
+    document.getElementById("competitionOutput");
+
+  if (!output) return;
+
+  const saved =
+    localStorage.getItem(STORAGE_KEY);
+
+  if (!saved) {
+    output.textContent =
+      "Complete WeightWise setup first.";
+    return;
+  }
+
+  const plan =
+    JSON.parse(saved);
+
+  const currentWeight =
+    Number(plan.currentWeight);
+
+  const targetWeight =
+    Number(plan.targetWeight);
+
+  const daysRemaining =
+    getDaysRemaining(
+      plan.competitionDate
+    );
+
+  const weightRemaining =
+    Math.max(
+      0,
+      currentWeight - targetWeight
+    );
+
+const weeklyPace =
+  daysRemaining > 0
+    ? (weightRemaining / daysRemaining) * 7
+    : 0;
+
+const assumedSafeWeeklyLoss = 1.0;
+
+const projectedCompetitionWeight =
+  Math.max(
+    targetWeight,
+    currentWeight -
+      assumedSafeWeeklyLoss * (daysRemaining / 7)
+  );
+
+  const projectedGap =
+  projectedCompetitionWeight - targetWeight;
+
+  const actualVsProjected =
+  currentWeight - projectedCompetitionWeight;
+
+const status =
+  getStatus(weeklyPace);
+
+  output.innerHTML = `
+    <div class="history-row">
+      <span>Current Weight</span>
+      <strong>${currentWeight.toFixed(1)} lb</strong>
+    </div>
+
+    <div class="history-row">
+      <span>Target Weight</span>
+      <strong>${targetWeight.toFixed(1)} lb</strong>
+    </div>
+
+    <div class="history-row">
+      <span>Weight Remaining</span>
+      <strong>${weightRemaining.toFixed(1)} lb</strong>
+    </div>
+
+    <div class="history-row">
+      <span>Days Remaining</span>
+      <strong>${daysRemaining}</strong>
+    </div>
+
+    <div class="history-row">
+      <span>Weekly Pace</span>
+      <strong>${weeklyPace.toFixed(1)} lb/week</strong>
+    </div>
+
+    <div class="history-row">
+     <span>Projected Competition Weight</span>
+     <strong>${projectedCompetitionWeight.toFixed(1)} lb</strong>
+    </div>
+
+    <div class="history-row">
+  <span>Projected Gap</span>
+  <strong>+${projectedGap.toFixed(1)} lb</strong>
+    </div>
+
+<div class="history-row">
+  <span>Actual vs Projected</span>
+  <strong>
+    ${actualVsProjected >= 0 ? "+" : ""} ${actualVsProjected.toFixed(1)} lb
+  </strong>
+</div>
+
+    <div class="status-pill ${status.className}">
+      ${status.label}
+    </div>
+
+    <p class="guidance">
+      ${status.guidance}
+    </p>
+  `;
+}
+
+renderCompetitionMode();
