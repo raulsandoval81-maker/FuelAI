@@ -184,3 +184,23 @@ weightwise/
 Beta
 
 Initial rollout will be a small athlete test group before wider release.
+## WeightWise Doctrine
+
+WeightWise informs.
+
+WeightWise does not decide.
+
+WeightWise does not assign weight classes.
+
+WeightWise does not prescribe weight cuts.
+
+WeightWise does not replace medical advice.
+
+WeightWise exposes reality.
+
+Current Weight
+→ Target Weight
+→ Competition Date
+→ Projected Outcome
+
+Coach, athlete, parent, and healthcare professionals make decisions.

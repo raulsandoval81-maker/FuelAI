@@ -62,6 +62,7 @@ function loadPlan() {
   document.getElementById("currentWeight").value = plan.currentWeight || "";
   document.getElementById("targetWeight").value = plan.targetWeight || "";
   document.getElementById("weightClass").value = plan.weightClass || "";
+  document.getElementById("competitionName").value = plan.competitionName || "";
   document.getElementById("competitionDate").value = plan.competitionDate || "";
 
   calculatePlan(plan);
@@ -113,13 +114,20 @@ if (form) {
   form.addEventListener("submit", function (event) {
     event.preventDefault();
 
-    const plan = {
-      currentWeight: document.getElementById("currentWeight").value,
-      targetWeight: document.getElementById("targetWeight").value,
-      weightClass: document.getElementById("weightClass").value,
-      competitionDate: document.getElementById("competitionDate").value,
-      updatedAt: new Date().toISOString()
-    };
+const plan = {
+  currentWeight: document.getElementById("currentWeight").value,
+  targetWeight: document.getElementById("targetWeight").value,
+  weightClass: document.getElementById("weightClass").value,
+
+  competitionName:
+    document.getElementById("competitionName").value,
+
+  competitionDate:
+    document.getElementById("competitionDate").value,
+
+  updatedAt:
+    new Date().toISOString()
+};
 
     savePlan(plan);
     calculatePlan(plan);
@@ -302,6 +310,8 @@ function renderCompetitionMode() {
 
   const plan =
     JSON.parse(saved);
+  const competitionName = plan.competitionName || "Competition";
+
 
   const currentWeight =
     Number(plan.currentWeight);
@@ -344,6 +354,8 @@ const status =
   getStatus(weeklyPace);
 
   output.innerHTML = `
+    <h2>${competitionName}</h2>
+
     <div class="history-row">
       <span>Current Weight</span>
       <strong>${currentWeight.toFixed(1)} lb</strong>
@@ -381,9 +393,9 @@ const status =
 
 <div class="history-row">
   <span>Actual vs Projected</span>
-  <strong>
-    ${actualVsProjected >= 0 ? "+" : ""} ${actualVsProjected.toFixed(1)} lb
-  </strong>
+<strong>
+  ${actualVsProjected >= 0 ? "+" : ""}${actualVsProjected.toFixed(1)} lb
+</strong>
 </div>
 
     <div class="status-pill ${status.className}">
