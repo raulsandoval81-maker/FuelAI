@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>WeightWise | FuelAI</title>
+
+  <link rel="stylesheet" href="../public/assets/css/site.css" />
+  <link rel="stylesheet" href="/weightwise/weightwise.css" />
+</head>
+
+<body data-theme="night">
+  <main class="weightwise-wrap">
+    <section class="weightwise-card">
+      <p class="range-label">FuelAI Beta</p>
+
+      <h1>⚖️ WeightWise</h1>
+
+      <p class="sub">
+        Current weight → target weight → competition date.
+      </p>
+
+      <div class="note-box">
+        Beta tool. This does not replace medical advice or safe coaching judgment.
+      </div>
+
+      <form id="weightwiseForm" class="wise-form">
+        <label>
+          Current Weight
+          <input id="currentWeight" type="number" step="0.1" placeholder="152.4" required />
+        </label>
+
+        <label>
+          Target Weight
+          <input id="targetWeight" type="number" step="0.1" placeholder="145" required />
+        </label>
+
+        <label>
+          Weight Class
+          <input id="weightClass" type="text" placeholder="145" />
+        </label>
+
+        <label>
+          Competition Date
+          <input id="competitionDate" type="date" required />
+        </label>
+
+        <button type="submit" class="btn btn-primary">
+          Check Status
+        </button>
+      </form>
+
+      <section id="weightwiseOutput" class="output-card hidden">
+        <h2>Status</h2>
+
+        <div class="status-pill" id="statusOutput">—</div>
+
+        <div class="stat-grid">
+          <div>
+            <span>Remaining</span>
+            <strong id="remainingOutput">—</strong>
+          </div>
+
+          <div>
+            <span>Days</span>
+            <strong id="daysOutput">—</strong>
+          </div>
+
+          <div>
+            <span>Weekly Pace</span>
+            <strong id="weeklyOutput">—</strong>
+          </div>
+
+          <div>
+            <span>Class</span>
+            <strong id="classOutput">—</strong>
+          </div>
+        </div>
+
+        <p id="guidanceOutput" class="guidance"></p>
+      </section>
+
+      <nav class="room-links">
+        <a href="./weight-history.html">Weight History</a>
+        <a href="./descent-schedule.html">Descent Schedule</a>
+        <a href="./competition-mode.html">Competition Mode</a>
+      </nav>
+    </section>
+  </main>
+
+  <script src="/weightwise/weightwise.js"></script>
+</body>
+</html>

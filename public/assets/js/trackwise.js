@@ -134,7 +134,7 @@ if (goal === "gainwise") {
       Math.round(calories),
 
     protein:
-      weight ? Math.round(weight) : 160
+      weight ? Math.round(weight * 0.8) : 160
   };
 }
 
@@ -370,7 +370,7 @@ function renderSleepWeek() {
       getPastDateKey(i);
 
     const key =
-      `fuelai-sleep-quality-${dateKey}`;
+      `fuelai-sleep-hours-${dateKey}`;
 
     const value =
       localStorage.getItem(key);

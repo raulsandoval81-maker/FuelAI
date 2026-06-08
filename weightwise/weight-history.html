@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Weight History | WeightWise</title>
+
+  <link rel="stylesheet" href="../public/assets/css/site.css" />
+  <link rel="stylesheet" href="weightwise.css" />
+</head>
+
+<body data-theme="night">
+  <main class="weightwise-wrap">
+    <section class="weightwise-card">
+      <p class="range-label">FuelAI Beta</p>
+
+      <h1>📉 Weight History</h1>
+
+      <p class="sub">
+        Log weigh-ins and watch the trend.
+      </p>
+
+<form id="historyForm" class="wise-form">
+  <label>
+    Athlete Name
+    <input id="athleteName" type="text" placeholder="Max" required />
+  </label>
+
+  <label>
+    Date
+    <input id="logDate" type="date" required />
+  </label>
+
+  <label>
+    Weight
+    <input id="logWeight" type="number" step="0.1" placeholder="152.4" required />
+  </label>
+
+  <button type="submit" class="btn btn-primary">
+    Save Weigh-In
+  </button>
+</form>
+<section class="output-card">
+  <h2>Descent Schedule</h2>
+
+  <div id="scheduleOutput">
+    No schedule available.
+  </div>
+</section>
+      <section class="output-card">
+        <h2>Recent Weigh-Ins</h2>
+
+        <div id="historyList" class="history-list">
+          No weigh-ins yet.
+        </div>
+      </section>
+
+      <nav class="room-links">
+        <a href="index.html">← WeightWise Dashboard</a>
+        <a href="descent-schedule.html">Descent Schedule</a>
+        <a href="competition-mode.html">Competition Mode</a>
+      </nav>
+    </section>
+  </main>
+
+  <script src="weightwise.js"></script>
+</body>
+</html>
