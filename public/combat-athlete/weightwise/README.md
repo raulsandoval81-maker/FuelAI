@@ -204,3 +204,10 @@ Current Weight
 → Projected Outcome
 
 Coach, athlete, parent, and healthcare professionals make decisions.
+Future Combat Athlete Modules
+
+□ Certified Weight
+□ Weight Class Planner
+□ Competition Calendar
+□ Competition Readiness
+□ Season Planner
