@@ -62,7 +62,13 @@ function loadPlan() {
   document.getElementById("currentWeight").value = plan.currentWeight || "";
   document.getElementById("targetWeight").value = plan.targetWeight || "";
   document.getElementById("weightClass").value = plan.weightClass || "";
-  document.getElementById("competitionName").value = plan.competitionName || "";
+  const competitionNameInput =
+  document.getElementById("competitionName");
+
+if (competitionNameInput) {
+  competitionNameInput.value =
+    plan.competitionName || "";
+}
   document.getElementById("competitionDate").value = plan.competitionDate || "";
 
   calculatePlan(plan);
@@ -119,8 +125,11 @@ const plan = {
   targetWeight: document.getElementById("targetWeight").value,
   weightClass: document.getElementById("weightClass").value,
 
-  competitionName:
-    document.getElementById("competitionName").value,
+competitionName:
+  document.getElementById("competitionName")
+    ? document.getElementById("competitionName").value
+    : "",
+
 
   competitionDate:
     document.getElementById("competitionDate").value,
