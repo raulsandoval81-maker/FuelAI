@@ -362,6 +362,9 @@ const projectedCompetitionWeight =
 const status =
   getStatus(weeklyPace);
 
+  const coachReviewNeeded =
+  weeklyPace > 2 || projectedGap > 3;
+
   output.innerHTML = `
     <h2>${competitionName}</h2>
 
@@ -410,6 +413,13 @@ const status =
     <div class="status-pill ${status.className}">
       ${status.label}
     </div>
+    
+    <div class="history-row">
+  <span>Coach Review</span>
+  <strong>
+    ${coachReviewNeeded ? "Recommended" : "Not Needed"}
+  </strong>
+   </div>
 
     <p class="guidance">
       ${status.guidance}
