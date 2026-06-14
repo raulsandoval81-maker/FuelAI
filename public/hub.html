@@ -1,12 +1,13 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
 
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  />
+<meta
+ name="viewport"
+ content="width=device-width, initial-scale=1.0"
+/>
 
   <title>FuelAI Hub</title>
 
@@ -20,104 +21,155 @@
 
   <main class="hub-wrap">
 
-    <header class="hub-header">
 
-      <div>
+<header class="hub-header">
 
-        <h1>
-          FuelAI
-        </h1>
+  <div>
 
-        <p>
-          Less overthinking. Better decisions.
-        </p>
+    <h1>
+      FuelAI
+    </h1>
 
-      </div>
+    <p>
+      Less overthinking. Better decisions.
+    </p>
 
-    </header>
+  </div>
 
-    <section class="hub-grid">
+</header>
 
-      <a
-        class="hub-card green"
-        href="/fuel/app.html"
-      >
+<section class="hub-grid">
 
-        <img
-          src="/assets/img/hub/mealwise.png"
-          alt="MealWise"
-        />
+  <a
+    class="hub-card green"
+    href="/fuel/app.html"
+  >
 
-        <div class="hub-card-copy">
+    <img
+      src="/assets/img/hub/mealwise.png"
+      alt="MealWise"
+    />
 
-          <h3>
-            MealWise
-          </h3>
+    <div class="hub-card-copy">
 
-          <p>
-            Scan meals, improve hydration, and recover better.
-          </p>
+      <h3>
+        MealWise
+      </h3>
 
-        </div>
+      <p>
+        Scan meals, improve hydration, and recover better.
+      </p>
 
-      </a>
+    </div>
 
-      <a
-        class="hub-card blue"
-        href="/food/fridgewise.html"
-      >
+  </a>
 
-        <img
-          src="/assets/img/hub/fridgewise.png"
-          alt="FridgeWise"
-        />
+  <a
+    class="hub-card blue"
+    href="/food/fridgewise.html"
+  >
 
-        <div class="hub-card-copy">
+    <img
+      src="/assets/img/hub/fridgewise.png"
+      alt="FridgeWise"
+    />
 
-          <h3>
-            FridgeWise
-          </h3>
+    <div class="hub-card-copy">
 
-          <p>
-            Build meal ideas from what you already have.
-          </p>
+      <h3>
+        FridgeWise
+      </h3>
 
-        </div>
+      <p>
+        Build meal ideas from what you already have.
+      </p>
 
-      </a>
+    </div>
 
-      <a
-        class="hub-card purple"
-        href="/trackwise/index.html"
-      >
+  </a>
 
-        <img
-          src="/assets/img/hub/stayontrack.png"
-          alt="TrackWise"
-        />
+  <a
+    class="hub-card purple"
+    id="trackwiseCard"
+    href="/trackwise/index.html"
+  >
 
-        <div class="hub-card-copy">
+    <img
+      src="/assets/img/hub/stayontrack.png"
+      alt="TrackWise"
+    />
 
-          <h3>
-            TrackWise
-          </h3>
+    <div class="hub-card-copy">
 
-          <p>
-            Track consistency, progress, and daily habits.
-          </p>
+      <h3>
+        TrackWise
+      </h3>
 
-        </div>
+      <p>
+        Track consistency, progress, and daily habits.
+      </p>
 
-      </a>
+    </div>
 
-    </section>
+  </a>
+
+  <a
+    class="hub-card red"
+    id="combatAthleteCard"
+    href="/combat-athlete/"
+  >
+
+    <img
+      src="/assets/img/hub/combat-athlete.png"
+      alt="Combat Athlete"
+    />
+
+    <div class="hub-card-copy">
+
+      <h3>
+        Combat Athlete
+      </h3>
+
+      <p>
+        WeightWise, competition prep, and athlete readiness tools.
+      </p>
+
+    </div>
+
+  </a>
+
+</section>
+
 
   </main>
+
+  <script src="/assets/js/core/plan.js"></script>
 
   <script src="/assets/js/core/auth-soft.js"></script>
 
   <script>
+
+    const features =
+      window.FuelAIPlan?.getFuelAIFeatures?.();
+
+    if (features) {
+
+      if (!features.trackwise) {
+        document
+          .getElementById("trackwiseCard")
+          ?.remove();
+      }
+
+      if (!features.combatAthlete) {
+        document
+          .getElementById("combatAthleteCard")
+          ?.remove();
+      }
+
+    }
+
     window.FuelAIAuth?.requireSoftLogin();
+
   </script>
 
 </body>
