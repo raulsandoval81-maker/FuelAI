@@ -318,7 +318,8 @@ function getFuelSummary() {
       today.proteinTarget || null,
 
     trainingToday:
-      today.trainingCount > 0,
+     today.trainingToday || false,
+
 
     todayCount:
       today.totalEntries || 0,

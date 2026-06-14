@@ -255,11 +255,21 @@ function renderCaloriesAndProtein() {
   const summary =
     getDailySummary();
 
-  const calories =
-    Number(summary.calories || 0);
+let calories =
+  Number(summary.calories || 0);
 
-  const protein =
-    Number(summary.protein || 0);
+let protein =
+  Number(summary.protein || 0);
+
+// Safety guard: prevent corrupted/all-time totals
+// from displaying as today's intake.
+if (calories > 10000) {
+  calories = 0;
+}
+
+if (protein > 500) {
+  protein = 0;
+}
 
   if (calorieOutput) {
     calorieOutput.textContent =
