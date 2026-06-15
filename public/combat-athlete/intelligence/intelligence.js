@@ -126,9 +126,27 @@ function getStatusGuidance(status) {
 function getWeightWiseIntel() {
   if (!plan) return null;
 
-  const currentWeight =
-    Number(plan.currentWeight);
+const history =
+  JSON.parse(
+    localStorage.getItem(
+      "fuelai-weightwise-history"
+    ) || "[]"
+  );
 
+const latestWeighIn =
+  history
+    .filter(entry => entry.weight)
+    .sort(
+      (a, b) =>
+        new Date(b.date) -
+        new Date(a.date)
+    )[0];
+
+const currentWeight =
+  latestWeighIn
+    ? Number(latestWeighIn.weight)
+    : Number(plan.currentWeight);
+    
   const targetWeight =
     Number(plan.targetWeight);
 
