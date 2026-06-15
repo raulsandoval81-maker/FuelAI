@@ -1,26 +1,36 @@
 const FUELAI_PLAN_KEY = "fuelai-plan";
 
 const FUELAI_FEATURES = {
-  free: {
-    mealScansPerDay: 2,
-    fridgeScansPerDay: 1,
-    trackwise: false,
-    combatAthlete: false
-  },
+free: {
+  mealScansPerDay: 2,
+  fridgeScansPerDay: 1,
 
-  basic: {
-    mealScansPerDay: Infinity,
-    fridgeScansPerDay: Infinity,
-    trackwise: true,
-    combatAthlete: false
-  },
+  trackwise: true,
+  trackwiseDays: 3,
 
-  plus: {
-    mealScansPerDay: Infinity,
-    fridgeScansPerDay: Infinity,
-    trackwise: true,
-    combatAthlete: true
-  }
+  combatAthlete: false
+},
+
+basic: {
+  mealScansPerDay: 5,
+  fridgeScansPerDay: 3,
+
+  trackwise: true,
+  trackwiseDays: 90,
+
+  combatAthlete: false
+},
+
+plus: {
+  mealScansPerDay: Infinity,
+  fridgeScansPerDay: Infinity,
+
+  trackwise: true,
+  trackwiseDays: 90,
+
+  combatAthlete: true
+}
+
 };
 
 function getFuelAIPlan() {

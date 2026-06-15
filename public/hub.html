@@ -147,30 +147,56 @@
 
   <script src="/assets/js/core/auth-soft.js"></script>
 
-  <script>
+<script>
+  const plan =
+    window.FuelAIPlan?.getFuelAIPlan?.();
 
-    const features =
-      window.FuelAIPlan?.getFuelAIFeatures?.();
+  const features =
+    window.FuelAIPlan?.getFuelAIFeatures?.();
 
-    if (features) {
+  const trackwiseCard =
+    document.getElementById("trackwiseCard");
 
-      if (!features.trackwise) {
-        document
-          .getElementById("trackwiseCard")
-          ?.remove();
+  const combatAthleteCard =
+    document.getElementById("combatAthleteCard");
+
+  if (features) {
+
+    if (!features.trackwise) {
+      trackwiseCard?.remove();
+    }
+
+    if (combatAthleteCard) {
+
+      if (plan === "free") {
+        combatAthleteCard.remove();
       }
 
-      if (!features.combatAthlete) {
-        document
-          .getElementById("combatAthleteCard")
-          ?.remove();
+      if (plan === "basic") {
+        combatAthleteCard.href = "/upgrade.html";
+
+        const copy =
+          combatAthleteCard.querySelector("p");
+
+        if (copy) {
+          copy.textContent =
+            "Plus feature: WeightWise, competition prep, and athlete readiness tools.";
+        }
+
+        const badge =
+          document.createElement("span");
+
+        badge.textContent =
+          "Unlock Plus";
+
+        combatAthleteCard.appendChild(badge);
       }
 
     }
 
-    window.FuelAIAuth?.requireSoftLogin();
+  }
 
-  </script>
-
+  window.FuelAIAuth?.requireSoftLogin();
+</script>
 </body>
 </html>
