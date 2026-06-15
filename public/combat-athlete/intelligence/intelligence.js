@@ -339,42 +339,55 @@ function renderStatus() {
   const intel =
     getWeightWiseIntel();
 
-  statusOutput.innerHTML = `
-    Competition:
-    ${plan.competitionName || "Not Set"}
-    <br><br>
+statusOutput.innerHTML = `
 
-    Current Weight:
-    ${intel.currentWeight || "Not Set"} lb
-    <br><br>
+<div class="intel-row">
+  <span>Competition</span>
+  <strong>${plan.competitionName || "Not Set"}</strong>
+</div>
 
-    Target Weight:
-    ${plan.targetWeight || "Not Set"} lb
-    <br><br>
+<div class="intel-row">
+  <span>Current Weight</span>
+  <strong>${intel.currentWeight || "Not Set"} lb</strong>
+</div>
 
-    Weight Class:
-    ${plan.weightClass || "Not Set"}
-    <br><br>
+<div class="intel-row">
+  <span>Target Weight</span>
+  <strong>${plan.targetWeight || "Not Set"} lb</strong>
+</div>
 
-    Competition Date:
-    ${plan.competitionDate || "Not Set"}
-    <br><br>
+<div class="intel-row">
+  <span>Weight Class</span>
+  <strong>${plan.weightClass || "Not Set"}</strong>
+</div>
 
-    Weight Remaining:
-    ${intel.weightRemaining.toFixed(1)} lb
-    <br><br>
+<div class="intel-row">
+  <span>Competition Date</span>
+  <strong>${plan.competitionDate || "Not Set"}</strong>
+</div>
 
-    Days Remaining:
-    ${intel.daysRemaining}
-    <br><br>
+<div class="intel-row">
+  <span>Weight Remaining</span>
+  <strong>${intel.weightRemaining.toFixed(1)} lb</strong>
+</div>
 
-    Required Pace:
-    ${intel.weeklyPace.toFixed(1)} lb/week
-    <br><br>
+<div class="intel-row">
+  <span>Days Remaining</span>
+  <strong>${intel.daysRemaining}</strong>
+</div>
 
-    Status:
-    ${intel.status}
-  `;
+<div class="intel-row">
+  <span>Required Pace</span>
+  <strong>${intel.weeklyPace.toFixed(1)} lb/week</strong>
+</div>
+
+<div class="intel-row">
+  <span>Status</span>
+  <strong>${intel.status}</strong>
+</div>
+
+`;
+
 }
 
 function answerInLane(question) {
@@ -400,10 +413,10 @@ const trendStatus =
     <strong>Weight Projection</strong>
 
     <br><br>
+<strong>Assessment</strong>
 
-    <strong>Assessment</strong>
+<br><br>
 
-    <br>
 
     Weight Remaining:
     ${intel.weightRemaining.toFixed(1)} lb
@@ -442,26 +455,41 @@ if (
 
     <br>
 
-    You have ${intel.weightRemaining.toFixed(1)} lb remaining
-    with ${intel.daysRemaining} days until competition.
+<div class="intel-row">
+  <span>Weight Remaining</span>
+  <strong>${intel.weightRemaining.toFixed(1)} lb</strong>
+</div>
 
-    <br><br>
+<div class="intel-row">
+  <span>Days Remaining</span>
+  <strong>${intel.daysRemaining}</strong>
+</div>
 
-    Required pace:
-    ${intel.weeklyPace.toFixed(1)} lb/week.
+<div class="intel-row">
+  <span>Required Pace</span>
+  <strong>${intel.weeklyPace.toFixed(1)} lb/week</strong>
+</div>
 
-    ${trendStatus
-      ? `<br><br>Trend Status: ${trendStatus}`
-      : ""}
+${
+  trendStatus
+    ? `
+<div class="intel-row">
+  <span>Trend Status</span>
+  <strong>${trendStatus}</strong>
+</div>
+`
+    : ""
+}
 
-    <br><br>
+<br><br><br>
 
-    ${intel.guidance}
+${intel.guidance}
 
-    <br><br>
+<br><br><br>
 
-    <strong>Key Focus</strong>
+<strong>Key Focus</strong>
 
+<br><br>
     <ul>
       <li>Track trends, not daily fluctuations.</li>
       <li>Prioritize hydration.</li>

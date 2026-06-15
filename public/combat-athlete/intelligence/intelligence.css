@@ -53,3 +53,47 @@ width:auto;
 }
 
 }
+
+.intel-row{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  margin:10px 0;
+}
+
+.intel-row span{
+  opacity:.8;
+}
+
+.intel-row strong{
+  text-align:right;
+}
+#answerOutput .intel-row{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  margin:10px 0;
+}
+
+#answerOutput .intel-row span{
+  opacity:.8;
+}
+
+#answerOutput .intel-row strong{
+  text-align:right;
+  white-space:nowrap;
+}
+#answerOutput ul{
+  margin-top:16px;
+  padding-left:22px;
+}
+
+#answerOutput li{
+  margin-bottom:10px;
+}
+
+#answerOutput strong{
+  display:block;
+}
