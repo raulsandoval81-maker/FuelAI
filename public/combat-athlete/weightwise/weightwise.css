@@ -172,3 +172,51 @@
 .history-row strong {
   color: #f8fafc;
 }
+.room-links{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:12px;
+  margin-top:28px;
+}
+
+.room-links a,
+.room-links .btn,
+.room-links .secondary-btn{
+  width:100%;
+  min-height:48px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  gap:8px;
+  padding:14px 18px;
+  border-radius:14px;
+  font-weight:700;
+  text-decoration:none;
+  line-height:1.2;
+}
+
+.room-links a{
+  background:#111827;
+  border:1px solid rgba(255,255,255,.12);
+  color:#fff;
+}
+
+.room-links .btn-primary{
+  background:#ef4444;
+  border-color:#ef4444;
+  color:#fff;
+}
+
+.room-links .secondary-btn{
+  background:#1f2937;
+  border:1px solid rgba(255,255,255,.14);
+  color:#fff;
+}
+
+.room-links a:hover,
+.room-links .btn:hover,
+.room-links .secondary-btn:hover{
+  transform:translateY(-1px);
+  filter:brightness(1.08);
+}
