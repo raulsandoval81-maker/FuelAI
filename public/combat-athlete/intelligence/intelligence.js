@@ -295,6 +295,9 @@ return {
 
   sleepHours,
 
+  recoveryStatus:
+  getRecoveryStatus(sleepHours),
+
   trainingToday
 };
 
@@ -307,6 +310,18 @@ function getHydrationStatus(waterToday) {
 
   if (waterToday >= 64) {
     return "Good";
+  }
+
+  return "Needs Attention";
+}
+
+function getRecoveryStatus(sleepHours) {
+  if (sleepHours >= 8) {
+    return "Good";
+  }
+
+  if (sleepHours >= 6) {
+    return "Fair";
   }
 
   return "Needs Attention";
@@ -469,7 +484,7 @@ return `
   ${hydrationStatus}
 
   <br><br>
-  
+
     <strong>Assessment</strong>
 
     <br>
@@ -553,14 +568,28 @@ if (
     </ul>
   `;
 }
+
 if (
   question.includes("recover") ||
   question.includes("recovery") ||
   question.includes("tired") ||
   question.includes("sore")
 ) {
+
+  const recoveryStatus =
+    athlete?.recoveryStatus ||
+    "Needs Attention";
+
   return `
     <strong>Recovery Guidance</strong>
+
+    <br><br>
+
+    <strong>Recovery Status</strong>
+
+    <br>
+
+    ${recoveryStatus}
 
     <br><br>
 
