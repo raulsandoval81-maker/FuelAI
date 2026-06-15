@@ -220,3 +220,15 @@
   transform:translateY(-1px);
   filter:brightness(1.08);
 }
+.room-links a{
+  width:100%;
+  min-height:52px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  gap:8px;
+
+  text-align:center;
+}
