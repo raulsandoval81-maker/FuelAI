@@ -12,15 +12,15 @@ const FUELAI_FEATURES = {
     combatAthlete: false
   },
 
-  basic: {
-    mealScansPerDay: 5,
-    fridgeScansPerDay: 3,
+standard: {
+  mealScansPerDay: 5,
+  fridgeScansPerDay: 3,
 
-    trackwise: true,
-    trackwiseDays: 60,
+  trackwise: true,
+  trackwiseDays: 60,
 
-    combatAthlete: false
-  },
+  combatAthlete: false
+},
 
   plus: {
     mealScansPerDay: Infinity,
