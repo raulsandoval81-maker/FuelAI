@@ -315,72 +315,132 @@ energy levels, and competition readiness.
   `;
 }
 
+if (
+  question.includes("fuel") ||
+  question.includes("eat") ||
+  question.includes("food") ||
+  question.includes("nutrition")
+) {
+  return `
+    <strong>Fueling Guidance</strong>
 
-  if (
-    question.includes("fuel") ||
-    question.includes("eat") ||
-    question.includes("food") ||
-    question.includes("nutrition")
-  ) {
-    return `
-      <strong>Fueling Guidance</strong>
+    <br><br>
 
-      <br><br>
+    <strong>Assessment</strong>
 
-      <strong>Key Focus</strong>
+    <br>
 
-      ${renderList(COMBAT_KNOWLEDGE.fueling)}
-    `;
-  }
+    Food choices should support training energy,
+    recovery, and competition performance.
 
-  if (
-    question.includes("after weigh") ||
-    question.includes("after weigh-in") ||
-    question.includes("after weighins") ||
-    question.includes("after weigh ins")
-  ) {
-    return `
-      <strong>After Weigh-Ins</strong>
+    <br><br>
 
-      <br><br>
+    <strong>Key Focus</strong>
 
-      <strong>Key Focus</strong>
+    <ul>
+      <li>Prioritize protein for recovery.</li>
+      <li>Use carbohydrates to support training and competition energy.</li>
+      <li>Keep food choices consistent near competition.</li>
+      <li>Avoid major nutrition changes late in the week.</li>
+      <li>Fuel for performance, not just the scale.</li>
+    </ul>
+  `;
+}
+if (
+  question.includes("after weigh") ||
+  question.includes("after weigh-in") ||
+  question.includes("after weighins") ||
+  question.includes("after weigh ins")
+) {
+  return `
+    <strong>After Weigh-Ins</strong>
 
-      ${renderList(COMBAT_KNOWLEDGE.afterWeighIns)}
-    `;
-  }
+    <br><br>
 
-  if (
-    question.includes("recover") ||
-    question.includes("recovery") ||
-    question.includes("tired") ||
-    question.includes("sore")
-  ) {
-    return `
-      <strong>Recovery Guidance</strong>
+    <strong>Assessment</strong>
 
-      <br><br>
+    <br>
 
-      <strong>Key Focus</strong>
+    The goal after weigh-ins is to restore hydration,
+    energy, and performance without overwhelming digestion.
 
-      ${renderList(COMBAT_KNOWLEDGE.recovery)}
-    `;
-  }
+    <br><br>
 
-  if (
-    question.includes("competition week") ||
-    question.includes("tournament week")
-  ) {
-    return `
-      <strong>Competition Week</strong>
+    <strong>Key Focus</strong>
 
-      <br><br>
+    <ul>
+      <li>Rehydrate steadily.</li>
+      <li>Include electrolytes when appropriate.</li>
+      <li>Use easy-to-digest carbohydrates.</li>
+      <li>Add moderate protein.</li>
+      <li>Avoid overeating immediately.</li>
+      <li>Focus on performance and recovery.</li>
+    </ul>
+  `;
+}
+if (
+  question.includes("recover") ||
+  question.includes("recovery") ||
+  question.includes("tired") ||
+  question.includes("sore")
+) {
+  return `
+    <strong>Recovery Guidance</strong>
 
-      <strong>Key Focus</strong>
+    <br><br>
 
-      ${renderList(COMBAT_KNOWLEDGE.competitionWeek)}
-    `;
-  }
+    <strong>Assessment</strong>
+
+    <br>
+
+    Recovery supports training quality,
+    weight-management success, and competition performance.
+
+    <br><br>
+
+    <strong>Key Focus</strong>
+
+    <ul>
+      <li>Protect sleep whenever possible.</li>
+      <li>Do not let weight cuts destroy training quality.</li>
+      <li>Monitor energy, mood, and soreness.</li>
+      <li>Use lighter recovery work when needed.</li>
+      <li>Talk with a coach if performance drops significantly.</li>
+    </ul>
+  `;
+}
+
+if (
+  question.includes("competition week") ||
+  question.includes("tournament week")
+) {
+  return `
+    <strong>Competition Week</strong>
+
+    <br><br>
+
+    <strong>Assessment</strong>
+
+    <br>
+
+    Competition week is about arriving prepared,
+    healthy, hydrated, and ready to perform.
+
+    <br><br>
+
+    <strong>Key Focus</strong>
+
+    <ul>
+      <li>Maintain consistent sleep.</li>
+      <li>Stay hydrated throughout the week.</li>
+      <li>Avoid major nutrition changes.</li>
+      <li>Reduce unnecessary stress.</li>
+      <li>Prepare equipment and travel plans early.</li>
+      <li>Review weigh-in requirements.</li>
+    </ul>
+  `;
+}
+
 
   return `
     <strong>In lane.</strong>
