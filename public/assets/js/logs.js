@@ -328,6 +328,9 @@ toggleFullHistoryBtn.textContent =
 
     }
 );
-
+if (toggleFullHistoryBtn) {
+  toggleFullHistoryBtn.textContent =
+    `Show Full ${historyDays}-Day History ↓`;
+}
 
 renderLogs();
