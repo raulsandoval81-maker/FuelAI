@@ -116,7 +116,7 @@
   <a
     class="hub-card red"
     id="combatAthleteCard"
-    href="/combat-athlete/"
+    href="/upgrade.html"
   >
 
     <img
@@ -148,11 +148,25 @@
   <script src="/assets/js/core/auth-soft.js"></script>
 
 <script>
-  const plan =
-    window.FuelAIPlan?.getFuelAIPlan?.();
+  window.FuelAIAuth?.requireSoftLogin();
 
-  const features =
-    window.FuelAIPlan?.getFuelAIFeatures?.();
+  const setup =
+    JSON.parse(
+      localStorage.getItem("fuelai-setup") || "{}"
+    );
+
+  const membership =
+    setup.membership || "free";
+
+  const lifestyleType =
+    setup.lifestyleType || "general-health";
+
+  const isCombatPlus =
+    membership === "plus" &&
+    lifestyleType === "combat-athlete";
+
+  const isCombatUser =
+    lifestyleType === "combat-athlete";
 
   const trackwiseCard =
     document.getElementById("trackwiseCard");
@@ -160,43 +174,38 @@
   const combatAthleteCard =
     document.getElementById("combatAthleteCard");
 
-  if (features) {
+  if (combatAthleteCard) {
 
-    if (!features.trackwise) {
-      trackwiseCard?.remove();
+    if (!isCombatUser) {
+      combatAthleteCard.remove();
     }
 
-    if (combatAthleteCard) {
+    if (isCombatUser && !isCombatPlus) {
+      combatAthleteCard.href = "/upgrade.html";
 
-      if (plan === "free") {
-        combatAthleteCard.remove();
+      const copy =
+        combatAthleteCard.querySelector("p");
+
+      if (copy) {
+        copy.textContent =
+          "Plus feature: WeightWise, competition prep, and athlete readiness tools.";
       }
 
-      if (plan === "basic") {
-        combatAthleteCard.href = "/upgrade.html";
+      const badge =
+        document.createElement("span");
 
-        const copy =
-          combatAthleteCard.querySelector("p");
+      badge.textContent =
+        "Unlock Plus";
 
-        if (copy) {
-          copy.textContent =
-            "Plus feature: WeightWise, competition prep, and athlete readiness tools.";
-        }
-
-        const badge =
-          document.createElement("span");
-
-        badge.textContent =
-          "Unlock Plus";
-
-        combatAthleteCard.appendChild(badge);
-      }
-
+      combatAthleteCard.appendChild(badge);
     }
 
+    if (isCombatPlus) {
+      combatAthleteCard.href =
+        "/combat-athlete/weightwise/";
+    }
   }
-
-  window.FuelAIAuth?.requireSoftLogin();
 </script>
+
 </body>
 </html>
