@@ -285,21 +285,37 @@ function answerInLane(question) {
     `;
   }
 
-  if (
-    question.includes("hydrate") ||
-    question.includes("hydration") ||
-    question.includes("water")
-  ) {
-    return `
-      <strong>Hydration Guidance</strong>
+if (
+  question.includes("hydrate") ||
+  question.includes("hydration") ||
+  question.includes("water")
+) {
+  return `
+    <strong>Hydration Guidance</strong>
 
-      <br><br>
+    <br><br>
 
-      <strong>Key Focus</strong>
+    <strong>Assessment</strong>
 
-      ${renderList(COMBAT_KNOWLEDGE.hydration)}
-    `;
-  }
+    <br>
+
+    Consistent hydration supports performance,
+    recovery, and competition readiness.
+
+    <br><br>
+
+    <strong>Key Focus</strong>
+
+    <ul>
+      <li>Drink consistently throughout the day.</li>
+      <li>Hydrate before, during, and after training.</li>
+      <li>Increase fluids during hot conditions.</li>
+      <li>Monitor hydration habits daily.</li>
+      <li>Do not rely on dehydration as a weight-management strategy.</li>
+    </ul>
+  `;
+}
+
 
   if (
     question.includes("fuel") ||
