@@ -10,6 +10,11 @@ const genderType = document.getElementById("genderType");
 const activityLevel = document.getElementById("activityLevel");
 const goalSelect = document.getElementById("goalSelect");
 
+const membershipType =
+  document.getElementById(
+    "membershipType"
+  );
+
 const lifestyleType =
   document.getElementById(
     "lifestyleType"
@@ -296,6 +301,12 @@ function loadSavedSetup() {
     }
   }
 
+if (membershipType) {
+
+  membershipType.value =
+    "free";
+}
+
   if (foodStyle) {
 
     foodStyle.value =
@@ -354,6 +365,11 @@ if (saveSetupBtn) {
           lifestyleType?.value ||
           "general-health",
 
+                  membership:
+          membershipType?.value || 
+          "free",
+
+
         combatStyle:
           combatStyle?.value ||
           "",
@@ -385,8 +401,15 @@ if (saveSetupBtn) {
 
       renderSetupButtons();
 
-      window.location.href =
-        "/hub.html";
+const isCombatPlus =
+  setup.membership === "plus" &&
+  setup.lifestyleType ===
+    "combat-athlete";
+
+window.location.href =
+  isCombatPlus
+    ? "/combat-athlete/weightwise/"
+    : "/hub.html";
     }
   );
 }
@@ -426,6 +449,13 @@ if (resetSetupBtn) {
         lifestyleType.value =
           "general-health";
       }
+
+      if (membershipType) {
+
+        membershipType.value =
+         saved.membership ||
+           "free";
+        }
 
       if (combatStyle) {
 
@@ -487,6 +517,11 @@ activityLevel?.addEventListener(
 );
 
 goalSelect?.addEventListener(
+  "change",
+  updateGuidance
+);
+
+membershipType?.addEventListener(
   "change",
   updateGuidance
 );
