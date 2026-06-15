@@ -1,11 +1,13 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  />
+
+<meta
+ name="viewport"
+ content="width=device-width, initial-scale=1.0"
+/>
 
   <title>Combat Athlete | FuelAI</title>
 
@@ -13,60 +15,86 @@
     rel="stylesheet"
     href="../assets/css/site.css"
   />
-
-<link
-  rel="stylesheet"
-  href="./weightwise/weightwise.css"
-/>
 </head>
 
 <body data-theme="night">
 
   <main class="scan-wrap">
 
-    <section class="scan-card">
 
-      <p class="range-label">
-        FuelAI
-      </p>
+<section class="scan-card">
 
-      <h1>
-        🏆 Combat Athlete
-      </h1>
+  <h1>
+    Combat Athlete
+  </h1>
 
-      <p class="sub">
-        Competition preparation tools for wrestlers and combat athletes.
-      </p>
+  <p class="sub">
+    Loading your athlete tools...
+  </p>
 
-      <div class="note-box">
-        Weight management, competition planning, and performance tracking.
-      </div>
-<nav class="room-links">
+</section>
 
-  <a href="./weightwise/weight-history.html">
-    📉 Weight History
-  </a>
-
-  <a href="./weightwise/descent-schedule.html">
-    📆 Descent Schedule
-  </a>
-
-  <a href="./weightwise/competition-mode.html">
-    🏆 Competition Mode
-  </a>
-
-  <a href="./intelligence/index.html">
-    🧠 Intelligence
-  </a>
-
-  <a class="secondary-btn" href="/hub.html">
-    🏠 Return to Hub
-  </a>
-
-</nav>
-    </section>
 
   </main>
+
+  <script>
+
+    const setup =
+      JSON.parse(
+        localStorage.getItem(
+          "fuelai-setup"
+        ) || "{}"
+      );
+
+    const membership =
+      setup.membership ||
+      "free";
+
+    const lifestyleType =
+      setup.lifestyleType ||
+      "";
+
+    if (
+      lifestyleType !==
+      "combat-athlete"
+    ) {
+
+      window.location.replace(
+        "/hub.html"
+      );
+    }
+
+    if (
+      membership ===
+      "plus"
+    ) {
+
+      window.location.replace(
+        "/combat-athlete/weightwise/"
+      );
+    }
+
+    if (
+      membership ===
+      "basic"
+    ) {
+
+      window.location.replace(
+        "/upgrade.html"
+      );
+    }
+
+    if (
+      membership ===
+      "free"
+    ) {
+
+      window.location.replace(
+        "/upgrade.html"
+      );
+    }
+
+  </script>
 
 </body>
 </html>
