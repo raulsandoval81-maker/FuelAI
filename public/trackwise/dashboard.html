@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+
+  <link rel="icon" href="data:," />
+
+  <title>TrackWise</title>
+
+  <link
+    rel="stylesheet"
+    href="/assets/css/site.css"
+  />
+
+  <link
+    rel="stylesheet"
+    href="/assets/css/trackwise.css"
+  />
+</head>
+
+<body data-theme="night">
+
+  <main class="trackwise-wrap">
+
+    <section class="trackwise-board">
+
+      <header class="trackwise-top">
+
+        <div>
+
+          <h1>
+            TrackWise Dashboard
+          </h1>
+
+          <p class="trackwise-tag">
+            Daily habits. Simple tracking. Better consistency.
+          </p>
+
+        </div>
+
+        <div class="streak-card">
+
+          <p class="range-label">
+            Check-In Streak
+          </p>
+
+          <strong id="streakOutput">
+            0 Days
+          </strong>
+
+          <p>
+            Keep building.
+          </p>
+
+        </div>
+
+      </header>
+
+      <section class="trackwise-main-grid">
+
+        <!-- TOP NUMBERS -->
+
+        <article class="metric-card tracker-lane stat-card">
+
+          <p class="range-label">
+            Calories
+          </p>
+
+          <div class="lane-main">
+
+            <div class="metric-icon">
+              🔥
+            </div>
+
+            <h2 id="calorieOutput">
+              0 / 0
+            </h2>
+
+          </div>
+
+          <p id="calorieGoalOutput">
+            Daily calorie target
+          </p>
+
+        </article>
+
+        <article class="metric-card tracker-lane stat-card">
+
+          <p class="range-label">
+            Protein
+          </p>
+
+          <div class="lane-main">
+
+            <div class="metric-icon">
+              🥩
+            </div>
+
+            <h2 id="proteinOutput">
+              0 g / 0 g
+            </h2>
+
+          </div>
+
+          <p id="proteinGoalOutput">
+            Daily protein target
+          </p>
+
+        </article>
+
+        <!-- BEHAVIOR LANES -->
+
+        <article class="metric-card tracker-lane full-lane hydration-card">
+
+          <p class="range-label">
+            Hydration
+          </p>
+
+          <div class="lane-main">
+
+            <div class="metric-icon h2o-mark">
+              H<sub>2</sub>O
+            </div>
+
+            <h2 id="waterOutput">
+              0 / 128 oz
+            </h2>
+
+          </div>
+
+          <div
+            id="waterDrops"
+            class="hydration-drops"
+          ></div>
+
+        </article>
+
+        <article class="metric-card tracker-lane full-lane workout-card">
+
+          <p class="range-label">
+            Workout Week
+          </p>
+
+          <div
+            id="workoutWeek"
+            class="week-dots"
+          ></div>
+
+        </article>
+
+        <article class="metric-card tracker-lane full-lane sleep-card">
+
+          <p class="range-label">
+            Sleep Week
+          </p>
+
+          <div
+            id="sleepWeek"
+            class="week-dots"
+          ></div>
+
+        </article>
+
+      </section>
+
+      <section class="trackwise-action-row">
+
+        <div>
+          <h2>
+            Preview and review your day.
+          </h2>
+
+        </div>
+
+        <a
+          class="start-btn compact-btn"
+          href="/wise/todays-check-in.html"
+        >
+          Check In →
+        </a>
+
+      </section>
+
+      <section class="trackwise-action-row">
+
+        <div>
+
+          <p class="range-label">
+            Want to go deeper?
+          </p>
+
+          <h2>
+            Macros, logs, setup, and library.
+          </h2>
+
+        </div>
+
+        <a
+          class="secondary-btn compact-btn"
+          href="/account/macros.html"
+        >
+          Explore →
+        </a>
+
+      </section>
+
+      <section class="trackwise-action-row">
+
+        <div>
+
+          <p class="range-label">
+            Setup
+          </p>
+
+          <h2>
+            Adjust your goal, lifestyle, weight, and preferences.
+          </h2>
+
+        </div>
+
+        <a
+          class="secondary-btn compact-btn"
+          href="/account/setup.html"
+        >
+          Adjust Setup →
+        </a>
+
+      </section>
+
+      <a
+        class="secondary-btn"
+        href="/hub.html"
+      >
+        🏠 Return to Hub
+      </a>
+
+    </section>
+
+  </main>
+
+  <script src="/assets/js/core/auth-soft.js"></script>
+
+  <script>
+    window.FuelAIAuth?.requireSoftLogin();
+  </script>
+
+  <script src="/assets/js/core/preferences.js"></script>
+  <script src="/assets/js/account/fuelai-log.js"></script>
+  <script src="/assets/js/trackwise.js"></script>
+
+</body>
+</html>
