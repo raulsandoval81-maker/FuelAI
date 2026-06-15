@@ -160,6 +160,74 @@ function getWeightWiseIntel() {
       getStatusGuidance(status)
   };
 }
+function getTrendStatusFromHistory() {
+  const history =
+    JSON.parse(
+      localStorage.getItem(
+        "fuelai-weightwise-history"
+      ) || "[]"
+    );
+
+  if (history.length < 2) {
+    return null;
+  }
+
+  const sorted =
+    history.sort(
+      (a, b) =>
+        new Date(a.date) -
+        new Date(b.date)
+    );
+
+  const latest =
+    sorted[sorted.length - 1];
+
+  const weekAgo =
+    sorted.find((entry) => {
+      const diff =
+        (new Date(latest.date) -
+          new Date(entry.date)) /
+        86400000;
+
+      return diff >= 7;
+    });
+
+  if (!weekAgo) {
+    return null;
+  }
+
+  const actualPace =
+    Math.abs(
+      Number(latest.weight) -
+      Number(weekAgo.weight)
+    );
+
+  const intel =
+    getWeightWiseIntel();
+
+  if (!intel) {
+    return null;
+  }
+
+  const requiredPace =
+    intel.weeklyPace;
+
+  if (
+    actualPace >
+    requiredPace + 0.3
+  ) {
+    return "Ahead";
+  }
+
+  if (
+    actualPace <
+    requiredPace - 0.3
+  ) {
+    return "Behind";
+  }
+
+  return "On Pace";
+}
 
 function renderStatus() {
   if (!plan) {
@@ -218,47 +286,53 @@ function answerInLane(question) {
 
   const intel =
     getWeightWiseIntel();
+    const trendStatus =
+  getTrendStatusFromHistory();
 
-  if (
-    question.includes("track") ||
-    question.includes("on track") ||
-    question.includes("make weight") ||
-    question.includes("can i make")
-  ) {
-    return `
-      <strong>${intel.status}</strong>
+if (
+  question.includes("track") ||
+  question.includes("on track") ||
+  question.includes("make weight") ||
+  question.includes("can i make")
+) {
+  return `
+    <strong>${intel.status}</strong>
 
-      <br><br>
+    <br><br>
 
-      <strong>Assessment</strong>
+    <strong>Assessment</strong>
 
-      <br>
+    <br>
 
-      You have ${intel.weightRemaining.toFixed(1)} lb remaining
-      with ${intel.daysRemaining} days until competition.
+    You have ${intel.weightRemaining.toFixed(1)} lb remaining
+    with ${intel.daysRemaining} days until competition.
 
-      <br><br>
+    <br><br>
 
-      Required pace:
-      ${intel.weeklyPace.toFixed(1)} lb/week.
+    Required pace:
+    ${intel.weeklyPace.toFixed(1)} lb/week.
 
-      <br><br>
+    ${trendStatus
+      ? `<br><br>Trend Status: ${trendStatus}`
+      : ""}
 
-      ${intel.guidance}
+    <br><br>
 
-      <br><br>
+    ${intel.guidance}
 
-      <strong>Key Focus</strong>
+    <br><br>
 
-      <ul>
-        <li>Track trends, not daily fluctuations.</li>
-        <li>Prioritize hydration.</li>
-        <li>Maintain protein intake.</li>
-        <li>Avoid extreme weight-cutting measures.</li>
-        <li>Protect sleep and training quality.</li>
-      </ul>
-    `;
-  }
+    <strong>Key Focus</strong>
+
+    <ul>
+      <li>Track trends, not daily fluctuations.</li>
+      <li>Prioritize hydration.</li>
+      <li>Maintain protein intake.</li>
+      <li>Avoid extreme weight-cutting measures.</li>
+      <li>Protect sleep and training quality.</li>
+    </ul>
+  `;
+}
 
   if (
     question.includes("how much") ||
