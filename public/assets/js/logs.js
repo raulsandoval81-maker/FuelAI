@@ -10,6 +10,14 @@ const toggleFullHistoryBtn =
 const fullHistoryContainer =
   document.getElementById("fullHistoryContainer");
 
+const features =
+  window.FuelAIPlan?.getFuelAIFeatures?.() || {
+    trackwiseDays: 3
+  };
+
+const historyDays =
+  features.trackwiseDays || 3;
+
 function getDailyLogsSafe() {
   if (
     !window.FuelAILog ||
@@ -274,8 +282,8 @@ function renderLogs() {
     return;
   }
 
-  const recentDays =
-    days.slice(0, 3);
+const recentDays =
+  days.slice(0, Math.min(3, historyDays));
 
   logsContainer.innerHTML =
     renderLogCards(recentDays);
@@ -284,7 +292,10 @@ function renderLogs() {
 function renderFullHistory(days) {
   if (!fullHistoryContainer) return;
 
-  if (!days.length) {
+  const allowedDays =
+    days.slice(0, historyDays);
+
+  if (!allowedDays.length) {
     fullHistoryContainer.innerHTML = `
       <section class="range-card log-card">
         No history yet.
@@ -294,8 +305,7 @@ function renderFullHistory(days) {
   }
 
   fullHistoryContainer.innerHTML =
-  renderLogCards(days);
-
+    renderLogCards(allowedDays);
 }
 
 toggleFullHistoryBtn?.addEventListener(
@@ -311,11 +321,13 @@ toggleFullHistoryBtn?.addEventListener(
     const isHidden =
       fullHistoryContainer.classList.contains("hidden");
 
-    toggleFullHistoryBtn.textContent =
-      isHidden
-        ? "Show Full 90-Day History ↓"
-        : "Hide Full 90-Day History ↑";
-  }
+toggleFullHistoryBtn.textContent =
+  isHidden
+    ? `Show Full ${historyDays}-Day History ↓`
+    : `Hide Full ${historyDays}-Day History ↑`;
+
+    }
 );
+
 
 renderLogs();
