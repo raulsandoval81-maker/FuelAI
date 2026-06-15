@@ -512,10 +512,11 @@ ${trend ? `
 
 <div class="history-row">
   <span>Distance From Target</span>
-<strong>
-  ${actualVsProjected >= 0 ? "+" : ""}${actualVsProjected.toFixed(1)} lb
-</strong>
+  <strong>
+    ${weightRemaining.toFixed(1)} lb
+  </strong>
 </div>
+
 
     <div class="status-pill ${status.className}">
       ${status.label}
