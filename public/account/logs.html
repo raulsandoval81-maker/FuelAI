@@ -10,7 +10,7 @@
 
   <link rel="icon" href="data:," />
 
-  <title>FuelAI Logs</title>
+  <title>FuelAI Log</title>
 
   <link
     rel="stylesheet"
@@ -29,11 +29,11 @@
       </p>
 
       <h1>
-        📋 90-Day Log
+        📋 FuelAI Log
       </h1>
 
       <p class="sub">
-        A simple recent view of your calories, protein, hydration, training, weight, and habits.
+        Review your recent habits, progress, and available history.
       </p>
 
       <section class="range-card">
@@ -58,7 +58,7 @@
         </p>
 
         <p class="range-note">
-          Showing the last 5 days.
+          Your quick recent view.
         </p>
 
         <div id="logsContainer">
@@ -67,30 +67,30 @@
 
       </section>
 
-<section class="range-card">
+      <section class="range-card">
 
-  <p class="range-label">
-    Full History
-  </p>
+        <p class="range-label">
+          Log History
+        </p>
 
-  <p class="range-output">
-    Open the full 90-day view below when you want the bigger picture.
-  </p>
+        <p class="range-output">
+          Your available history depends on your FuelAI plan.
+        </p>
 
-  <button
-    id="toggleFullHistoryBtn"
-    class="secondary-btn"
-    type="button"
-  >
-    Show Full 90-Day History ↓
-  </button>
+        <button
+          id="toggleFullHistoryBtn"
+          class="secondary-btn"
+          type="button"
+        >
+          Loading Log History...
+        </button>
 
-  <div
-    id="fullHistoryContainer"
-    class="history-stack hidden"
-  ></div>
+        <div
+          id="fullHistoryContainer"
+          class="history-stack hidden"
+        ></div>
 
-</section>
+      </section>
 
       <div class="wise-links">
 
@@ -118,6 +118,7 @@
   </script>
 
   <script src="/assets/js/core/preferences.js"></script>
+  <script src="/assets/js/core/plan.js"></script>
   <script src="/assets/js/account/fuelai-log.js"></script>
   <script src="/assets/js/logs.js"></script>
 

@@ -305,7 +305,7 @@ function renderFullHistory(days) {
   }
 
   fullHistoryContainer.innerHTML =
-    renderLogCards(allowedDays);
+  renderAccordionHistory(allowedDays);
 }
 
 toggleFullHistoryBtn?.addEventListener(
@@ -323,14 +323,14 @@ toggleFullHistoryBtn?.addEventListener(
 
 toggleFullHistoryBtn.textContent =
   isHidden
-    ? `Show Full ${historyDays}-Day History ↓`
-    : `Hide Full ${historyDays}-Day History ↑`;
+    ? `Show ${historyDays}-Day Log History ↓`
+    : `Hide ${historyDays}-Day Log History ↑`;
 
     }
 );
 if (toggleFullHistoryBtn) {
   toggleFullHistoryBtn.textContent =
-    `Show Full ${historyDays}-Day History ↓`;
+    `Show ${historyDays}-Day Log History ↓`;
 }
 
 renderLogs();

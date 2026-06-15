@@ -14,7 +14,7 @@ const FUELAI_FEATURES = {
 
 standard: {
   mealScansPerDay: 5,
-  fridgeScansPerDay: 3,
+  fridgeScansPerDay: 2,
 
   trackwise: true,
   trackwiseDays: 60,
@@ -23,8 +23,8 @@ standard: {
 },
 
   plus: {
-    mealScansPerDay: Infinity,
-    fridgeScansPerDay: Infinity,
+    mealScansPerDay: 8,
+    fridgeScansPerDay: 4,
 
     trackwise: true,
     trackwiseDays: 90,
