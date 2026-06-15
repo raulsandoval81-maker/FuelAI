@@ -1626,3 +1626,26 @@ select.goal-select{
 
   text-align:center;
 }
+.room-links{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:12px;
+  margin-top:28px;
+}
+
+.room-links a,
+.room-links .btn,
+.room-links .secondary-btn{
+  width:100%;
+  min-height:52px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  text-align:center;
+  padding:14px 18px;
+  border-radius:14px;
+  font-weight:700;
+  text-decoration:none;
+  box-sizing:border-box;
+}
