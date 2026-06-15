@@ -226,19 +226,37 @@ function answerInLane(question) {
     question.includes("can i make")
   ) {
     return `
-      <strong>${intel.status}.</strong>
+      <strong>${intel.status}</strong>
+
       <br><br>
 
+      <strong>Assessment</strong>
+
+      <br>
+
       You have ${intel.weightRemaining.toFixed(1)} lb remaining
-      with ${intel.daysRemaining} days left.
+      with ${intel.daysRemaining} days until competition.
+
       <br><br>
 
       Required pace:
       ${intel.weeklyPace.toFixed(1)} lb/week.
+
       <br><br>
 
       ${intel.guidance}
-      ${renderList(COMBAT_KNOWLEDGE.makingWeight)}
+
+      <br><br>
+
+      <strong>Key Focus</strong>
+
+      <ul>
+        <li>Track trends, not daily fluctuations.</li>
+        <li>Prioritize hydration.</li>
+        <li>Maintain protein intake.</li>
+        <li>Avoid extreme weight-cutting measures.</li>
+        <li>Protect sleep and training quality.</li>
+      </ul>
     `;
   }
 
@@ -248,8 +266,9 @@ function answerInLane(question) {
     question.includes("left")
   ) {
     return `
-      Weight remaining:
-      ${intel.weightRemaining.toFixed(1)} lb.
+      <strong>Weight Remaining</strong>
+      <br><br>
+      ${intel.weightRemaining.toFixed(1)} lb remaining.
     `;
   }
 
@@ -258,7 +277,8 @@ function answerInLane(question) {
     question.includes("per week")
   ) {
     return `
-      Required pace:
+      <strong>Required Pace</strong>
+      <br><br>
       ${intel.weeklyPace.toFixed(1)} lb/week.
       <br><br>
       ${intel.guidance}
@@ -271,7 +291,12 @@ function answerInLane(question) {
     question.includes("water")
   ) {
     return `
-      Hydration guidance:
+      <strong>Hydration Guidance</strong>
+
+      <br><br>
+
+      <strong>Key Focus</strong>
+
       ${renderList(COMBAT_KNOWLEDGE.hydration)}
     `;
   }
@@ -283,7 +308,12 @@ function answerInLane(question) {
     question.includes("nutrition")
   ) {
     return `
-      Fueling guidance:
+      <strong>Fueling Guidance</strong>
+
+      <br><br>
+
+      <strong>Key Focus</strong>
+
       ${renderList(COMBAT_KNOWLEDGE.fueling)}
     `;
   }
@@ -295,7 +325,12 @@ function answerInLane(question) {
     question.includes("after weigh ins")
   ) {
     return `
-      After weigh-ins:
+      <strong>After Weigh-Ins</strong>
+
+      <br><br>
+
+      <strong>Key Focus</strong>
+
       ${renderList(COMBAT_KNOWLEDGE.afterWeighIns)}
     `;
   }
@@ -307,7 +342,12 @@ function answerInLane(question) {
     question.includes("sore")
   ) {
     return `
-      Recovery guidance:
+      <strong>Recovery Guidance</strong>
+
+      <br><br>
+
+      <strong>Key Focus</strong>
+
       ${renderList(COMBAT_KNOWLEDGE.recovery)}
     `;
   }
@@ -317,13 +357,18 @@ function answerInLane(question) {
     question.includes("tournament week")
   ) {
     return `
-      Competition week:
+      <strong>Competition Week</strong>
+
+      <br><br>
+
+      <strong>Key Focus</strong>
+
       ${renderList(COMBAT_KNOWLEDGE.competitionWeek)}
     `;
   }
 
   return `
-    In lane.
+    <strong>In lane.</strong>
     <br><br>
     Ask about making weight, pace, remaining weight,
     competition timing, fueling, hydration, recovery,
