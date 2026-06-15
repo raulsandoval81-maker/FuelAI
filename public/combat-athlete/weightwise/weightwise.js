@@ -216,6 +216,20 @@ function getWeeklyTrend() {
       Math.abs(change)
   };
 }
+function getLatestWeighIn() {
+  const history =
+    getHistory()
+      .filter((entry) =>
+        entry.date &&
+        entry.weight
+      )
+      .sort((a, b) =>
+        new Date(b.date) - new Date(a.date)
+      );
+
+  return history[0] || null;
+}
+
 
 function saveHistory(history) {
   localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
@@ -387,9 +401,16 @@ function renderCompetitionMode() {
   const competitionName = plan.competitionName || "Competition";
 
 
-  const currentWeight =
-    Number(plan.currentWeight);
 
+
+  const latestWeighIn =
+  getLatestWeighIn();
+
+const currentWeight =
+  latestWeighIn
+    ? Number(latestWeighIn.weight)
+    : Number(plan.currentWeight);
+    
   const targetWeight =
     Number(plan.targetWeight);
 
