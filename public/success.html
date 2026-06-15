@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+
+  <title>Success | FuelAI</title>
+
+  <link
+    rel="stylesheet"
+    href="/assets/css/site.css"
+  />
+</head>
+
+<body data-theme="night">
+
+  <main class="scan-wrap">
+
+    <section class="scan-card">
+
+      <h1>
+        🎉 Subscription Active
+      </h1>
+
+      <p class="sub">
+        Your FuelAI membership has been updated.
+      </p>
+
+      <p id="planOutput">
+        Updating account...
+      </p>
+
+      <a
+        class="btn btn-primary"
+        href="/hub.html"
+      >
+        Continue To FuelAI
+      </a>
+
+    </section>
+
+  </main>
+
+<script>
+
+const params =
+  new URLSearchParams(
+    window.location.search
+  );
+
+const plan =
+  params.get("plan");
+
+const setup =
+  JSON.parse(
+    localStorage.getItem(
+      "fuelai-setup"
+    ) || "{}"
+  );
+
+if (
+  plan === "standard" ||
+  plan === "plus"
+) {
+
+  setup.membership =
+    plan;
+
+  localStorage.setItem(
+    "fuelai-setup",
+    JSON.stringify(setup)
+  );
+
+  document.getElementById(
+    "planOutput"
+  ).textContent =
+    `Membership activated: ${plan}`;
+}
+
+</script>
+
+</body>
+</html>
