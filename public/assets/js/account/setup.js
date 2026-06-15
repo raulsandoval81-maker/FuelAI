@@ -450,11 +450,10 @@ if (resetSetupBtn) {
           "general-health";
       }
 
-      if (membershipType) {
+       if (membershipType) {
 
-        membershipType.value =
-         saved.membership ||
-           "free";
+       membershipType.value =
+              "free";
         }
 
       if (combatStyle) {
