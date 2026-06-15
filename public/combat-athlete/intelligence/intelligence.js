@@ -374,8 +374,8 @@ analyzeBtn?.addEventListener(
 
     if (inLane) {
 
-      answerOutput.innerHTML =
-        answerInLane(question);
+answerOutput.innerHTML =
+  answerInLane(question);
 
       return;
     }
