@@ -452,15 +452,32 @@ const status =
       <strong>${weightRemaining.toFixed(1)} lb</strong>
     </div>
 
-    <div class="history-row">
-      <span>Days Remaining</span>
-      <strong>${daysRemaining}</strong>
-    </div>
+<div class="history-row">
+  <span>Days Remaining</span>
+  <strong>${daysRemaining}</strong>
+</div>
 
-    <div class="history-row">
-      <span>Weekly Pace</span>
-      <strong>${weeklyPace.toFixed(1)} lb/week</strong>
-    </div>
+<div class="history-row">
+  <span>Weekly Pace</span>
+  <strong>${weeklyPace.toFixed(1)} lb/week</strong>
+</div>
+
+${trend ? `
+  <div class="history-row">
+    <span>7-Day Change</span>
+    <strong>
+      ${trend.change >= 0 ? "+" : ""}
+      ${trend.change.toFixed(1)} lb
+    </strong>
+  </div>
+
+  <div class="history-row">
+    <span>Actual Pace</span>
+    <strong>
+      ${trend.weeklyPace.toFixed(1)} lb/week
+    </strong>
+  </div>
+` : ""}
 
     <div class="history-row">
      <span>Projected Competition Weight</span>
