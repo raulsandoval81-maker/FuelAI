@@ -216,6 +216,25 @@ function getWeeklyTrend() {
       Math.abs(change)
   };
 }
+function getTrendStatus(actualPace, requiredPace) {
+  if (!actualPace || !requiredPace) {
+    return "No Trend";
+  }
+
+  const difference =
+    actualPace - requiredPace;
+
+  if (difference >= 0.3) {
+    return "Ahead";
+  }
+
+  if (difference <= -0.3) {
+    return "Behind";
+  }
+
+  return "On Pace";
+}
+
 function getLatestWeighIn() {
   const history =
     getHistory()
@@ -452,6 +471,14 @@ const status =
   const trend =
   getWeeklyTrend();
 
+  const trendStatus =
+  trend
+    ? getTrendStatus(
+        trend.weeklyPace,
+        weeklyPace
+      )
+    : null;
+
   const coachReviewNeeded =
   weeklyPace > 2 || projectedGap > 3;
 
@@ -497,6 +524,13 @@ ${trend ? `
     <strong>
       ${trend.weeklyPace.toFixed(1)} lb/week
     </strong>
+  </div>
+` : ""}
+
+${trendStatus ? `
+  <div class="history-row">
+    <span>Trend Status</span>
+    <strong>${trendStatus}</strong>
   </div>
 ` : ""}
 
