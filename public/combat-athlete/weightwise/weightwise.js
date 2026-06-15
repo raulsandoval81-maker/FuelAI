@@ -410,7 +410,7 @@ const currentWeight =
   latestWeighIn
     ? Number(latestWeighIn.weight)
     : Number(plan.currentWeight);
-    
+
   const targetWeight =
     Number(plan.targetWeight);
 
@@ -511,7 +511,7 @@ ${trend ? `
     </div>
 
 <div class="history-row">
-  <span>Actual vs Projected</span>
+  <span>Distance From Target</span>
 <strong>
   ${actualVsProjected >= 0 ? "+" : ""}${actualVsProjected.toFixed(1)} lb
 </strong>
