@@ -146,7 +146,7 @@ const currentWeight =
   latestWeighIn
     ? Number(latestWeighIn.weight)
     : Number(plan.currentWeight);
-    
+
   const targetWeight =
     Number(plan.targetWeight);
 
@@ -265,7 +265,7 @@ function renderStatus() {
     <br><br>
 
     Current Weight:
-    ${plan.currentWeight || "Not Set"} lb
+    ${intel.currentWeight || "Not Set"} lb
     <br><br>
 
     Target Weight:
