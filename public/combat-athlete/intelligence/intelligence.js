@@ -282,18 +282,35 @@ function getAthleteSnapshot() {
       `fuelai-workout-${today}`
     ) === "complete";
 
-  return {
-    ...intel,
+return {
+  ...intel,
 
-    trendStatus:
-      getTrendStatusFromHistory(),
+  trendStatus:
+    getTrendStatusFromHistory(),
 
-    waterToday,
-    sleepHours,
-    trainingToday
-  };
+  waterToday,
+
+  hydrationStatus:
+    getHydrationStatus(waterToday),
+
+  sleepHours,
+
+  trainingToday
+};
+
 }
 
+function getHydrationStatus(waterToday) {
+  if (waterToday >= 128) {
+    return "Excellent";
+  }
+
+  if (waterToday >= 64) {
+    return "Good";
+  }
+
+  return "Needs Attention";
+}
 
 function renderStatus() {
   if (!plan) {
@@ -434,11 +451,25 @@ if (
   question.includes("hydration") ||
   question.includes("water")
 ) {
-  return `
-    <strong>Hydration Guidance</strong>
 
-    <br><br>
 
+const hydrationStatus =
+  athlete?.hydrationStatus ||
+  "Needs Attention";
+
+return `
+  <strong>Hydration Guidance</strong>
+
+  <br><br>
+
+  <strong>Hydration Status</strong>
+
+  <br>
+
+  ${hydrationStatus}
+
+  <br><br>
+  
     <strong>Assessment</strong>
 
     <br>
