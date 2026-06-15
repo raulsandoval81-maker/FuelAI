@@ -1607,3 +1607,13 @@ select.goal-select{
 .btn-primary:hover{
   opacity:.92;
 }
+.room-links{
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+  margin-top:24px;
+}
+
+.room-links .btn{
+  width:100%;
+}
