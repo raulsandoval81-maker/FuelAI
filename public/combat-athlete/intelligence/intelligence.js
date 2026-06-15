@@ -391,12 +391,48 @@ const intel =
 const trendStatus =
   athlete?.trendStatus;
 
+
   if (
-  question.includes("track") ||
-  question.includes("on track") ||
   question.includes("make weight") ||
   question.includes("can i make")
 ) {
+  return `
+    <strong>Weight Projection</strong>
+
+    <br><br>
+
+    <strong>Assessment</strong>
+
+    <br>
+
+    Weight Remaining:
+    ${intel.weightRemaining.toFixed(1)} lb
+
+    <br><br>
+
+    Required Pace:
+    ${intel.weeklyPace.toFixed(1)} lb/week
+
+    ${trendStatus
+      ? `<br><br>Trend Status: ${trendStatus}`
+      : ""}
+
+    <br><br>
+
+    ${
+      trendStatus === "Ahead"
+        ? "Based on your current trend, you are positioned to make weight if consistency continues."
+        : trendStatus === "On Pace"
+        ? "You are currently on pace, but consistency matters."
+        : "Your current trend suggests adjustments may be needed to reach the target."
+    }
+  `;
+}
+if (
+  question.includes("track") ||
+  question.includes("on track")
+)
+{
   return `
     <strong>${intel.status}</strong>
 
