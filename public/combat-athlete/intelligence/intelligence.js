@@ -295,10 +295,14 @@ return {
 
   sleepHours,
 
-  recoveryStatus:
+
+recoveryStatus:
   getRecoveryStatus(sleepHours),
 
-  trainingToday
+trainingToday,
+
+trainingStatus:
+  getTrainingStatus(trainingToday)
 };
 
 }
@@ -326,6 +330,13 @@ function getRecoveryStatus(sleepHours) {
 
   return "Needs Attention";
 }
+
+function getTrainingStatus(trainingToday) {
+  return trainingToday
+    ? "Logged"
+    : "Not Logged";
+}
+
 
 function renderStatus() {
   if (!plan) {
