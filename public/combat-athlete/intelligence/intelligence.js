@@ -246,6 +246,54 @@ function getTrendStatusFromHistory() {
 
   return "On Pace";
 }
+function getAthleteSnapshot() {
+  const intel =
+    getWeightWiseIntel();
+
+  if (!intel) {
+    return null;
+  }
+
+  const today =
+    new Date()
+      .toLocaleDateString(
+        "en-CA",
+        {
+          timeZone: "America/Los_Angeles"
+        }
+      );
+
+  const waterToday =
+    Number(
+      localStorage.getItem(
+        `fuelai-water-oz-${today}`
+      )
+    ) || 0;
+
+  const sleepHours =
+    Number(
+      localStorage.getItem(
+        `fuelai-sleep-hours-${today}`
+      )
+    ) || 0;
+
+  const trainingToday =
+    localStorage.getItem(
+      `fuelai-workout-${today}`
+    ) === "complete";
+
+  return {
+    ...intel,
+
+    trendStatus:
+      getTrendStatusFromHistory(),
+
+    waterToday,
+    sleepHours,
+    trainingToday
+  };
+}
+
 
 function renderStatus() {
   if (!plan) {
@@ -302,12 +350,16 @@ function answerInLane(question) {
     return "Complete WeightWise setup first.";
   }
 
-  const intel =
-    getWeightWiseIntel();
-    const trendStatus =
-  getTrendStatusFromHistory();
+const athlete =
+  getAthleteSnapshot();
 
-if (
+const intel =
+  athlete;
+
+const trendStatus =
+  athlete?.trendStatus;
+
+  if (
   question.includes("track") ||
   question.includes("on track") ||
   question.includes("make weight") ||
