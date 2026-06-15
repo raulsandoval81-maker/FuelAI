@@ -1617,3 +1617,13 @@ select.goal-select{
 .room-links .btn{
   width:100%;
 }
+.room-links .secondary-btn{
+  width:100%;
+  max-width:320px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  text-align:center;
+}
