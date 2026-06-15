@@ -42,22 +42,11 @@
   const hasSetup =
     Object.keys(setup).length > 0;
 
-const plan =
-  setup.plan || setup.goal || "";
-
-const lifestyleType =
-  setup.lifestyleType || "";
-
-const isCombatUser =
-  lifestyleType === "combat-athlete";
-
-window.location.href =
-  hasSetup
-    ? isCombatUser
-      ? "/combat-athlete/weightwise/"
-      : "/hub.html"
-    : "/account/setup.html";
-
+  window.location.href =
+    hasSetup
+      ? "/hub.html"
+      : "/account/setup.html";
 </script>
+
 </body>
 </html>

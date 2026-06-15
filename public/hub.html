@@ -156,14 +156,12 @@
     );
 
   const membership =
-    setup.membership || "free";
+    setup.membership === "basic"
+      ? "standard"
+      : setup.membership || "free";
 
   const lifestyleType =
     setup.lifestyleType || "general-health";
-
-  const isCombatPlus =
-    membership === "plus" &&
-    lifestyleType === "combat-athlete";
 
   const isCombatUser =
     lifestyleType === "combat-athlete";
@@ -180,29 +178,36 @@
       combatAthleteCard.remove();
     }
 
-    if (isCombatUser && !isCombatPlus) {
-      combatAthleteCard.href = "/upgrade.html";
+    if (isCombatUser) {
 
-      const copy =
-        combatAthleteCard.querySelector("p");
-
-      if (copy) {
-        copy.textContent =
-          "Plus feature: WeightWise, competition prep, and athlete readiness tools.";
-      }
-
-      const badge =
-        document.createElement("span");
-
-      badge.textContent =
-        "Unlock Plus";
-
-      combatAthleteCard.appendChild(badge);
-    }
-
-    if (isCombatPlus) {
       combatAthleteCard.href =
-        "/combat-athlete/weightwise/";
+        "/combat-athlete/";
+
+      if (membership !== "plus") {
+
+        const copy =
+          combatAthleteCard.querySelector("p");
+
+        if (copy) {
+          copy.textContent =
+            "Plus feature: WeightWise, competition prep, and athlete readiness tools.";
+        }
+
+        if (
+          !combatAthleteCard.querySelector(".unlock-badge")
+        ) {
+          const badge =
+            document.createElement("span");
+
+          badge.className =
+            "unlock-badge";
+
+          badge.textContent =
+            "Unlock Plus";
+
+          combatAthleteCard.appendChild(badge);
+        }
+      }
     }
   }
 </script>
