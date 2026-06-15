@@ -1612,11 +1612,10 @@ select.goal-select{
   flex-direction:column;
   gap:14px;
   margin-top:24px;
+  align-items:center;
 }
 
-.room-links .btn{
-  width:100%;
-}
+.room-links .btn,
 .room-links .secondary-btn{
   width:100%;
   max-width:320px;
