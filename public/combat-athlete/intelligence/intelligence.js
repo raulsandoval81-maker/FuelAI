@@ -575,7 +575,6 @@ if (
   question.includes("tired") ||
   question.includes("sore")
 ) {
-
   const recoveryStatus =
     athlete?.recoveryStatus ||
     "Needs Attention";
