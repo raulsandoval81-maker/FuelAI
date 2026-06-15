@@ -1,9 +1,10 @@
 const analyzeBtn =
   document.getElementById("analyzeBtn");
 
-const responseOutput =
-  document.getElementById("responseOutput");
+const answerOutput =
+  document.getElementById("answerOutput");
 
+  
 const statusOutput =
   document.getElementById("statusOutput");
 
