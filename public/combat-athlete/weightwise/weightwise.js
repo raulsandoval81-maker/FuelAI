@@ -151,6 +151,71 @@ function getHistory() {
   const saved = localStorage.getItem(HISTORY_KEY);
   return saved ? JSON.parse(saved) : [];
 }
+function getWeeklyTrend() {
+  const history =
+    getHistory()
+      .filter((entry) =>
+        entry.date &&
+        entry.weight
+      )
+      .sort((a, b) =>
+        new Date(a.date) - new Date(b.date)
+      );
+
+  if (history.length < 2) {
+    return null;
+  }
+
+  const latestEntry =
+    history[history.length - 1];
+
+  const latestDate =
+    new Date(latestEntry.date);
+
+  const weekWindow =
+    history.filter((entry) => {
+      const entryDate =
+        new Date(entry.date);
+
+      const diffDays =
+        (latestDate - entryDate) / 86400000;
+
+      return diffDays >= 0 && diffDays <= 7;
+    });
+
+  if (weekWindow.length < 2) {
+    return null;
+  }
+
+  const firstEntry =
+    weekWindow[0];
+
+  const latestWeight =
+    Number(latestEntry.weight);
+
+  const startWeight =
+    Number(firstEntry.weight);
+
+  const change =
+    latestWeight - startWeight;
+
+  return {
+    startDate:
+      firstEntry.date,
+
+    latestDate:
+      latestEntry.date,
+
+    startWeight,
+
+    latestWeight,
+
+    change,
+
+    weeklyPace:
+      Math.abs(change)
+  };
+}
 
 function saveHistory(history) {
   localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
@@ -361,6 +426,10 @@ const projectedCompetitionWeight =
 
 const status =
   getStatus(weeklyPace);
+
+
+  const trend =
+  getWeeklyTrend();
 
   const coachReviewNeeded =
   weeklyPace > 2 || projectedGap > 3;
