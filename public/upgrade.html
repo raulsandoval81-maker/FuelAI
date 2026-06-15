@@ -2,21 +2,139 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport"
-        content="width=device-width, initial-scale=1.0" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
 
   <title>Upgrade | FuelAI</title>
 
   <link
     rel="stylesheet"
-    href="/assets/css/site.css" />
+    href="/assets/css/site.css"
+  />
+
+  <style>
+    .upgrade-card {
+      text-align: center;
+    }
+
+    .plan-card {
+      margin-top: 24px;
+      padding: 24px 20px;
+      border: 1px solid rgba(168, 85, 247, 0.35);
+      border-radius: 24px;
+      background: rgba(15, 23, 42, 0.72);
+    }
+
+    .plan-card.plus {
+      border-color: rgba(168, 85, 247, 0.9);
+      box-shadow: 0 0 24px rgba(168, 85, 247, 0.25);
+    }
+
+    .plan-badge {
+      display: inline-block;
+      margin-bottom: 12px;
+      padding: 8px 18px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #7c3aed, #a855f7);
+      color: #fff;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+    }
+
+    .plan-icon {
+      font-size: 2rem;
+      color: #a855f7;
+      margin-bottom: 8px;
+    }
+
+    .plan-card h2 {
+      margin: 0 0 8px;
+      font-size: 2.1rem;
+    }
+
+    .plan-price {
+      margin: 0 0 18px;
+      color: #a855f7;
+      font-size: 1.4rem;
+      font-weight: 800;
+    }
+
+    .plan-list {
+      max-width: 320px;
+      margin: 0 auto;
+      text-align: left;
+    }
+
+    .plan-list p {
+      margin: 10px 0;
+      font-size: 1.05rem;
+      color: #f8fafc;
+    }
+
+    .plan-list span {
+      color: #a855f7;
+      font-weight: 900;
+      margin-right: 8px;
+    }
+
+    .upgrade-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      max-width: 340px;
+      min-height: 58px;
+      margin: 24px auto 0;
+      border-radius: 18px;
+      background: linear-gradient(135deg, #7c3aed, #a855f7);
+      color: #fff;
+      font-size: 1.15rem;
+      font-weight: 900;
+      text-decoration: none;
+      box-shadow: 0 0 20px rgba(168, 85, 247, 0.25);
+    }
+
+    .upgrade-btn:hover {
+      filter: brightness(1.08);
+    }
+
+    .plan-divider {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin: 24px 0 8px;
+      color: #c4b5fd;
+      font-weight: 900;
+    }
+
+    .plan-divider::before,
+    .plan-divider::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: rgba(255, 255, 255, 0.14);
+    }
+
+    .back-link {
+      display: inline-block;
+      margin-top: 26px;
+      color: #a855f7;
+      font-size: 1.1rem;
+      font-weight: 900;
+      text-decoration: none;
+    }
+  </style>
 </head>
 
 <body data-theme="night">
 
   <main class="scan-wrap">
 
-    <section class="scan-card">
+    <section class="scan-card upgrade-card">
 
       <h1>
         🔓 Upgrade FuelAI
@@ -26,91 +144,83 @@
         Choose the plan that fits your goals.
       </p>
 
-      <div class="note-box">
+      <div class="plan-card">
+
+        <div class="plan-icon">
+          ☆
+        </div>
 
         <h2>
           Standard
         </h2>
 
-        <p>
+        <p class="plan-price">
           $5.99/month
         </p>
 
-        <p>
-          ✓ Advanced TrackWise
-        </p>
-
-        <p>
-          ✓ Progress Tracking
-        </p>
-
-        <p>
-          ✓ History & Trends
-        </p>
-
-        <p>
-          ✓ Extended Logs
-        </p>
+        <div class="plan-list">
+          <p><span>✓</span>Advanced TrackWise</p>
+          <p><span>✓</span>Progress Tracking</p>
+          <p><span>✓</span>History & Trends</p>
+          <p><span>✓</span>Extended Logs</p>
+        </div>
 
         <a
-          class="btn btn-primary"
+          class="upgrade-btn"
           href="https://buy.stripe.com/test_6oU7sE1fpdN51WKcoba3u00"
           target="_blank"
         >
-          Choose Standard
+          Choose Standard →
         </a>
 
       </div>
 
-      <div class="note-box">
+      <div class="plan-divider">
+        VS
+      </div>
+
+      <div class="plan-card plus">
+
+        <div class="plan-badge">
+          Most Popular
+        </div>
+
+        <div class="plan-icon">
+          ♛
+        </div>
 
         <h2>
           Plus
         </h2>
 
-        <p>
+        <p class="plan-price">
           $10.99/month
         </p>
 
-        <p>
-          ✓ Everything in Standard
-        </p>
-
-        <p>
-          ✓ Combat Athlete
-        </p>
-
-        <p>
-          ✓ WeightWise
-        </p>
-
-        <p>
-          ✓ Weight History
-        </p>
-
-        <p>
-          ✓ Descent Schedule
-        </p>
-
-        <p>
-          ✓ Competition Mode
-        </p>
+        <div class="plan-list">
+          <p><span>✓</span>Everything in Standard</p>
+          <p><span>✓</span>Combat Athlete</p>
+          <p><span>✓</span>WeightWise</p>
+          <p><span>✓</span>Weight History</p>
+          <p><span>✓</span>Descent Schedule</p>
+          <p><span>✓</span>Competition Mode</p>
+        </div>
 
         <a
-          class="btn btn-primary"
+          class="upgrade-btn"
           href="https://buy.stripe.com/test_dRm7sE0bl9wP7h4gEra3u01"
           target="_blank"
         >
-          Choose Plus
+          Choose Plus →
         </a>
 
       </div>
 
       <a
-        class="btn btn-secondary"
+        class="back-link"
         href="/hub.html"
       >
-        Back To FuelAI
+        ← Back To FuelAI
       </a>
 
     </section>
