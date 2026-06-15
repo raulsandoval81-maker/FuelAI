@@ -299,9 +299,8 @@ if (
 
     <br>
 
-    Consistent hydration supports performance,
-    recovery, and competition readiness.
-
+Your hydration habits can directly affect recovery,
+energy levels, and competition readiness.
     <br><br>
 
     <strong>Key Focus</strong>
