@@ -1,3 +1,8 @@
+console.log("logs.js loaded");
+console.log("FuelAIPlan:", window.FuelAIPlan);
+console.log("FuelAILog:", window.FuelAILog);
+
+
 const logsContainer =
   document.getElementById("logsContainer");
 
@@ -9,6 +14,10 @@ const toggleFullHistoryBtn =
 
 const fullHistoryContainer =
   document.getElementById("fullHistoryContainer");
+
+  if (!logsContainer) {
+  console.warn("logsContainer missing");
+}
 
 const features =
   window.FuelAIPlan?.getFuelAIFeatures?.() || {
