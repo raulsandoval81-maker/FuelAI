@@ -141,6 +141,137 @@
     .sandman-footer strong{
       color:#22c55e;
     }
+
+    .hero-image{
+  display:block;
+  width:100%;
+  max-width:520px;
+  margin:28px auto 24px;
+  border-radius:22px;
+  filter:drop-shadow(0 0 40px rgba(34,197,94,.18));
+  animation:heroFade .7s ease-out both;
+}
+
+.feature-pill{
+  padding:16px;
+  border-radius:20px;
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.09);
+  transition:
+    transform .16s ease,
+    background .16s ease,
+    border-color .16s ease;
+}
+
+.feature-pill:active{
+  transform:scale(.985);
+  background:rgba(255,255,255,.09);
+  border-color:rgba(34,197,94,.32);
+}
+
+.landing-btn{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  min-height:58px;
+  border-radius:18px;
+  text-decoration:none;
+  font-weight:1000;
+  letter-spacing:.03em;
+  transition:
+    transform .14s ease,
+    box-shadow .14s ease,
+    opacity .14s ease;
+  -webkit-tap-highlight-color:transparent;
+  touch-action:manipulation;
+}
+
+.landing-btn:active{
+  transform:scale(.975);
+  opacity:.92;
+}
+
+.landing-btn.primary:active{
+  box-shadow:0 0 14px rgba(34,197,94,.22);
+}
+
+.landing-card{
+  animation:cardRise .55s ease-out both;
+}
+
+@keyframes heroFade{
+  from{
+    opacity:0;
+    transform:translateY(12px) scale(.985);
+  }
+
+  to{
+    opacity:1;
+    transform:translateY(0) scale(1);
+  }
+}
+
+@keyframes cardRise{
+  from{
+    opacity:0;
+    transform:translateY(18px);
+  }
+
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
+}
+
+@media (max-width:600px){
+  .landing-wrap{
+    padding:18px 12px;
+    align-items:flex-start;
+  }
+
+  .landing-card{
+    padding:24px 16px;
+    border-radius:24px;
+  }
+
+  .landing-title{
+    font-size:clamp(2.5rem,16vw,4rem);
+  }
+
+  .landing-line{
+    font-size:1.05rem;
+  }
+
+  .hero-image{
+    margin:22px auto 20px;
+    border-radius:18px;
+  }
+
+  .feature-stack{
+    gap:10px;
+  }
+
+  .feature-pill{
+    padding:15px;
+  }
+
+  .landing-btn{
+    min-height:60px;
+    font-size:1rem;
+  }
+}
+
+@media (prefers-reduced-motion:reduce){
+  .landing-card,
+  .hero-image{
+    animation:none;
+  }
+
+  .landing-btn,
+  .feature-pill{
+    transition:none;
+  }
+}
   </style>
 </head>
 
