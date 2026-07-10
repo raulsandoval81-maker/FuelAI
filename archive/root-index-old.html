@@ -1,0 +1,42 @@
+  <title>FuelAI</title>
+
+  <link
+    rel="stylesheet"
+    href="/assets/css/site.css"
+  />
+</head>
+
+<body data-theme="night">
+
+  <main class="hero">
+
+    <h1>FuelAI</h1>
+
+    <p class="sub">
+      Loading...
+    </p>
+
+  </main>
+
+  <script src="/assets/js/core/auth-soft.js"></script>
+
+
+<script>
+  window.FuelAIAuth?.requireSoftLogin();
+
+  const setup =
+    JSON.parse(
+      localStorage.getItem("fuelai-setup") || "{}"
+    );
+
+  const hasSetup =
+    Object.keys(setup).length > 0;
+
+  window.location.href =
+    hasSetup
+      ? "/index.html"
+      : "/account/setup.html";
+</script>
+
+</body>
+</html>

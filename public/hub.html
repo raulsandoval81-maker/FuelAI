@@ -9,7 +9,7 @@
  content="width=device-width, initial-scale=1.0"
 />
 
-  <title>FuelAI Hub</title>
+  <title>FuelAI™ Hub</title>
 
   <link
     rel="stylesheet"
@@ -27,7 +27,7 @@
   <div>
 
     <h1>
-      FuelAI
+      FuelAI™
     </h1>
 
     <p>
@@ -39,6 +39,35 @@
 </header>
 
 <section class="hub-grid">
+
+
+    </a>
+
+  <a
+    class="hub-card purple"
+    id="trackwiseCard"
+    href="/trackwise/index.html"
+  >
+
+    <img
+      src="/assets/img/hub/stayontrack.png"
+      alt="TrackWise"
+    />
+
+    <div class="hub-card-copy">
+
+      <h3>
+        TrackWise
+      </h3>
+
+      <p>
+        Track consistency, progress, and daily habits.
+      </p>
+
+    </div>
+
+  </a>
+
 
   <a
     class="hub-card green"
@@ -86,32 +115,6 @@
 
     </div>
 
-  </a>
-
-  <a
-    class="hub-card purple"
-    id="trackwiseCard"
-    href="/trackwise/index.html"
-  >
-
-    <img
-      src="/assets/img/hub/stayontrack.png"
-      alt="TrackWise"
-    />
-
-    <div class="hub-card-copy">
-
-      <h3>
-        TrackWise
-      </h3>
-
-      <p>
-        Track consistency, progress, and daily habits.
-      </p>
-
-    </div>
-
-  </a>
 
   <a
     class="hub-card red"
@@ -141,13 +144,6 @@
 </section>
 
 <footer class="sandman-footer">
-  <p>
-    FuelAI™
-  </p>
-
-  <p>
-    Powered by <strong>Sandman™</strong>
-  </p>
 </footer>
   </main>
 
@@ -180,43 +176,58 @@
   const combatAthleteCard =
     document.getElementById("combatAthleteCard");
 
-  if (combatAthleteCard) {
+const DEV_UNLOCK_ALL = true;
+
+function lockCard(card, label, message, href = "/plans.html") {
+  if (DEV_UNLOCK_ALL) return;
+
+  if (!card) return;
+
+  card.href = href;
+  card.classList.add("locked-card");
+
+  const copy = card.querySelector("p");
+
+  if (copy && message) {
+    copy.textContent = message;
+  }
+
+  if (!card.querySelector(".unlock-badge")) {
+    const badge = document.createElement("span");
+    badge.className = "unlock-badge";
+    badge.textContent = label;
+    card.appendChild(badge);
+  }
+}
+    if (combatAthleteCard) {
+    combatAthleteCard.href = "/combat-athlete/";
 
     if (!isCombatUser) {
-      combatAthleteCard.remove();
+      lockCard(
+        combatAthleteCard,
+        "Combat Setup",
+        "Designed for combat athletes. Update setup to unlock WeightWise and competition tools.",
+        "/setup.html"
+      );
     }
 
-    if (isCombatUser) {
-
-      combatAthleteCard.href =
-        "/combat-athlete/";
-
-      if (membership !== "plus") {
-
-        const copy =
-          combatAthleteCard.querySelector("p");
-
-        if (copy) {
-          copy.textContent =
-            "Plus feature: WeightWise, competition prep, and athlete readiness tools.";
-        }
-
-        if (
-          !combatAthleteCard.querySelector(".unlock-badge")
-        ) {
-          const badge =
-            document.createElement("span");
-
-          badge.className =
-            "unlock-badge";
-
-          badge.textContent =
-            "Unlock Plus";
-
-          combatAthleteCard.appendChild(badge);
-        }
-      }
+    if (isCombatUser && membership !== "plus") {
+      lockCard(
+        combatAthleteCard,
+        "Unlock Plus",
+        "Plus feature: WeightWise, competition prep, and athlete readiness tools.",
+        "/plans.html"
+      );
     }
+  }
+
+  if (trackwiseCard && membership === "free") {
+    lockCard(
+      trackwiseCard,
+      "Upgrade",
+      "Standard feature: track consistency, progress, and daily habits.",
+      "/plans.html"
+    );
   }
 </script>
 

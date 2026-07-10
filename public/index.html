@@ -8,45 +8,220 @@
     content="width=device-width, initial-scale=1.0"
   />
 
-  <title>FuelAI</title>
+  <title>FuelAI | Powered by Sandman</title>
 
-  <link
-    rel="stylesheet"
-    href="/assets/css/site.css"
-  />
+  <link rel="stylesheet" href="/assets/css/site.css" />
+
+  <style>
+    .landing-wrap{
+      min-height:100vh;
+      padding:32px 20px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:
+        radial-gradient(circle at top,#14532d 0,#020617 42%),
+        #020617;
+      color:#fff;
+    }
+
+    .landing-card{
+      width:100%;
+      max-width:520px;
+      padding:32px 22px;
+      border:1px solid rgba(34,197,94,.28);
+      border-radius:32px;
+      background:rgba(15,23,42,.82);
+      box-shadow:0 0 40px rgba(34,197,94,.18);
+      text-align:center;
+    }
+
+    .brand-kicker{
+      color:#86efac;
+      font-size:.8rem;
+      font-weight:900;
+      letter-spacing:.18em;
+      text-transform:uppercase;
+      margin-bottom:10px;
+    }
+
+    .landing-title{
+      margin:0;
+      font-size:clamp(2.7rem,12vw,4.4rem);
+      font-weight:1000;
+      letter-spacing:-.06em;
+    }
+
+    .landing-title span{
+      color:#22c55e;
+    }
+
+    .landing-line{
+      margin:16px auto 0;
+      max-width:380px;
+      color:#e5e7eb;
+      font-size:1.18rem;
+      line-height:1.5;
+      font-weight:700;
+    }
+
+    .landing-sub{
+      margin:16px auto 0;
+      max-width:380px;
+      color:#94a3b8;
+      line-height:1.6;
+    }
+
+    .feature-stack{
+      margin:28px 0;
+      display:grid;
+      gap:12px;
+      text-align:left;
+    }
+
+    .feature-pill{
+      padding:16px;
+      border-radius:20px;
+      background:rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.09);
+    }
+
+    .feature-pill strong{
+      display:block;
+      color:#fff;
+      font-size:1.05rem;
+      margin-bottom:4px;
+    }
+
+    .feature-pill p{
+      margin:0;
+      color:#cbd5e1;
+      font-size:.95rem;
+      line-height:1.45;
+    }
+
+    .landing-actions{
+      display:grid;
+      gap:12px;
+      margin-top:20px;
+    }
+
+    .landing-btn{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      min-height:58px;
+      border-radius:18px;
+      text-decoration:none;
+      font-weight:1000;
+      letter-spacing:.03em;
+    }
+
+    .landing-btn.primary{
+      background:linear-gradient(135deg,#16a34a,#22c55e);
+      color:#02130a;
+      box-shadow:0 0 24px rgba(34,197,94,.3);
+    }
+
+    .landing-btn.secondary{
+      background:rgba(255,255,255,.07);
+      color:#e5e7eb;
+      border:1px solid rgba(255,255,255,.12);
+    }
+
+    .sandman-footer{
+      margin-top:28px;
+      color:#94a3b8;
+      font-size:.82rem;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+    }
+    
+
+    .sandman-footer strong{
+      color:#22c55e;
+    }
+  </style>
 </head>
 
 <body data-theme="night">
 
-  <main class="hero">
+  <main class="landing-wrap">
 
-    <h1>FuelAI</h1>
+    <section class="landing-card">
 
-    <p class="sub">
-      Loading...
-    </p>
+      <p class="brand-kicker">
+        Powered by Sandman™
+      </p>
+
+      <h1 class="landing-title">
+        Fuel<span>AI</span>
+      </h1>
+
+      <p class="landing-line">
+        Track Better. Eat Smarter. Perform Better.
+      </p>
+
+      <img
+        class="hero-image"
+        src="/assets/img/hero/fuelai-hero-v1.png"
+        alt="FuelAI app preview"
+      />
+
+      <p class="landing-sub">
+        Nutrition intelligence for everyday athletes and combat athletes.
+      </p>
+
+      <div class="feature-stack">
+
+        <div class="feature-pill">
+          <strong>📈 TrackWise</strong>
+          <p>Daily tracking, habits, logs, and progress history.</p>
+        </div>
+
+        <div class="feature-pill">
+          <strong>🥗 MealWise</strong>
+          <p>AI meal guidance without overthinking every bite.</p>
+        </div>
+
+        <div class="feature-pill">
+          <strong>📦 FridgeWise</strong>
+          <p>Meal ideas from the food you already have.</p>
+        </div>
+
+        <div class="feature-pill">
+          <strong>🥇 Combat Athlete</strong>
+          <p>WeightWise, competition prep, and readiness tools.</p>
+        </div>
+
+      </div>
+
+      <div class="landing-actions">
+
+        <a
+          class="landing-btn primary"
+          href="/account/login.html"
+        >
+          Get Started →
+        </a>
+
+        <a
+          class="landing-btn secondary"
+          href="/account/login.html"
+        >
+          Sign In
+        </a>
+
+      </div>
+
+      <footer class="sandman-footer">
+        FuelAI™<br />
+        <strong>Powered by Sandman™</strong>
+      </footer>
+
+    </section>
 
   </main>
-
-  <script src="/assets/js/core/auth-soft.js"></script>
-
-
-<script>
-  window.FuelAIAuth?.requireSoftLogin();
-
-  const setup =
-    JSON.parse(
-      localStorage.getItem("fuelai-setup") || "{}"
-    );
-
-  const hasSetup =
-    Object.keys(setup).length > 0;
-
-  window.location.href =
-    hasSetup
-      ? "/hub.html"
-      : "/account/setup.html";
-</script>
 
 </body>
 </html>

@@ -95,45 +95,49 @@
     </section>
 
   </main>
-
 <script src="/assets/js/core/auth-soft.js"></script>
 
 <script>
+  const continueBtn =
+    document.getElementById("continueBtn");
 
-const continueBtn =
-  document.getElementById("continueBtn");
+  const emailInput =
+    document.getElementById("emailInput");
 
-const emailInput =
-  document.getElementById("emailInput");
-
-continueBtn?.addEventListener(
-  "click",
-  () => {
-
+  function continueToFuelAI() {
     const email =
       emailInput.value.trim();
 
-    if (!email.includes("@")) return;
+    if (!email.includes("@")) {
+      return;
+    }
 
     window.FuelAIAuth.softLogin(email);
 
+    const hasSetup =
+      !!localStorage.getItem("fuelai-setup");
+
     window.location.href =
-      "/index.html";
-
+      hasSetup
+        ? "/hub.html"
+        : "/account/setup.html";
   }
-);
 
-emailInput.addEventListener(
-  "keydown",
-  (e) => {
+  continueBtn?.addEventListener(
+    "click",
+    continueToFuelAI
+  );
 
-    if (e.key === "Enter") {
-      continueBtn.click();
+  emailInput?.addEventListener(
+    "keydown",
+    (e) => {
+      if (e.key === "Enter") {
+        continueToFuelAI();
+      }
     }
-
-  }
-);
-
+  );
 </script>
+
+
 </body>
 </html>
