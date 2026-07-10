@@ -1,118 +1,285 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+
+  <meta
+    name="description"
+    content="Plan a safer path from current weight to target weight with FuelAI WeightWise."
+  />
+
+  <link rel="icon" href="data:," />
 
   <title>WeightWise | FuelAI</title>
-<link rel="stylesheet" href="../../assets/css/site.css" />
-<link rel="stylesheet" href="./weightwise.css" />
+
+  <link rel="stylesheet" href="/assets/css/site.css" />
+  <link rel="stylesheet" href="./weightwise.css" />
 </head>
 
 <body data-theme="night">
+
   <main class="weightwise-wrap">
+
     <section class="weightwise-card">
-      <p class="range-label">FuelAI Beta</p>
 
-      <h1>⚖️ WeightWise</h1>
+      <header class="weightwise-header">
 
-      
+        <p class="range-label">
+          COMBAT ATHLETE
+        </p>
 
-      <p class="sub">
-        Current weight → target weight → competition date.
-      </p>
+        <h1>
+          ⚖️ WeightWise
+        </h1>
 
-      <div class="note-box">
-        Beta tool. This does not replace medical advice or safe coaching judgment.
-      </div>
-      
+        <p class="sub">
+          Compare your current weight, target weight, and competition date in one clear view.
+        </p>
 
-      <form id="weightwiseForm" class="wise-form">
+      </header>
 
+      <section
+        class="note-box"
+        aria-label="WeightWise safety notice"
+      >
+        WeightWise is a planning tool. It does not replace medical advice, certified nutrition guidance, or responsible coaching judgment.
+      </section>
 
-        <label>
-          Current Weight
-          <input id="currentWeight" type="number" step="0.1" placeholder="152.4" required />
-        </label>
+      <form
+        id="weightwiseForm"
+        class="wise-form"
+      >
 
-        <label>
-          Target Weight
-          <input id="targetWeight" type="number" step="0.1" placeholder="145" required />
-        </label>
+        <div class="form-section">
 
-        <label>
-          Weight Class
-          <input id="weightClass" type="text" placeholder="145" />
-        </label>
+          <p class="range-label">
+            Athlete Weight
+          </p>
 
-         <label>
-        Competition Name
-       <input id="competitionName" type="text" placeholder="Central Coast Championships"/>
-        </label>
+          <label for="currentWeight">
+            Current Weight
+          </label>
 
+          <div class="input-with-unit">
+            <input
+              id="currentWeight"
+              type="number"
+              step="0.1"
+              min="1"
+              inputmode="decimal"
+              placeholder="152.4"
+              required
+            />
 
-        <label>
-          Competition Date
-          <input id="competitionDate" type="date" required />
-        </label>
-
-        <button type="submit" class="btn btn-primary">
-          Check Status
-        </button>
-      </form>
-
-      <section id="weightwiseOutput" class="output-card hidden">
-        <h2>Status</h2>
-
-        <div class="status-pill" id="statusOutput">—</div>
-
-        <div class="stat-grid">
-          <div>
-            <span>Remaining</span>
-            <strong id="remainingOutput">—</strong>
+            <span>
+              lb
+            </span>
           </div>
 
-          <div>
-            <span>Days</span>
-            <strong id="daysOutput">—</strong>
+          <label for="targetWeight">
+            Target Weight
+          </label>
+
+          <div class="input-with-unit">
+            <input
+              id="targetWeight"
+              type="number"
+              step="0.1"
+              min="1"
+              inputmode="decimal"
+              placeholder="145"
+              required
+            />
+
+            <span>
+              lb
+            </span>
           </div>
 
-          <div>
-            <span>Weekly Pace</span>
-            <strong id="weeklyOutput">—</strong>
-          </div>
+          <label for="weightClass">
+            Weight Class
+          </label>
 
-          <div>
-            <span>Class</span>
-            <strong id="classOutput">—</strong>
-          </div>
+          <input
+            id="weightClass"
+            type="text"
+            inputmode="decimal"
+            placeholder="145"
+            autocomplete="off"
+          />
+
         </div>
 
-        <p id="guidanceOutput" class="guidance"></p>
+        <div class="form-section">
+
+          <p class="range-label">
+            Competition
+          </p>
+
+          <label for="competitionName">
+            Competition Name
+          </label>
+
+          <input
+            id="competitionName"
+            type="text"
+            placeholder="Central Coast Championships"
+            autocomplete="off"
+          />
+
+          <label for="competitionDate">
+            Competition Date
+          </label>
+
+          <input
+            id="competitionDate"
+            type="date"
+            required
+          />
+
+        </div>
+
+        <button
+          type="submit"
+          class="btn btn-primary"
+        >
+          Check Weight Status →
+        </button>
+
+      </form>
+
+      <section
+        id="weightwiseOutput"
+        class="output-card hidden"
+        aria-live="polite"
+        aria-labelledby="weightwiseStatusTitle"
+      >
+
+        <div class="output-heading">
+
+          <p class="range-label">
+            Weight Plan
+          </p>
+
+          <h2 id="weightwiseStatusTitle">
+            Status
+          </h2>
+
+        </div>
+
+        <div
+          class="status-pill"
+          id="statusOutput"
+        >
+          —
+        </div>
+
+        <div class="stat-grid">
+
+          <div>
+            <span>
+              Remaining
+            </span>
+
+            <strong id="remainingOutput">
+              —
+            </strong>
+          </div>
+
+          <div>
+            <span>
+              Days
+            </span>
+
+            <strong id="daysOutput">
+              —
+            </strong>
+          </div>
+
+          <div>
+            <span>
+              Weekly Pace
+            </span>
+
+            <strong id="weeklyOutput">
+              —
+            </strong>
+          </div>
+
+          <div>
+            <span>
+              Weight Class
+            </span>
+
+            <strong id="classOutput">
+              —
+            </strong>
+          </div>
+
+        </div>
+
+        <p
+          id="guidanceOutput"
+          class="guidance"
+        ></p>
+
       </section>
-      <nav class="room-links">
 
+      <section class="weightwise-tools">
 
-<a href="./weight-history.html">
-  📉 Weight History
-</a>
+        <p class="range-label">
+          WeightWise Tools
+        </p>
 
-<a href="./descent-schedule.html">
-  📆 Descent Schedule
-</a>
+        <nav
+          class="room-links"
+          aria-label="WeightWise navigation"
+        >
 
-<a href="./competition-mode.html">
-  🏆 Competition Mode
-</a>
+          <a href="./weight-history.html">
+            📉 Weight History
+          </a>
 
-<a class="secondary-btn" href="/hub.html">
-  🏠 Return to Hub
-</a>
-</nav>
+          <a href="./descent-schedule.html">
+            📆 Descent Schedule
+          </a>
 
+          <a href="./competition-mode.html">
+            🏆 Competition Mode
+          </a>
+
+          <a
+            class="secondary-btn"
+            href="/hub.html"
+          >
+            🏠 Return to Hub
+          </a>
+
+        </nav>
+
+      </section>
+
+      <footer class="hero-note">
+        FuelAI™ • Powered by Sandman™
+      </footer>
 
     </section>
+
   </main>
-<script src="./weightwise.js"></script>
+
+  <script src="/assets/js/core/auth-soft.js"></script>
+
+  <script>
+    window.FuelAIAuth?.requireSoftLogin();
+  </script>
+
+  <script src="./weightwise.js"></script>
+
 </body>
 </html>

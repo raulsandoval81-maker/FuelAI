@@ -2,12 +2,62 @@ console.log(
   "FRIDGEWISE RESULTS LOADED"
 );
 
+const RESULT_STORAGE_KEY =
+  "fuelwise_fridge_result";
+
+const LAST_MEAL_STORAGE_KEY =
+  "fuelai-last-meal";
+
+function getStoredResult() {
+  try {
+    return JSON.parse(
+      localStorage.getItem(
+        RESULT_STORAGE_KEY
+      ) || "{}"
+    );
+  } catch (error) {
+    console.warn(
+      "Could not read FridgeWise result.",
+      error
+    );
+
+    return {};
+  }
+}
+
+function normalizeText(value) {
+  return String(value || "").trim();
+}
+
+function normalizeList(items) {
+  if (!Array.isArray(items)) {
+    return [];
+  }
+
+  return items
+    .map(normalizeText)
+    .filter(Boolean);
+}
+
+function createTextElement(
+  tagName,
+  className,
+  text
+) {
+  const element =
+    document.createElement(tagName);
+
+  if (className) {
+    element.className = className;
+  }
+
+  element.textContent = text;
+
+  return element;
+}
+
 const result =
-  JSON.parse(
-    localStorage.getItem(
-      "fuelwise_fridge_result"
-    ) || "{}"
-  );
+  getStoredResult();
 
 const mealsContainer =
   document.getElementById(
@@ -15,174 +65,432 @@ const mealsContainer =
   );
 
 const meals =
-  result.suggestedMeals || [];
+  Array.isArray(result.suggestedMeals)
+    ? result.suggestedMeals
+    : [];
 
-if (!mealsContainer) {
-  console.warn(
-    "No mealsContainer found."
+function renderSummary(container) {
+  const detectedItems =
+    normalizeList(result.detectedItems);
+
+  const detected =
+    document.createElement("p");
+
+  detected.className =
+    "feedback";
+
+  const detectedLabel =
+    document.createElement("strong");
+
+  detectedLabel.textContent =
+    "🧊 Detected: ";
+
+  detected.append(
+    detectedLabel,
+    document.createTextNode(
+      detectedItems.join(", ") ||
+      "No clear items detected"
+    )
   );
-} else {
 
-  mealsContainer.innerHTML = `
+  container.appendChild(detected);
 
-    <p class="feedback">
-      <strong>🧊 Detected:</strong>
-      ${(result.detectedItems || []).join(", ") || "No clear items detected"}
-    </p>
+  const possibleItems =
+    normalizeList(result.possibleItems);
 
-    ${
-      result.possibleItems?.length
-        ? `
-          <p class="feedback">
-            <strong>Maybe:</strong>
-            ${result.possibleItems.join(", ")}
-          </p>
-        `
-        : ""
+  if (!possibleItems.length) {
+    return;
+  }
+
+  const possible =
+    document.createElement("p");
+
+  possible.className =
+    "feedback";
+
+  const possibleLabel =
+    document.createElement("strong");
+
+  possibleLabel.textContent =
+    "Maybe: ";
+
+  possible.append(
+    possibleLabel,
+    document.createTextNode(
+      possibleItems.join(", ")
+    )
+  );
+
+  container.appendChild(possible);
+}
+
+function createFeedbackRow(
+  label,
+  value
+) {
+  const paragraph =
+    document.createElement("p");
+
+  paragraph.className =
+    "feedback";
+
+  const strong =
+    document.createElement("strong");
+
+  strong.textContent =
+    label;
+
+  paragraph.append(
+    strong,
+    document.createTextNode(value)
+  );
+
+  return paragraph;
+}
+
+function createMealCard(meal) {
+  const card =
+    document.createElement("article");
+
+  card.className =
+    "history-item meal-card";
+
+  const mealName =
+    normalizeText(meal.name) ||
+    "Meal idea";
+
+  const mealType =
+    meal.type === "snack"
+      ? "🥨 Quick Snack"
+      : "🍽️ Quick Meal";
+
+  const mealTime =
+    normalizeText(meal.time) ||
+    "10 min";
+
+  const uses =
+    normalizeList(meal.uses);
+
+  const needs =
+    normalizeList(meal.needs);
+
+  const steps =
+    normalizeList(meal.steps);
+
+  const top =
+    document.createElement("div");
+
+  top.className =
+    "meal-top";
+
+  const headingWrap =
+    document.createElement("div");
+
+  headingWrap.append(
+    createTextElement(
+      "strong",
+      "meal-title",
+      mealType
+    ),
+    createTextElement(
+      "div",
+      "history-meta",
+      mealName
+    )
+  );
+
+  const time =
+    createTextElement(
+      "div",
+      "meal-time",
+      `⏱️ ${mealTime}`
+    );
+
+  top.append(
+    headingWrap,
+    time
+  );
+
+  card.appendChild(top);
+
+  const whyItWorks =
+    normalizeText(meal.whyItWorks);
+
+  if (whyItWorks) {
+    card.appendChild(
+      createTextElement(
+        "p",
+        "feedback",
+        whyItWorks
+      )
+    );
+  }
+
+  card.appendChild(
+    createFeedbackRow(
+      "🧊 Uses: ",
+      uses.join(", ") ||
+      "Items from your fridge"
+    )
+  );
+
+  card.appendChild(
+    createFeedbackRow(
+      "🛒 Needs: ",
+      needs.join(", ") ||
+      "Nothing extra"
+    )
+  );
+
+  if (steps.length) {
+    const list =
+      document.createElement("ol");
+
+    list.className =
+      "meal-steps";
+
+    steps.forEach((step) => {
+      const item =
+        document.createElement("li");
+
+      item.textContent =
+        step;
+
+      list.appendChild(item);
+    });
+
+    card.appendChild(list);
+  }
+
+  const button =
+    document.createElement("button");
+
+  button.className =
+    "secondary-btn make-this-btn";
+
+  button.type =
+    "button";
+
+  button.textContent =
+    "✅ Make This";
+
+  button.dataset.meal =
+    mealName;
+
+  button._mealNeeds =
+    needs;
+
+  card.appendChild(button);
+
+  return card;
+}
+
+function renderMeals(container) {
+  const historySection =
+    document.createElement("div");
+
+  historySection.className =
+    "history-section";
+
+  if (!meals.length) {
+    const empty =
+      document.createElement("div");
+
+    empty.className =
+      "history-item meal-card";
+
+    empty.append(
+      createTextElement(
+        "strong",
+        "meal-title",
+        "No meal ideas yet"
+      ),
+      createTextElement(
+        "p",
+        "feedback",
+        "Return to FridgeWise and add or scan more food to generate suggestions."
+      )
+    );
+
+    historySection.appendChild(
+      empty
+    );
+  } else {
+    meals.forEach((meal) => {
+      historySection.appendChild(
+        createMealCard(meal)
+      );
+    });
+  }
+
+  container.appendChild(
+    historySection
+  );
+}
+
+function renderGrocerySummary(
+  container
+) {
+  const groceryList =
+    normalizeList(result.groceryList);
+
+  const card =
+    document.createElement("div");
+
+  card.className =
+    "history-item grocery-card";
+
+  card.append(
+    createTextElement(
+      "strong",
+      "",
+      "🛒 Quick Grocery List"
+    ),
+    createTextElement(
+      "p",
+      "feedback",
+      groceryList.join(", ") ||
+      "No extra groceries needed"
+    )
+  );
+
+  container.appendChild(card);
+}
+
+function renderResults() {
+  if (!mealsContainer) {
+    console.warn(
+      "No mealsContainer found."
+    );
+
+    return;
+  }
+
+  mealsContainer.innerHTML = "";
+
+  renderSummary(
+    mealsContainer
+  );
+
+  renderMeals(
+    mealsContainer
+  );
+
+  renderGrocerySummary(
+    mealsContainer
+  );
+
+  mealsContainer.setAttribute(
+    "aria-busy",
+    "false"
+  );
+}
+
+function addMealNeedsToGroceryList(
+  mealName,
+  needs
+) {
+  const memory =
+    window.FridgeWiseMemory
+      ?.getAll?.();
+
+  if (!memory) {
+    alert(
+      "FridgeWise memory is unavailable."
+    );
+
+    return;
+  }
+
+  memory.groceryList =
+    Array.isArray(memory.groceryList)
+      ? memory.groceryList
+      : [];
+
+  const existingItems =
+    new Set(
+      memory.groceryList.map(
+        item =>
+          normalizeText(item)
+            .toLowerCase()
+      )
+    );
+
+  let addedCount = 0;
+
+  needs.forEach((item) => {
+    const clean =
+      normalizeText(item);
+
+    const comparisonKey =
+      clean.toLowerCase();
+
+    if (
+      !clean ||
+      existingItems.has(
+        comparisonKey
+      )
+    ) {
+      return;
     }
 
-    <div class="history-section">
+    memory.groceryList.push(
+      clean
+    );
 
-      ${meals.map(meal => `
+    existingItems.add(
+      comparisonKey
+    );
 
-        <div class="history-item meal-card">
+    addedCount += 1;
+  });
 
-          <div class="meal-top">
+  localStorage.setItem(
+    LAST_MEAL_STORAGE_KEY,
+    mealName
+  );
 
-            <div>
+  window.FridgeWiseMemory
+    ?.save?.(memory);
 
-              <strong class="meal-title">
-                ${
-                  meal.type === "snack"
-                    ? "🥨 Quick Snack"
-                    : "🍽️ Quick Meal"
-                }
-              </strong>
-
-              <div class="history-meta">
-                ${meal.name}
-              </div>
-
-            </div>
-
-            <div class="meal-time">
-              ⏱️ ${meal.time || "10 min"}
-            </div>
-
-          </div>
-
-          <p class="feedback">
-            ${meal.whyItWorks || ""}
-          </p>
-
-          <p class="feedback">
-            <strong>🧊 Uses:</strong>
-            ${(meal.uses || []).join(", ") || "Items from your fridge"}
-          </p>
-
-          <p class="feedback">
-            <strong>🛒 Needs:</strong>
-            ${(meal.needs || []).join(", ") || "Nothing extra"}
-          </p>
-
-          ${
-            meal.steps?.length
-              ? `
-                <ol class="meal-steps">
-                  ${meal.steps.map(step => `
-                    <li>${step}</li>
-                  `).join("")}
-                </ol>
-              `
-              : ""
-          }
-
-          <button
-            class="secondary-btn make-this-btn"
-            data-meal="${meal.name}"
-            data-needs='${JSON.stringify(meal.needs || [])}'
-            type="button"
-          >
-            ✅ Make This
-          </button>
-
-        </div>
-
-      `).join("")}
-
-    </div>
-
-    <div class="history-item grocery-card">
-
-      <strong>
-        🛒 Quick Grocery List
-      </strong>
-
-      <p class="feedback">
-        ${(result.groceryList || []).join(", ") || "No extra groceries needed"}
-      </p>
-
-    </div>
-
-  `;
+  alert(
+    addedCount
+      ? `${addedCount} missing ${
+          addedCount === 1
+            ? "ingredient"
+            : "ingredients"
+        } added to your Grocery List.`
+      : "This meal does not need any new grocery items."
+  );
 }
 
 document.addEventListener(
   "click",
-  (e) => {
-
-    const btn =
-      e.target.closest(
+  (event) => {
+    const button =
+      event.target.closest(
         ".make-this-btn"
       );
 
-    if (!btn) return;
+    if (!button) return;
 
     const mealName =
-      btn.dataset.meal;
+      normalizeText(
+        button.dataset.meal
+      ) || "Selected meal";
 
     const needs =
-      JSON.parse(
-        btn.dataset.needs || "[]"
-      );
+      Array.isArray(
+        button._mealNeeds
+      )
+        ? button._mealNeeds
+        : [];
 
-    const memory =
-      window.FridgeWiseMemory?.getAll?.();
-
-    if (memory) {
-
-      memory.groceryList =
-        memory.groceryList || [];
-
-      needs.forEach((item) => {
-
-        const clean =
-          String(item || "")
-            .trim()
-            .toLowerCase();
-
-        if (
-          clean &&
-          !memory.groceryList.includes(clean)
-        ) {
-          memory.groceryList.push(clean);
-        }
-
-      });
-
-      localStorage.setItem(
-        "fuelai-last-meal",
-        mealName
-      );
-
-      window.FridgeWiseMemory.save(
-        memory
-      );
-    }
-
-    alert(
-      "Added missing ingredients to Grocery List."
+    addMealNeedsToGroceryList(
+      mealName,
+      needs
     );
-
   }
 );
+
+renderResults();

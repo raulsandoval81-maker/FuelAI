@@ -1,13 +1,22 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+
   <meta
     name="viewport"
     content="width=device-width, initial-scale=1.0"
   />
 
-  <title>Fridge Meals</title>
+  <meta
+    name="description"
+    content="View simple FridgeWise meal ideas based on the food you already have."
+  />
+
+  <link rel="icon" href="data:," />
+
+  <title>Meal Ideas | FridgeWise</title>
 
   <link
     rel="stylesheet"
@@ -21,26 +30,61 @@
 
     <section class="scan-card">
 
-      <h1>
-        Meal Ideas
-      </h1>
+      <header class="results-header">
 
-      <p class="sub">
-        Simple dinner paths using what you already have.
-      </p>
+        <p class="range-label">
+          FRIDGEWISE
+        </p>
+
+        <h1>
+          🍽️ Meal Ideas
+        </h1>
+
+        <p class="sub">
+          Simple meal paths built around what you already have.
+        </p>
+
+      </header>
 
       <section
-        id="mealsContainer"
-        class="result-card"
-      ></section>
+        class="range-card"
+        aria-labelledby="mealIdeasTitle"
+      >
 
-      <div class="wise-links">
+        <p
+          id="mealIdeasTitle"
+          class="range-label"
+        >
+          Suggested Meals
+        </p>
+
+        <p class="range-note">
+          FridgeWise uses your saved pantry, freezer, extras, and favorite meals to keep suggestions realistic.
+        </p>
+
+        <div
+          id="mealsContainer"
+          class="result-card"
+          aria-live="polite"
+          aria-busy="true"
+        >
+          <p class="range-output">
+            Building meal ideas...
+          </p>
+        </div>
+
+      </section>
+
+      <nav
+        class="wise-links"
+        aria-label="Meal ideas navigation"
+      >
 
         <a
           class="secondary-btn"
           href="/food/fridgewise.html"
         >
-          🧊 Back to FridgeWise
+          ← Back to FridgeWise
         </a>
 
         <a
@@ -50,11 +94,11 @@
           🏠 Return to Hub
         </a>
 
-      </div>
+      </nav>
 
-      <p class="hero-note">
-        FuelAI • Less overthinking. Better decisions.
-      </p>
+      <footer class="hero-note">
+        FuelAI™ • Powered by Sandman™
+      </footer>
 
     </section>
 

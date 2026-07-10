@@ -5,17 +5,17 @@ const Memory =
 
 const DEFAULTS = {
   pantry: [
-    "rice",
-    "pasta",
-    "beans",
-    "tortillas"
+    "Rice",
+    "Pasta",
+    "Beans",
+    "Tortillas"
   ],
 
   freezer: [
-    "frozen chicken",
-    "ground beef",
-    "frozen veggies",
-    "pizza"
+    "Frozen chicken",
+    "Ground beef",
+    "Frozen veggies",
+    "Pizza"
   ],
 
   extras: [],
@@ -30,7 +30,27 @@ let drawerData =
 
 drawerData = {
   ...DEFAULTS,
-  ...drawerData
+  ...drawerData,
+
+  pantry: [
+    ...(drawerData.pantry || DEFAULTS.pantry)
+  ],
+
+  freezer: [
+    ...(drawerData.freezer || DEFAULTS.freezer)
+  ],
+
+  extras: [
+    ...(drawerData.extras || [])
+  ],
+
+  groceryList: [
+    ...(drawerData.groceryList || [])
+  ],
+
+  favoriteMeals: [
+    ...(drawerData.favoriteMeals || [])
+  ]
 };
 
 function saveDrawer() {
@@ -57,6 +77,25 @@ function getBucket(type) {
   return type;
 }
 
+function normalizeForCompare(value) {
+  return String(value || "")
+    .trim()
+    .toLowerCase();
+}
+
+function renderEmptyState(list, message) {
+  const li =
+    document.createElement("li");
+
+  li.className =
+    "drawer-empty";
+
+  li.textContent =
+    message;
+
+  list.appendChild(li);
+}
+
 function renderList(type) {
   const list =
     document.getElementById(`${type}List`);
@@ -71,6 +110,15 @@ function renderList(type) {
 
   list.innerHTML = "";
 
+  if (!items.length) {
+    renderEmptyState(
+      list,
+      "Nothing added yet."
+    );
+
+    return;
+  }
+
   items.forEach((item, index) => {
     const li =
       document.createElement("li");
@@ -78,18 +126,39 @@ function renderList(type) {
     li.className =
       "drawer-item";
 
-    li.innerHTML = `
-      <span>${item}</span>
+    const label =
+      document.createElement("span");
 
-      <button
-        class="remove-btn"
-        data-type="${type}"
-        data-index="${index}"
-        type="button"
-      >
-        Remove
-      </button>
-    `;
+    label.textContent =
+      item;
+
+    const removeBtn =
+      document.createElement("button");
+
+    removeBtn.className =
+      "remove-btn";
+
+    removeBtn.type =
+      "button";
+
+    removeBtn.dataset.type =
+      type;
+
+    removeBtn.dataset.index =
+      String(index);
+
+    removeBtn.setAttribute(
+      "aria-label",
+      `Remove ${item}`
+    );
+
+    removeBtn.textContent =
+      "Remove";
+
+    li.append(
+      label,
+      removeBtn
+    );
 
     list.appendChild(li);
   });
@@ -97,7 +166,9 @@ function renderList(type) {
 
 function renderFavoriteMeals() {
   const list =
-    document.getElementById("favoriteMealsList");
+    document.getElementById(
+      "favoriteMealsList"
+    );
 
   if (!list) return;
 
@@ -106,6 +177,15 @@ function renderFavoriteMeals() {
 
   list.innerHTML = "";
 
+  if (!meals.length) {
+    renderEmptyState(
+      list,
+      "No favorite meals saved yet."
+    );
+
+    return;
+  }
+
   meals.forEach((meal, index) => {
     const li =
       document.createElement("li");
@@ -113,161 +193,310 @@ function renderFavoriteMeals() {
     li.className =
       "drawer-item favorite-meal-item";
 
-    li.innerHTML = `
-      <span>
-        <strong>${meal.name}</strong><br>
-        <small>
-          ${(meal.ingredients || []).join(", ")}
-        </small>
-      </span>
+    const copy =
+      document.createElement("span");
 
-      <button
-        class="remove-favorite-meal-btn"
-        data-index="${index}"
-        type="button"
-      >
-        Remove
-      </button>
-    `;
+    const name =
+      document.createElement("strong");
+
+    name.textContent =
+      meal.name || "Favorite meal";
+
+    const ingredients =
+      document.createElement("small");
+
+    ingredients.textContent =
+      (meal.ingredients || [])
+        .join(", ");
+
+    copy.append(
+      name,
+      document.createElement("br"),
+      ingredients
+    );
+
+    const removeBtn =
+      document.createElement("button");
+
+    removeBtn.className =
+      "remove-favorite-meal-btn";
+
+    removeBtn.type =
+      "button";
+
+    removeBtn.dataset.index =
+      String(index);
+
+    removeBtn.setAttribute(
+      "aria-label",
+      `Remove ${meal.name || "favorite meal"}`
+    );
+
+    removeBtn.textContent =
+      "Remove";
+
+    li.append(
+      copy,
+      removeBtn
+    );
 
     list.appendChild(li);
   });
 }
+
+function renderAll() {
+  [
+    "pantry",
+    "freezer",
+    "other",
+    "grocery"
+  ].forEach(renderList);
+
+  renderFavoriteMeals();
+}
+
+function addDrawerItem(type) {
+  const bucket =
+    getBucket(type);
+
+  const input =
+    document.getElementById(`${type}Input`);
+
+  if (!input) return;
+
+  const value =
+    input.value.trim();
+
+  if (!value) return;
+
+  drawerData[bucket] =
+    drawerData[bucket] || [];
+
+  const alreadyExists =
+    drawerData[bucket].some(
+      item =>
+        normalizeForCompare(item) ===
+        normalizeForCompare(value)
+    );
+
+  if (!alreadyExists) {
+    drawerData[bucket].push(value);
+    saveDrawer();
+    renderList(type);
+  }
+
+  input.value = "";
+  input.focus();
+}
+
+renderAll();
+
+document
+  .querySelectorAll(".drawer-toggle")
+  .forEach((toggle) => {
+    toggle.addEventListener(
+      "click",
+      () => {
+        const panel =
+          toggle.nextElementSibling;
+
+        if (!panel) return;
+
+        const isOpening =
+          panel.classList.contains("hidden");
+
+        panel.classList.toggle("hidden");
+
+        toggle.setAttribute(
+          "aria-expanded",
+          String(isOpening)
+        );
+
+        const indicator =
+          toggle.querySelector(
+            "[aria-hidden='true']"
+          );
+
+        if (indicator) {
+          indicator.textContent =
+            isOpening
+              ? "−"
+              : "＋";
+        }
+      }
+    );
+  });
+
+document
+  .querySelectorAll("[data-add]")
+  .forEach((button) => {
+    button.addEventListener(
+      "click",
+      () => {
+        addDrawerItem(
+          button.dataset.add
+        );
+      }
+    );
+  });
 
 [
   "pantry",
   "freezer",
   "other",
   "grocery"
-].forEach(renderList);
+].forEach((type) => {
+  const input =
+    document.getElementById(`${type}Input`);
 
-renderFavoriteMeals();
-
-document
-  .querySelectorAll(".drawer-toggle")
-  .forEach((toggle) => {
-    toggle.addEventListener("click", () => {
-      const panel =
-        toggle.nextElementSibling;
-
-      if (!panel) return;
-
-      panel.classList.toggle("hidden");
-    });
-  });
-
-document
-  .querySelectorAll("[data-add]")
-  .forEach((button) => {
-    button.addEventListener("click", () => {
-      const type =
-        button.dataset.add;
-
-      const bucket =
-        getBucket(type);
-
-      const input =
-        document.getElementById(`${type}Input`);
-
-      if (!input) return;
-
-      const value =
-        input.value.trim();
-
-      if (!value) return;
-
-      drawerData[bucket] =
-        drawerData[bucket] || [];
-
-      const clean =
-        value.toLowerCase();
-
-      if (!drawerData[bucket].includes(clean)) {
-        drawerData[bucket].push(clean);
+  input?.addEventListener(
+    "keydown",
+    (event) => {
+      if (event.key !== "Enter") {
+        return;
       }
 
-      saveDrawer();
-
-      renderList(type);
-
-      input.value = "";
-    });
-  });
+      event.preventDefault();
+      addDrawerItem(type);
+    }
+  );
+});
 
 const addFavoriteMealBtn =
-  document.getElementById("addFavoriteMealBtn");
+  document.getElementById(
+    "addFavoriteMealBtn"
+  );
 
 const favoriteMealNameInput =
-  document.getElementById("favoriteMealNameInput");
+  document.getElementById(
+    "favoriteMealNameInput"
+  );
 
 const favoriteMealIngredientsInput =
-  document.getElementById("favoriteMealIngredientsInput");
+  document.getElementById(
+    "favoriteMealIngredientsInput"
+  );
 
-addFavoriteMealBtn?.addEventListener(
-  "click",
-  () => {
-    const name =
-      favoriteMealNameInput?.value.trim();
+function addFavoriteMeal() {
+  const name =
+    favoriteMealNameInput?.value.trim();
 
-    const ingredients =
-      favoriteMealIngredientsInput?.value
-        .split(",")
-        .map(item => item.trim().toLowerCase())
-        .filter(Boolean) || [];
+  const ingredients =
+    favoriteMealIngredientsInput?.value
+      .split(",")
+      .map(item => item.trim())
+      .filter(Boolean) || [];
 
-    if (!name || !ingredients.length) return;
+  if (!name || !ingredients.length) {
+    return;
+  }
 
-    drawerData.favoriteMeals =
-      drawerData.favoriteMeals || [];
+  drawerData.favoriteMeals =
+    drawerData.favoriteMeals || [];
 
+  const alreadyExists =
+    drawerData.favoriteMeals.some(
+      meal =>
+        normalizeForCompare(meal.name) ===
+        normalizeForCompare(name)
+    );
+
+  if (!alreadyExists) {
     drawerData.favoriteMeals.push({
       name,
       ingredients
     });
 
     saveDrawer();
-
     renderFavoriteMeals();
-
-    favoriteMealNameInput.value = "";
-    favoriteMealIngredientsInput.value = "";
   }
+
+  favoriteMealNameInput.value = "";
+  favoriteMealIngredientsInput.value = "";
+
+  favoriteMealNameInput.focus();
+}
+
+addFavoriteMealBtn?.addEventListener(
+  "click",
+  addFavoriteMeal
 );
 
-document.addEventListener("click", (e) => {
-  const btn =
-    e.target.closest(".remove-btn");
+[
+  favoriteMealNameInput,
+  favoriteMealIngredientsInput
+].forEach((input) => {
+  input?.addEventListener(
+    "keydown",
+    (event) => {
+      if (event.key !== "Enter") {
+        return;
+      }
 
-  if (!btn) return;
-
-  const type =
-    btn.dataset.type;
-
-  const bucket =
-    getBucket(type);
-
-  const index =
-    Number(btn.dataset.index);
-
-  drawerData[bucket].splice(index, 1);
-
-  saveDrawer();
-
-  renderList(type);
+      event.preventDefault();
+      addFavoriteMeal();
+    }
+  );
 });
 
-document.addEventListener("click", (e) => {
-  const btn =
-    e.target.closest(".remove-favorite-meal-btn");
+document.addEventListener(
+  "click",
+  (event) => {
+    const removeBtn =
+      event.target.closest(".remove-btn");
 
-  if (!btn) return;
+    if (removeBtn) {
+      const type =
+        removeBtn.dataset.type;
 
-  const index =
-    Number(btn.dataset.index);
+      const bucket =
+        getBucket(type);
 
-  drawerData.favoriteMeals.splice(index, 1);
+      const index =
+        Number(removeBtn.dataset.index);
 
-  saveDrawer();
+      if (
+        Array.isArray(drawerData[bucket]) &&
+        Number.isInteger(index) &&
+        index >= 0 &&
+        index < drawerData[bucket].length
+      ) {
+        drawerData[bucket].splice(
+          index,
+          1
+        );
 
-  renderFavoriteMeals();
-});
+        saveDrawer();
+        renderList(type);
+      }
+
+      return;
+    }
+
+    const favoriteBtn =
+      event.target.closest(
+        ".remove-favorite-meal-btn"
+      );
+
+    if (!favoriteBtn) return;
+
+    const index =
+      Number(favoriteBtn.dataset.index);
+
+    if (
+      Array.isArray(drawerData.favoriteMeals) &&
+      Number.isInteger(index) &&
+      index >= 0 &&
+      index <
+        drawerData.favoriteMeals.length
+    ) {
+      drawerData.favoriteMeals.splice(
+        index,
+        1
+      );
+
+      saveDrawer();
+      renderFavoriteMeals();
+    }
+  }
+);

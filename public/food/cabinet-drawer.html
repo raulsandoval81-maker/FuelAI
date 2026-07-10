@@ -8,9 +8,14 @@
     content="width=device-width, initial-scale=1.0"
   />
 
+  <meta
+    name="description"
+    content="Manage pantry items, freezer food, favorite meals, and grocery needs with FuelAI FridgeWise."
+  />
+
   <link rel="icon" href="data:," />
 
-  <title>Cabinet Drawer</title>
+  <title>Cabinet Drawer | FuelAI</title>
 
   <link rel="stylesheet" href="/assets/css/site.css" />
   <link rel="stylesheet" href="/assets/css/cabinet-drawer.css" />
@@ -22,239 +27,408 @@
 
     <section class="scan-card">
 
-      <p class="range-label">
-        FOOD
-      </p>
+      <header class="drawer-page-header">
 
-      <h1>
-        🥫 Cabinet Drawer
-      </h1>
-
-      <p class="sub">
-        Track what you have, what you like, and what FridgeWise may suggest next.
-      </p>
-
-      <p class="range-label">
-        What We Have
-      </p>
-
-      <section class="drawer-section">
-        <button
-          class="drawer-toggle"
-          type="button"
-          data-drawer="pantry"
-        >
-          🥫 Pantry
-        </button>
-
-        <div
-          id="drawer-pantry"
-          class="drawer-panel hidden"
-        >
-          <ul
-            id="pantryList"
-            class="drawer-list"
-          ></ul>
-
-          <div class="drawer-add-row">
-            <input
-              id="pantryInput"
-              type="text"
-              placeholder="Add pantry item..."
-            />
-
-            <button
-              type="button"
-              data-add="pantry"
-            >
-              Add
-            </button>
-          </div>
-        </div>
-      </section>
-
-      <section class="drawer-section">
-        <button
-          class="drawer-toggle"
-          type="button"
-          data-drawer="freezer"
-        >
-          ❄️ Freezer
-        </button>
-
-        <div
-          id="drawer-freezer"
-          class="drawer-panel hidden"
-        >
-          <ul
-            id="freezerList"
-            class="drawer-list"
-          ></ul>
-
-          <div class="drawer-add-row">
-            <input
-              id="freezerInput"
-              type="text"
-              placeholder="Add freezer item..."
-            />
-
-            <button
-              type="button"
-              data-add="freezer"
-            >
-              Add
-            </button>
-          </div>
-        </div>
-      </section>
-
-      <section class="drawer-section">
-        <button
-          class="drawer-toggle"
-          type="button"
-          data-drawer="other"
-        >
-          📦 Extras
-        </button>
-
-        <div
-          id="drawer-other"
-          class="drawer-panel hidden"
-        >
-          <ul
-            id="otherList"
-            class="drawer-list"
-          ></ul>
-
-          <div class="drawer-add-row">
-            <input
-              id="otherInput"
-              type="text"
-              placeholder="Add extras, sauces, seasonings..."
-            />
-
-            <button
-              type="button"
-              data-add="other"
-            >
-              Add
-            </button>
-          </div>
-        </div>
-      </section>
-
-      <p class="range-label">
-        What We Like
-      </p>
-
-      <section class="drawer-section">
-        <button
-          class="drawer-toggle"
-          type="button"
-          data-drawer="favoriteMeals"
-        >
-          ⭐ Favorite Meals
-        </button>
-
-        <div
-          id="drawer-favoriteMeals"
-          class="drawer-panel hidden"
-        >
-          <ul
-            id="favoriteMealsList"
-            class="drawer-list"
-          ></ul>
-
-          <div class="drawer-add-row">
-            <input
-              id="favoriteMealNameInput"
-              type="text"
-              placeholder="Meal name — chicken tacos..."
-            />
-          </div>
-
-          <div class="drawer-add-row">
-            <input
-              id="favoriteMealIngredientsInput"
-              type="text"
-              placeholder="Ingredients — chicken, tortillas, salsa..."
-            />
-
-            <button
-              type="button"
-              id="addFavoriteMealBtn"
-            >
-              Add
-            </button>
-          </div>
-        </div>
-      </section>
-
-      <p class="range-label">
-        What We Need
-      </p>
-
-      <section class="drawer-section">
-        <button
-          class="drawer-toggle"
-          type="button"
-          data-drawer="grocery"
-        >
-          🛒 Grocery List
-        </button>
-
-        <div
-          id="drawer-grocery"
-          class="drawer-panel hidden"
-        >
-          <ul
-            id="groceryList"
-            class="drawer-list"
-          ></ul>
-
-          <div class="drawer-add-row">
-            <input
-              id="groceryInput"
-              type="text"
-              placeholder="Add grocery item..."
-            />
-
-            <button
-              type="button"
-              data-add="grocery"
-            >
-              Add
-            </button>
-          </div>
-        </div>
-      </section>
-
-      <p class="range-note">
-        Grocery List can hold manual items now and missing meal items later.
-      </p>
-
-      <section class="range-card">
         <p class="range-label">
-          FridgeWise Helpers
+          FRIDGEWISE
+        </p>
+
+        <h1>
+          🥫 Cabinet Drawer
+        </h1>
+
+        <p class="sub">
+          Keep track of what you have, what you enjoy, and what you may need next.
+        </p>
+
+      </header>
+
+      <!-- WHAT WE HAVE -->
+
+      <section
+        class="drawer-group"
+        aria-labelledby="whatWeHaveTitle"
+      >
+
+        <div class="drawer-group-heading">
+
+          <p
+            id="whatWeHaveTitle"
+            class="range-label"
+          >
+            What We Have
+          </p>
+
+          <p class="range-note">
+            Add the foods already available in your kitchen.
+          </p>
+
+        </div>
+
+        <section class="drawer-section">
+
+          <button
+            class="drawer-toggle"
+            type="button"
+            data-drawer="pantry"
+            aria-expanded="false"
+            aria-controls="drawer-pantry"
+          >
+            <span>🥫 Pantry</span>
+            <span aria-hidden="true">＋</span>
+          </button>
+
+          <div
+            id="drawer-pantry"
+            class="drawer-panel hidden"
+          >
+
+            <ul
+              id="pantryList"
+              class="drawer-list"
+              aria-live="polite"
+            ></ul>
+
+            <div class="drawer-add-row">
+
+              <label
+                class="sr-only"
+                for="pantryInput"
+              >
+                Add pantry item
+              </label>
+
+              <input
+                id="pantryInput"
+                type="text"
+                placeholder="Add pantry item..."
+                autocomplete="off"
+              />
+
+              <button
+                type="button"
+                data-add="pantry"
+              >
+                Add
+              </button>
+
+            </div>
+
+          </div>
+
+        </section>
+
+        <section class="drawer-section">
+
+          <button
+            class="drawer-toggle"
+            type="button"
+            data-drawer="freezer"
+            aria-expanded="false"
+            aria-controls="drawer-freezer"
+          >
+            <span>❄️ Freezer</span>
+            <span aria-hidden="true">＋</span>
+          </button>
+
+          <div
+            id="drawer-freezer"
+            class="drawer-panel hidden"
+          >
+
+            <ul
+              id="freezerList"
+              class="drawer-list"
+              aria-live="polite"
+            ></ul>
+
+            <div class="drawer-add-row">
+
+              <label
+                class="sr-only"
+                for="freezerInput"
+              >
+                Add freezer item
+              </label>
+
+              <input
+                id="freezerInput"
+                type="text"
+                placeholder="Add freezer item..."
+                autocomplete="off"
+              />
+
+              <button
+                type="button"
+                data-add="freezer"
+              >
+                Add
+              </button>
+
+            </div>
+
+          </div>
+
+        </section>
+
+        <section class="drawer-section">
+
+          <button
+            class="drawer-toggle"
+            type="button"
+            data-drawer="other"
+            aria-expanded="false"
+            aria-controls="drawer-other"
+          >
+            <span>📦 Extras</span>
+            <span aria-hidden="true">＋</span>
+          </button>
+
+          <div
+            id="drawer-other"
+            class="drawer-panel hidden"
+          >
+
+            <ul
+              id="otherList"
+              class="drawer-list"
+              aria-live="polite"
+            ></ul>
+
+            <div class="drawer-add-row">
+
+              <label
+                class="sr-only"
+                for="otherInput"
+              >
+                Add extras, sauces, or seasonings
+              </label>
+
+              <input
+                id="otherInput"
+                type="text"
+                placeholder="Add sauces, seasonings, or extras..."
+                autocomplete="off"
+              />
+
+              <button
+                type="button"
+                data-add="other"
+              >
+                Add
+              </button>
+
+            </div>
+
+          </div>
+
+        </section>
+
+      </section>
+
+      <!-- WHAT WE LIKE -->
+
+      <section
+        class="drawer-group"
+        aria-labelledby="whatWeLikeTitle"
+      >
+
+        <div class="drawer-group-heading">
+
+          <p
+            id="whatWeLikeTitle"
+            class="range-label"
+          >
+            What We Like
+          </p>
+
+          <p class="range-note">
+            Save meals your household already enjoys.
+          </p>
+
+        </div>
+
+        <section class="drawer-section">
+
+          <button
+            class="drawer-toggle"
+            type="button"
+            data-drawer="favoriteMeals"
+            aria-expanded="false"
+            aria-controls="drawer-favoriteMeals"
+          >
+            <span>⭐ Favorite Meals</span>
+            <span aria-hidden="true">＋</span>
+          </button>
+
+          <div
+            id="drawer-favoriteMeals"
+            class="drawer-panel hidden"
+          >
+
+            <ul
+              id="favoriteMealsList"
+              class="drawer-list"
+              aria-live="polite"
+            ></ul>
+
+            <div class="drawer-add-stack">
+
+              <label
+                class="sr-only"
+                for="favoriteMealNameInput"
+              >
+                Favorite meal name
+              </label>
+
+              <input
+                id="favoriteMealNameInput"
+                type="text"
+                placeholder="Meal name — chicken tacos..."
+                autocomplete="off"
+              />
+
+              <div class="drawer-add-row">
+
+                <label
+                  class="sr-only"
+                  for="favoriteMealIngredientsInput"
+                >
+                  Favorite meal ingredients
+                </label>
+
+                <input
+                  id="favoriteMealIngredientsInput"
+                  type="text"
+                  placeholder="Ingredients — chicken, tortillas, salsa..."
+                  autocomplete="off"
+                />
+
+                <button
+                  type="button"
+                  id="addFavoriteMealBtn"
+                >
+                  Add
+                </button>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </section>
+
+      </section>
+
+      <!-- WHAT WE NEED -->
+
+      <section
+        class="drawer-group"
+        aria-labelledby="whatWeNeedTitle"
+      >
+
+        <div class="drawer-group-heading">
+
+          <p
+            id="whatWeNeedTitle"
+            class="range-label"
+          >
+            What We Need
+          </p>
+
+          <p class="range-note">
+            Keep a simple list for the next grocery trip.
+          </p>
+
+        </div>
+
+        <section class="drawer-section">
+
+          <button
+            class="drawer-toggle"
+            type="button"
+            data-drawer="grocery"
+            aria-expanded="false"
+            aria-controls="drawer-grocery"
+          >
+            <span>🛒 Grocery List</span>
+            <span aria-hidden="true">＋</span>
+          </button>
+
+          <div
+            id="drawer-grocery"
+            class="drawer-panel hidden"
+          >
+
+            <ul
+              id="groceryList"
+              class="drawer-list"
+              aria-live="polite"
+            ></ul>
+
+            <div class="drawer-add-row">
+
+              <label
+                class="sr-only"
+                for="groceryInput"
+              >
+                Add grocery item
+              </label>
+
+              <input
+                id="groceryInput"
+                type="text"
+                placeholder="Add grocery item..."
+                autocomplete="off"
+              />
+
+              <button
+                type="button"
+                data-add="grocery"
+              >
+                Add
+              </button>
+
+            </div>
+
+          </div>
+
+        </section>
+
+      </section>
+
+      <!-- HELPER CARD -->
+
+      <section class="range-card drawer-helper-card">
+
+        <p class="range-label">
+          FridgeWise Memory
         </p>
 
         <p class="range-output">
-          Pantry, freezer, extras, favorite meals, and grocery items help FridgeWise suggest realistic meals.
+          FridgeWise uses your pantry, freezer, extras, favorite meals, and grocery list to suggest meals that fit real life.
         </p>
+
       </section>
 
-      <div class="wise-links">
+      <nav
+        class="wise-links"
+        aria-label="Cabinet Drawer navigation"
+      >
+
         <a
           class="secondary-btn"
           href="/food/fridgewise.html"
         >
-          🧊 Back to FridgeWise
+          ← Back to FridgeWise
         </a>
-      </div>
 
-      <p class="hero-note">
-        FuelAI • Less overthinking. Better decisions.
-      </p>
+      </nav>
+
+      <footer class="hero-note">
+        FuelAI™ • Powered by Sandman™
+      </footer>
 
     </section>
 
