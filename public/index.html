@@ -150,10 +150,6 @@
 
     <section class="landing-card">
 
-      <p class="brand-kicker">
-        Powered by Sandman™
-      </p>
-
       <h1 class="landing-title">
         Fuel<span>AI</span>
       </h1>
@@ -216,12 +212,38 @@
 
       <footer class="sandman-footer">
         FuelAI™<br />
-        <strong>Powered by Sandman™</strong>
       </footer>
 
     </section>
 
   </main>
+<script src="/assets/js/core/auth-soft.js"></script>
 
+<script>
+  const isLoggedIn =
+    window.FuelAIAuth?.isSoftLoggedIn?.();
+
+  const primaryBtn =
+    document.querySelector(".landing-btn.primary");
+
+  const secondaryBtn =
+    document.querySelector(".landing-btn.secondary");
+
+  if (isLoggedIn && primaryBtn) {
+    primaryBtn.textContent =
+      "Continue to Hub →";
+
+    primaryBtn.href =
+      "/hub.html";
+  }
+
+  if (isLoggedIn && secondaryBtn) {
+    secondaryBtn.textContent =
+      "Account Setup";
+
+    secondaryBtn.href =
+      "/account/setup.html";
+  }
+</script>
 </body>
 </html>
