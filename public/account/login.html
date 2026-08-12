@@ -22,52 +22,61 @@
 
     <section class="scan-card">
 
-      <h1>FuelAI</h1>
-
-      <p class="sub">
-        Less overthinking. Better food decisions.
+      <p class="range-label">
+        FuelAI
       </p>
 
+      <h1>
+        Welcome
+      </h1>
 
-<section class="range-card">
+      <p class="sub">
+        Daily intake tracking made easy, with training and performance tools that grow with you.
+      </p>
 
-  <div class="welcome-feature">
+      <section class="range-card">
 
-    <span class="welcome-feature-title">
-      🍽 MEALWISE
-    </span>
+        <p class="range-label">
+          Built Around You
+        </p>
 
-    <p class="welcome-feature-text">
-      Scan meals, hydration, and recovery.
-    </p>
+        <div class="welcome-feature">
 
-  </div>
+          <span class="welcome-feature-title">
+            GENERAL HEALTH
+          </span>
 
-  <div class="welcome-feature">
+          <p class="welcome-feature-text">
+            Build better nutrition, hydration, recovery, and daily habits.
+          </p>
 
-    <span class="welcome-feature-title">
-      🧊 FRIDGEWISE
-    </span>
+        </div>
 
-    <p class="welcome-feature-text">
-      Get simple meal ideas from food you already have.
-    </p>
+        <div class="welcome-feature">
 
-  </div>
+          <span class="welcome-feature-title">
+            FITNESS ENTHUSIAST
+          </span>
 
-  <div class="welcome-feature">
+          <p class="welcome-feature-text">
+            Fuel your training, improve conditioning, and track progress.
+          </p>
 
-    <span class="welcome-feature-title">
-      🎯 TRACKWISE
-    </span>
+        </div>
 
-    <p class="welcome-feature-text">
-      Build consistency with quick daily check-ins.
-    </p>
+        <div class="welcome-feature">
 
-  </div>
+          <span class="welcome-feature-title">
+            COMBAT ATHLETE
+          </span>
 
-</section>
+          <p class="welcome-feature-text">
+            Prepare, perform, recover, and manage competition weight.
+          </p>
+
+        </div>
+
+      </section>
 
       <div class="wise-links">
 
@@ -76,6 +85,7 @@
           class="goal-select"
           type="email"
           placeholder="Enter your email"
+          autocomplete="email"
         />
 
         <button
@@ -89,55 +99,55 @@
       </div>
 
       <p class="hero-note">
-        New here? We’ll help you get set up in under 2 minutes.
+        New here? We’ll guide you through setup in under 2 minutes.
       </p>
 
     </section>
 
   </main>
-<script src="/assets/js/core/auth-soft.js"></script>
 
-<script>
-  const continueBtn =
-    document.getElementById("continueBtn");
+  <script src="/assets/js/core/auth-soft.js"></script>
 
-  const emailInput =
-    document.getElementById("emailInput");
+  <script>
+    const continueBtn =
+      document.getElementById("continueBtn");
 
-  function continueToFuelAI() {
-    const email =
-      emailInput.value.trim();
+    const emailInput =
+      document.getElementById("emailInput");
 
-    if (!email.includes("@")) {
-      return;
-    }
+    function continueToFuelAI() {
+      const email =
+        emailInput.value.trim();
 
-    window.FuelAIAuth.softLogin(email);
-
-    const hasSetup =
-      !!localStorage.getItem("fuelai-setup");
-
-    window.location.href =
-      hasSetup
-        ? "/hub/"
-        : "/account/setup.html";
-  }
-
-  continueBtn?.addEventListener(
-    "click",
-    continueToFuelAI
-  );
-
-  emailInput?.addEventListener(
-    "keydown",
-    (e) => {
-      if (e.key === "Enter") {
-        continueToFuelAI();
+      if (!email.includes("@")) {
+        return;
       }
-    }
-  );
-</script>
 
+      window.FuelAIAuth.softLogin(email);
+
+      const hasSetup =
+        !!localStorage.getItem("fuelai-setup");
+
+      window.location.href =
+        hasSetup
+          ? "/hub/"
+          : "/account/setup.html";
+    }
+
+    continueBtn?.addEventListener(
+      "click",
+      continueToFuelAI
+    );
+
+    emailInput?.addEventListener(
+      "keydown",
+      (e) => {
+        if (e.key === "Enter") {
+          continueToFuelAI();
+        }
+      }
+    );
+  </script>
 
 </body>
 </html>

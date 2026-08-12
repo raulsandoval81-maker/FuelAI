@@ -14,6 +14,57 @@
     rel="stylesheet"
     href="/assets/css/site.css"
   />
+
+  <style>
+    .setup-profiles{
+      margin:24px 0 18px;
+    }
+
+    .setup-profiles-label{
+      margin:0 0 12px;
+      text-align:center;
+      color:#86efac;
+      font-size:.8rem;
+      font-weight:900;
+      letter-spacing:.14em;
+      text-transform:uppercase;
+    }
+
+    .setup-profiles-image{
+      display:block;
+      width:100%;
+      height:auto;
+      margin:0 auto;
+      border-radius:20px;
+      filter:
+        drop-shadow(
+          0 0 24px rgba(34,197,94,.12)
+        );
+    }
+
+    .setup-profile-note{
+      margin:12px auto 0;
+      max-width:520px;
+      text-align:center;
+      color:#94a3b8;
+      font-size:.9rem;
+      line-height:1.5;
+    }
+
+    @media (max-width:600px){
+      .setup-profiles{
+        margin:20px 0 16px;
+      }
+
+      .setup-profiles-image{
+        border-radius:16px;
+      }
+
+      .setup-profile-note{
+        font-size:.85rem;
+      }
+    }
+  </style>
 </head>
 
 <body data-theme="night">
@@ -31,8 +82,9 @@
       </h1>
 
       <p class="sub">
-        Give FuelAI a little context before your scan.
+        Tell FuelAI how you live and train so your experience can be built around you.
       </p>
+
 
       <input
         id="nicknameInput"
@@ -41,12 +93,14 @@
         placeholder="Nickname (optional)"
       />
 
+
       <input
         id="heightInput"
         class="goal-select"
         type="text"
         placeholder="Height — example: 5'10"
       />
+
 
       <input
         id="weightInput"
@@ -55,6 +109,7 @@
         placeholder="Current weight — example: 165 lbs"
       />
 
+
       <input
         id="targetWeightInput"
         class="goal-select"
@@ -62,7 +117,11 @@
         placeholder="Target weight — optional"
       />
 
-      <select id="ageRange" class="goal-select">
+
+      <select
+        id="ageRange"
+        class="goal-select"
+      >
 
         <option value="13-18">
           Ages 13–18
@@ -86,7 +145,11 @@
 
       </select>
 
-      <select id="genderType" class="goal-select">
+
+      <select
+        id="genderType"
+        class="goal-select"
+      >
 
         <option value="">
           Body Type
@@ -102,79 +165,117 @@
 
       </select>
 
-<select id="lifestyleType" class="goal-select">
 
-  <option value="">
-    What best describes you?
-  </option>
+      <!-- PROFILE EXPLANATION -->
 
-  <option value="general-health">
-    General Health
-  </option>
+      <section class="setup-profiles">
 
-  <option value="general-fitness">
-    General Fitness
-  </option>
+        <p class="setup-profiles-label">
+          Choose Your FuelAI Profile
+        </p>
 
-  <option value="sports-athlete">
-    Sports Athlete
-  </option>
+        <img
+          class="setup-profiles-image"
+          src="/assets/img/hero/fuelai-profiles.png"
+          alt="FuelAI profiles: General Health, Fitness Enthusiast, and Combat Athlete"
+        />
 
-  <option value="combat-athlete">
-    Combat Athlete
-  </option>
-  
+        <p class="setup-profile-note">
+          Your profile helps FuelAI decide which training,
+          nutrition, recovery, and performance features
+          matter most to you.
+        </p>
 
-</select>
+      </section>
 
-<select
-  id="combatStyle"
-  class="goal-select hidden"
->
 
-  <option value="">
-    Combat Style
-  </option>
+      <!-- PROFILE TYPE -->
 
-  <option value="grappling">
-    Grappling Sports
-  </option>
+      <select
+        id="lifestyleType"
+        class="goal-select"
+      >
 
-  <option value="striking">
-    Striking Sports
-  </option>
+        <option value="">
+          What best describes you?
+        </option>
 
-  <option value="mma">
-    MMA / Mixed Combat
-  </option>
+        <option value="general-health">
+          General Health
+        </option>
 
-</select>
+        <option value="fitness-enthusiast">
+          Fitness Enthusiast
+        </option>
 
-<select
-  id="activityLevel"
-  class="goal-select"
->
-  <option value="1-2">
-     Fitness Level 1–2 days per week
-  </option>
+        <option value="combat-athlete">
+          Combat Athlete
+        </option>
 
-  <option
-    value="2-3"
-    selected
-  >
-   Fitness Level 2–3 days per week
-  </option>
+      </select>
 
-  <option value="4-5">
-    Fitness Level 4–5 days per week
-  </option>
 
-  <option value="6-plus">
-    Fitness Level 6+ days per week
-  </option>
-</select>
+      <!-- COMBAT TYPE -->
 
-<select id="goalSelect" class="goal-select">
+      <select
+        id="combatStyle"
+        class="goal-select hidden"
+      >
+
+        <option value="">
+          Combat Style
+        </option>
+
+        <option value="grappling">
+          Grappling Sports
+        </option>
+
+        <option value="striking">
+          Striking Sports
+        </option>
+
+        <option value="mma">
+          MMA / Mixed Combat
+        </option>
+
+      </select>
+
+
+      <!-- ACTIVITY LEVEL -->
+
+      <select
+        id="activityLevel"
+        class="goal-select"
+      >
+
+        <option value="1-2">
+          Fitness Level 1–2 days per week
+        </option>
+
+        <option
+          value="2-3"
+          selected
+        >
+          Fitness Level 2–3 days per week
+        </option>
+
+        <option value="4-5">
+          Fitness Level 4–5 days per week
+        </option>
+
+        <option value="6-plus">
+          Fitness Level 6+ days per week
+        </option>
+
+      </select>
+
+
+      <!-- GOAL -->
+
+      <select
+        id="goalSelect"
+        class="goal-select"
+      >
 
         <option value="fuelwise">
           FuelWise — Maintain / Balance
@@ -190,14 +291,20 @@
 
       </select>
 
-      <select id="foodStyle" class="goal-select">
+
+      <!-- FOOD STYLE -->
+
+      <select
+        id="foodStyle"
+        class="goal-select"
+      >
 
         <option value="none">
           Food Preference
         </option>
 
         <option value="none">
-           No Preference
+          No Preference
         </option>
 
         <option value="vegetarian">
@@ -222,12 +329,16 @@
 
       </select>
 
+
       <input
         id="foodAvoid"
         class="goal-select"
         type="text"
         placeholder="Allergies / Avoid — peanuts, shellfish, eggs..."
       />
+
+
+      <!-- MONTHLY DIRECTION -->
 
       <section class="range-card">
 
@@ -244,6 +355,9 @@
         </p>
 
       </section>
+
+
+      <!-- SUGGESTED GUIDANCE -->
 
       <section class="range-card">
 
@@ -264,6 +378,7 @@
 
       </section>
 
+
       <div class="reset-wrap">
 
         <button
@@ -275,6 +390,7 @@
         </button>
 
       </div>
+
 
       <button
         id="saveSetupBtn"
@@ -288,13 +404,18 @@
 
   </main>
 
-  <script src="/assets/js/core/auth-soft.js"></script>
+
+  <script
+    src="/assets/js/core/auth-soft.js"
+  ></script>
 
   <script>
     window.FuelAIAuth?.requireSoftLogin();
   </script>
 
-  <script src="/assets/js/account/setup.js?v=7"></script>
+  <script
+    src="/assets/js/account/setup.js?v=8"
+  ></script>
 
 </body>
 </html>

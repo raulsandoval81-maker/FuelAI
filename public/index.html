@@ -10,7 +10,10 @@
 
   <title>FuelAI | Powered by Sandman</title>
 
-  <link rel="stylesheet" href="/assets/css/site.css" />
+  <link
+    rel="stylesheet"
+    href="/assets/css/site.css"
+  />
 
   <style>
     .landing-wrap{
@@ -20,29 +23,26 @@
       align-items:center;
       justify-content:center;
       background:
-        radial-gradient(circle at top,#14532d 0,#020617 42%),
+        radial-gradient(
+          circle at top,
+          #14532d 0,
+          #020617 42%
+        ),
         #020617;
       color:#fff;
     }
 
     .landing-card{
       width:100%;
-      max-width:520px;
+      max-width:1100px;
       padding:32px 22px;
       border:1px solid rgba(34,197,94,.28);
       border-radius:32px;
       background:rgba(15,23,42,.82);
-      box-shadow:0 0 40px rgba(34,197,94,.18);
+      box-shadow:
+        0 0 40px rgba(34,197,94,.18);
       text-align:center;
-    }
-
-    .brand-kicker{
-      color:#86efac;
-      font-size:.8rem;
-      font-weight:900;
-      letter-spacing:.18em;
-      text-transform:uppercase;
-      margin-bottom:10px;
+      animation:cardRise .55s ease-out both;
     }
 
     .landing-title{
@@ -58,52 +58,56 @@
 
     .landing-line{
       margin:16px auto 0;
-      max-width:380px;
+      max-width:520px;
       color:#e5e7eb;
-      font-size:1.18rem;
-      line-height:1.5;
-      font-weight:700;
+      font-size:1.3rem;
+      line-height:1.4;
+      font-weight:900;
     }
 
     .landing-sub{
-      margin:16px auto 0;
-      max-width:380px;
-      color:#94a3b8;
-      line-height:1.6;
-    }
-
-    .feature-stack{
-      margin:28px 0;
-      display:grid;
-      gap:12px;
-      text-align:left;
-    }
-
-    .feature-pill{
-      padding:16px;
-      border-radius:20px;
-      background:rgba(255,255,255,.06);
-      border:1px solid rgba(255,255,255,.09);
-    }
-
-    .feature-pill strong{
-      display:block;
-      color:#fff;
-      font-size:1.05rem;
-      margin-bottom:4px;
-    }
-
-    .feature-pill p{
-      margin:0;
+      margin:20px auto 0;
+      max-width:560px;
       color:#cbd5e1;
-      font-size:.95rem;
-      line-height:1.45;
+      font-size:1.02rem;
+      line-height:1.6;
+      font-weight:700;
+    }
+
+    .hero-image{
+      display:block;
+      width:100%;
+      max-width:520px;
+      height:auto;
+      margin:28px auto 24px;
+      border-radius:22px;
+      filter:
+        drop-shadow(
+          0 0 40px rgba(34,197,94,.18)
+        );
+      animation:heroFade .7s ease-out both;
+    }
+
+    .profiles-image{
+      display:block;
+      width:100%;
+      max-width:1040px;
+      height:auto;
+      margin:34px auto 10px;
+      border-radius:22px;
+      filter:
+        drop-shadow(
+          0 0 34px rgba(15,23,42,.42)
+        );
+      animation:heroFade .85s ease-out both;
     }
 
     .landing-actions{
       display:grid;
       gap:12px;
-      margin-top:20px;
+      width:100%;
+      max-width:520px;
+      margin:30px auto 0;
     }
 
     .landing-btn{
@@ -115,18 +119,42 @@
       text-decoration:none;
       font-weight:1000;
       letter-spacing:.03em;
+      transition:
+        transform .14s ease,
+        box-shadow .14s ease,
+        opacity .14s ease;
+      -webkit-tap-highlight-color:transparent;
+      touch-action:manipulation;
     }
 
     .landing-btn.primary{
-      background:linear-gradient(135deg,#16a34a,#22c55e);
+      background:
+        linear-gradient(
+          135deg,
+          #16a34a,
+          #22c55e
+        );
       color:#02130a;
-      box-shadow:0 0 24px rgba(34,197,94,.3);
+      box-shadow:
+        0 0 24px rgba(34,197,94,.3);
     }
 
     .landing-btn.secondary{
-      background:rgba(255,255,255,.07);
+      background:
+        rgba(255,255,255,.07);
       color:#e5e7eb;
-      border:1px solid rgba(255,255,255,.12);
+      border:
+        1px solid rgba(255,255,255,.12);
+    }
+
+    .landing-btn:active{
+      transform:scale(.975);
+      opacity:.92;
+    }
+
+    .landing-btn.primary:active{
+      box-shadow:
+        0 0 14px rgba(34,197,94,.22);
     }
 
     .sandman-footer{
@@ -136,142 +164,94 @@
       letter-spacing:.08em;
       text-transform:uppercase;
     }
-    
 
     .sandman-footer strong{
       color:#22c55e;
     }
 
-    .hero-image{
-  display:block;
-  width:100%;
-  max-width:520px;
-  margin:28px auto 24px;
-  border-radius:22px;
-  filter:drop-shadow(0 0 40px rgba(34,197,94,.18));
-  animation:heroFade .7s ease-out both;
-}
+    @keyframes heroFade{
+      from{
+        opacity:0;
+        transform:
+          translateY(12px)
+          scale(.985);
+      }
 
-.feature-pill{
-  padding:16px;
-  border-radius:20px;
-  background:rgba(255,255,255,.06);
-  border:1px solid rgba(255,255,255,.09);
-  transition:
-    transform .16s ease,
-    background .16s ease,
-    border-color .16s ease;
-}
+      to{
+        opacity:1;
+        transform:
+          translateY(0)
+          scale(1);
+      }
+    }
 
-.feature-pill:active{
-  transform:scale(.985);
-  background:rgba(255,255,255,.09);
-  border-color:rgba(34,197,94,.32);
-}
+    @keyframes cardRise{
+      from{
+        opacity:0;
+        transform:
+          translateY(18px);
+      }
 
-.landing-btn{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  min-height:58px;
-  border-radius:18px;
-  text-decoration:none;
-  font-weight:1000;
-  letter-spacing:.03em;
-  transition:
-    transform .14s ease,
-    box-shadow .14s ease,
-    opacity .14s ease;
-  -webkit-tap-highlight-color:transparent;
-  touch-action:manipulation;
-}
+      to{
+        opacity:1;
+        transform:
+          translateY(0);
+      }
+    }
 
-.landing-btn:active{
-  transform:scale(.975);
-  opacity:.92;
-}
+    @media (max-width:700px){
+      .landing-wrap{
+        padding:18px 12px;
+        align-items:flex-start;
+      }
 
-.landing-btn.primary:active{
-  box-shadow:0 0 14px rgba(34,197,94,.22);
-}
+      .landing-card{
+        padding:24px 14px;
+        border-radius:24px;
+      }
 
-.landing-card{
-  animation:cardRise .55s ease-out both;
-}
+      .landing-title{
+        font-size:
+          clamp(2.5rem,16vw,4rem);
+      }
 
-@keyframes heroFade{
-  from{
-    opacity:0;
-    transform:translateY(12px) scale(.985);
-  }
+      .landing-line{
+        font-size:1.1rem;
+      }
 
-  to{
-    opacity:1;
-    transform:translateY(0) scale(1);
-  }
-}
+      .landing-sub{
+        font-size:.96rem;
+      }
 
-@keyframes cardRise{
-  from{
-    opacity:0;
-    transform:translateY(18px);
-  }
+      .hero-image{
+        margin:22px auto 20px;
+        border-radius:18px;
+      }
 
-  to{
-    opacity:1;
-    transform:translateY(0);
-  }
-}
+      .profiles-image{
+        margin:26px auto 8px;
+        border-radius:16px;
+      }
 
-@media (max-width:600px){
-  .landing-wrap{
-    padding:18px 12px;
-    align-items:flex-start;
-  }
+      .landing-btn{
+        min-height:60px;
+        font-size:1rem;
+      }
+    }
 
-  .landing-card{
-    padding:24px 16px;
-    border-radius:24px;
-  }
+    @media (
+      prefers-reduced-motion:reduce
+    ){
+      .landing-card,
+      .hero-image,
+      .profiles-image{
+        animation:none;
+      }
 
-  .landing-title{
-    font-size:clamp(2.5rem,16vw,4rem);
-  }
-
-  .landing-line{
-    font-size:1.05rem;
-  }
-
-  .hero-image{
-    margin:22px auto 20px;
-    border-radius:18px;
-  }
-
-  .feature-stack{
-    gap:10px;
-  }
-
-  .feature-pill{
-    padding:15px;
-  }
-
-  .landing-btn{
-    min-height:60px;
-    font-size:1rem;
-  }
-}
-
-@media (prefers-reduced-motion:reduce){
-  .landing-card,
-  .hero-image{
-    animation:none;
-  }
-
-  .landing-btn,
-  .feature-pill{
-    transition:none;
-  }
-}
+      .landing-btn{
+        transition:none;
+      }
+    }
   </style>
 </head>
 
@@ -279,102 +259,89 @@
 
   <main class="landing-wrap">
 
-    <section class="landing-card">
+<section class="landing-card">
 
-      <h1 class="landing-title">
-        Fuel<span>AI</span>
-      </h1>
+  <h1 class="landing-title">
+    Fuel<span>AI</span>
+  </h1>
 
-      <p class="landing-line">
-        Track Better. Eat Smarter. Perform Better.
-      </p>
+  <p class="landing-line">
+    Daily intake tracking.<br />
+    Made easy. Done right.
+  </p>
 
-      <img
-        class="hero-image"
-        src="/assets/img/hero/fuelai-hero-v1.png"
-        alt="FuelAI app preview"
-      />
+  <img
+    class="hero-image"
+    src="/assets/img/hero/fuelai-hero-v1.png"
+    alt="FuelAI nutrition, hydration, training, and performance platform"
+  />
 
-      <p class="landing-sub">
-        Nutrition intelligence for everyday athletes and combat athletes.
-      </p>
+  <p class="landing-sub">
+    Food. Hydration. Training. Recovery.<br />
+    Built around the way you live and train.
+  </p>
 
-      <div class="feature-stack">
+  <div class="landing-actions">
 
-        <div class="feature-pill">
-          <strong>📈 TrackWise</strong>
-          <p>Daily tracking, habits, logs, and progress history.</p>
-        </div>
+    <a
+      class="landing-btn primary"
+      href="/account/login.html"
+    >
+      Get Started →
+    </a>
 
-        <div class="feature-pill">
-          <strong>🥗 MealWise</strong>
-          <p>AI meal guidance without overthinking every bite.</p>
-        </div>
+    <a
+      class="landing-btn secondary"
+      href="/account/login.html"
+    >
+      Sign In
+    </a>
 
-        <div class="feature-pill">
-          <strong>📦 FridgeWise</strong>
-          <p>Meal ideas from the food you already have.</p>
-        </div>
+  </div>
 
-        <div class="feature-pill">
-          <strong>🥇 Combat Athlete</strong>
-          <p>WeightWise, competition prep, and readiness tools.</p>
-        </div>
+  <footer class="sandman-footer">
+    FuelAI™ · Powered by
+    <strong>Sandman™</strong>
+  </footer>
 
-      </div>
-
-      <div class="landing-actions">
-
-        <a
-          class="landing-btn primary"
-          href="/account/login.html"
-        >
-          Get Started →
-        </a>
-
-        <a
-          class="landing-btn secondary"
-          href="/account/login.html"
-        >
-          Sign In
-        </a>
-
-      </div>
-
-      <footer class="sandman-footer">
-        FuelAI™<br />
-      </footer>
-
-    </section>
+</section>
 
   </main>
-<script src="/assets/js/core/auth-soft.js"></script>
 
-<script>
-  const isLoggedIn =
-    window.FuelAIAuth?.isSoftLoggedIn?.();
+  <script
+    src="/assets/js/core/auth-soft.js"
+  ></script>
 
-  const primaryBtn =
-    document.querySelector(".landing-btn.primary");
+  <script>
+    const isLoggedIn =
+      window.FuelAIAuth?.isSoftLoggedIn?.();
 
-  const secondaryBtn =
-    document.querySelector(".landing-btn.secondary");
+    const primaryBtn =
+      document.querySelector(
+        ".landing-btn.primary"
+      );
 
-  if (isLoggedIn && primaryBtn) {
-    primaryBtn.textContent =
-      "Continue to Hub →";
+    const secondaryBtn =
+      document.querySelector(
+        ".landing-btn.secondary"
+      );
 
-    primaryBtn.href =
-      "/hub/";
-  }
+    if (isLoggedIn && primaryBtn) {
+      primaryBtn.textContent =
+        "Continue to Hub →";
 
-  if (isLoggedIn && secondaryBtn) {
-    secondaryBtn.textContent =
-      "Account Setup";
+      primaryBtn.href =
+        "/hub/";
+    }
 
-    secondaryBtn.href =
-      "/account/setup.html";
-  }
-</script>
+    if (isLoggedIn && secondaryBtn) {
+      secondaryBtn.textContent =
+        "Account Setup";
+
+      secondaryBtn.href =
+        "/account/setup.html";
+    }
+  </script>
+
 </body>
 </html>

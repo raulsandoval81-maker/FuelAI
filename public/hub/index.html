@@ -1,13 +1,12 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
 
-<meta
- name="viewport"
- content="width=device-width, initial-scale=1.0"
-/>
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
 
   <title>FuelAI™ Hub</title>
 
@@ -21,215 +20,337 @@
 
   <main class="hub-wrap">
 
+    <header class="hub-header">
 
-<header class="hub-header">
+      <div>
 
-  <div>
+        <h1>
+          FuelAI™
+        </h1>
 
-    <h1>
-      FuelAI™
-    </h1>
+        <p>
+          Less overthinking. Better decisions.
+        </p>
+
+      </div>
+
+    </header>
+
+    <section class="hub-grid">
+
+      <!-- TRACKWISE -->
+
+      <a
+        class="hub-card purple"
+        id="trackwiseCard"
+        href="/tools/trackwise/index.html"
+      >
+
+        <img
+          src="/assets/img/hub/stayontrack.png"
+          alt="TrackWise"
+        />
+
+        <div class="hub-card-copy">
+
+          <h3>
+            TrackWise
+          </h3>
+
+          <p>
+            Track consistency, progress, and daily habits.
+          </p>
+
+        </div>
+
+      </a>
+
+
+      <!-- MEALWISE -->
+
+      <a
+        class="hub-card green"
+        id="mealwiseCard"
+        href="/tools/mealwise/app.html"
+      >
+
+        <img
+          src="/assets/img/hub/mealwise.png"
+          alt="MealWise"
+        />
+
+        <div class="hub-card-copy">
+
+          <h3>
+            MealWise
+          </h3>
+
+          <p>
+            Track meals, hydration, and daily intake with less guesswork.
+          </p>
+
+        </div>
+
+      </a>
+
+
+      <!-- FRIDGEWISE -->
+
+      <a
+        class="hub-card blue"
+        id="fridgewiseCard"
+        href="/tools/fridgewise/fridgewise.html"
+      >
+
+        <img
+          src="/assets/img/hub/fridgewise.png"
+          alt="FridgeWise"
+        />
+
+        <div class="hub-card-copy">
+
+          <h3>
+            FridgeWise
+          </h3>
+
+          <p>
+            Build meal ideas from what you already have.
+          </p>
+
+        </div>
+
+      </a>
+      <!-- TRAININGWISE -->
+
+<a
+  class="hub-card blue"
+  id="trainingwiseCard"
+  href="/tools/trainingwise/"
+>
+
+  <img
+    src="/assets/img/hub/trainingwise.png"
+    alt="TrainingWise"
+  />
+
+  <div class="hub-card-copy">
+
+    <h3>
+      TrainingWise
+    </h3>
 
     <p>
-      Less overthinking. Better decisions.
+      Structured workouts, conditioning, and progress built around your training.
     </p>
 
   </div>
 
-</header>
-
-<section class="hub-grid">
+</a>
 
 
-    </a>
+      <!-- COMBAT ATHLETE -->
 
-  <a
-    class="hub-card purple"
-    id="trackwiseCard"
-    href="/tools/trackwise/index.html"
-  >
+      <a
+        class="hub-card red"
+        id="combatAthleteCard"
+        href="/tools/combat-athlete/"
+      >
 
-    <img
-      src="/assets/img/hub/stayontrack.png"
-      alt="TrackWise"
-    />
+        <img
+          src="/assets/img/hub/combat-athlete.png"
+          alt="Combat Athlete"
+        />
 
-    <div class="hub-card-copy">
+        <div class="hub-card-copy">
 
-      <h3>
-        TrackWise
-      </h3>
+          <h3>
+            Combat Athlete
+          </h3>
 
-      <p>
-        Track consistency, progress, and daily habits.
-      </p>
+          <p>
+            WeightWise, competition prep, and athlete readiness tools.
+          </p>
 
-    </div>
+        </div>
 
-  </a>
+      </a>
 
+    </section>
 
-  <a
-    class="hub-card green"
-    href="/tools/mealwise/app.html"
-  >
+    <footer class="sandman-footer">
+      FuelAI™ · Powered by <strong>Sandman™</strong>
+    </footer>
 
-    <img
-      src="/assets/img/hub/mealwise.png"
-      alt="MealWise"
-    />
-
-    <div class="hub-card-copy">
-
-      <h3>
-        MealWise
-      </h3>
-
-      <p>
-        Scan meals, improve hydration, and recover better.
-      </p>
-
-    </div>
-
-  </a>
-
-  <a
-    class="hub-card blue"
-    href="/tools/fridgewise/fridgewise.html"
-  >
-
-    <img
-      src="/assets/img/hub/fridgewise.png"
-      alt="FridgeWise"
-    />
-
-    <div class="hub-card-copy">
-
-      <h3>
-        FridgeWise
-      </h3>
-
-      <p>
-        Build meal ideas from what you already have.
-      </p>
-
-    </div>
-
-
-  <a
-    class="hub-card red"
-    id="combatAthleteCard"
-    href="/tools/trackwise/"
-  >
-
-    <img
-      src="/assets/img/hub/combat-athlete.png"
-      alt="Combat Athlete"
-    />
-
-    <div class="hub-card-copy">
-
-      <h3>
-        Combat Athlete
-      </h3>
-
-      <p>
-        WeightWise, competition prep, and athlete readiness tools.
-      </p>
-
-    </div>
-
-  </a>
-
-</section>
-
-<footer class="sandman-footer">
-</footer>
   </main>
+
 
   <script src="/assets/js/core/plan.js"></script>
 
   <script src="/assets/js/core/auth-soft.js"></script>
 
-<script>
-  window.FuelAIAuth?.requireSoftLogin();
 
-  const setup =
-    JSON.parse(
-      localStorage.getItem("fuelai-setup") || "{}"
+  <script>
+    window.FuelAIAuth?.requireSoftLogin();
+
+    const DEV_UNLOCK_ALL = true;
+
+    const setup =
+      JSON.parse(
+        localStorage.getItem("fuelai-setup") || "{}"
+      );
+
+    const membership =
+      setup.membership === "basic"
+        ? "standard"
+        : setup.membership || "free";
+
+    const lifestyleType =
+      setup.lifestyleType || "general-health";
+
+    const isFitnessUser =
+      lifestyleType === "fitness-enthusiast";
+
+    const isCombatUser =
+      lifestyleType === "combat-athlete";
+
+    const trackwiseCard =
+      document.getElementById("trackwiseCard");
+
+    const combatAthleteCard =
+      document.getElementById("combatAthleteCard");
+
+
+    function lockCard(
+      card,
+      label,
+      message,
+      href = "/account/setup.html"
+    ) {
+      if (!card) return;
+
+      /*
+       * Developer override:
+       * keep every feature usable while building/testing.
+       */
+      if (DEV_UNLOCK_ALL) {
+        return;
+      }
+
+      card.href = href;
+
+      card.classList.add(
+        "locked-card"
+      );
+
+      const copy =
+        card.querySelector("p");
+
+      if (copy && message) {
+        copy.textContent =
+          message;
+      }
+
+      if (
+        !card.querySelector(
+          ".unlock-badge"
+        )
+      ) {
+        const badge =
+          document.createElement(
+            "span"
+          );
+
+        badge.className =
+          "unlock-badge";
+
+        badge.textContent =
+          label;
+
+        card.appendChild(
+          badge
+        );
+      }
+    }
+
+
+    /*
+     * TRACKWISE
+     */
+
+    if (
+      trackwiseCard &&
+      membership === "free"
+    ) {
+      lockCard(
+        trackwiseCard,
+        "Upgrade",
+        "Standard feature: track consistency, progress, and daily habits.",
+        "/account/setup.html"
+      );
+    }
+
+
+    /*
+ * TRAININGWISE
+ */
+
+if (trainingwiseCard) {
+
+  const canUseTrainingWise =
+    isFitnessUser ||
+    isCombatUser;
+
+  if (!canUseTrainingWise) {
+    lockCard(
+      trainingwiseCard,
+      "Fitness Profile",
+      "TrainingWise is available for Fitness Enthusiast and Combat Athlete profiles.",
+      "/account/setup.html"
     );
-
-  const membership =
-    setup.membership === "basic"
-      ? "standard"
-      : setup.membership || "free";
-
-  const lifestyleType =
-    setup.lifestyleType || "general-health";
-
-  const isCombatUser =
-    lifestyleType === "combat-athlete";
-
-  const trackwiseCard =
-    document.getElementById("trackwiseCard");
-
-  const combatAthleteCard =
-    document.getElementById("combatAthleteCard");
-
-const DEV_UNLOCK_ALL = true;
-
-function lockCard(card, label, message, href = "/plans.html") {
-  if (DEV_UNLOCK_ALL) return;
-
-  if (!card) return;
-
-  card.href = href;
-  card.classList.add("locked-card");
-
-  const copy = card.querySelector("p");
-
-  if (copy && message) {
-    copy.textContent = message;
   }
 
-  if (!card.querySelector(".unlock-badge")) {
-    const badge = document.createElement("span");
-    badge.className = "unlock-badge";
-    badge.textContent = label;
-    card.appendChild(badge);
+  if (
+    canUseTrainingWise &&
+    membership === "free"
+  ) {
+    lockCard(
+      trainingwiseCard,
+      "Unlock Standard",
+      "Standard feature: structured workouts, conditioning, and training progress.",
+      "/account/setup.html"
+    );
   }
 }
+
+
+    /*
+     * COMBAT ATHLETE
+     */
+
     if (combatAthleteCard) {
-    combatAthleteCard.href = "/tools/combat-athlete/";
 
-    if (!isCombatUser) {
-      lockCard(
-        combatAthleteCard,
-        "Combat Setup",
-        "Designed for combat athletes. Update setup to unlock WeightWise and competition tools.",
-        "/setup.html"
-      );
+      if (!isCombatUser) {
+        lockCard(
+          combatAthleteCard,
+          "Combat Profile",
+          "Designed for combat athletes. Update your profile to unlock competition tools.",
+          "/account/setup.html"
+        );
+      }
+
+      if (
+        isCombatUser &&
+        membership !== "plus"
+      ) {
+        lockCard(
+          combatAthleteCard,
+          "Unlock Plus",
+          "Plus feature: WeightWise, competition prep, and athlete readiness tools.",
+          "/account/setup.html"
+        );
+      }
     }
-
-    if (isCombatUser && membership !== "plus") {
-      lockCard(
-        combatAthleteCard,
-        "Unlock Plus",
-        "Plus feature: WeightWise, competition prep, and athlete readiness tools.",
-        "/plans.html"
-      );
-    }
-  }
-
-  if (trackwiseCard && membership === "free") {
-    lockCard(
-      trackwiseCard,
-      "Upgrade",
-      "Standard feature: track consistency, progress, and daily habits.",
-      "/plans.html"
-    );
-  }
-</script>
+  </script>
 
 </body>
 </html>
