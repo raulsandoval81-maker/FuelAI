@@ -1,41 +1,116 @@
+function normalizeSoftEmail(email) {
+  return String(email || "")
+    .trim()
+    .toLowerCase();
+}
+
+
 function getSoftUser() {
-  return JSON.parse(
-    localStorage.getItem("fuelai-user") || "{}"
+  try {
+    return JSON.parse(
+      localStorage.getItem("fuelai-user") || "{}"
+    );
+  } catch (error) {
+    console.warn(
+      "FuelAI user could not be read.",
+      error
+    );
+
+    return {};
+  }
+}
+
+
+function getSoftUserEmail() {
+  const user =
+    getSoftUser();
+
+  return normalizeSoftEmail(
+    user.email
   );
 }
 
+
 function isSoftLoggedIn() {
-  const user = getSoftUser();
+  const user =
+    getSoftUser();
 
   return Boolean(
-    user.email &&
+    normalizeSoftEmail(user.email) &&
     user.active
   );
 }
 
+
 function softLogin(email) {
+  const normalizedEmail =
+    normalizeSoftEmail(email);
+
+  if (!normalizedEmail) {
+    return false;
+  }
+
+  const existingUser =
+    getSoftUser();
+
+  const sameUser =
+    normalizeSoftEmail(
+      existingUser.email
+    ) === normalizedEmail;
+
   localStorage.setItem(
     "fuelai-user",
     JSON.stringify({
-      email,
-      active: true,
-      createdAt: new Date().toISOString()
+      email:
+        normalizedEmail,
+
+      active:
+        true,
+
+      createdAt:
+        sameUser &&
+        existingUser.createdAt
+          ? existingUser.createdAt
+          : new Date().toISOString(),
+
+      lastLoginAt:
+        new Date().toISOString()
     })
+  );
+
+  return true;
+}
+
+
+function softLogout() {
+  /*
+   * Logout only removes the active session.
+   *
+   * Account-specific setup and plan data
+   * remain stored for the next login.
+   */
+  localStorage.removeItem(
+    "fuelai-user"
   );
 }
 
-function softLogout() {
-  localStorage.removeItem("fuelai-user");
-}
 
 function requireSoftLogin() {
   if (!isSoftLoggedIn()) {
-    window.location.href = "/account/login.html";
+    window.location.href =
+      "/account/login.html";
+
+    return false;
   }
+
+  return true;
 }
 
+
 window.FuelAIAuth = {
+  normalizeSoftEmail,
   getSoftUser,
+  getSoftUserEmail,
   isSoftLoggedIn,
   softLogin,
   softLogout,
