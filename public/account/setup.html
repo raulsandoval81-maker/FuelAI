@@ -16,334 +16,685 @@
   />
 
   <style>
-    .setup-profiles{
-      margin:24px 0 18px;
+    :root{
+      --bg:#030712;
+      --panel:#071019;
+      --panel-2:#0b1420;
+      --line:rgba(34,197,94,.28);
+      --line-soft:rgba(255,255,255,.08);
+      --text:#f8fafc;
+      --muted:#94a3b8;
+      --green:#22c55e;
+      --green-soft:#86efac;
+      --blue:#38bdf8;
+      --red:#ef4444;
     }
 
-    .setup-profiles-label{
-      margin:0 0 12px;
+    *{
+      box-sizing:border-box;
+    }
+
+    body{
+      margin:0;
+      background:
+        radial-gradient(
+          circle at top,
+          rgba(20,83,45,.22),
+          transparent 28%
+        ),
+        var(--bg);
+      color:var(--text);
+    }
+
+    .setup-shell{
+      width:100%;
+      max-width:1180px;
+      margin:0 auto;
+      padding:28px 18px 40px;
+    }
+
+    .setup-header{
       text-align:center;
-      color:#86efac;
-      font-size:.8rem;
-      font-weight:900;
-      letter-spacing:.14em;
-      text-transform:uppercase;
+      margin-bottom:22px;
+    }
+
+    .setup-brand{
+      margin:0;
+      font-size:clamp(2.6rem,7vw,4.8rem);
+      font-weight:1000;
+      letter-spacing:-.05em;
+      line-height:.95;
+    }
+
+    .setup-brand span{
+      color:var(--green);
+    }
+
+    .setup-title{
+      margin:8px 0 0;
+      font-size:clamp(2rem,5vw,3.5rem);
+      font-weight:1000;
+    }
+
+    .setup-sub{
+      max-width:620px;
+      margin:12px auto 0;
+      color:#cbd5e1;
+      line-height:1.55;
     }
 
     .setup-profiles-image{
       display:block;
       width:100%;
       height:auto;
-      margin:0 auto;
+      margin:22px auto 18px;
       border-radius:20px;
-      filter:
-        drop-shadow(
-          0 0 24px rgba(34,197,94,.12)
+      border:1px solid rgba(255,255,255,.06);
+      box-shadow:0 0 34px rgba(0,0,0,.32);
+    }
+
+    .setup-section{
+      margin-top:18px;
+      padding:18px;
+      border:1px solid var(--line-soft);
+      border-radius:20px;
+      background:
+        linear-gradient(
+          180deg,
+          rgba(15,23,42,.92),
+          rgba(7,16,25,.94)
         );
+      box-shadow:0 12px 30px rgba(0,0,0,.18);
     }
 
-    .setup-profile-note{
-      margin:12px auto 0;
-      max-width:520px;
-      text-align:center;
-      color:#94a3b8;
-      font-size:.9rem;
+    .setup-section.accent{
+      border-color:var(--line);
+    }
+
+    .section-label{
+      margin:0 0 14px;
+      color:var(--green-soft);
+      font-size:.78rem;
+      font-weight:1000;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+    }
+
+    .field-grid{
+      display:grid;
+      grid-template-columns:
+        repeat(3,minmax(0,1fr));
+      gap:12px;
+    }
+
+    .field-grid.two{
+      grid-template-columns:
+        repeat(2,minmax(0,1fr));
+    }
+
+    .goal-select,
+    .setup-input{
+      width:100%;
+      min-height:52px;
+      padding:0 14px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.10);
+      background:#0b1220;
+      color:#e5e7eb;
+      font:inherit;
+      outline:none;
+    }
+
+    .goal-select:focus,
+    .setup-input:focus{
+      border-color:rgba(34,197,94,.55);
+      box-shadow:0 0 0 3px rgba(34,197,94,.10);
+    }
+
+    .hidden{
+      display:none !important;
+    }
+
+    .profile-note{
+      margin:0 0 12px;
+      color:var(--muted);
       line-height:1.5;
+      font-size:.92rem;
     }
 
-    @media (max-width:600px){
-      .setup-profiles{
-        margin:20px 0 16px;
+    .split-row{
+      display:grid;
+      grid-template-columns:
+        1fr 1fr;
+      gap:18px;
+      margin-top:18px;
+    }
+
+    .scan-feature{
+      margin-top:18px;
+      display:grid;
+      grid-template-columns:
+        .9fr 1.1fr;
+      gap:18px;
+      align-items:center;
+      padding:20px;
+      border-radius:22px;
+      border:1px solid rgba(34,197,94,.24);
+      background:
+        linear-gradient(
+          135deg,
+          rgba(5,46,22,.26),
+          rgba(7,16,25,.96)
+        );
+      overflow:hidden;
+    }
+
+    .scan-copy{
+      padding:8px;
+    }
+
+    .scan-kicker{
+      margin:0 0 8px;
+      color:var(--green-soft);
+      font-size:.8rem;
+      font-weight:1000;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+    }
+
+    .scan-copy h2{
+      margin:0;
+      font-size:clamp(1.6rem,4vw,2.5rem);
+      line-height:1.05;
+    }
+
+    .scan-copy h2 span{
+      color:var(--green);
+    }
+
+    .scan-copy p{
+      margin:12px 0 0;
+      color:#cbd5e1;
+      line-height:1.6;
+    }
+
+    .scan-flow{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      margin-top:16px;
+      color:#d1fae5;
+      font-size:.85rem;
+      font-weight:800;
+    }
+
+    .scan-flow span{
+      padding:8px 10px;
+      border-radius:999px;
+      background:rgba(34,197,94,.08);
+      border:1px solid rgba(34,197,94,.18);
+    }
+
+    .scan-visual{
+      position:relative;
+      min-height:280px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      border-radius:18px;
+      overflow:hidden;
+      background:
+        radial-gradient(
+          circle at center,
+          rgba(34,197,94,.14),
+          rgba(2,6,23,.9) 68%
+        );
+      border:1px solid rgba(255,255,255,.06);
+    }
+
+    .scan-visual img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
+    }
+
+    .scan-visual-placeholder{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      padding:28px;
+      text-align:center;
+      color:#cbd5e1;
+    }
+
+    .scan-visual-placeholder strong{
+      font-size:1.1rem;
+      color:#fff;
+    }
+
+    .guidance-grid{
+      display:grid;
+      grid-template-columns:
+        1fr 1fr;
+      gap:18px;
+      margin-top:18px;
+    }
+
+    .range-card{
+      margin:0;
+      min-height:100%;
+    }
+
+    .range-output{
+      line-height:1.55;
+    }
+
+    .setup-actions{
+      display:grid;
+      grid-template-columns:
+        .55fr 1fr;
+      gap:14px;
+      margin-top:20px;
+    }
+
+    .secondary-btn,
+    .start-btn{
+      min-height:56px;
+    }
+
+    .start-btn{
+      font-size:1.05rem;
+      font-weight:1000;
+    }
+
+    .setup-footer-note{
+      margin:14px 0 0;
+      text-align:center;
+      color:#64748b;
+      font-size:.82rem;
+    }
+
+    @media (max-width:900px){
+      .field-grid{
+        grid-template-columns:
+          repeat(2,minmax(0,1fr));
       }
 
-      .setup-profiles-image{
+      .split-row{
+        grid-template-columns:1fr;
+      }
+
+      .scan-feature{
+        grid-template-columns:1fr;
+      }
+    }
+
+    @media (max-width:640px){
+      .setup-shell{
+        padding:18px 12px 30px;
+      }
+
+      .setup-section{
+        padding:14px;
         border-radius:16px;
       }
 
-      .setup-profile-note{
-        font-size:.85rem;
+      .field-grid,
+      .field-grid.two,
+      .guidance-grid{
+        grid-template-columns:1fr;
+      }
+
+      .setup-actions{
+        grid-template-columns:1fr;
+      }
+
+      .scan-feature{
+        padding:14px;
+        border-radius:18px;
+      }
+
+      .scan-visual{
+        min-height:220px;
+      }
+
+      .setup-profiles-image{
+        border-radius:14px;
       }
     }
   </style>
-
-  
-
 </head>
 
 <body data-theme="night">
 
-  <main class="scan-wrap">
+  <main class="setup-shell">
 
-    <section class="scan-card">
+    <header class="setup-header">
 
-      <p class="range-label">
-        FuelAI
-      </p>
-
-      <h1>
-        Setup
+      <h1 class="setup-brand">
+        Fuel<span>AI</span>
       </h1>
 
-      <p class="sub">
+      <h2 class="setup-title">
+        Setup
+      </h2>
+
+      <p class="setup-sub">
         Tell FuelAI how you live and train so your experience can be built around you.
       </p>
 
-              <img
-          class="setup-profiles-image"
-          src="/assets/img/hero/fuelai-profiles.png"
-          alt="FuelAI profiles: General Health, Fitness Enthusiast, and Combat Athlete"
+    </header>
+
+    <img
+      class="setup-profiles-image"
+      src="/assets/img/hero/fuelai-profiles.png"
+      alt="FuelAI profiles: General Health, Fitness Enthusiast, and Combat Athlete"
+    />
+
+
+    <!-- YOUR BASICS -->
+
+    <section class="setup-section accent">
+
+      <p class="section-label">
+        Your Basics
+      </p>
+
+      <div class="field-grid">
+
+        <input
+          id="nicknameInput"
+          class="setup-input"
+          type="text"
+          placeholder="Nickname (optional)"
         />
 
+        <input
+          id="heightInput"
+          class="setup-input"
+          type="text"
+          placeholder="Height — example: 5'10"
+        />
+
+        <input
+          id="weightInput"
+          class="setup-input"
+          type="text"
+          placeholder="Current weight — example: 165 lbs"
+        />
+
+        <input
+          id="targetWeightInput"
+          class="setup-input"
+          type="text"
+          placeholder="Target weight — optional"
+        />
+
+        <select
+          id="ageRange"
+          class="goal-select"
+        >
+          <option value="13-18">
+            Ages 13–18
+          </option>
+
+          <option value="19-30">
+            Ages 19–30
+          </option>
+
+          <option value="31-45">
+            Ages 31–45
+          </option>
+
+          <option value="46-60">
+            Ages 46–60
+          </option>
+
+          <option value="60+">
+            Ages 60+
+          </option>
+        </select>
+
+        <select
+          id="genderType"
+          class="goal-select"
+        >
+          <option value="">
+            Body Type
+          </option>
+
+          <option value="male">
+            Male
+          </option>
+
+          <option value="female">
+            Female
+          </option>
+        </select>
+
+      </div>
+
+    </section>
 
 
-      <input
-        id="nicknameInput"
-        class="goal-select"
-        type="text"
-        placeholder="Nickname (optional)"
-      />
+    <!-- PROFILE + ACTIVITY -->
 
+    <div class="split-row">
 
-      <input
-        id="heightInput"
-        class="goal-select"
-        type="text"
-        placeholder="Height — example: 5'10"
-      />
+      <section class="setup-section accent">
 
-
-      <input
-        id="weightInput"
-        class="goal-select"
-        type="text"
-        placeholder="Current weight — example: 165 lbs"
-      />
-
-
-      <input
-        id="targetWeightInput"
-        class="goal-select"
-        type="text"
-        placeholder="Target weight — optional"
-      />
-
-
-      <select
-        id="ageRange"
-        class="goal-select"
-      >
-
-        <option value="13-18">
-          Ages 13–18
-        </option>
-
-        <option value="19-30">
-          Ages 19–30
-        </option>
-
-        <option value="31-45">
-          Ages 31–45
-        </option>
-
-        <option value="46-60">
-          Ages 46–60
-        </option>
-
-        <option value="60+">
-          Ages 60+
-        </option>
-
-      </select>
-
-
-      <select
-        id="genderType"
-        class="goal-select"
-      >
-
-        <option value="">
-          Body Type
-        </option>
-
-        <option value="male">
-          Male
-        </option>
-
-        <option value="female">
-          Female
-        </option>
-
-      </select>
-
-
-      <!-- PROFILE EXPLANATION -->
-
-      <section class="setup-profiles">
-
-        <p class="setup-profiles-label">
-          Choose Your FuelAI Profile
+        <p class="section-label">
+          Choose Your Profile
         </p>
 
-
-        <p class="setup-profile-note">
-          Your profile helps FuelAI decide which training,
-          nutrition, recovery, and performance features
-          matter most to you.
+        <p class="profile-note">
+          Your profile helps FuelAI decide which training, nutrition, recovery, and performance features matter most to you.
         </p>
+
+        <select
+          id="lifestyleType"
+          class="goal-select"
+        >
+          <option value="">
+            What best describes you?
+          </option>
+
+          <option value="general-health">
+            General Health
+          </option>
+
+          <option value="fitness-enthusiast">
+            Fitness Enthusiast
+          </option>
+
+          <option value="combat-athlete">
+            Combat Athlete
+          </option>
+        </select>
 
       </section>
 
 
-      <!-- PROFILE TYPE -->
+      <section class="setup-section accent">
 
-      <select
-        id="lifestyleType"
-        class="goal-select"
-      >
+        <p class="section-label">
+          Activity & Style
+        </p>
 
-        <option value="">
-          What best describes you?
-        </option>
+        <div class="field-grid two">
 
-        <option value="general-health">
-          General Health
-        </option>
+          <select
+            id="activityLevel"
+            class="goal-select"
+          >
+            <option value="1-2">
+              Fitness Level 1–2 days per week
+            </option>
 
-        <option value="fitness-enthusiast">
-          Fitness Enthusiast
-        </option>
+            <option
+              value="2-3"
+              selected
+            >
+              Fitness Level 2–3 days per week
+            </option>
 
-        <option value="combat-athlete">
-          Combat Athlete
-        </option>
+            <option value="4-5">
+              Fitness Level 4–5 days per week
+            </option>
 
-      </select>
+            <option value="6-plus">
+              Fitness Level 6+ days per week
+            </option>
+          </select>
+
+          <select
+            id="combatStyle"
+            class="goal-select hidden"
+          >
+            <option value="">
+              Combat Style
+            </option>
+
+            <option value="grappling">
+              Grappling Sports
+            </option>
+
+            <option value="striking">
+              Striking Sports
+            </option>
+
+            <option value="mma">
+              MMA / Mixed Combat
+            </option>
+          </select>
+
+        </div>
+
+      </section>
+
+    </div>
 
 
-      <!-- COMBAT TYPE -->
+    <!-- SCAN FEATURE -->
 
-      <select
-        id="combatStyle"
-        class="goal-select hidden"
-      >
+    <section class="scan-feature">
 
-        <option value="">
-          Combat Style
-        </option>
+      <div class="scan-copy">
 
-        <option value="grappling">
-          Grappling Sports
-        </option>
+        <p class="scan-kicker">
+          FuelAI in action
+        </p>
 
-        <option value="striking">
-          Striking Sports
-        </option>
+        <h2>
+          Scan. Track. <span>Improve.</span>
+        </h2>
 
-        <option value="mma">
-          MMA / Mixed Combat
-        </option>
+        <p>
+          FuelAI turns your meals and daily habits into clear guidance so you can make better decisions every day.
+        </p>
 
-      </select>
+        <div class="scan-flow">
+          <span>Nutrition</span>
+          <span>Hydration</span>
+          <span>Training</span>
+          <span>Recovery</span>
+          <span>Progress</span>
+        </div>
+
+      </div>
+
+      <div class="scan-visual">
+
+        <img
+          src="/assets/img/setup/fuelai-scan-track-improve.png"
+          alt="FuelAI meal scan showing nutrition, hydration, training, recovery, and progress"
+        />
+
+      </div>
+
+    </section>
 
 
-      <!-- ACTIVITY LEVEL -->
+    <!-- GOALS / FOOD -->
 
-      <select
-        id="activityLevel"
-        class="goal-select"
-      >
+    <section class="setup-section accent">
 
-        <option value="1-2">
-          Fitness Level 1–2 days per week
-        </option>
+      <p class="section-label">
+        Your Direction
+      </p>
 
-        <option
-          value="2-3"
-          selected
+      <div class="field-grid">
+
+        <select
+          id="goalSelect"
+          class="goal-select"
         >
-          Fitness Level 2–3 days per week
-        </option>
+          <option value="fuelwise">
+            FuelWise — Maintain / Balance
+          </option>
 
-        <option value="4-5">
-          Fitness Level 4–5 days per week
-        </option>
+          <option value="cutwise">
+            CutWise — Lean Out
+          </option>
 
-        <option value="6-plus">
-          Fitness Level 6+ days per week
-        </option>
-
-      </select>
-
-
-      <!-- GOAL -->
-
-      <select
-        id="goalSelect"
-        class="goal-select"
-      >
-
-        <option value="fuelwise">
-          FuelWise — Maintain / Balance
-        </option>
-
-        <option value="cutwise">
-          CutWise — Lean Out
-        </option>
-
-        <option value="gainwise">
-          GainWise — Build / Recover
-        </option>
-
-      </select>
+          <option value="gainwise">
+            GainWise — Build / Recover
+          </option>
+        </select>
 
 
-      <!-- FOOD STYLE -->
+        <select
+          id="foodStyle"
+          class="goal-select"
+        >
+          <option value="none">
+            Food Preference
+          </option>
 
-      <select
-        id="foodStyle"
-        class="goal-select"
-      >
+          <option value="none">
+            No Preference
+          </option>
 
-        <option value="none">
-          Food Preference
-        </option>
+          <option value="vegetarian">
+            Vegetarian
+          </option>
 
-        <option value="none">
-          No Preference
-        </option>
+          <option value="vegan">
+            Vegan
+          </option>
 
-        <option value="vegetarian">
-          Vegetarian
-        </option>
+          <option value="highprotein">
+            High Protein
+          </option>
 
-        <option value="vegan">
-          Vegan
-        </option>
+          <option value="dairyfree">
+            Dairy Free
+          </option>
 
-        <option value="highprotein">
-          High Protein
-        </option>
-
-        <option value="dairyfree">
-          Dairy Free
-        </option>
-
-        <option value="glutenfree">
-          Gluten Free
-        </option>
-
-      </select>
+          <option value="glutenfree">
+            Gluten Free
+          </option>
+        </select>
 
 
-      <input
-        id="foodAvoid"
-        class="goal-select"
-        type="text"
-        placeholder="Allergies / Avoid — peanuts, shellfish, eggs..."
-      />
+        <input
+          id="foodAvoid"
+          class="setup-input"
+          type="text"
+          placeholder="Allergies / Avoid — peanuts, shellfish, eggs..."
+        />
+
+      </div>
+
+    </section>
 
 
-      <!-- MONTHLY DIRECTION -->
+    <!-- GUIDANCE -->
+
+    <div class="guidance-grid">
 
       <section class="range-card">
 
@@ -361,8 +712,6 @@
 
       </section>
 
-
-      <!-- SUGGESTED GUIDANCE -->
 
       <section class="range-card">
 
@@ -383,50 +732,47 @@
 
       </section>
 
+    </div>
 
-      <div class="reset-wrap">
 
-        <button
-          id="resetSetupBtn"
-          class="secondary-btn"
-          type="button"
-        >
-          Reset Setup
-        </button>
+    <!-- ACTIONS -->
 
-      </div>
+    <div class="setup-actions">
 
+      <button
+        id="resetSetupBtn"
+        class="secondary-btn"
+        type="button"
+      >
+        Reset Setup
+      </button>
 
       <button
         id="saveSetupBtn"
         class="start-btn"
         type="button"
       >
-        Continue to Hub
+        Start FuelAI →
       </button>
 
-    </section>
+    </div>
+
+    <p class="setup-footer-note">
+      You can update your setup later from your account.
+    </p>
 
   </main>
 
 
-  <script
-    src="/assets/js/core/auth-soft.js"
-  ></script>
+  <script src="/assets/js/core/auth-soft.js"></script>
 
   <script>
     window.FuelAIAuth?.requireSoftLogin();
   </script>
 
-  <script
-    src="/assets/js/account/setup.js?v=8"
-  ></script>
-
+  <script src="/assets/js/account/setup.js?v=9"></script>
 
   <script src="/assets/js/core/plan.js"></script>
-
-
-  
 
 </body>
 </html>

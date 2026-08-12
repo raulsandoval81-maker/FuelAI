@@ -47,7 +47,7 @@
     }
 
     .plan-list{
-      max-width:320px;
+      max-width:340px;
       margin:0 auto;
       text-align:left;
     }
@@ -81,7 +81,8 @@
       text-decoration:none;
       font-weight:900;
       font-size:1.05rem;
-      box-shadow:0 0 20px rgba(168,85,247,.25);
+      box-shadow:
+        0 0 20px rgba(168,85,247,.25);
     }
 
     .upgrade-btn:hover{
@@ -95,13 +96,28 @@
       font-weight:900;
       text-decoration:none;
     }
+
+    .profile-summary{
+      margin:18px auto 0;
+      max-width:420px;
+      padding:14px 16px;
+      border-radius:16px;
+      border:
+        1px solid rgba(255,255,255,.08);
+      background:
+        rgba(255,255,255,.04);
+      color:#cbd5e1;
+    }
+
+    .profile-summary strong{
+      color:#fff;
+    }
   </style>
 
   <link
     rel="stylesheet"
     href="/assets/css/nav.css"
   />
-
 </head>
 
 <body data-theme="night">
@@ -110,15 +126,32 @@
 
     <section class="scan-card upgrade-card">
 
+      <p class="range-label">
+        FuelAI
+      </p>
+
       <h1>
         📈 TrackWise
       </h1>
 
       <p class="sub">
-        Choose how deep you want to track.
+        Choose the level that fits your FuelAI profile.
       </p>
 
-      <div class="plan-card">
+      <div
+        id="profileSummary"
+        class="profile-summary"
+      >
+        Loading your FuelAI profile...
+      </div>
+
+
+      <!-- FREE -->
+
+      <div
+        class="plan-card"
+        id="freePlanCard"
+      >
 
         <div class="plan-icon">
           ✓
@@ -133,9 +166,27 @@
         </p>
 
         <div class="plan-list">
-          <p><span>✓</span>TrackWise Basics</p>
-          <p><span>✓</span>Daily Check-In</p>
-          <p><span>✓</span>Limited Progress Tracking</p>
+
+          <p>
+            <span>✓</span>
+            TrackWise Basics
+          </p>
+
+          <p>
+            <span>✓</span>
+            Daily Check-In
+          </p>
+
+          <p>
+            <span>✓</span>
+            Limited Progress Tracking
+          </p>
+
+          <p>
+            <span>✓</span>
+            3-Day History
+          </p>
+
         </div>
 
         <a
@@ -147,7 +198,13 @@
 
       </div>
 
-      <div class="plan-card">
+
+      <!-- STANDARD -->
+
+      <div
+        class="plan-card"
+        id="standardPlanCard"
+      >
 
         <div class="plan-icon">
           ★
@@ -162,21 +219,109 @@
         </p>
 
         <div class="plan-list">
-          <p><span>✓</span>Advanced TrackWise</p>
-          <p><span>✓</span>Progress Tracking</p>
-          <p><span>✓</span>History & Trends</p>
-          <p><span>✓</span>Extended Logs</p>
+
+          <p>
+            <span>✓</span>
+            Advanced TrackWise
+          </p>
+
+          <p>
+            <span>✓</span>
+            Progress Tracking
+          </p>
+
+          <p>
+            <span>✓</span>
+            History & Trends
+          </p>
+
+          <p>
+            <span>✓</span>
+            Extended Logs
+          </p>
+
+          <p>
+            <span>✓</span>
+            TrainingWise
+          </p>
+
         </div>
 
         <a
           class="upgrade-btn"
           href="https://buy.stripe.com/test_6oUeV61fp5gz6d00Fta3u03"
           target="_blank"
+          rel="noopener noreferrer"
         >
           Choose Standard →
         </a>
 
       </div>
+
+
+      <!-- PLUS -->
+
+      <div
+        class="plan-card"
+        id="plusPlanCard"
+      >
+
+        <div class="plan-icon">
+          ★
+        </div>
+
+        <h2>
+          Plus
+        </h2>
+
+        <p class="plan-price">
+          Premium
+        </p>
+
+        <div class="plan-list">
+
+          <p>
+            <span>✓</span>
+            Full TrackWise
+          </p>
+
+          <p>
+            <span>✓</span>
+            TrainingWise
+          </p>
+
+          <p>
+            <span>✓</span>
+            Extended History
+          </p>
+
+          <p>
+            <span>✓</span>
+            Advanced Performance Tools
+          </p>
+
+          <p>
+            <span>✓</span>
+            Combat Athlete Tools
+          </p>
+
+          <p>
+            <span>✓</span>
+            WeightWise
+          </p>
+
+        </div>
+
+        <a
+          class="upgrade-btn"
+          id="plusPlanBtn"
+          href="/hub/"
+        >
+          Continue Plus →
+        </a>
+
+      </div>
+
 
       <a
         class="back-link"
@@ -192,8 +337,119 @@
 
   <script src="/assets/js/core/plan.js"></script>
 
-
   <script src="/assets/js/core/auth-soft.js"></script>
+
+
+  <script>
+    window.FuelAIAuth?.requireSoftLogin();
+
+    const access =
+      window.FuelAIPlan
+        ?.getFuelAIAccess?.();
+
+    const profile =
+      access?.profile ||
+      "general-health";
+
+    const profileLabel =
+      access?.profileLabel ||
+      "General Health";
+
+    const currentPlan =
+      access?.plan ||
+      "free";
+
+    const freePlanCard =
+      document.getElementById(
+        "freePlanCard"
+      );
+
+    const standardPlanCard =
+      document.getElementById(
+        "standardPlanCard"
+      );
+
+    const plusPlanCard =
+      document.getElementById(
+        "plusPlanCard"
+      );
+
+    const profileSummary =
+      document.getElementById(
+        "profileSummary"
+      );
+
+
+    if (profileSummary) {
+      profileSummary.innerHTML = `
+        Your profile:
+        <strong>${profileLabel}</strong>
+        <br>
+        Current plan:
+        <strong>${currentPlan}</strong>
+      `;
+    }
+
+
+    /*
+     * General Health
+     * Free or Standard
+     */
+
+    if (
+      profile ===
+      "general-health"
+    ) {
+      freePlanCard.style.display =
+        "";
+
+      standardPlanCard.style.display =
+        "";
+
+      plusPlanCard.style.display =
+        "none";
+    }
+
+
+    /*
+     * Fitness Enthusiast
+     * Standard or Plus
+     */
+
+    if (
+      profile ===
+      "fitness-enthusiast"
+    ) {
+      freePlanCard.style.display =
+        "none";
+
+      standardPlanCard.style.display =
+        "";
+
+      plusPlanCard.style.display =
+        "";
+    }
+
+
+    /*
+     * Combat Athlete
+     * Plus only
+     */
+
+    if (
+      profile ===
+      "combat-athlete"
+    ) {
+      freePlanCard.style.display =
+        "none";
+
+      standardPlanCard.style.display =
+        "none";
+
+      plusPlanCard.style.display =
+        "";
+    }
+  </script>
 
 
   <script src="/assets/js/core/nav.js"></script>
