@@ -1,9 +1,55 @@
 const FUELAI_PLAN_KEY =
   "fuelai-plan";
 
+
+/*
+ * ========================================
+ * PROFILE → VALID PLANS
+ * ========================================
+ */
+
+const FUELAI_PROFILE_PLANS = {
+
+  "general-health": {
+    label: "General Health",
+    defaultPlan: "free",
+    allowedPlans: [
+      "free",
+      "standard"
+    ]
+  },
+
+  "fitness-enthusiast": {
+    label: "Fitness Enthusiast",
+    defaultPlan: "standard",
+    allowedPlans: [
+      "standard",
+      "plus"
+    ]
+  },
+
+  "combat-athlete": {
+    label: "Combat Athlete",
+    defaultPlan: "plus",
+    allowedPlans: [
+      "plus"
+    ]
+  }
+
+};
+
+
+/*
+ * ========================================
+ * PLAN FEATURES
+ * ========================================
+ */
+
 const FUELAI_FEATURES = {
 
   free: {
+    label: "Free",
+
     mealScansPerDay: 2,
     fridgeScansPerDay: 1,
 
@@ -16,7 +62,10 @@ const FUELAI_FEATURES = {
     weightwise: false
   },
 
+
   standard: {
+    label: "Standard",
+
     mealScansPerDay: 5,
     fridgeScansPerDay: 2,
 
@@ -29,7 +78,10 @@ const FUELAI_FEATURES = {
     weightwise: false
   },
 
+
   plus: {
+    label: "Plus",
+
     mealScansPerDay: 8,
     fridgeScansPerDay: 4,
 
@@ -47,70 +99,7 @@ const FUELAI_FEATURES = {
 
 /*
  * ========================================
- * PLAN
- * ========================================
- */
-
-function normalizeFuelAIPlan(plan) {
-  const value =
-    String(plan || "")
-      .trim()
-      .toLowerCase();
-
-  /*
-   * Backward compatibility
-   */
-  if (value === "basic") {
-    return "standard";
-  }
-
-  if (
-    value === "standard" ||
-    value === "plus"
-  ) {
-    return value;
-  }
-
-  return "free";
-}
-
-
-function getFuelAIPlan() {
-  return normalizeFuelAIPlan(
-    localStorage.getItem(
-      FUELAI_PLAN_KEY
-    )
-  );
-}
-
-
-function setFuelAIPlan(plan) {
-  const normalized =
-    normalizeFuelAIPlan(plan);
-
-  localStorage.setItem(
-    FUELAI_PLAN_KEY,
-    normalized
-  );
-
-  return normalized;
-}
-
-
-function getFuelAIFeatures() {
-  const plan =
-    getFuelAIPlan();
-
-  return (
-    FUELAI_FEATURES[plan] ||
-    FUELAI_FEATURES.free
-  );
-}
-
-
-/*
- * ========================================
- * SETUP / PROFILE
+ * SETUP
  * ========================================
  */
 
@@ -131,6 +120,12 @@ function getFuelAISetup() {
   }
 }
 
+
+/*
+ * ========================================
+ * PROFILE
+ * ========================================
+ */
 
 function normalizeFuelAIProfile(
   profile
@@ -171,6 +166,146 @@ function getFuelAIProfile() {
 }
 
 
+function getFuelAIProfileConfig() {
+  const profile =
+    getFuelAIProfile();
+
+  return (
+    FUELAI_PROFILE_PLANS[profile] ||
+    FUELAI_PROFILE_PLANS[
+      "general-health"
+    ]
+  );
+}
+
+
+/*
+ * ========================================
+ * PLAN
+ * ========================================
+ */
+
+function normalizeFuelAIPlan(plan) {
+  const value =
+    String(plan || "")
+      .trim()
+      .toLowerCase();
+
+  /*
+   * Old Basic plan migration
+   */
+  if (value === "basic") {
+    return "standard";
+  }
+
+  if (
+    value === "standard" ||
+    value === "plus"
+  ) {
+    return value;
+  }
+
+  return "free";
+}
+
+
+function getFuelAIPlan() {
+  const profileConfig =
+    getFuelAIProfileConfig();
+
+  const stored =
+    localStorage.getItem(
+      FUELAI_PLAN_KEY
+    );
+
+  /*
+   * No plan yet:
+   * use the natural starting plan
+   * for this profile.
+   */
+  if (!stored) {
+    return profileConfig.defaultPlan;
+  }
+
+  const plan =
+    normalizeFuelAIPlan(
+      stored
+    );
+
+  /*
+   * Existing plan is valid for
+   * this profile.
+   */
+  if (
+    profileConfig.allowedPlans.includes(
+      plan
+    )
+  ) {
+    return plan;
+  }
+
+  /*
+   * Invalid profile/plan combination.
+   *
+   * Example:
+   * Combat Athlete + Free
+   *
+   * Fall back to the profile's
+   * natural plan.
+   */
+  return profileConfig.defaultPlan;
+}
+
+
+function setFuelAIPlan(plan) {
+  const normalized =
+    normalizeFuelAIPlan(
+      plan
+    );
+
+  const profileConfig =
+    getFuelAIProfileConfig();
+
+  if (
+    !profileConfig.allowedPlans.includes(
+      normalized
+    )
+  ) {
+    console.warn(
+      `Plan "${normalized}" is not available for ${profileConfig.label}.`
+    );
+
+    return false;
+  }
+
+  localStorage.setItem(
+    FUELAI_PLAN_KEY,
+    normalized
+  );
+
+  return true;
+}
+
+
+function getAllowedFuelAIPlans() {
+  return [
+    ...getFuelAIProfileConfig()
+      .allowedPlans
+  ];
+}
+
+
+function getFuelAIFeatures() {
+  const plan =
+    getFuelAIPlan();
+
+  return (
+    FUELAI_FEATURES[plan] ||
+    FUELAI_FEATURES.free
+  );
+}
+
+
 /*
  * ========================================
  * DEVELOPER OVERRIDE
@@ -204,7 +339,12 @@ function canUseFuelAITool(tool) {
   const profile =
     getFuelAIProfile();
 
+
   switch (tool) {
+
+    /*
+     * Core FuelAI
+     */
 
     case "mealwise":
       return true;
@@ -220,6 +360,13 @@ function canUseFuelAITool(tool) {
       );
 
 
+    /*
+     * TrainingWise
+     *
+     * Fitness Enthusiast
+     * or Combat Athlete
+     */
+
     case "trainingwise":
       return (
         features.trainingwise === true &&
@@ -233,19 +380,29 @@ function canUseFuelAITool(tool) {
       );
 
 
+    /*
+     * Combat suite
+     *
+     * Combat Athlete + Plus
+     */
+
     case "combatAthlete":
       return (
-        features.combatAthlete === true &&
         profile ===
-          "combat-athlete"
+          "combat-athlete" &&
+
+        features.combatAthlete ===
+          true
       );
 
 
     case "weightwise":
       return (
-        features.weightwise === true &&
         profile ===
-          "combat-athlete"
+          "combat-athlete" &&
+
+        features.weightwise ===
+          true
       );
 
 
@@ -262,23 +419,41 @@ function canUseFuelAITool(tool) {
  */
 
 function getFuelAIAccess() {
-  const plan =
-    getFuelAIPlan();
 
   const profile =
     getFuelAIProfile();
 
+  const profileConfig =
+    getFuelAIProfileConfig();
+
+  const plan =
+    getFuelAIPlan();
+
   const features =
     getFuelAIFeatures();
 
+
   return {
-    plan,
+
     profile,
+
+    profileLabel:
+      profileConfig.label,
+
+    plan,
+
+    planLabel:
+      features.label,
+
+    allowedPlans:
+      getAllowedFuelAIPlans(),
 
     developerUnlock:
       isFuelAIDevUnlocked(),
 
+
     limits: {
+
       mealScansPerDay:
         features.mealScansPerDay,
 
@@ -287,9 +462,12 @@ function getFuelAIAccess() {
 
       trackwiseDays:
         features.trackwiseDays
+
     },
 
+
     tools: {
+
       mealwise:
         canUseFuelAITool(
           "mealwise"
@@ -319,7 +497,9 @@ function getFuelAIAccess() {
         canUseFuelAITool(
           "weightwise"
         )
+
     }
+
   };
 }
 
@@ -331,15 +511,28 @@ function getFuelAIAccess() {
  */
 
 window.FuelAIPlan = {
-  getFuelAIPlan,
-  setFuelAIPlan,
-  getFuelAIFeatures,
+
+  profiles:
+    FUELAI_PROFILE_PLANS,
+
+  features:
+    FUELAI_FEATURES,
 
   getFuelAISetup,
+
   getFuelAIProfile,
+  getFuelAIProfileConfig,
+
+  getFuelAIPlan,
+  setFuelAIPlan,
+
+  getAllowedFuelAIPlans,
+
+  getFuelAIFeatures,
 
   canUseFuelAITool,
   getFuelAIAccess,
 
   isFuelAIDevUnlocked
+
 };
