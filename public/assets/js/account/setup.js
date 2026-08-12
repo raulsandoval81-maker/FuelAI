@@ -405,7 +405,7 @@ function saveSetup() {
   renderSetupButtons();
 
   window.location.href =
-    "/hub.html";
+    "/hub/";
 }
 
 function resetSetup() {
