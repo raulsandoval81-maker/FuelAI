@@ -405,7 +405,7 @@ function saveSetup() {
   renderSetupButtons();
 
   window.location.href =
-    "/hub/";
+    "/tools/trackwise/";
 }
 
 function resetSetup() {
