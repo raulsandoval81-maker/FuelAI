@@ -35,10 +35,17 @@
   let intervalState =
     null;
 
-
   let emomState =
     null;
 
+  let selfGuidedState =
+    null;
+
+
+
+  /* =========================
+     SHARED TIMER
+  ========================= */
 
   function clearTimer() {
 
@@ -59,14 +66,15 @@
   }
 
 
-  function formatTime(
+
+  function formatSeconds(
     seconds
   ) {
 
     return String(
       Math.max(
         0,
-        seconds
+        Number(seconds) || 0
       )
     )
       .padStart(
@@ -76,6 +84,41 @@
 
   }
 
+
+
+  function formatSessionTime(
+    totalSeconds
+  ) {
+
+    const safe =
+      Math.max(
+        0,
+        Number(totalSeconds) || 0
+      );
+
+
+    const minutes =
+      Math.floor(
+        safe / 60
+      );
+
+
+    const seconds =
+      safe % 60;
+
+
+    return (
+      `${String(minutes).padStart(2, "0")}:` +
+      `${String(seconds).padStart(2, "0")}`
+    );
+
+  }
+
+
+
+  /* =========================
+     INTERVAL
+  ========================= */
 
   function renderInterval() {
 
@@ -90,10 +133,10 @@
       restSeconds:
         15,
 
-      rounds:
+      intervalsPerRound:
         8,
 
-      currentRound:
+      currentInterval:
         1,
 
       sessionRounds:
@@ -141,6 +184,7 @@
         8 minutes per round
       </div>
 
+
       <div class="trainingwise-round-picker">
 
         <span class="trainingwise-label">
@@ -174,18 +218,21 @@
         </div>
 
         <small id="intervalDuration">
-          Total: 16 minutes
+          Total: 17:30
         </small>
 
       </div>
 
-      <div class="trainingwise-timer">
+
+      <div
+        class="trainingwise-timer phase-work"
+      >
 
         <div
           id="intervalRound"
           class="trainingwise-timer-round"
         >
-          Round 1 / 8
+          Round 1 / 2 · Interval 1 / 8
         </div>
 
         <div
@@ -203,6 +250,7 @@
         </div>
 
       </div>
+
 
       <div class="trainingwise-controls">
 
@@ -230,6 +278,7 @@
 
       </div>
 
+
       <p
         id="intervalMessage"
         class="trainingwise-session-message"
@@ -242,6 +291,7 @@
     wireIntervalControls();
 
   }
+
 
 
   function updateIntervalDisplay() {
@@ -268,6 +318,11 @@
         "intervalClock"
       );
 
+    const timer =
+      document.querySelector(
+        ".trainingwise-timer"
+      );
+
 
     if (round) {
 
@@ -277,9 +332,9 @@
         } / ${
           intervalState.sessionRounds
         } · Interval ${
-          intervalState.currentRound
+          intervalState.currentInterval
         } / ${
-          intervalState.rounds
+          intervalState.intervalsPerRound
         }`;
 
     }
@@ -287,14 +342,32 @@
 
     if (phase) {
 
-      phase.textContent =
+      if (
         intervalState.phase ===
-        "work"
-          ? "WORK"
-          : intervalState.phase ===
-            "round-rest"
-              ? "ROUND REST"
-              : "RECOVER";
+        "round-rest"
+      ) {
+
+        phase.textContent =
+          "ROUND REST";
+
+      }
+
+      else if (
+        intervalState.phase ===
+        "rest"
+      ) {
+
+        phase.textContent =
+          "RECOVER";
+
+      }
+
+      else {
+
+        phase.textContent =
+          "WORK";
+
+      }
 
     }
 
@@ -302,161 +375,36 @@
     if (clock) {
 
       clock.textContent =
-        formatTime(
+        formatSeconds(
           intervalState.remaining
         );
 
     }
-    const timer =
-  document.querySelector(
-    ".trainingwise-timer"
-  );
-
-
-if (timer) {
-
-  timer.classList.remove(
-    "phase-work",
-    "phase-rest",
-    "phase-paused",
-    "phase-complete"
-  );
-
-
-  timer.classList.add(
-    intervalState.phase === "work"
-      ? "phase-work"
-      : "phase-rest"
-  );
-
-}
-
-  }
-
-
-  function finishInterval() {
-
-    clearTimer();
 
 
     if (
-      !intervalState ||
-      intervalState.completed
+      timer &&
+      !intervalState.completed
     ) {
-      return;
-    }
 
-
-    intervalState.running =
-      false;
-
-    intervalState.completed =
-      true;
-
-      const timer =
-  document.querySelector(
-    ".trainingwise-timer"
-  );
-
-
-timer?.classList.remove(
-  "phase-work",
-  "phase-rest",
-  "phase-paused"
-);
-
-
-timer?.classList.add(
-  "phase-complete"
-);
-
-
-    const message =
-      document.getElementById(
-        "intervalMessage"
+      timer.classList.remove(
+        "phase-work",
+        "phase-rest",
+        "phase-complete"
       );
 
 
-    if (message) {
-
-      message.textContent =
-        "Session complete.";
-
-    }
-
-
-    const startBtn =
-      document.getElementById(
-        "intervalStartBtn"
+      timer.classList.add(
+        intervalState.phase ===
+        "work"
+          ? "phase-work"
+          : "phase-rest"
       );
 
-    const pauseBtn =
-      document.getElementById(
-        "intervalPauseBtn"
-      );
-
-
-    if (startBtn) {
-
-      startBtn.disabled =
-        true;
-
     }
-
-
-    if (pauseBtn) {
-
-      pauseBtn.disabled =
-        true;
-
-    }
-
-
-    window.FuelAILog
-      ?.addFuelLog?.({
-
-        type:
-          "training",
-
-        sessions:
-          1,
-
-        source:
-          "trainingwise",
-
-        trainingType:
-          "interval",
-
-        preset:
-          "45/15",
-
-        rounds:
-          intervalState.sessionRounds,
-
-        intervalsPerRound:
-          intervalState.rounds,
-
-        durationSeconds:
-          (
-            8 *
-            60 *
-            intervalState.sessionRounds
-          ) +
-          (
-            intervalState.roundRestSeconds *
-            Math.max(
-              0,
-              intervalState.sessionRounds -
-              1
-            )
-          ),
-
-        completed:
-          true
-
-      });
 
   }
+
 
 
   function advanceInterval() {
@@ -468,6 +416,11 @@ timer?.classList.add(
     }
 
 
+    /*
+     * End of round rest.
+     * Begin next 8-minute round.
+     */
+
     if (
       intervalState.inRoundRest
     ) {
@@ -478,7 +431,7 @@ timer?.classList.add(
       intervalState.currentSessionRound +=
         1;
 
-      intervalState.currentRound =
+      intervalState.currentInterval =
         1;
 
       intervalState.phase =
@@ -493,6 +446,12 @@ timer?.classList.add(
 
     }
 
+
+    /*
+     * End of work segment.
+     * Every 45 seconds gets its
+     * normal 15-second recovery.
+     */
 
     if (
       intervalState.phase ===
@@ -512,9 +471,14 @@ timer?.classList.add(
     }
 
 
+    /*
+     * End of the eighth
+     * 15-second recovery.
+     */
+
     if (
-      intervalState.currentRound >=
-      intervalState.rounds
+      intervalState.currentInterval >=
+      intervalState.intervalsPerRound
     ) {
 
       if (
@@ -545,7 +509,7 @@ timer?.classList.add(
     }
 
 
-    intervalState.currentRound +=
+    intervalState.currentInterval +=
       1;
 
     intervalState.phase =
@@ -557,6 +521,7 @@ timer?.classList.add(
     updateIntervalDisplay();
 
   }
+
 
 
   function tickInterval() {
@@ -590,17 +555,12 @@ timer?.classList.add(
   }
 
 
+
   function startInterval() {
 
     if (
       !intervalState ||
-      intervalState.completed
-    ) {
-      return;
-    }
-
-
-    if (
+      intervalState.completed ||
       intervalState.running
     ) {
       return;
@@ -609,6 +569,9 @@ timer?.classList.add(
 
     intervalState.running =
       true;
+
+
+    updateIntervalDisplay();
 
 
     const startBtn =
@@ -650,6 +613,7 @@ timer?.classList.add(
   }
 
 
+
   function pauseInterval() {
 
     if (
@@ -659,28 +623,22 @@ timer?.classList.add(
       return;
     }
 
-    const timer =
-  document.querySelector(
-    ".trainingwise-timer"
-  );
-
-
-timer?.classList.remove(
-  "phase-work",
-  "phase-rest"
-);
-
-
-timer?.classList.add(
-  "phase-paused"
-);
-
 
     intervalState.running =
       false;
 
     clearTimer();
 
+
+    const timer =
+      document.querySelector(
+        ".trainingwise-timer"
+      );
+
+    const phase =
+      document.getElementById(
+        "intervalPhase"
+      );
 
     const startBtn =
       document.getElementById(
@@ -691,6 +649,24 @@ timer?.classList.add(
       document.getElementById(
         "intervalPauseBtn"
       );
+
+
+    timer?.classList.remove(
+      "phase-work",
+      "phase-rest"
+    );
+
+    timer?.classList.add(
+      "phase-paused"
+    );
+
+
+    if (phase) {
+
+      phase.textContent =
+        "PAUSED";
+
+    }
 
 
     if (startBtn) {
@@ -714,24 +690,148 @@ timer?.classList.add(
   }
 
 
-  function stopInterval() {
+
+  function finishInterval() {
 
     clearTimer();
 
 
     if (
-      intervalState
+      !intervalState ||
+      intervalState.completed
     ) {
+      return;
+    }
 
-      intervalState.running =
-        false;
+
+    intervalState.running =
+      false;
+
+    intervalState.completed =
+      true;
+
+
+    const timer =
+      document.querySelector(
+        ".trainingwise-timer"
+      );
+
+    const phase =
+      document.getElementById(
+        "intervalPhase"
+      );
+
+    const message =
+      document.getElementById(
+        "intervalMessage"
+      );
+
+
+    timer?.classList.remove(
+      "phase-work",
+      "phase-rest",
+      "phase-paused"
+    );
+
+    timer?.classList.add(
+      "phase-complete"
+    );
+
+
+    if (phase) {
+
+      phase.textContent =
+        "COMPLETE";
 
     }
 
 
+    if (message) {
+
+      message.textContent =
+        "Session complete.";
+
+    }
+
+
+    document
+      .getElementById(
+        "intervalStartBtn"
+      )
+      ?.setAttribute(
+        "disabled",
+        ""
+      );
+
+
+    document
+      .getElementById(
+        "intervalPauseBtn"
+      )
+      ?.setAttribute(
+        "disabled",
+        ""
+      );
+
+
+    window.FuelAILog
+      ?.addFuelLog?.({
+
+        type:
+          "training",
+
+        sessions:
+          1,
+
+        source:
+          "trainingwise",
+
+        trainingType:
+          "interval",
+
+        preset:
+          "45/15",
+
+        rounds:
+          intervalState.sessionRounds,
+
+        intervalsPerRound:
+          intervalState.intervalsPerRound,
+
+        roundRestSeconds:
+          intervalState.roundRestSeconds,
+
+        durationSeconds:
+          (
+            8 *
+            60 *
+            intervalState.sessionRounds
+          ) +
+          (
+            intervalState.roundRestSeconds *
+            Math.max(
+              0,
+              intervalState.sessionRounds - 1
+            )
+          ),
+
+        completed:
+          true
+
+      });
+
+  }
+
+
+
+  function stopInterval() {
+
+    clearTimer();
+
     renderInterval();
 
   }
+
 
 
   function setIntervalSessionRounds(
@@ -767,6 +867,18 @@ timer?.classList.add(
 
     intervalState.currentSessionRound =
       1;
+
+    intervalState.currentInterval =
+      1;
+
+    intervalState.inRoundRest =
+      false;
+
+    intervalState.phase =
+      "work";
+
+    intervalState.remaining =
+      intervalState.workSeconds;
 
 
     document
@@ -811,25 +923,12 @@ timer?.classList.add(
         );
 
 
-      const minutes =
-        Math.floor(
-          totalSeconds / 60
-        );
-
-
-      const seconds =
-        totalSeconds % 60;
-
-
       duration.textContent =
-        seconds
-          ? `Total: ${minutes}:${String(
-              seconds
-            ).padStart(
-              2,
-              "0"
-            )}`
-          : `Total: ${minutes} minutes`;
+        `Total: ${
+          formatSessionTime(
+            totalSeconds
+          )
+        }`;
 
     }
 
@@ -897,6 +996,11 @@ timer?.classList.add(
   }
 
 
+
+  /* =========================
+     EMOM
+  ========================= */
+
   function renderEmom() {
 
     clearTimer();
@@ -904,7 +1008,7 @@ timer?.classList.add(
 
     emomState = {
 
-      totalMinutes:
+      minutesPerRound:
         10,
 
       currentMinute:
@@ -945,13 +1049,14 @@ timer?.classList.add(
 
       <p>
         Start each round on the minute.
-        Complete your work, then use the
-        remaining time to recover.
+        Complete the work, then use
+        the remaining time to recover.
       </p>
 
       <div class="trainingwise-preset">
         10 minutes per round
       </div>
+
 
       <div class="trainingwise-round-picker">
 
@@ -986,10 +1091,11 @@ timer?.classList.add(
         </div>
 
         <small id="emomDuration">
-          Total: 20 minutes
+          Total: 22:00
         </small>
 
       </div>
+
 
       <div
         class="trainingwise-timer phase-work"
@@ -999,7 +1105,7 @@ timer?.classList.add(
           id="emomRound"
           class="trainingwise-timer-round"
         >
-          Minute 1 / 10
+          Round 1 / 2 · Minute 1 / 10
         </div>
 
         <div
@@ -1017,6 +1123,7 @@ timer?.classList.add(
         </div>
 
       </div>
+
 
       <div class="trainingwise-controls">
 
@@ -1044,6 +1151,7 @@ timer?.classList.add(
 
       </div>
 
+
       <p
         id="emomMessage"
         class="trainingwise-session-message"
@@ -1056,6 +1164,7 @@ timer?.classList.add(
     wireEmomControls();
 
   }
+
 
 
   function updateEmomDisplay() {
@@ -1082,6 +1191,11 @@ timer?.classList.add(
         "emomClock"
       );
 
+    const timer =
+      document.querySelector(
+        ".trainingwise-timer"
+      );
+
 
     if (round) {
 
@@ -1093,7 +1207,7 @@ timer?.classList.add(
         } · Minute ${
           emomState.currentMinute
         } / ${
-          emomState.totalMinutes
+          emomState.minutesPerRound
         }`;
 
     }
@@ -1112,13 +1226,285 @@ timer?.classList.add(
     if (clock) {
 
       clock.textContent =
-        formatTime(
+        formatSeconds(
           emomState.remaining
         );
 
     }
 
+
+    if (
+      timer &&
+      !emomState.completed
+    ) {
+
+      timer.classList.remove(
+        "phase-work",
+        "phase-rest",
+        "phase-complete"
+      );
+
+
+      timer.classList.add(
+        emomState.inRoundRest
+          ? "phase-rest"
+          : "phase-work"
+      );
+
+    }
+
   }
+
+
+
+  function advanceEmom() {
+
+    if (
+      !emomState
+    ) {
+      return;
+    }
+
+
+    /*
+     * Round rest finished.
+     * Start next 10-minute round.
+     */
+
+    if (
+      emomState.inRoundRest
+    ) {
+
+      emomState.inRoundRest =
+        false;
+
+      emomState.currentSessionRound +=
+        1;
+
+      emomState.currentMinute =
+        1;
+
+      emomState.remaining =
+        60;
+
+      updateEmomDisplay();
+
+      return;
+
+    }
+
+
+    /*
+     * Tenth minute finished.
+     */
+
+    if (
+      emomState.currentMinute >=
+      emomState.minutesPerRound
+    ) {
+
+      if (
+        emomState.currentSessionRound >=
+        emomState.sessionRounds
+      ) {
+
+        finishEmom();
+
+        return;
+
+      }
+
+
+      emomState.inRoundRest =
+        true;
+
+      emomState.remaining =
+        emomState.roundRestSeconds;
+
+      updateEmomDisplay();
+
+      return;
+
+    }
+
+
+    emomState.currentMinute +=
+      1;
+
+    emomState.remaining =
+      60;
+
+    updateEmomDisplay();
+
+  }
+
+
+
+  function tickEmom() {
+
+    if (
+      !emomState ||
+      !emomState.running
+    ) {
+      return;
+    }
+
+
+    emomState.remaining -=
+      1;
+
+
+    if (
+      emomState.remaining <=
+      0
+    ) {
+
+      advanceEmom();
+
+      return;
+
+    }
+
+
+    updateEmomDisplay();
+
+  }
+
+
+
+  function startEmom() {
+
+    if (
+      !emomState ||
+      emomState.completed ||
+      emomState.running
+    ) {
+      return;
+    }
+
+
+    emomState.running =
+      true;
+
+
+    updateEmomDisplay();
+
+
+    const startBtn =
+      document.getElementById(
+        "emomStartBtn"
+      );
+
+    const pauseBtn =
+      document.getElementById(
+        "emomPauseBtn"
+      );
+
+
+    if (startBtn) {
+
+      startBtn.textContent =
+        "Running";
+
+      startBtn.disabled =
+        true;
+
+    }
+
+
+    if (pauseBtn) {
+
+      pauseBtn.disabled =
+        false;
+
+    }
+
+
+    timerId =
+      setInterval(
+        tickEmom,
+        1000
+      );
+
+  }
+
+
+
+  function pauseEmom() {
+
+    if (
+      !emomState ||
+      !emomState.running
+    ) {
+      return;
+    }
+
+
+    emomState.running =
+      false;
+
+    clearTimer();
+
+
+    const timer =
+      document.querySelector(
+        ".trainingwise-timer"
+      );
+
+    const phase =
+      document.getElementById(
+        "emomPhase"
+      );
+
+    const startBtn =
+      document.getElementById(
+        "emomStartBtn"
+      );
+
+    const pauseBtn =
+      document.getElementById(
+        "emomPauseBtn"
+      );
+
+
+    timer?.classList.remove(
+      "phase-work",
+      "phase-rest"
+    );
+
+    timer?.classList.add(
+      "phase-paused"
+    );
+
+
+    if (phase) {
+
+      phase.textContent =
+        "PAUSED";
+
+    }
+
+
+    if (startBtn) {
+
+      startBtn.textContent =
+        "Resume";
+
+      startBtn.disabled =
+        false;
+
+    }
+
+
+    if (pauseBtn) {
+
+      pauseBtn.disabled =
+        true;
+
+    }
+
+  }
+
 
 
   function finishEmom() {
@@ -1146,6 +1532,16 @@ timer?.classList.add(
         ".trainingwise-timer"
       );
 
+    const phase =
+      document.getElementById(
+        "emomPhase"
+      );
+
+    const message =
+      document.getElementById(
+        "emomMessage"
+      );
+
 
     timer?.classList.remove(
       "phase-work",
@@ -1153,16 +1549,9 @@ timer?.classList.add(
       "phase-paused"
     );
 
-
     timer?.classList.add(
       "phase-complete"
     );
-
-
-    const phase =
-      document.getElementById(
-        "emomPhase"
-      );
 
 
     if (phase) {
@@ -1171,12 +1560,6 @@ timer?.classList.add(
         "COMPLETE";
 
     }
-
-
-    const message =
-      document.getElementById(
-        "emomMessage"
-      );
 
 
     if (message) {
@@ -1229,11 +1612,14 @@ timer?.classList.add(
           emomState.sessionRounds,
 
         minutesPerRound:
-          emomState.totalMinutes,
+          emomState.minutesPerRound,
+
+        roundRestSeconds:
+          emomState.roundRestSeconds,
 
         durationSeconds:
           (
-            emomState.totalMinutes *
+            emomState.minutesPerRound *
             60 *
             emomState.sessionRounds
           ) +
@@ -1241,8 +1627,7 @@ timer?.classList.add(
             emomState.roundRestSeconds *
             Math.max(
               0,
-              emomState.sessionRounds -
-              1
+              emomState.sessionRounds - 1
             )
           ),
 
@@ -1254,294 +1639,15 @@ timer?.classList.add(
   }
 
 
-  function advanceEmom() {
-
-    if (
-      !emomState
-    ) {
-      return;
-    }
-
-
-    if (
-      emomState.inRoundRest
-    ) {
-
-      emomState.inRoundRest =
-        false;
-
-      emomState.inRoundRest =
-        true;
-
-      emomState.remaining =
-        emomState.roundRestSeconds;
-
-      updateEmomDisplay();
-
-      return;
-
-    }
-
-
-    if (
-      emomState.currentMinute >=
-      emomState.totalMinutes
-    ) {
-
-      if (
-        emomState.currentSessionRound >=
-        emomState.sessionRounds
-      ) {
-
-        finishEmom();
-
-        return;
-
-      }
-
-
-      emomState.currentSessionRound +=
-        1;
-
-      emomState.currentMinute =
-        1;
-
-      emomState.remaining =
-        60;
-
-      updateEmomDisplay();
-
-      return;
-
-    }
-
-
-    emomState.currentMinute +=
-      1;
-
-    emomState.remaining =
-      60;
-
-
-    updateEmomDisplay();
-
-  }
-
-
-  function tickEmom() {
-
-    if (
-      !emomState ||
-      !emomState.running
-    ) {
-      return;
-    }
-
-
-    emomState.remaining -=
-      1;
-
-
-    if (
-      emomState.remaining <=
-      0
-    ) {
-
-      advanceEmom();
-
-      return;
-
-    }
-
-
-    updateEmomDisplay();
-
-  }
-
-
-  function startEmom() {
-
-    if (
-      !emomState ||
-      emomState.completed ||
-      emomState.running
-    ) {
-      return;
-    }
-
-
-    emomState.running =
-      true;
-
-
-    const timer =
-      document.querySelector(
-        ".trainingwise-timer"
-      );
-
-
-    timer?.classList.remove(
-      "phase-paused",
-      "phase-complete"
-    );
-
-
-    timer?.classList.add(
-      emomState.inRoundRest
-        ? "phase-rest"
-        : "phase-work"
-    );
-
-
-    const phase =
-      document.getElementById(
-        "emomPhase"
-      );
-
-
-    if (phase) {
-
-      phase.textContent =
-        "GO";
-
-    }
-
-
-    const startBtn =
-      document.getElementById(
-        "emomStartBtn"
-      );
-
-    const pauseBtn =
-      document.getElementById(
-        "emomPauseBtn"
-      );
-
-
-    if (startBtn) {
-
-      startBtn.textContent =
-        "Running";
-
-      startBtn.disabled =
-        true;
-
-    }
-
-
-    if (pauseBtn) {
-
-      pauseBtn.disabled =
-        false;
-
-    }
-
-
-    timerId =
-      setInterval(
-        tickEmom,
-        1000
-      );
-
-  }
-
-
-  function pauseEmom() {
-
-    if (
-      !emomState ||
-      !emomState.running
-    ) {
-      return;
-    }
-
-
-    emomState.running =
-      false;
-
-    clearTimer();
-
-
-    const timer =
-      document.querySelector(
-        ".trainingwise-timer"
-      );
-
-
-    timer?.classList.remove(
-      "phase-work"
-    );
-
-
-    timer?.classList.add(
-      "phase-paused"
-    );
-
-
-    const phase =
-      document.getElementById(
-        "emomPhase"
-      );
-
-
-    if (phase) {
-
-      phase.textContent =
-        "PAUSED";
-
-    }
-
-
-    const startBtn =
-      document.getElementById(
-        "emomStartBtn"
-      );
-
-    const pauseBtn =
-      document.getElementById(
-        "emomPauseBtn"
-      );
-
-
-    if (startBtn) {
-
-      startBtn.textContent =
-        "Resume";
-
-      startBtn.disabled =
-        false;
-
-    }
-
-
-    if (pauseBtn) {
-
-      pauseBtn.disabled =
-        true;
-
-    }
-
-  }
-
 
   function stopEmom() {
 
     clearTimer();
 
-
-    if (
-      emomState
-    ) {
-
-      emomState.running =
-        false;
-
-    }
-
-
     renderEmom();
 
   }
+
 
 
   function setEmomSessionRounds(
@@ -1578,6 +1684,15 @@ timer?.classList.add(
     emomState.currentSessionRound =
       1;
 
+    emomState.currentMinute =
+      1;
+
+    emomState.inRoundRest =
+      false;
+
+    emomState.remaining =
+      60;
+
 
     document
       .querySelectorAll(
@@ -1609,7 +1724,7 @@ timer?.classList.add(
       const totalSeconds =
         (
           selected *
-          emomState.totalMinutes *
+          emomState.minutesPerRound *
           60
         ) +
         (
@@ -1621,25 +1736,12 @@ timer?.classList.add(
         );
 
 
-      const minutes =
-        Math.floor(
-          totalSeconds / 60
-        );
-
-
-      const seconds =
-        totalSeconds % 60;
-
-
       duration.textContent =
-        seconds
-          ? `Total: ${minutes}:${String(
-              seconds
-            ).padStart(
-              2,
-              "0"
-            )}`
-          : `Total: ${minutes} minutes`;
+        `Total: ${
+          formatSessionTime(
+            totalSeconds
+          )
+        }`;
 
     }
 
@@ -1708,11 +1810,16 @@ timer?.classList.add(
 
 
 
+  /* =========================
+     CURATED CONDITIONING
+  ========================= */
+
   const conditioningLibrary = {
 
     beginner: {
 
       15: {
+
         title:
           "Foundation Circuit",
 
@@ -1736,10 +1843,12 @@ timer?.classList.add(
           "Easy walk — 2 min",
           "Light stretch — 1 min"
         ]
+
       },
 
 
       30: {
+
         title:
           "Foundation Builder",
 
@@ -1764,10 +1873,12 @@ timer?.classList.add(
           "Easy walk — 3 min",
           "Light mobility — 2 min"
         ]
+
       },
 
 
       45: {
+
         title:
           "Foundation Endurance",
 
@@ -1792,6 +1903,7 @@ timer?.classList.add(
           "Easy walk — 4 min",
           "Light mobility — 4 min"
         ]
+
       }
 
     },
@@ -1800,6 +1912,7 @@ timer?.classList.add(
     intermediate: {
 
       15: {
+
         title:
           "Quick Conditioning",
 
@@ -1823,10 +1936,12 @@ timer?.classList.add(
           "Easy walk — 2 min",
           "Reset breathing — 1 min"
         ]
+
       },
 
 
       30: {
+
         title:
           "Full-Body Conditioning",
 
@@ -1850,10 +1965,12 @@ timer?.classList.add(
           "Easy walk — 3 min",
           "Mobility and breathing — 2 min"
         ]
+
       },
 
 
       45: {
+
         title:
           "Conditioning Builder",
 
@@ -1878,6 +1995,7 @@ timer?.classList.add(
           "Easy walk — 4 min",
           "Mobility and breathing — 4 min"
         ]
+
       }
 
     },
@@ -1886,6 +2004,7 @@ timer?.classList.add(
     advanced: {
 
       15: {
+
         title:
           "Fast Conditioning",
 
@@ -1909,10 +2028,12 @@ timer?.classList.add(
           "Easy walk — 2 min",
           "Reset breathing — 1 min"
         ]
+
       },
 
 
       30: {
+
         title:
           "Work Capacity",
 
@@ -1936,10 +2057,12 @@ timer?.classList.add(
           "Easy walk — 3 min",
           "Mobility and breathing — 2 min"
         ]
+
       },
 
 
       45: {
+
         title:
           "Extended Work Capacity",
 
@@ -1964,11 +2087,13 @@ timer?.classList.add(
           "Easy walk — 4 min",
           "Mobility and breathing — 4 min"
         ]
+
       }
 
     }
 
   };
+
 
 
   function getConditioningWorkout(
@@ -1986,6 +2111,7 @@ timer?.classList.add(
   }
 
 
+
   function renderWorkoutList(
     items
   ) {
@@ -2000,6 +2126,10 @@ timer?.classList.add(
   }
 
 
+
+  /* =========================
+     SELF-GUIDED
+  ========================= */
 
   function getSelfGuidedTitle(
     mode
@@ -2063,10 +2193,7 @@ timer?.classList.add(
           DURATION
         </span>
 
-        <div
-          class="trainingwise-choice-grid"
-          data-choice-group="duration"
-        >
+        <div class="trainingwise-choice-grid">
 
           <button
             type="button"
@@ -2101,10 +2228,7 @@ timer?.classList.add(
           LEVEL
         </span>
 
-        <div
-          class="trainingwise-choice-grid"
-          data-choice-group="level"
-        >
+        <div class="trainingwise-choice-grid">
 
           <button
             type="button"
@@ -2312,6 +2436,7 @@ timer?.classList.add(
                 }
               </p>
 
+
               <div class="trainingwise-workout-section">
 
                 <strong>
@@ -2374,6 +2499,25 @@ timer?.classList.add(
             `;
 
 
+            document
+              .getElementById(
+                "startSelfGuidedWorkoutBtn"
+              )
+              ?.addEventListener(
+                "click",
+                () => {
+
+                  renderSelfGuidedExecution(
+                    mode,
+                    workout,
+                    selectedDuration,
+                    selectedLevel
+                  );
+
+                }
+              );
+
+
             return;
 
           }
@@ -2414,6 +2558,631 @@ timer?.classList.add(
 
 
 
+  function renderSelfGuidedExecution(
+    mode,
+    workout,
+    duration,
+    level
+  ) {
+
+    clearTimer();
+
+
+    selfGuidedState = {
+
+      mode,
+
+      workoutTitle:
+        workout.title,
+
+      plannedMinutes:
+        duration,
+
+      level,
+
+      totalSeconds:
+        duration * 60,
+
+      remaining:
+        duration * 60,
+
+      running:
+        false,
+
+      completed:
+        false
+
+    };
+
+
+    output.innerHTML = `
+      <p class="trainingwise-label">
+        SELF-GUIDED WORKOUT
+      </p>
+
+      <h2>
+        ${workout.title}
+      </h2>
+
+      <p>
+        ${getSelfGuidedTitle(mode)}
+        ·
+        ${duration} min
+        ·
+        ${
+          level
+            .charAt(0)
+            .toUpperCase() +
+          level.slice(1)
+        }
+      </p>
+
+
+      <div
+        class="trainingwise-timer phase-work"
+      >
+
+        <div class="trainingwise-timer-round">
+          Session Time
+        </div>
+
+        <div
+          id="selfGuidedPhase"
+          class="trainingwise-timer-phase"
+        >
+          READY
+        </div>
+
+        <div
+          id="selfGuidedClock"
+          class="trainingwise-clock"
+        >
+          ${formatSessionTime(
+            selfGuidedState.remaining
+          )}
+        </div>
+
+      </div>
+
+
+      <div class="trainingwise-workout-section">
+
+        <strong>
+          Warm-Up
+        </strong>
+
+        <ul>
+          ${renderWorkoutList(
+            workout.warmup
+          )}
+        </ul>
+
+      </div>
+
+
+      <div class="trainingwise-workout-section">
+
+        <strong>
+          Main Work ·
+          ${workout.mainMinutes} min
+        </strong>
+
+        <ul>
+          ${renderWorkoutList(
+            workout.main
+          )}
+        </ul>
+
+      </div>
+
+
+      <div class="trainingwise-workout-section">
+
+        <strong>
+          Cool Down
+        </strong>
+
+        <ul>
+          ${renderWorkoutList(
+            workout.cooldown
+          )}
+        </ul>
+
+      </div>
+
+
+      <div class="trainingwise-controls">
+
+        <button
+          id="selfGuidedStartBtn"
+          type="button"
+        >
+          Start
+        </button>
+
+        <button
+          id="selfGuidedPauseBtn"
+          type="button"
+          disabled
+        >
+          Pause
+        </button>
+
+        <button
+          id="selfGuidedEndBtn"
+          type="button"
+        >
+          End Workout
+        </button>
+
+      </div>
+
+
+      <button
+        id="selfGuidedCompleteBtn"
+        class="trainingwise-btn"
+        type="button"
+      >
+        Complete Workout
+      </button>
+
+
+      <p
+        id="selfGuidedMessage"
+        class="trainingwise-session-message"
+      >
+        Start when ready.
+      </p>
+    `;
+
+
+    wireSelfGuidedExecution(
+      workout
+    );
+
+  }
+
+
+
+  function updateSelfGuidedDisplay() {
+
+    if (
+      !selfGuidedState
+    ) {
+      return;
+    }
+
+
+    const clock =
+      document.getElementById(
+        "selfGuidedClock"
+      );
+
+
+    if (clock) {
+
+      clock.textContent =
+        formatSessionTime(
+          selfGuidedState.remaining
+        );
+
+    }
+
+  }
+
+
+
+  function tickSelfGuided() {
+
+    if (
+      !selfGuidedState ||
+      !selfGuidedState.running
+    ) {
+      return;
+    }
+
+
+    selfGuidedState.remaining -=
+      1;
+
+
+    if (
+      selfGuidedState.remaining <=
+      0
+    ) {
+
+      selfGuidedState.remaining =
+        0;
+
+      updateSelfGuidedDisplay();
+
+      finishSelfGuidedWorkout();
+
+      return;
+
+    }
+
+
+    updateSelfGuidedDisplay();
+
+  }
+
+
+
+  function startSelfGuidedTimer() {
+
+    if (
+      !selfGuidedState ||
+      selfGuidedState.completed ||
+      selfGuidedState.running
+    ) {
+      return;
+    }
+
+
+    selfGuidedState.running =
+      true;
+
+
+    const timer =
+      document.querySelector(
+        ".trainingwise-timer"
+      );
+
+    const phase =
+      document.getElementById(
+        "selfGuidedPhase"
+      );
+
+    const startBtn =
+      document.getElementById(
+        "selfGuidedStartBtn"
+      );
+
+    const pauseBtn =
+      document.getElementById(
+        "selfGuidedPauseBtn"
+      );
+
+
+    timer?.classList.remove(
+      "phase-paused",
+      "phase-complete"
+    );
+
+    timer?.classList.add(
+      "phase-work"
+    );
+
+
+    if (phase) {
+
+      phase.textContent =
+        "IN SESSION";
+
+    }
+
+
+    if (startBtn) {
+
+      startBtn.textContent =
+        "Running";
+
+      startBtn.disabled =
+        true;
+
+    }
+
+
+    if (pauseBtn) {
+
+      pauseBtn.disabled =
+        false;
+
+    }
+
+
+    timerId =
+      setInterval(
+        tickSelfGuided,
+        1000
+      );
+
+  }
+
+
+
+  function pauseSelfGuidedTimer() {
+
+    if (
+      !selfGuidedState ||
+      !selfGuidedState.running
+    ) {
+      return;
+    }
+
+
+    selfGuidedState.running =
+      false;
+
+    clearTimer();
+
+
+    const timer =
+      document.querySelector(
+        ".trainingwise-timer"
+      );
+
+    const phase =
+      document.getElementById(
+        "selfGuidedPhase"
+      );
+
+    const startBtn =
+      document.getElementById(
+        "selfGuidedStartBtn"
+      );
+
+    const pauseBtn =
+      document.getElementById(
+        "selfGuidedPauseBtn"
+      );
+
+
+    timer?.classList.remove(
+      "phase-work"
+    );
+
+    timer?.classList.add(
+      "phase-paused"
+    );
+
+
+    if (phase) {
+
+      phase.textContent =
+        "PAUSED";
+
+    }
+
+
+    if (startBtn) {
+
+      startBtn.textContent =
+        "Resume";
+
+      startBtn.disabled =
+        false;
+
+    }
+
+
+    if (pauseBtn) {
+
+      pauseBtn.disabled =
+        true;
+
+    }
+
+  }
+
+
+
+  function resetSelfGuidedWorkout(
+    workout
+  ) {
+
+    clearTimer();
+
+
+    if (
+      !selfGuidedState ||
+      !workout
+    ) {
+      return;
+    }
+
+
+    renderSelfGuidedExecution(
+      selfGuidedState.mode,
+      workout,
+      selfGuidedState.plannedMinutes,
+      selfGuidedState.level
+    );
+
+  }
+
+
+
+  function finishSelfGuidedWorkout() {
+
+    clearTimer();
+
+
+    if (
+      !selfGuidedState ||
+      selfGuidedState.completed
+    ) {
+      return;
+    }
+
+
+    selfGuidedState.running =
+      false;
+
+    selfGuidedState.completed =
+      true;
+
+
+    const timer =
+      document.querySelector(
+        ".trainingwise-timer"
+      );
+
+    const phase =
+      document.getElementById(
+        "selfGuidedPhase"
+      );
+
+    const message =
+      document.getElementById(
+        "selfGuidedMessage"
+      );
+
+
+    timer?.classList.remove(
+      "phase-work",
+      "phase-paused"
+    );
+
+    timer?.classList.add(
+      "phase-complete"
+    );
+
+
+    if (phase) {
+
+      phase.textContent =
+        "COMPLETE";
+
+    }
+
+
+    if (message) {
+
+      message.textContent =
+        "Workout complete.";
+
+    }
+
+
+    document
+      .getElementById(
+        "selfGuidedStartBtn"
+      )
+      ?.setAttribute(
+        "disabled",
+        ""
+      );
+
+
+    document
+      .getElementById(
+        "selfGuidedPauseBtn"
+      )
+      ?.setAttribute(
+        "disabled",
+        ""
+      );
+
+
+    document
+      .getElementById(
+        "selfGuidedCompleteBtn"
+      )
+      ?.setAttribute(
+        "disabled",
+        ""
+      );
+
+
+    window.FuelAILog
+      ?.addFuelLog?.({
+
+        type:
+          "training",
+
+        sessions:
+          1,
+
+        source:
+          "trainingwise",
+
+        trainingType:
+          "self-guided",
+
+        workoutType:
+          selfGuidedState.mode,
+
+        workoutTitle:
+          selfGuidedState.workoutTitle,
+
+        level:
+          selfGuidedState.level,
+
+        plannedDurationMinutes:
+          selfGuidedState.plannedMinutes,
+
+        actualDurationSeconds:
+          selfGuidedState.totalSeconds -
+          selfGuidedState.remaining,
+
+        completed:
+          true
+
+      });
+
+  }
+
+
+
+  function wireSelfGuidedExecution(
+    workout
+  ) {
+
+    document
+      .getElementById(
+        "selfGuidedStartBtn"
+      )
+      ?.addEventListener(
+        "click",
+        startSelfGuidedTimer
+      );
+
+
+    document
+      .getElementById(
+        "selfGuidedPauseBtn"
+      )
+      ?.addEventListener(
+        "click",
+        pauseSelfGuidedTimer
+      );
+
+
+    document
+      .getElementById(
+        "selfGuidedEndBtn"
+      )
+      ?.addEventListener(
+        "click",
+        () => {
+
+          resetSelfGuidedWorkout(
+            workout
+          );
+
+        }
+      );
+
+
+    document
+      .getElementById(
+        "selfGuidedCompleteBtn"
+      )
+      ?.addEventListener(
+        "click",
+        finishSelfGuidedWorkout
+      );
+
+  }
+
+
+
+  /* =========================
+     ROUTING
+  ========================= */
+
   function openMode(
     mode
   ) {
@@ -2426,10 +3195,9 @@ timer?.classList.add(
     }
 
 
-    output.classList
-      .remove(
-        "hidden"
-      );
+    output.classList.remove(
+      "hidden"
+    );
 
 
     if (
@@ -2464,14 +3232,17 @@ timer?.classList.add(
 
 
     output.scrollIntoView({
+
       behavior:
         "smooth",
 
       block:
         "nearest"
+
     });
 
   }
+
 
 
   document
@@ -2495,5 +3266,6 @@ timer?.classList.add(
 
       }
     );
+
 
 })();
