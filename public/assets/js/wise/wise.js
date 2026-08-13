@@ -266,7 +266,7 @@ function getCombatStyleLabel() {
 ========================= */
 
 function getCoachName() {
-  return "Coach Wright";
+  return "Coach Wise";
 }
 
 
@@ -1082,7 +1082,7 @@ function renderWise() {
   ) {
 
     wiseChatLabel.textContent =
-      "Coach Wright";
+      "Coach Wise";
 
   }
 

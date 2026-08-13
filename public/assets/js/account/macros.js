@@ -379,7 +379,7 @@ function getMacroTargets() {
   /*
    * Use FuelAILog protein target
    * when available so Macros,
-   * TrackWise, and Coach Wright
+   * TrackWise, and Coach Wise
    * stay aligned.
    */
 
