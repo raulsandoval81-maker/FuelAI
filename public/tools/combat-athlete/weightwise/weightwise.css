@@ -319,3 +319,71 @@
   font-weight:800 !important;
   box-sizing:border-box !important;
 }
+
+/* =========================
+   WEIGHTWISE INTERNAL NAV
+========================= */
+
+.weightwise-subnav{
+  margin-top:28px;
+}
+
+.weightwise-subnav .range-label{
+  margin-bottom:12px;
+}
+
+.weightwise-tabs{
+  display:grid;
+  grid-template-columns:
+    repeat(4, minmax(0, 1fr));
+  gap:10px;
+}
+
+.weightwise-tab{
+  min-height:48px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  padding:10px 12px;
+
+  border-radius:14px;
+
+  border:
+    1px solid rgba(255,255,255,.14);
+
+  background:#111827;
+
+  color:#cbd5e1;
+
+  text-decoration:none;
+  text-align:center;
+
+  font-weight:850;
+  line-height:1.15;
+}
+
+.weightwise-tab:hover{
+  transform:translateY(-1px);
+  filter:brightness(1.08);
+}
+
+.weightwise-tab.active{
+  background:
+    rgba(239,68,68,.16);
+
+  border-color:
+    rgba(239,68,68,.62);
+
+  color:#fff;
+}
+
+@media(max-width:620px){
+
+  .weightwise-tabs{
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+
+}
