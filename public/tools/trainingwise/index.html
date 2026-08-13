@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
   <meta charset="UTF-8" />
 
   <meta
@@ -20,47 +21,186 @@
     href="/assets/css/nav.css"
   />
 
+  <link
+    rel="stylesheet"
+    href="/tools/trainingwise/trainingwise.css"
+  />
+
 </head>
 
 <body data-theme="night">
 
-  <main class="hub-wrap">
+  <main class="trainingwise-wrap">
 
-    <section class="landing-card">
+    <section class="trainingwise-hero">
 
-      <img
-        class="hero-image"
-        src="/assets/img/hub/trainingwise.png"
-        alt="TrainingWise"
-      />
-
-      <h1>
-        TrainingWise
-      </h1>
-
-      <p>
-        Structured workouts. Smarter conditioning. Better progress.
+      <p class="trainingwise-kicker">
+        FuelAI · TrainingWise
       </p>
 
-      <a
-        class="landing-btn primary"
-        href="/hub/"
-      >
+      <h1>
+        💪 TrainingWise
+      </h1>
+
+      <p class="trainingwise-sub">
+        Structured training built around the purpose of the session.
+      </p>
+
+    </section>
+
+
+    <section class="trainingwise-grid">
+
+      <article class="trainingwise-card">
+
+        <div class="trainingwise-icon">
+          🔥
+        </div>
+
+        <p class="trainingwise-label">
+          INTERVAL
+        </p>
+
+        <h2>
+          Work / Rest
+        </h2>
+
+        <p>
+          Structured work and recovery intervals for conditioning.
+        </p>
+
+        <div class="trainingwise-preset">
+          45 sec work · 15 sec rest
+        </div>
+
+        <button
+          class="trainingwise-btn"
+          type="button"
+          data-training-mode="interval"
+        >
+          Open Interval →
+        </button>
+
+      </article>
+
+
+      <article class="trainingwise-card">
+
+        <div class="trainingwise-icon">
+          ⏱️
+        </div>
+
+        <p class="trainingwise-label">
+          EMOM
+        </p>
+
+        <h2>
+          Every Minute
+        </h2>
+
+        <p>
+          Start each round on the minute and manage the remaining time.
+        </p>
+
+        <div class="trainingwise-preset">
+          10 minute preset
+        </div>
+
+        <button
+          class="trainingwise-btn"
+          type="button"
+          data-training-mode="emom"
+        >
+          Open EMOM →
+        </button>
+
+      </article>
+
+
+      <article class="trainingwise-card">
+
+        <div class="trainingwise-icon">
+          🏋️
+        </div>
+
+        <p class="trainingwise-label">
+          GUIDED WORKOUT
+        </p>
+
+        <h2>
+          Choose the Purpose
+        </h2>
+
+        <p>
+          Pick a session based on what you want today's training to accomplish.
+        </p>
+
+        <div class="trainingwise-options">
+
+          <button
+            type="button"
+            data-training-mode="conditioning"
+          >
+            Conditioning
+          </button>
+
+          <button
+            type="button"
+            data-training-mode="strength"
+          >
+            Strength
+          </button>
+
+          <button
+            type="button"
+            data-training-mode="recovery"
+          >
+            Recovery / Movement
+          </button>
+
+        </div>
+
+      </article>
+
+    </section>
+
+
+    <section
+      id="trainingwiseOutput"
+      class="trainingwise-output hidden"
+    ></section>
+
+
+    <div class="trainingwise-footer-link">
+
+      <a href="/hub/">
         ← Back to FuelAI
       </a>
 
-    </section>
+    </div>
 
   </main>
 
 
-  <script src="/assets/js/core/plan.js"></script>
+  <script
+    src="/assets/js/core/plan.js"
+  ></script>
 
+  <script
+    src="/assets/js/core/auth-soft.js"
+  ></script>
 
-  <script src="/assets/js/core/auth-soft.js"></script>
+  <script
+    src="/assets/js/account/fuelai-log.js"
+  ></script>
 
+  <script
+    src="/assets/js/core/nav.js"
+  ></script>
 
-  <script src="/assets/js/core/nav.js"></script>
+  <script
+    src="/tools/trainingwise/trainingwise.js"
+  ></script>
 
 </body>
 </html>

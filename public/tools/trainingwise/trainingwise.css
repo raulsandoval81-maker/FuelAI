@@ -1,0 +1,442 @@
+.trainingwise-wrap {
+  width: min(
+    1100px,
+    calc(100% - 32px)
+  );
+
+  margin: 0 auto;
+
+  padding:
+    42px 0 70px;
+}
+
+
+.trainingwise-hero {
+  text-align: center;
+
+  margin-bottom: 34px;
+}
+
+
+.trainingwise-kicker {
+  opacity: .7;
+
+  font-weight: 700;
+
+  letter-spacing: .08em;
+
+  text-transform: uppercase;
+}
+
+
+.trainingwise-hero h1 {
+  margin:
+    8px 0 10px;
+}
+
+
+.trainingwise-sub {
+  max-width: 650px;
+
+  margin: 0 auto;
+
+  opacity: .8;
+}
+
+
+/* =========================
+   MODE GRID
+========================= */
+
+.trainingwise-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      3,
+      minmax(0, 1fr)
+    );
+
+  gap: 18px;
+}
+
+
+.trainingwise-card {
+  padding: 24px;
+
+  border:
+    1px solid
+    rgba(255,255,255,.12);
+
+  border-radius: 22px;
+
+  background:
+    rgba(255,255,255,.045);
+}
+
+
+.trainingwise-icon {
+  margin-bottom: 14px;
+
+  font-size: 2rem;
+}
+
+
+.trainingwise-label {
+  margin:
+    0 0 6px;
+
+  opacity: .65;
+
+  font-size: .78rem;
+
+  font-weight: 800;
+
+  letter-spacing: .1em;
+
+  text-transform: uppercase;
+}
+
+
+.trainingwise-card h2 {
+  margin:
+    0 0 10px;
+}
+
+
+.trainingwise-card
+> p:not(.trainingwise-label) {
+  opacity: .78;
+
+  line-height: 1.55;
+}
+
+
+.trainingwise-preset {
+  margin:
+    20px 0;
+
+  padding:
+    12px 14px;
+
+  border-radius: 14px;
+
+  background:
+    rgba(255,255,255,.06);
+
+  font-weight: 700;
+}
+
+
+/* =========================
+   BUTTONS
+========================= */
+
+.trainingwise-btn,
+.trainingwise-options button,
+.trainingwise-controls button {
+  width: 100%;
+
+  border: 0;
+
+  border-radius: 14px;
+
+  padding:
+    13px 16px;
+
+  font: inherit;
+
+  font-weight: 800;
+
+  cursor: pointer;
+}
+
+
+.trainingwise-options {
+  display: grid;
+
+  gap: 10px;
+
+  margin-top: 20px;
+}
+
+
+/* =========================
+   SESSION OUTPUT
+========================= */
+
+.trainingwise-output {
+  margin-top: 22px;
+
+  padding: 22px;
+
+  border:
+    1px solid
+    rgba(255,255,255,.12);
+
+  border-radius: 20px;
+
+  background:
+    rgba(255,255,255,.045);
+}
+
+
+.trainingwise-output.hidden {
+  display: none;
+}
+
+
+/* =========================
+   TIMER
+========================= */
+
+.trainingwise-timer {
+  margin-top: 20px;
+
+  padding:
+    26px 18px;
+
+  border:
+    2px solid
+    rgba(255,255,255,.12);
+
+  border-radius: 20px;
+
+  background:
+    rgba(255,255,255,.055);
+
+  text-align: center;
+
+  transition:
+    border-color .2s ease,
+    background .2s ease,
+    box-shadow .2s ease;
+}
+
+
+.trainingwise-timer-round {
+  opacity: .72;
+
+  font-weight: 800;
+}
+
+
+.trainingwise-timer-phase {
+  margin-top: 14px;
+
+  font-size: 1.2rem;
+
+  font-weight: 900;
+
+  letter-spacing: .12em;
+
+  transition:
+    color .2s ease;
+}
+
+
+.trainingwise-clock {
+  margin-top: 8px;
+
+  font-size:
+    clamp(
+      4rem,
+      15vw,
+      7rem
+    );
+
+  font-weight: 1000;
+
+  line-height: 1;
+
+  transition:
+    color .2s ease,
+    text-shadow .2s ease;
+}
+
+
+/* =========================
+   WORK
+========================= */
+
+.trainingwise-timer.phase-work {
+  border-color:
+    rgba(34,197,94,.72);
+
+  background:
+    rgba(34,197,94,.08);
+
+  box-shadow:
+    0 0 32px
+    rgba(34,197,94,.14);
+}
+
+
+.trainingwise-timer.phase-work
+.trainingwise-timer-phase,
+.trainingwise-timer.phase-work
+.trainingwise-clock {
+  color: #4ade80;
+}
+
+
+.trainingwise-timer.phase-work
+.trainingwise-clock {
+  text-shadow:
+    0 0 24px
+    rgba(74,222,128,.22);
+}
+
+
+/* =========================
+   RECOVER
+========================= */
+
+.trainingwise-timer.phase-rest {
+  border-color:
+    rgba(56,189,248,.72);
+
+  background:
+    rgba(56,189,248,.08);
+
+  box-shadow:
+    0 0 32px
+    rgba(56,189,248,.14);
+}
+
+
+.trainingwise-timer.phase-rest
+.trainingwise-timer-phase,
+.trainingwise-timer.phase-rest
+.trainingwise-clock {
+  color: #38bdf8;
+}
+
+
+.trainingwise-timer.phase-rest
+.trainingwise-clock {
+  text-shadow:
+    0 0 24px
+    rgba(56,189,248,.22);
+}
+
+
+/* =========================
+   PAUSED
+========================= */
+
+.trainingwise-timer.phase-paused {
+  border-color:
+    rgba(250,204,21,.72);
+
+  background:
+    rgba(250,204,21,.07);
+
+  box-shadow:
+    0 0 28px
+    rgba(250,204,21,.12);
+}
+
+
+.trainingwise-timer.phase-paused
+.trainingwise-timer-phase,
+.trainingwise-timer.phase-paused
+.trainingwise-clock {
+  color: #facc15;
+}
+
+
+/* =========================
+   COMPLETE
+========================= */
+
+.trainingwise-timer.phase-complete {
+  border-color:
+    rgba(255,255,255,.18);
+
+  background:
+    rgba(255,255,255,.055);
+
+  box-shadow: none;
+}
+
+
+.trainingwise-timer.phase-complete
+.trainingwise-timer-phase,
+.trainingwise-timer.phase-complete
+.trainingwise-clock {
+  color: inherit;
+
+  text-shadow: none;
+}
+
+
+/* =========================
+   CONTROLS
+========================= */
+
+.trainingwise-controls {
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      3,
+      minmax(0, 1fr)
+    );
+
+  gap: 10px;
+
+  margin-top: 18px;
+}
+
+
+.trainingwise-controls
+button:disabled {
+  opacity: .45;
+
+  cursor: default;
+}
+
+
+.trainingwise-session-message {
+  margin-top: 14px;
+
+  opacity: .75;
+
+  text-align: center;
+}
+
+
+/* =========================
+   FOOTER
+========================= */
+
+.trainingwise-footer-link {
+  margin-top: 30px;
+
+  text-align: center;
+}
+
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 800px) {
+
+  .trainingwise-grid {
+    grid-template-columns:
+      1fr;
+  }
+
+}
+
+
+@media (max-width: 560px) {
+
+  .trainingwise-controls {
+    grid-template-columns:
+      1fr;
+  }
+
+}
