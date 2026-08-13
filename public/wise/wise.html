@@ -8,7 +8,8 @@
     content="width=device-width, initial-scale=1.0"
   />
 
-<title>Advice from Coach Wright</title>
+  <title>Coach Wright | FuelAI</title>
+
   <link
     rel="stylesheet"
     href="/assets/css/site.css"
@@ -24,128 +25,727 @@
     href="/assets/css/nav.css"
   />
 
+  <style>
+    :root{
+      --wise-bg:#030712;
+      --wise-line:rgba(56,189,248,.24);
+      --wise-line-soft:rgba(255,255,255,.08);
+      --wise-muted:#94a3b8;
+      --wise-blue:#38bdf8;
+      --wise-green:#22c55e;
+      --wise-purple:#a78bfa;
+    }
+
+    *{
+      box-sizing:border-box;
+    }
+
+    body{
+      margin:0;
+
+      background:
+        radial-gradient(
+          circle at top,
+          rgba(8,47,73,.24),
+          transparent 30%
+        ),
+        var(--wise-bg);
+
+      color:#f8fafc;
+    }
+
+    .wise-shell{
+      width:100%;
+      max-width:1000px;
+      margin:0 auto;
+      padding:28px 18px 42px;
+    }
+
+    .wise-hero{
+      padding:24px;
+
+      border-radius:24px;
+
+      border:
+        1px solid var(--wise-line);
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(8,47,73,.22),
+          rgba(7,16,25,.96)
+        );
+
+      box-shadow:
+        0 18px 50px rgba(0,0,0,.24);
+
+      text-align:center;
+    }
+
+    .wise-hero h1{
+      margin:6px 0 0;
+
+      font-size:
+        clamp(2.3rem,6vw,3.8rem);
+
+      line-height:1;
+
+      letter-spacing:-.04em;
+    }
+
+    .wise-hero .sub{
+      max-width:620px;
+
+      margin:12px auto 0;
+
+      color:#cbd5e1;
+
+      line-height:1.55;
+    }
+
+    .profile-pill{
+      display:inline-flex;
+
+      align-items:center;
+      justify-content:center;
+
+      margin-top:16px;
+      padding:8px 14px;
+
+      border-radius:999px;
+
+      border:
+        1px solid rgba(56,189,248,.24);
+
+      background:
+        rgba(56,189,248,.07);
+
+      color:#bae6fd;
+
+      font-size:.8rem;
+      font-weight:1000;
+
+      letter-spacing:.06em;
+
+      text-transform:uppercase;
+    }
+
+    .wise-grid{
+      display:grid;
+
+      grid-template-columns:
+        .85fr 1.15fr;
+
+      gap:16px;
+
+      margin-top:20px;
+    }
+
+    .wise-card{
+      padding:20px;
+
+      border-radius:20px;
+
+      border:
+        1px solid var(--wise-line-soft);
+
+      background:
+        linear-gradient(
+          180deg,
+          rgba(15,23,42,.94),
+          rgba(7,16,25,.96)
+        );
+
+      box-shadow:
+        0 12px 30px rgba(0,0,0,.16);
+    }
+
+    .wise-card h2{
+      margin:0;
+
+      font-size:1.2rem;
+    }
+
+    .guide-card{
+      text-align:center;
+    }
+
+    .guide-face-wrap{
+      margin-top:14px;
+
+      display:flex;
+
+      justify-content:center;
+    }
+
+    .character-face.image-face{
+      width:min(100%,340px);
+
+      overflow:hidden;
+
+      border-radius:20px;
+
+      border:
+        1px solid rgba(255,255,255,.08);
+
+      background:#020617;
+    }
+
+    .guide-image{
+      display:block;
+
+      width:100%;
+      height:auto;
+    }
+
+    #wiseAdvice{
+      margin-top:12px;
+
+      color:#e2e8f0;
+
+      line-height:1.65;
+    }
+
+    .guide-chat-box{
+      width:100%;
+
+      min-height:120px;
+
+      margin-top:14px;
+
+      resize:vertical;
+    }
+
+    #wiseChatReply{
+      margin-top:12px;
+
+      color:#cbd5e1;
+
+      line-height:1.55;
+    }
+
+    #sendWiseChatBtn{
+      width:100%;
+
+      min-height:58px;
+
+      margin-top:14px;
+
+      font-size:1.02rem;
+      font-weight:1000;
+    }
+
+    .guidance-section{
+      margin-top:20px;
+
+      padding:20px;
+
+      border-radius:20px;
+
+      border:
+        1px solid var(--wise-line-soft);
+
+      background:
+        linear-gradient(
+          180deg,
+          rgba(15,23,42,.94),
+          rgba(7,16,25,.96)
+        );
+    }
+
+    .guidance-section h2{
+      margin:0;
+
+      font-size:1.2rem;
+    }
+
+    .guidance-tools{
+      display:grid;
+
+      grid-template-columns:
+        repeat(2,minmax(0,1fr));
+
+      gap:14px;
+
+      margin-top:14px;
+    }
+
+    .guidance-tool{
+      min-height:145px;
+
+      padding:18px;
+
+      display:flex;
+
+      flex-direction:column;
+
+      justify-content:space-between;
+
+      border-radius:18px;
+
+      border:
+        1px solid rgba(255,255,255,.08);
+
+      background:
+        rgba(255,255,255,.035);
+
+      color:#fff;
+
+      text-decoration:none;
+
+      transition:
+        transform .15s ease,
+        border-color .15s ease;
+    }
+
+    .guidance-tool:hover{
+      transform:translateY(-2px);
+
+      border-color:
+        rgba(56,189,248,.34);
+    }
+
+    .guidance-tool strong{
+      font-size:1.05rem;
+    }
+
+    .guidance-tool span{
+      display:block;
+
+      margin-top:8px;
+
+      color:#cbd5e1;
+
+      line-height:1.45;
+
+      font-size:.9rem;
+    }
+
+    .guidance-tool small{
+      display:block;
+
+      margin-top:14px;
+
+      color:#7dd3fc;
+
+      font-size:.78rem;
+
+      font-weight:1000;
+    }
+
+    .wise-note{
+      margin-top:20px;
+
+      padding:18px;
+
+      border-radius:20px;
+
+      border:
+        1px solid rgba(34,197,94,.18);
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(20,83,45,.12),
+          rgba(7,16,25,.96)
+        );
+    }
+
+    .wise-note h2{
+      margin:0;
+
+      font-size:1.1rem;
+    }
+
+    .wise-note p{
+      margin:8px 0 0;
+
+      color:#cbd5e1;
+
+      line-height:1.55;
+    }
+
+    .wise-actions{
+      display:flex;
+
+      justify-content:center;
+
+      margin-top:20px;
+    }
+
+    .wise-actions .secondary-btn{
+      width:min(100%,360px);
+    }
+
+    .hero-note{
+      margin-top:26px;
+
+      text-align:center;
+
+      color:#64748b;
+    }
+
+    @media(max-width:760px){
+
+      .wise-shell{
+        padding:18px 12px 30px;
+      }
+
+      .wise-hero{
+        padding:18px;
+
+        border-radius:20px;
+      }
+
+      .wise-grid,
+      .guidance-tools{
+        grid-template-columns:1fr;
+      }
+    }
+
+    @media(prefers-reduced-motion:reduce){
+
+      .guidance-tool{
+        transition:none;
+      }
+    }
+  </style>
 </head>
 
 <body data-theme="night">
 
-<main class="scan-wrap">
+  <main class="wise-shell">
 
-  <section class="scan-card">
+    <!-- HERO -->
 
-<p class="range-label">
-  COACH
-</p>
-
-    <p
-      id="wiseSub"
-      class="sub"
-    >
-      Ask better questions. Get clearer guidance.
-    </p>
-
-    <section class="range-card">
+    <header class="wise-hero">
 
       <p class="range-label">
-        Current Plan
+        FuelAI · Guidance
       </p>
 
-      <p
-        id="planOutput"
-        class="range-output"
-      >
-        Loading...
-      </p>
-
-    </section>
-        <section class="range-card guide-card">
-
-      <h1 id="wiseTitle">
+      <h1>
         Coach Wright
       </h1>
 
-      <div class="guide-face-wrap">
+      <p
+        id="wiseSub"
+        class="sub"
+      >
+        Turn your training, recovery, food, and daily habits
+        into a clearer next move.
+      </p>
 
-        <div
-          id="characterFace"
-          class="character-face image-face"
+      <div
+        id="profileOutput"
+        class="profile-pill"
+      >
+        Fitness Enthusiast
+      </div>
+
+    </header>
+
+
+    <!-- CURRENT DIRECTION + COACH -->
+
+    <section class="wise-grid">
+
+      <!-- PLAN -->
+
+      <article class="wise-card">
+
+        <p class="range-label">
+          Current Direction
+        </p>
+
+        <h2>
+          Your FuelAI Plan
+        </h2>
+
+        <p
+          id="planOutput"
+          class="range-output"
         >
+          Loading...
+        </p>
 
-          <img
-            id="guideImage"
-            class="guide-image"
-            src=""
-            alt="Coach Wright"
-          />
+      </article>
+
+
+      <!-- COACH -->
+
+      <article class="wise-card guide-card">
+
+        <p class="range-label">
+          Your Coach
+        </p>
+
+        <h2 id="wiseTitle">
+          Coach Wright
+        </h2>
+
+        <div class="guide-face-wrap">
+
+          <div
+            id="characterFace"
+            class="character-face image-face"
+          >
+
+            <img
+              id="guideImage"
+              class="guide-image"
+              src=""
+              alt="Coach Wright"
+            />
+
+          </div>
 
         </div>
 
-      </div>
+        <p class="range-label">
+          🧠 Quick Read
+        </p>
 
-<p class="range-label">
-  🧠 Quick Read from Coach Wright
-</p>
+        <p
+          id="wiseAdvice"
+          class="range-output"
+        >
+          Loading guidance...
+        </p>
 
-      <p
-        id="wiseAdvice"
-        class="range-output"
-      >
-        Loading guidance...
-      </p>
+        <textarea
+          id="wiseChatInput"
+          class="goal-select guide-chat-box"
+          placeholder="Ask Coach Wright about training, recovery, food, hydration, or staying on track..."
+          rows="4"
+        ></textarea>
 
-      <textarea
-        id="wiseChatInput"
-        class="goal-select guide-chat-box"
-        placeholder="Ask Coach Wright anything..."
-        rows="4"
-      ></textarea>
+        <p
+          id="wiseChatReply"
+          class="range-output guide-listening"
+        >
+          Your coach is listening.
+        </p>
 
-      <p
-        id="wiseChatReply"
-        class="range-output guide-listening"
-      >
-        Your coach is listening.
-      </p>
+        <button
+          class="start-btn"
+          id="sendWiseChatBtn"
+          type="button"
+        >
+          Ask Coach Wright →
+        </button>
 
-      <button
-        class="start-btn"
-        id="sendWiseChatBtn"
-        type="button"
-      >
-        Ask Coach Wright
-      </button>
+      </article>
 
     </section>
 
 
+    <!-- GUIDANCE TOOLS -->
 
-    <section class="range-card">
+    <section class="guidance-section">
 
       <p class="range-label">
-        Stay On Track
+        Fitness Guidance
       </p>
 
-      <div class="wise-links">
+      <h2>
+        What do you need help with?
+      </h2>
+
+      <div class="guidance-tools">
+
+
+        <!-- CHECK IN -->
 
         <a
-          class="secondary-btn"
+          class="guidance-tool"
           href="/wise/todays-check-in.html"
         >
-          ✅ Check-In-In
+
+          <div>
+
+            <strong>
+              ✅ Daily Check-In
+            </strong>
+
+            <span>
+              Log sleep, recovery, hydration,
+              food, training, and how you feel.
+            </span>
+
+          </div>
+
+          <small>
+            Check in →
+          </small>
+
         </a>
 
 
+        <!-- STAY ON TRACK -->
+
         <a
-          class="secondary-btn"
+          class="guidance-tool"
           href="/wise/stay-on-track.html"
         >
-          📈 Stay On Track
+
+          <div>
+
+            <strong>
+              🎯 Stay On Track
+            </strong>
+
+            <span>
+              See your weekly focus,
+              today’s momentum, and your
+              next useful action.
+            </span>
+
+          </div>
+
+          <small>
+            Check momentum →
+          </small>
+
+        </a>
+
+
+        <!-- TRAININGWISE -->
+
+        <a
+          class="guidance-tool"
+          href="/tools/trainingwise/"
+        >
+
+          <div>
+
+            <strong>
+              🏋️ TrainingWise
+            </strong>
+
+            <span>
+              Training structure,
+              conditioning, and progress
+              built around your activity.
+            </span>
+
+          </div>
+
+          <small>
+            Open training →
+          </small>
+
+        </a>
+
+
+        <!-- FUEL MY BODY -->
+
+        <a
+          class="guidance-tool"
+          href="/tools/mealwise/fuel-my-body.html"
+        >
+
+          <div>
+
+            <strong>
+              💪 Fuel My Body
+            </strong>
+
+            <span>
+              Get simple guidance for
+              fueling before, during,
+              and after training.
+            </span>
+
+          </div>
+
+          <small>
+            Get fuel guidance →
+          </small>
+
+        </a>
+
+
+        <!-- RESET -->
+
+        <a
+          class="guidance-tool"
+          href="/account/reset-recovery.html"
+        >
+
+          <div>
+
+            <strong>
+              🧠 Reset + Recovery
+            </strong>
+
+            <span>
+              Sort through soreness,
+              low energy, poor sleep,
+              stress, or recovery needs.
+            </span>
+
+          </div>
+
+          <small>
+            Reset + recover →
+          </small>
+
+        </a>
+
+
+        <!-- QUICK ACTIONS -->
+
+        <a
+          class="guidance-tool"
+          href="/wise/quick-actions.html"
+        >
+
+          <div>
+
+            <strong>
+              ⚡ Quick Actions
+            </strong>
+
+            <span>
+              Skip the extra steps and
+              jump directly to the tool
+              you need.
+            </span>
+
+          </div>
+
+          <small>
+            Open quick actions →
+          </small>
+
         </a>
 
       </div>
 
     </section>
 
-    <div class="wise-links">
+
+    <!-- PURPOSE -->
+
+    <section class="wise-note">
+
+      <h2>
+        FuelAI tracks. Coach Wright helps interpret.
+      </h2>
+
+      <p>
+        MealWise, TrackWise, TrainingWise, and your daily
+        check-ins collect the signals. Coach Wright helps
+        turn those signals into a simpler next decision.
+      </p>
+
+    </section>
+
+
+    <!-- HUB -->
+
+    <div class="wise-actions">
 
       <a
         class="secondary-btn"
@@ -155,35 +755,72 @@
       </a>
 
     </div>
-<a
-  class="secondary-btn"
-  href="/tools/mealwise/fuel-my-body.html"
->
-  💪 Fuel My Body
-</a>
+
 
     <p class="hero-note">
-      FuelAI • Coach Wright helps interpret the truth your account tracks.
+      FuelAI™ · Train. Recover. Adjust. Keep moving.
     </p>
 
-  </section>
+  </main>
 
-</main>
 
-<script src="/assets/js/core/auth-soft.js"></script>
+  <script src="/assets/js/core/auth-soft.js"></script>
 
-<script>
-  window.FuelAIAuth?.requireSoftLogin();
-</script>
+  <script>
+    window.FuelAIAuth?.requireSoftLogin();
+  </script>
 
-<script src="/assets/js/core/preferences.js"></script>
-<script src="/assets/js/account/fuelai-log.js"></script>
-<script src="/assets/js/wise/character-face.js"></script>
-<script src="/assets/js/wise/guides.js"></script>
-<script src="/assets/js/wise/wise.js"></script>
+  <script src="/assets/js/core/preferences.js"></script>
 
+  <script src="/assets/js/account/fuelai-log.js"></script>
+
+  <script src="/assets/js/wise/character-face.js"></script>
+
+  <script src="/assets/js/wise/guides.js"></script>
+
+  <script src="/assets/js/wise/wise.js"></script>
 
   <script src="/assets/js/core/plan.js"></script>
+
+
+  <script>
+    const setup =
+      JSON.parse(
+        localStorage.getItem(
+          "fuelai-setup"
+        ) || "{}"
+      );
+
+    const profileOutput =
+      document.getElementById(
+        "profileOutput"
+      );
+
+    const PROFILE_LABELS = {
+
+      "general-health":
+        "General Health",
+
+      "fitness-enthusiast":
+        "Fitness Enthusiast",
+
+      "combat-athlete":
+        "Combat Athlete"
+
+    };
+
+    if (
+      profileOutput
+    ) {
+
+      profileOutput.textContent =
+        PROFILE_LABELS[
+          setup.lifestyleType
+        ] ||
+        "General Health";
+
+    }
+  </script>
 
 
   <script src="/assets/js/core/nav.js"></script>

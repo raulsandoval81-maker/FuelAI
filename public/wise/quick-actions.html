@@ -8,7 +8,7 @@
     content="width=device-width, initial-scale=1.0"
   />
 
-  <title>Quick Actions</title>
+  <title>Quick Actions | FuelAI</title>
 
   <link
     rel="stylesheet"
@@ -20,16 +20,283 @@
     href="/assets/css/nav.css"
   />
 
+  <style>
+    :root{
+      --qa-bg:#030712;
+      --qa-line:rgba(56,189,248,.24);
+      --qa-line-soft:rgba(255,255,255,.08);
+      --qa-muted:#94a3b8;
+      --qa-blue:#38bdf8;
+      --qa-green:#22c55e;
+      --qa-purple:#a78bfa;
+    }
+
+    *{
+      box-sizing:border-box;
+    }
+
+    body{
+      margin:0;
+
+      background:
+        radial-gradient(
+          circle at top,
+          rgba(8,47,73,.22),
+          transparent 30%
+        ),
+        var(--qa-bg);
+
+      color:#f8fafc;
+    }
+
+    .quick-shell{
+      width:100%;
+      max-width:1000px;
+      margin:0 auto;
+      padding:28px 18px 42px;
+    }
+
+    .quick-hero{
+      padding:24px;
+
+      border-radius:24px;
+
+      border:
+        1px solid var(--qa-line);
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(8,47,73,.20),
+          rgba(7,16,25,.96)
+        );
+
+      box-shadow:
+        0 18px 50px rgba(0,0,0,.24);
+
+      text-align:center;
+    }
+
+    .quick-hero h1{
+      margin:6px 0 0;
+
+      font-size:
+        clamp(2.3rem,6vw,3.8rem);
+
+      line-height:1;
+      letter-spacing:-.04em;
+    }
+
+    .quick-hero .sub{
+      max-width:620px;
+      margin:12px auto 0;
+
+      color:#cbd5e1;
+      line-height:1.55;
+    }
+
+    .quick-section{
+      margin-top:20px;
+      padding:20px;
+
+      border-radius:20px;
+
+      border:
+        1px solid var(--qa-line-soft);
+
+      background:
+        linear-gradient(
+          180deg,
+          rgba(15,23,42,.94),
+          rgba(7,16,25,.96)
+        );
+
+      box-shadow:
+        0 12px 30px rgba(0,0,0,.16);
+    }
+
+    .quick-section h2{
+      margin:0;
+      font-size:1.2rem;
+    }
+
+    .quick-section p{
+      margin:8px 0 0;
+
+      color:#cbd5e1;
+      line-height:1.5;
+    }
+
+    .quick-actions-board{
+      position:relative;
+
+      width:100%;
+
+      margin-top:18px;
+
+      overflow:hidden;
+
+      border-radius:22px;
+
+      border:
+        1px solid rgba(255,255,255,.07);
+
+      background:#020617;
+
+      box-shadow:
+        0 16px 38px rgba(0,0,0,.24);
+    }
+
+    .quick-actions-image{
+      display:block;
+
+      width:100%;
+      height:auto;
+    }
+
+    .quick-hotspot{
+      position:absolute;
+
+      display:block;
+
+      border-radius:16px;
+
+      background:
+        rgba(255,255,255,0);
+
+      transition:
+        background .15s ease,
+        box-shadow .15s ease;
+    }
+
+    .quick-hotspot:hover,
+    .quick-hotspot:focus-visible{
+      background:
+        rgba(255,255,255,.045);
+
+      box-shadow:
+        inset 0 0 0 2px
+        rgba(255,255,255,.16);
+
+      outline:none;
+    }
+
+    /*
+     * Preserve these hotspot positions
+     * only if they already match your PNG.
+     *
+     * If your existing site.css already
+     * defines them, these rules can be removed.
+     */
+
+    .quick-hotspot-fridge{
+      left:4%;
+      top:8%;
+      width:29%;
+      height:84%;
+    }
+
+    .quick-hotspot-meal{
+      left:35.5%;
+      top:8%;
+      width:29%;
+      height:84%;
+    }
+
+    .quick-hotspot-track{
+      left:67%;
+      top:8%;
+      width:29%;
+      height:84%;
+    }
+
+    .quick-note{
+      margin-top:20px;
+      padding:18px;
+
+      border-radius:20px;
+
+      border:
+        1px solid rgba(34,197,94,.18);
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(20,83,45,.12),
+          rgba(7,16,25,.96)
+        );
+    }
+
+    .quick-note h2{
+      margin:0;
+      font-size:1.1rem;
+    }
+
+    .quick-note p{
+      margin:8px 0 0;
+
+      color:#cbd5e1;
+      line-height:1.55;
+    }
+
+    .quick-actions-nav{
+      display:flex;
+      justify-content:center;
+
+      margin-top:20px;
+    }
+
+    .quick-actions-nav .secondary-btn{
+      width:min(100%,360px);
+    }
+
+    .hero-note{
+      margin-top:26px;
+
+      text-align:center;
+
+      color:#64748b;
+    }
+
+    @media(max-width:700px){
+
+      .quick-shell{
+        padding:18px 12px 30px;
+      }
+
+      .quick-hero{
+        padding:18px;
+        border-radius:20px;
+      }
+
+      .quick-section{
+        padding:16px;
+      }
+
+      .quick-actions-board{
+        border-radius:18px;
+      }
+    }
+
+    @media(prefers-reduced-motion:reduce){
+
+      .quick-hotspot{
+        transition:none;
+      }
+    }
+  </style>
 </head>
 
 <body data-theme="night">
 
-  <main class="scan-wrap">
+  <main class="quick-shell">
 
-    <section class="scan-card">
+    <!-- HERO -->
+
+    <header class="quick-hero">
 
       <p class="range-label">
-        FuelAI
+        FuelAI · Quick Actions
       </p>
 
       <h1>
@@ -40,11 +307,30 @@
         Fast access when you already know what you need.
       </p>
 
+    </header>
+
+
+    <!-- BOARD -->
+
+    <section class="quick-section">
+
+      <p class="range-label">
+        Choose Your Move
+      </p>
+
+      <h2>
+        Skip the extra steps.
+      </h2>
+
+      <p>
+        Go straight to the tool you need right now.
+      </p>
+
       <div class="quick-actions-board">
 
         <img
           src="/assets/img/hub/quick-actions.png"
-          alt="Quick Actions"
+          alt="FuelAI Quick Actions"
           class="quick-actions-image"
         />
 
@@ -68,28 +354,45 @@
 
       </div>
 
-      <div class="wise-links">
+    </section>
 
-        <a
-          class="secondary-btn"
-          href="/hub/"
-        >
-          🏠 Return to Hub
-        </a>
 
-      </div>
+    <!-- NOTE -->
+
+    <section class="quick-note">
+
+      <h2>
+        Fast help should stay fast.
+      </h2>
+
+      <p>
+        Quick Actions is for moments when you already know
+        what you want to do and do not need another decision screen.
+      </p>
 
     </section>
 
-  </main>
 
-  <footer class="app-footer">
+    <!-- NAV -->
 
-    <p>
-      FuelAI • Fast help. Less overthinking.
+    <div class="quick-actions-nav">
+
+      <a
+        class="secondary-btn"
+        href="/hub/"
+      >
+        🏠 Return to Hub
+      </a>
+
+    </div>
+
+
+    <p class="hero-note">
+      FuelAI™ · Fast help. Less overthinking.
     </p>
 
-  </footer>
+  </main>
+
 
   <script src="/assets/js/core/auth-soft.js"></script>
 
@@ -99,9 +402,7 @@
 
   <script src="/assets/js/core/preferences.js"></script>
 
-
   <script src="/assets/js/core/plan.js"></script>
-
 
   <script src="/assets/js/core/nav.js"></script>
 

@@ -10,7 +10,7 @@
 
   <link rel="icon" href="data:," />
 
-  <title>Stay On Track</title>
+  <title>Stay On Track | FuelAI</title>
 
   <link
     rel="stylesheet"
@@ -22,16 +22,218 @@
     href="/assets/css/nav.css"
   />
 
+  <style>
+    :root{
+      --sot-bg:#030712;
+      --sot-line:rgba(167,139,250,.24);
+      --sot-line-soft:rgba(255,255,255,.08);
+      --sot-muted:#94a3b8;
+      --sot-purple:#a78bfa;
+      --sot-green:#22c55e;
+      --sot-blue:#38bdf8;
+    }
+
+    *{
+      box-sizing:border-box;
+    }
+
+    body{
+      margin:0;
+
+      background:
+        radial-gradient(
+          circle at top,
+          rgba(76,29,149,.22),
+          transparent 30%
+        ),
+        var(--sot-bg);
+
+      color:#f8fafc;
+    }
+
+    .track-shell{
+      width:100%;
+      max-width:1000px;
+      margin:0 auto;
+      padding:28px 18px 42px;
+    }
+
+    .track-hero{
+      padding:24px;
+
+      border-radius:24px;
+
+      border:
+        1px solid var(--sot-line);
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(76,29,149,.20),
+          rgba(7,16,25,.96)
+        );
+
+      box-shadow:
+        0 18px 50px rgba(0,0,0,.24);
+
+      text-align:center;
+    }
+
+    .track-hero h1{
+      margin:6px 0 0;
+
+      font-size:
+        clamp(2.3rem,6vw,3.8rem);
+
+      line-height:1;
+      letter-spacing:-.04em;
+    }
+
+    .track-hero .sub{
+      max-width:620px;
+      margin:12px auto 0;
+
+      color:#cbd5e1;
+      line-height:1.55;
+    }
+
+    .track-grid{
+      display:grid;
+
+      grid-template-columns:
+        repeat(2,minmax(0,1fr));
+
+      gap:16px;
+
+      margin-top:20px;
+    }
+
+    .track-card{
+      padding:20px;
+
+      border-radius:20px;
+
+      border:
+        1px solid var(--sot-line-soft);
+
+      background:
+        linear-gradient(
+          180deg,
+          rgba(15,23,42,.94),
+          rgba(7,16,25,.96)
+        );
+
+      box-shadow:
+        0 12px 30px rgba(0,0,0,.16);
+    }
+
+    .track-card.full{
+      grid-column:1 / -1;
+    }
+
+    .track-card h2{
+      margin:0;
+      font-size:1.2rem;
+    }
+
+    #weeklyFocusOutput,
+    #momentumOutput,
+    #nextStepOutput{
+      margin-top:12px;
+
+      color:#e2e8f0;
+
+      line-height:1.65;
+    }
+
+    .track-actions{
+      display:grid;
+
+      grid-template-columns:
+        repeat(3,minmax(0,1fr));
+
+      gap:14px;
+
+      margin-top:20px;
+    }
+
+    .track-actions .secondary-btn{
+      width:100%;
+      min-height:54px;
+    }
+
+    .track-note{
+      margin-top:20px;
+
+      padding:18px;
+
+      border-radius:20px;
+
+      border:
+        1px solid rgba(34,197,94,.18);
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(20,83,45,.12),
+          rgba(7,16,25,.96)
+        );
+    }
+
+    .track-note h2{
+      margin:0;
+      font-size:1.1rem;
+    }
+
+    .track-note p{
+      margin:8px 0 0;
+
+      color:#cbd5e1;
+
+      line-height:1.55;
+    }
+
+    .hero-note{
+      margin-top:26px;
+
+      text-align:center;
+
+      color:#64748b;
+    }
+
+    @media(max-width:760px){
+
+      .track-shell{
+        padding:18px 12px 30px;
+      }
+
+      .track-hero{
+        padding:18px;
+        border-radius:20px;
+      }
+
+      .track-grid,
+      .track-actions{
+        grid-template-columns:1fr;
+      }
+
+      .track-card.full{
+        grid-column:auto;
+      }
+    }
+  </style>
 </head>
 
 <body data-theme="night">
 
-  <main class="scan-wrap">
+  <main class="track-shell">
 
-    <section class="scan-card">
+    <!-- HERO -->
+
+    <header class="track-hero">
 
       <p class="range-label">
-        FUELAI
+        FuelAI · TrackWise
       </p>
 
       <h1>
@@ -39,13 +241,26 @@
       </h1>
 
       <p class="sub">
-        See your weekly focus, check your momentum, and choose the next simple step.
+        See your weekly focus, check today’s momentum,
+        and choose the next simple step.
       </p>
 
-      <section class="range-card">
+    </header>
+
+
+    <!-- TRACKING -->
+
+    <section class="track-grid">
+
+      <article class="track-card">
+
         <p class="range-label">
           Current Weekly Focus
         </p>
+
+        <h2>
+          This Week
+        </h2>
 
         <p
           id="weeklyFocusOutput"
@@ -53,25 +268,39 @@
         >
           Loading focus...
         </p>
-      </section>
 
-      <section class="range-card">
+      </article>
+
+
+      <article class="track-card">
+
         <p class="range-label">
-          Today's Momentum
+          Today’s Momentum
         </p>
+
+        <h2>
+          Progress Today
+        </h2>
 
         <p
           id="momentumOutput"
           class="range-output"
         >
-          Checking today's progress...
+          Checking today’s progress...
         </p>
-      </section>
 
-      <section class="range-card">
+      </article>
+
+
+      <article class="track-card full">
+
         <p class="range-label">
           Next Best Step
         </p>
+
+        <h2>
+          Keep the day moving
+        </h2>
 
         <p
           id="nextStepOutput"
@@ -79,46 +308,66 @@
         >
           Stay connected. One small action is enough to keep the day alive.
         </p>
-      </section>
 
-      <div class="wise-links">
+      </article>
 
-        <a
-          class="secondary-btn"
-          href="/wise/todays-check-in.html"
-        >
-          ✅ Check-In-In
-        </a>
+    </section>
 
-        <a
-          class="secondary-btn"
-          href="/wise/quick-actions.html"
-        >
-          ⚡ Quick Actions
-        </a>
 
-        <a
-          class="secondary-btn"
-          href="/wise/"
-        >
-          💡 Tips from W.
-        </a>
+    <!-- ACTIONS -->
 
-      </div>
+    <nav
+      class="track-actions"
+      aria-label="TrackWise actions"
+    >
 
-      <p class="hero-note">
-        Don’t chase perfect. Stay connected.
+      <a
+        class="secondary-btn"
+        href="/wise/todays-check-in.html"
+      >
+        ✅ Daily Check-In
+      </a>
+
+      <a
+        class="secondary-btn"
+        href="/wise/quick-actions.html"
+      >
+        ⚡ Quick Actions
+      </a>
+
+      <a
+        class="secondary-btn"
+        href="/wise/"
+      >
+        💡 Tips from W.
+      </a>
+
+    </nav>
+
+
+    <!-- NOTE -->
+
+    <section class="track-note">
+
+      <h2>
+        Momentum beats perfection.
+      </h2>
+
+      <p>
+        TrackWise is designed to keep you connected to the
+        habits that matter most without turning every day
+        into a scorecard.
       </p>
 
     </section>
 
+
+    <p class="hero-note">
+      FuelAI™ · Don’t chase perfect. Stay connected.
+    </p>
+
   </main>
 
-  <footer class="app-footer">
-    <p>
-      FuelAI • Guidance and accountability center.
-    </p>
-  </footer>
 
   <script src="/assets/js/core/auth-soft.js"></script>
 
@@ -127,29 +376,43 @@
   </script>
 
   <script src="/assets/js/core/preferences.js"></script>
+
   <script src="/assets/js/account/fuelai-log.js"></script>
+
 
   <script>
     const weeklyFocusOutput =
-      document.getElementById("weeklyFocusOutput");
+      document.getElementById(
+        "weeklyFocusOutput"
+      );
 
     const momentumOutput =
-      document.getElementById("momentumOutput");
+      document.getElementById(
+        "momentumOutput"
+      );
 
     const nextStepOutput =
-      document.getElementById("nextStepOutput");
+      document.getElementById(
+        "nextStepOutput"
+      );
+
 
     const setup =
       JSON.parse(
-        localStorage.getItem("fuelai-setup") || "{}"
+        localStorage.getItem(
+          "fuelai-setup"
+        ) || "{}"
       );
+
 
     const goal =
       setup.goal ||
       setup.monthlyPlan ||
       "fuelwise";
 
+
     const WEEKLY_FOCUS_BY_GOAL = {
+
       fuelwise:
         "Steady Energy Week",
 
@@ -158,9 +421,12 @@
 
       gainwise:
         "Build and Recover Week"
+
     };
 
+
     const NEXT_STEPS_BY_GOAL = {
+
       fuelwise:
         "Eat a simple protein meal, drink water, and keep the day steady.",
 
@@ -169,63 +435,125 @@
 
       gainwise:
         "Add an easy recovery meal or snack: protein plus carbs."
+
     };
 
+
     function getTodayLogs() {
-      if (!window.FuelAILog) {
+
+      if (
+        !window.FuelAILog
+      ) {
         return [];
       }
 
-      return window.FuelAILog.getTodayLogs();
+      return (
+        window.FuelAILog
+          .getTodayLogs()
+      );
+
     }
+
 
     function hasLogged(type) {
-      return getTodayLogs().some((entry) => {
-        return entry.type === type;
-      });
+
+      return getTodayLogs()
+        .some(
+          (entry) => {
+
+            return (
+              entry.type === type
+            );
+
+          }
+        );
+
     }
+
 
     function renderStayOnTrack() {
+
       const weeklyFocus =
         setup.weeklyFocus ||
-        WEEKLY_FOCUS_BY_GOAL[goal] ||
+        WEEKLY_FOCUS_BY_GOAL[
+          goal
+        ] ||
         "Steady Energy Week";
 
+
       const checkInDone =
-        hasLogged("todays-check-in");
+        hasLogged(
+          "todays-check-in"
+        );
 
       const trainingDone =
-        hasLogged("training");
+        hasLogged(
+          "training"
+        );
 
       const weightDone =
-        hasLogged("weight");
+        hasLogged(
+          "weight"
+        );
+
 
       const completeCount =
-        Number(checkInDone) +
-        Number(trainingDone) +
-        Number(weightDone);
+        Number(
+          checkInDone
+        ) +
+        Number(
+          trainingDone
+        ) +
+        Number(
+          weightDone
+        );
 
-      weeklyFocusOutput.textContent =
-        weeklyFocus;
 
-      momentumOutput.innerHTML = `
-        ${checkInDone ? "✅" : "⬜"} Check-In-In<br>
-        ${trainingDone ? "✅" : "⬜"} Training Logged<br>
-        ${weightDone ? "✅" : "⬜"} Weight Logged<br><br>
-        ${completeCount}/3 momentum items complete.
-      `;
+      if (
+        weeklyFocusOutput
+      ) {
 
-      nextStepOutput.textContent =
-        NEXT_STEPS_BY_GOAL[goal] ||
-        NEXT_STEPS_BY_GOAL.fuelwise;
+        weeklyFocusOutput.textContent =
+          weeklyFocus;
+
+      }
+
+
+      if (
+        momentumOutput
+      ) {
+
+        momentumOutput.innerHTML = `
+          ${checkInDone ? "✅" : "⬜"} Daily Check-In<br>
+          ${trainingDone ? "✅" : "⬜"} Training Logged<br>
+          ${weightDone ? "✅" : "⬜"} Weight Logged<br><br>
+          ${completeCount}/3 momentum items complete.
+        `;
+
+      }
+
+
+      if (
+        nextStepOutput
+      ) {
+
+        nextStepOutput.textContent =
+          NEXT_STEPS_BY_GOAL[
+            goal
+          ] ||
+          NEXT_STEPS_BY_GOAL
+            .fuelwise;
+
+      }
+
     }
+
 
     renderStayOnTrack();
   </script>
 
 
   <script src="/assets/js/core/plan.js"></script>
-
 
   <script src="/assets/js/core/nav.js"></script>
 

@@ -3,12 +3,34 @@
 
   function getAccess() {
     return (
-      window.FuelAIPlan?.getFuelAIAccess?.() ||
+      window.FuelAIPlan
+        ?.getFuelAIAccess?.() ||
       {
         tools: {}
       }
     );
   }
+
+
+  function getSetup() {
+    return JSON.parse(
+      localStorage.getItem(
+        "fuelai-setup"
+      ) || "{}"
+    );
+  }
+
+
+  function getProfile() {
+    const setup =
+      getSetup();
+
+    return (
+      setup.lifestyleType ||
+      "general-health"
+    );
+  }
+
 
   function buildNav() {
     if (
@@ -19,8 +41,25 @@
       return;
     }
 
+
     const access =
       getAccess();
+
+    const profile =
+      getProfile();
+
+
+    const isFitnessProfile =
+      profile ===
+        "fitness-enthusiast" ||
+      profile ===
+        "combat-athlete";
+
+
+    const isCombatProfile =
+      profile ===
+      "combat-athlete";
+
 
     const topbar =
       document.createElement(
@@ -39,6 +78,7 @@
         class="fuelai-menu-btn"
         type="button"
         aria-label="Open navigation"
+        aria-expanded="false"
       >
         ☰
       </button>
@@ -70,6 +110,11 @@
 
     const toolLinks = [];
 
+
+    /*
+     * CORE TOOLS
+     */
+
     if (
       access.tools?.trackwise
     ) {
@@ -82,6 +127,7 @@
         </a>
       `);
     }
+
 
     if (
       access.tools?.mealwise
@@ -96,6 +142,7 @@
       `);
     }
 
+
     if (
       access.tools?.fridgewise
     ) {
@@ -109,7 +156,31 @@
       `);
     }
 
+
+    /*
+     * GUIDANCE LAYER
+     *
+     * Wise is a core FuelAI workspace.
+     * The user's profile changes the
+     * depth and type of guidance.
+     */
+
+    toolLinks.push(`
+      <a
+        class="fuelai-nav-link"
+        href="/wise/wise.html"
+      >
+        🧠 Wise
+      </a>
+    `);
+
+
+    /*
+     * FITNESS + COMBAT
+     */
+
     if (
+      isFitnessProfile &&
       access.tools?.trainingwise
     ) {
       toolLinks.push(`
@@ -122,7 +193,13 @@
       `);
     }
 
+
+    /*
+     * COMBAT ATHLETE
+     */
+
     if (
+      isCombatProfile &&
       access.tools?.combatAthlete
     ) {
       toolLinks.push(`
@@ -131,6 +208,29 @@
           href="/tools/combat-athlete/"
         >
           🥊 Combat Athlete
+        </a>
+      `);
+    }
+
+
+    /*
+     * WEIGHTWISE
+     *
+     * WeightWise is not shown merely
+     * because the profile is Combat Athlete.
+     * It appears only when access says the
+     * tool is actually unlocked.
+     */
+
+    if (
+      access.tools?.weightwise === true
+    ) {
+      toolLinks.push(`
+        <a
+          class="fuelai-nav-link"
+          href="/tools/combat-athlete/weightwise/"
+        >
+          ⚖️ WeightWise
         </a>
       `);
     }
@@ -201,6 +301,13 @@
           ⚙️ Edit Setup
         </a>
 
+        <a
+          class="fuelai-nav-link"
+          href="/account/logs.html"
+        >
+          📋 FuelAI Log
+        </a>
+
         <button
           class="fuelai-nav-link danger"
           id="fuelaiLogoutBtn"
@@ -256,6 +363,15 @@
         "aria-hidden",
         "false"
       );
+
+      openBtn?.setAttribute(
+        "aria-expanded",
+        "true"
+      );
+
+      document.body.classList.add(
+        "fuelai-nav-open"
+      );
     }
 
 
@@ -272,6 +388,15 @@
         "aria-hidden",
         "true"
       );
+
+      openBtn?.setAttribute(
+        "aria-expanded",
+        "false"
+      );
+
+      document.body.classList.remove(
+        "fuelai-nav-open"
+      );
     }
 
 
@@ -280,15 +405,46 @@
       openNav
     );
 
+
     closeBtn?.addEventListener(
       "click",
       closeNav
     );
 
+
     backdrop?.addEventListener(
       "click",
       closeNav
     );
+
+
+    document.addEventListener(
+      "keydown",
+      (event) => {
+        if (
+          event.key ===
+          "Escape"
+        ) {
+          closeNav();
+        }
+      }
+    );
+
+
+    drawer
+      .querySelectorAll(
+        "a.fuelai-nav-link"
+      )
+      .forEach(
+        (link) => {
+
+          link.addEventListener(
+            "click",
+            closeNav
+          );
+
+        }
+      );
 
 
     logoutBtn?.addEventListener(
