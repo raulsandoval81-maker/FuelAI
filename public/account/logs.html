@@ -22,16 +22,194 @@
     href="/assets/css/nav.css"
   />
 
+  <style>
+    :root{
+      --log-bg:#030712;
+      --log-panel:#071019;
+      --log-line:rgba(34,197,94,.24);
+      --log-line-soft:rgba(255,255,255,.08);
+      --log-text:#f8fafc;
+      --log-muted:#94a3b8;
+      --log-green:#22c55e;
+      --log-blue:#38bdf8;
+      --log-purple:#a78bfa;
+    }
+
+    *{
+      box-sizing:border-box;
+    }
+
+    body{
+      margin:0;
+      background:
+        radial-gradient(
+          circle at top,
+          rgba(20,83,45,.22),
+          transparent 30%
+        ),
+        var(--log-bg);
+      color:var(--log-text);
+    }
+
+    .logs-shell{
+      width:100%;
+      max-width:1000px;
+      margin:0 auto;
+      padding:28px 18px 42px;
+    }
+
+    .logs-hero{
+      padding:24px;
+      border-radius:24px;
+      border:1px solid var(--log-line);
+      background:
+        linear-gradient(
+          135deg,
+          rgba(20,83,45,.22),
+          rgba(7,16,25,.96)
+        );
+      box-shadow:
+        0 18px 50px rgba(0,0,0,.24);
+      text-align:center;
+    }
+
+    .logs-hero h1{
+      margin:6px 0 0;
+      font-size:
+        clamp(2.3rem,6vw,3.8rem);
+      line-height:1;
+      letter-spacing:-.04em;
+    }
+
+    .logs-hero .sub{
+      max-width:620px;
+      margin:12px auto 0;
+      color:#cbd5e1;
+      line-height:1.55;
+    }
+
+    .logs-grid{
+      display:grid;
+      grid-template-columns:
+        repeat(2,minmax(0,1fr));
+      gap:16px;
+      margin-top:20px;
+    }
+
+    .logs-card{
+      padding:20px;
+      border-radius:20px;
+      border:1px solid var(--log-line-soft);
+      background:
+        linear-gradient(
+          180deg,
+          rgba(15,23,42,.94),
+          rgba(7,16,25,.96)
+        );
+      box-shadow:
+        0 12px 30px rgba(0,0,0,.16);
+    }
+
+    .logs-card.full{
+      grid-column:1 / -1;
+    }
+
+    .logs-card h2{
+      margin:0;
+      font-size:1.2rem;
+    }
+
+    #todaySnapshot,
+    #logsContainer,
+    #fullHistoryContainer{
+      margin-top:12px;
+      color:#e2e8f0;
+      line-height:1.6;
+    }
+
+    #toggleFullHistoryBtn{
+      width:100%;
+      min-height:54px;
+      margin-top:14px;
+    }
+
+    .history-stack{
+      margin-top:14px;
+      display:grid;
+      gap:10px;
+    }
+
+    .logs-note{
+      margin-top:20px;
+      padding:18px;
+      border-radius:20px;
+      border:1px solid rgba(56,189,248,.18);
+      background:
+        linear-gradient(
+          135deg,
+          rgba(8,47,73,.12),
+          rgba(7,16,25,.96)
+        );
+    }
+
+    .logs-note h2{
+      margin:0;
+      font-size:1.1rem;
+    }
+
+    .logs-note p{
+      margin:8px 0 0;
+      color:#cbd5e1;
+      line-height:1.55;
+    }
+
+    .logs-actions{
+      display:flex;
+      justify-content:center;
+      margin-top:20px;
+    }
+
+    .logs-actions .secondary-btn{
+      width:min(100%,360px);
+    }
+
+    .hero-note{
+      margin-top:26px;
+      text-align:center;
+      color:#64748b;
+    }
+
+    @media(max-width:700px){
+      .logs-shell{
+        padding:18px 12px 30px;
+      }
+
+      .logs-hero{
+        padding:18px;
+        border-radius:20px;
+      }
+
+      .logs-grid{
+        grid-template-columns:1fr;
+      }
+
+      .logs-card.full{
+        grid-column:auto;
+      }
+    }
+  </style>
 </head>
 
 <body data-theme="night">
 
-  <main class="scan-wrap">
+  <main class="logs-shell">
 
-    <section class="scan-card">
+    <!-- HERO -->
+
+    <header class="logs-hero">
 
       <p class="range-label">
-        ACCOUNT
+        FuelAI · Account
       </p>
 
       <h1>
@@ -39,14 +217,27 @@
       </h1>
 
       <p class="sub">
-        Review your recent habits, progress, and available history.
+        Review recent habits, progress, and the history available with your current plan.
       </p>
 
-      <section class="range-card">
+    </header>
+
+
+    <!-- LOGS -->
+
+    <section class="logs-grid">
+
+      <!-- TODAY -->
+
+      <article class="logs-card">
 
         <p class="range-label">
-          Today Snapshot
+          Today
         </p>
+
+        <h2>
+          Today Snapshot
+        </h2>
 
         <p
           id="todaySnapshot"
@@ -55,13 +246,20 @@
           Loading today...
         </p>
 
-      </section>
+      </article>
 
-      <section class="range-card">
+
+      <!-- RECENT -->
+
+      <article class="logs-card">
 
         <p class="range-label">
-          Recent History
+          Recent
         </p>
+
+        <h2>
+          Recent History
+        </h2>
 
         <p class="range-note">
           Your quick recent view.
@@ -71,13 +269,20 @@
           Loading logs...
         </div>
 
-      </section>
+      </article>
 
-      <section class="range-card">
+
+      <!-- FULL HISTORY -->
+
+      <article class="logs-card full">
 
         <p class="range-label">
-          Log History
+          History
         </p>
+
+        <h2>
+          Log History
+        </h2>
 
         <p class="range-output">
           Your available history depends on your FuelAI plan.
@@ -96,26 +301,48 @@
           class="history-stack hidden"
         ></div>
 
-      </section>
+      </article>
 
-      <div class="wise-links">
+    </section>
 
-        <a
-          class="secondary-btn"
-          href="/hub/"
-        >
-          🏠 Return to Hub
-        </a>
 
-      </div>
+    <!-- NOTE -->
 
-      <p class="hero-note">
-        FuelAI • Awareness without obsession.
+    <section class="logs-note">
+
+      <h2>
+        Look for patterns, not perfection.
+      </h2>
+
+      <p>
+        FuelAI logs are meant to help you notice consistency,
+        trends, and changes over time without turning every
+        meal or weigh-in into a judgment.
       </p>
 
     </section>
 
+
+    <!-- NAVIGATION -->
+
+    <div class="logs-actions">
+
+      <a
+        class="secondary-btn"
+        href="/hub/"
+      >
+        🏠 Return to Hub
+      </a>
+
+    </div>
+
+
+    <p class="hero-note">
+      FuelAI™ · Awareness without obsession.
+    </p>
+
   </main>
+
 
   <script src="/assets/js/core/auth-soft.js"></script>
 
@@ -124,10 +351,12 @@
   </script>
 
   <script src="/assets/js/core/preferences.js"></script>
-  <script src="/assets/js/core/plan.js"></script>
-  <script src="/assets/js/account/fuelai-log.js"></script>
-  <script src="/assets/js/logs.js?v=2"></script>
 
+  <script src="/assets/js/core/plan.js"></script>
+
+  <script src="/assets/js/account/fuelai-log.js"></script>
+
+  <script src="/assets/js/logs.js?v=2"></script>
 
   <script src="/assets/js/core/nav.js"></script>
 

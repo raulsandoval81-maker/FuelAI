@@ -10,9 +10,7 @@
 
   <link rel="icon" href="data:," />
 
-  <title>
-    FuelAI Account Profile
-  </title>
+  <title>FuelAI Account Profile</title>
 
   <link
     rel="stylesheet"
@@ -24,16 +22,272 @@
     href="/assets/css/nav.css"
   />
 
+  <style>
+    :root{
+      --account-bg:#030712;
+      --account-line:rgba(34,197,94,.24);
+      --account-line-soft:rgba(255,255,255,.08);
+      --account-muted:#94a3b8;
+      --account-green:#22c55e;
+      --account-blue:#38bdf8;
+      --account-purple:#a78bfa;
+    }
+
+    *{
+      box-sizing:border-box;
+    }
+
+    body{
+      margin:0;
+
+      background:
+        radial-gradient(
+          circle at top,
+          rgba(20,83,45,.22),
+          transparent 30%
+        ),
+        var(--account-bg);
+
+      color:#f8fafc;
+    }
+
+    .account-shell{
+      width:100%;
+      max-width:1000px;
+      margin:0 auto;
+      padding:28px 18px 42px;
+    }
+
+    .account-hero{
+      padding:24px;
+
+      border-radius:24px;
+
+      border:
+        1px solid var(--account-line);
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(20,83,45,.22),
+          rgba(7,16,25,.96)
+        );
+
+      box-shadow:
+        0 18px 50px rgba(0,0,0,.24);
+
+      text-align:center;
+    }
+
+    .account-hero h1{
+      margin:6px 0 0;
+
+      font-size:
+        clamp(2.3rem,6vw,3.8rem);
+
+      line-height:1;
+      letter-spacing:-.04em;
+    }
+
+    .account-hero .sub{
+      max-width:620px;
+      margin:12px auto 0;
+
+      color:#cbd5e1;
+      line-height:1.55;
+    }
+
+    #profileCard{
+      margin-top:20px;
+      padding:20px;
+
+      border-radius:20px;
+
+      border:
+        1px solid rgba(34,197,94,.18);
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(20,83,45,.12),
+          rgba(7,16,25,.96)
+        );
+
+      box-shadow:
+        0 12px 30px rgba(0,0,0,.16);
+    }
+
+    .account-section{
+      margin-top:20px;
+      padding:20px;
+
+      border-radius:20px;
+
+      border:
+        1px solid var(--account-line-soft);
+
+      background:
+        linear-gradient(
+          180deg,
+          rgba(15,23,42,.94),
+          rgba(7,16,25,.96)
+        );
+
+      box-shadow:
+        0 12px 30px rgba(0,0,0,.16);
+    }
+
+    .account-section h2{
+      margin:0;
+      font-size:1.2rem;
+    }
+
+    .account-tools{
+      display:grid;
+
+      grid-template-columns:
+        repeat(2,minmax(0,1fr));
+
+      gap:14px;
+
+      margin-top:14px;
+    }
+
+    .account-tool{
+      min-height:130px;
+      padding:18px;
+
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+
+      border-radius:18px;
+
+      border:
+        1px solid rgba(255,255,255,.08);
+
+      background:
+        rgba(255,255,255,.035);
+
+      color:#fff;
+      text-decoration:none;
+
+      transition:
+        transform .15s ease,
+        border-color .15s ease;
+    }
+
+    .account-tool:hover{
+      transform:translateY(-2px);
+      border-color:rgba(34,197,94,.32);
+    }
+
+    .account-tool strong{
+      font-size:1.05rem;
+    }
+
+    .account-tool span{
+      margin-top:8px;
+
+      color:#cbd5e1;
+
+      font-size:.9rem;
+      line-height:1.45;
+    }
+
+    .account-tool small{
+      margin-top:12px;
+
+      color:#86efac;
+
+      font-size:.78rem;
+      font-weight:1000;
+    }
+
+    .account-note{
+      margin-top:20px;
+      padding:18px;
+
+      border-radius:20px;
+
+      border:
+        1px solid rgba(56,189,248,.18);
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(8,47,73,.12),
+          rgba(7,16,25,.96)
+        );
+    }
+
+    .account-note h2{
+      margin:0;
+      font-size:1.1rem;
+    }
+
+    .account-note p{
+      margin:8px 0 0;
+
+      color:#cbd5e1;
+
+      line-height:1.55;
+    }
+
+    .account-actions{
+      display:flex;
+      justify-content:center;
+
+      margin-top:20px;
+    }
+
+    .account-actions .secondary-btn{
+      width:min(100%,360px);
+    }
+
+    .hero-note{
+      margin-top:26px;
+
+      text-align:center;
+
+      color:#64748b;
+    }
+
+    @media(max-width:700px){
+
+      .account-shell{
+        padding:18px 12px 30px;
+      }
+
+      .account-hero{
+        padding:18px;
+        border-radius:20px;
+      }
+
+      .account-tools{
+        grid-template-columns:1fr;
+      }
+    }
+
+    @media(prefers-reduced-motion:reduce){
+
+      .account-tool{
+        transition:none;
+      }
+    }
+  </style>
 </head>
 
 <body data-theme="night">
 
-  <main class="scan-wrap">
+  <main class="account-shell">
 
-    <section class="scan-card">
+    <!-- HERO -->
+
+    <header class="account-hero">
 
       <p class="range-label">
-        ACCOUNT
+        FuelAI · Account
       </p>
 
       <h1>
@@ -41,52 +295,165 @@
       </h1>
 
       <p class="sub">
-        Your profile, setup, targets, preferences, and account tools live here.
+        Your profile, setup, targets, preferences,
+        history, and account tools live here.
       </p>
 
-      <section
-        id="profileCard"
-        class="result-card"
-        style="display:none;"
-      ></section>
+    </header>
 
-      <section class="range-card">
 
-        <p class="range-label">
-          Account Center
-        </p>
+    <!-- PROFILE OUTPUT -->
 
-        <div class="wise-links">
+    <section
+      id="profileCard"
+      class="result-card"
+      style="display:none;"
+    ></section>
 
-          <a
-            class="secondary-btn"
-            href="/account/setup.html"
-          >
-            ⚙️ Edit Setup & Profile
-          </a>
 
-        </div>
+    <!-- ACCOUNT CENTER -->
 
-      </section>
+    <section class="account-section">
 
-      <div class="wise-links">
+      <p class="range-label">
+        Account Center
+      </p>
+
+      <h2>
+        Manage your FuelAI experience
+      </h2>
+
+      <div class="account-tools">
 
         <a
-          class="secondary-btn"
-          href="/hub/"
+          class="account-tool"
+          href="/account/setup.html"
         >
-          🏠 Return to Hub
+          <div>
+            <strong>
+              ⚙️ Setup + Profile
+            </strong>
+
+            <span>
+              Update your profile, goals,
+              activity level, food preferences,
+              and target direction.
+            </span>
+          </div>
+
+          <small>
+            Edit setup →
+          </small>
+        </a>
+
+
+        <a
+          class="account-tool"
+          href="/account/logs.html"
+        >
+          <div>
+            <strong>
+              📋 FuelAI Log
+            </strong>
+
+            <span>
+              Review recent habits,
+              check-ins, and the history
+              available with your plan.
+            </span>
+          </div>
+
+          <small>
+            Open history →
+          </small>
+        </a>
+
+
+        <a
+          class="account-tool"
+          href="/account/macros.html"
+        >
+          <div>
+            <strong>
+              🍽 Macro Breakdown
+            </strong>
+
+            <span>
+              See deeper calorie and
+              macro detail when you want it.
+            </span>
+          </div>
+
+          <small>
+            View macros →
+          </small>
+        </a>
+
+
+        <a
+          class="account-tool"
+          href="/account/reset-recovery.html"
+        >
+          <div>
+            <strong>
+              🧠 Reset + Recovery
+            </strong>
+
+            <span>
+              Sort through stress,
+              soreness, poor sleep,
+              low energy, or recovery needs.
+            </span>
+          </div>
+
+          <small>
+            Reset + recover →
+          </small>
         </a>
 
       </div>
 
-      <p class="hero-note">
-        FuelAI™ • Less overthinking. Better decisions.
+    </section>
+
+
+    <!-- NOTE -->
+
+    <section class="account-note">
+
+      <h2>
+        Your setup drives the rest of FuelAI.
+      </h2>
+
+      <p>
+        Profile, goals, preferences, activity,
+        and plan access help FuelAI decide which
+        tools and guidance should appear throughout
+        the app.
       </p>
 
     </section>
 
+
+    <!-- HUB -->
+
+    <div class="account-actions">
+
+      <a
+        class="secondary-btn"
+        href="/hub/"
+      >
+        🏠 Return to Hub
+      </a>
+
+    </div>
+
+
+    <p class="hero-note">
+      FuelAI™ · Less overthinking. Better decisions.
+    </p>
+
   </main>
+
 
   <script src="/assets/js/core/auth-soft.js"></script>
 
@@ -95,11 +462,10 @@
   </script>
 
   <script src="/assets/js/core/preferences.js"></script>
+
   <script src="/assets/js/account/profile.js?v=2"></script>
 
-
   <script src="/assets/js/core/plan.js"></script>
-
 
   <script src="/assets/js/core/nav.js"></script>
 

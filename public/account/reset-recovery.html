@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
   <meta charset="UTF-8" />
 
   <meta
@@ -11,25 +10,299 @@
 
   <link rel="icon" href="data:," />
 
-  <title>
-    Reset + Recovery
-  </title>
+  <title>Reset + Recovery | FuelAI</title>
 
   <link
     rel="stylesheet"
     href="/assets/css/site.css"
   />
 
+  <link
+    rel="stylesheet"
+    href="/assets/css/nav.css"
+  />
+
+  <style>
+    :root{
+      --rr-bg:#030712;
+      --rr-panel:#071019;
+      --rr-line:rgba(56,189,248,.24);
+      --rr-line-soft:rgba(255,255,255,.08);
+      --rr-text:#f8fafc;
+      --rr-muted:#94a3b8;
+      --rr-blue:#38bdf8;
+      --rr-green:#22c55e;
+      --rr-purple:#a78bfa;
+    }
+
+    *{
+      box-sizing:border-box;
+    }
+
+    body{
+      margin:0;
+
+      background:
+        radial-gradient(
+          circle at top,
+          rgba(8,47,73,.24),
+          transparent 30%
+        ),
+        var(--rr-bg);
+
+      color:var(--rr-text);
+    }
+
+    .recovery-shell{
+      width:100%;
+      max-width:980px;
+      margin:0 auto;
+      padding:28px 18px 42px;
+    }
+
+    .recovery-hero{
+      padding:24px;
+
+      border-radius:24px;
+
+      border:
+        1px solid var(--rr-line);
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(8,47,73,.24),
+          rgba(7,16,25,.96)
+        );
+
+      box-shadow:
+        0 18px 50px rgba(0,0,0,.24);
+
+      text-align:center;
+    }
+
+    .recovery-hero h1{
+      margin:6px 0 0;
+
+      font-size:
+        clamp(2.3rem,6vw,3.8rem);
+
+      line-height:1;
+      letter-spacing:-.04em;
+    }
+
+    .recovery-hero .sub{
+      max-width:620px;
+      margin:12px auto 0;
+
+      color:#cbd5e1;
+      line-height:1.55;
+    }
+
+    .recovery-grid{
+      display:grid;
+
+      grid-template-columns:
+        1.1fr .9fr;
+
+      gap:16px;
+      margin-top:20px;
+    }
+
+    .recovery-card{
+      padding:20px;
+
+      border-radius:20px;
+
+      border:
+        1px solid var(--rr-line-soft);
+
+      background:
+        linear-gradient(
+          180deg,
+          rgba(15,23,42,.94),
+          rgba(7,16,25,.96)
+        );
+
+      box-shadow:
+        0 12px 30px rgba(0,0,0,.16);
+    }
+
+    .recovery-card h2{
+      margin:0;
+      font-size:1.2rem;
+    }
+
+    #recoveryInput{
+      width:100%;
+
+      min-height:150px;
+
+      margin-top:14px;
+      padding:14px;
+
+      resize:vertical;
+
+      border-radius:14px;
+
+      border:
+        1px solid rgba(255,255,255,.10);
+
+      background:#0b1220;
+
+      color:#f8fafc;
+
+      font:inherit;
+
+      outline:none;
+    }
+
+    #recoveryInput:focus{
+      border-color:
+        rgba(56,189,248,.50);
+
+      box-shadow:
+        0 0 0 3px
+        rgba(56,189,248,.08);
+    }
+
+    #recoveryBtn{
+      width:100%;
+
+      min-height:58px;
+
+      margin-top:14px;
+
+      font-size:1.02rem;
+      font-weight:1000;
+    }
+
+    .recovery-areas{
+      display:grid;
+      gap:10px;
+      margin-top:14px;
+    }
+
+    .recovery-area{
+      padding:12px 14px;
+
+      border-radius:14px;
+
+      border:
+        1px solid rgba(255,255,255,.07);
+
+      background:
+        rgba(255,255,255,.035);
+
+      color:#e2e8f0;
+
+      font-weight:800;
+    }
+
+    #recoveryOutput{
+      margin-top:20px;
+
+      padding:20px;
+
+      border-radius:20px;
+
+      border:
+        1px solid rgba(34,197,94,.20);
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(20,83,45,.13),
+          rgba(7,16,25,.96)
+        );
+    }
+
+    #recoveryResponse{
+      margin-top:10px;
+
+      color:#e2e8f0;
+
+      line-height:1.65;
+    }
+
+    .recovery-note{
+      margin-top:20px;
+
+      padding:18px;
+
+      border-radius:20px;
+
+      border:
+        1px solid rgba(168,85,247,.18);
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(76,29,149,.10),
+          rgba(7,16,25,.96)
+        );
+    }
+
+    .recovery-note h2{
+      margin:0;
+      font-size:1.1rem;
+    }
+
+    .recovery-note p{
+      margin:8px 0 0;
+
+      color:#cbd5e1;
+
+      line-height:1.55;
+    }
+
+    .recovery-actions{
+      display:flex;
+      justify-content:center;
+
+      margin-top:20px;
+    }
+
+    .recovery-actions .secondary-btn{
+      width:min(100%,360px);
+    }
+
+    .hero-note{
+      margin-top:26px;
+
+      text-align:center;
+
+      color:#64748b;
+    }
+
+    @media(max-width:760px){
+
+      .recovery-shell{
+        padding:18px 12px 30px;
+      }
+
+      .recovery-hero{
+        padding:18px;
+        border-radius:20px;
+      }
+
+      .recovery-grid{
+        grid-template-columns:1fr;
+      }
+    }
+  </style>
 </head>
 
 <body data-theme="night">
 
-  <main class="scan-wrap">
+  <main class="recovery-shell">
 
-    <section class="scan-card">
+    <!-- HERO -->
+
+    <header class="recovery-hero">
 
       <p class="range-label">
-        ACCOUNT
+        FuelAI · Recovery
       </p>
 
       <h1>
@@ -37,14 +310,28 @@
       </h1>
 
       <p class="sub">
-        Calm the spiral. Recover the body. Simplify the next move.
+        Sort out what is going on, reduce the noise,
+        and choose one useful recovery move.
       </p>
 
-      <section class="range-card">
+    </header>
+
+
+    <!-- MAIN -->
+
+    <section class="recovery-grid">
+
+      <!-- INPUT -->
+
+      <article class="recovery-card">
 
         <p class="range-label">
-          What’s Going On?
+          Check In
         </p>
+
+        <h2>
+          What’s going on?
+        </h2>
 
         <textarea
           id="recoveryInput"
@@ -58,85 +345,118 @@
           class="start-btn"
           type="button"
         >
-          Reset + Recover
+          Reset + Recover →
         </button>
 
-      </section>
+      </article>
 
-      <section
-        id="recoveryOutput"
-        class="range-card hidden"
-      >
 
-        <p class="range-label">
-          Reorient
-        </p>
+      <!-- COMMON AREAS -->
 
-        <div
-          id="recoveryResponse"
-          class="range-output"
-        >
-          One grounded next step.
-        </div>
-
-      </section>
-
-      <section class="range-card">
+      <article class="recovery-card">
 
         <p class="range-label">
           Common Recovery Areas
         </p>
 
-        <div class="meal-plan">
+        <h2>
+          What may need attention
+        </h2>
 
-          <ul class="meal-list">
+        <div class="recovery-areas">
 
-            <li>
-              💧 Hydration + electrolytes
-            </li>
+          <div class="recovery-area">
+            💧 Hydration + electrolytes
+          </div>
 
-            <li>
-              😴 Sleep + nervous system reset
-            </li>
+          <div class="recovery-area">
+            😴 Sleep + recovery
+          </div>
 
-            <li>
-              🍚 Food + recovery fuel
-            </li>
+          <div class="recovery-area">
+            🍚 Food + recovery fuel
+          </div>
 
-            <li>
-              🏋️ Training soreness
-            </li>
+          <div class="recovery-area">
+            🏋️ Training soreness
+          </div>
 
-            <li>
-              ⚖️ Weight cut stabilization
-            </li>
+          <div class="recovery-area">
+            ⚖️ Weight-cut stability
+          </div>
 
-            <li>
-              🧠 Stress + overwhelm
-            </li>
-
-          </ul>
+          <div class="recovery-area">
+            🧠 Stress + overwhelm
+          </div>
 
         </div>
 
-      </section>
+      </article>
 
-      <div class="wise-links">
+    </section>
 
-        <a
-          class="secondary-btn"
-          href="/account/"
-        >
-          ↩️ Return to Account
-        </a>
 
+    <!-- OUTPUT -->
+
+    <section
+      id="recoveryOutput"
+      class="hidden"
+      aria-live="polite"
+    >
+
+      <p class="range-label">
+        Reorient
+      </p>
+
+      <h2>
+        One useful next step
+      </h2>
+
+      <div
+        id="recoveryResponse"
+        class="range-output"
+      >
+        One grounded next step.
       </div>
 
-      <p class="hero-note">
-        FuelAI • Slow the spiral. Simplify the next move.
+    </section>
+
+
+    <!-- PURPOSE -->
+
+    <section class="recovery-note">
+
+      <h2>
+        Recovery does not have to be complicated.
+      </h2>
+
+      <p>
+        The goal here is to notice the strongest signal,
+        stabilize the basics, and make the next decision easier.
+        FuelAI guidance is general wellness support and is not a
+        substitute for medical care.
       </p>
 
     </section>
+
+
+    <!-- NAVIGATION -->
+
+    <div class="recovery-actions">
+
+      <a
+        class="secondary-btn"
+        href="/account/"
+      >
+        ↩️ Return to Account
+      </a>
+
+    </div>
+
+
+    <p class="hero-note">
+      FuelAI™ · Simplify the next move.
+    </p>
 
   </main>
 
@@ -149,7 +469,11 @@
 
   <script src="/assets/js/core/preferences.js"></script>
 
+  <script src="/assets/js/core/plan.js"></script>
+
   <script src="/assets/js/account/reset-recovery.js"></script>
+
+  <script src="/assets/js/core/nav.js"></script>
 
 </body>
 </html>
