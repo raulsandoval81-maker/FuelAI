@@ -266,6 +266,70 @@
       }
     }
 
+        .mealwise-example{
+      margin-top:18px;
+      padding:18px;
+
+      border-radius:20px;
+
+      border:
+        1px solid rgba(34,197,94,.18);
+
+      background:
+        linear-gradient(
+          180deg,
+          rgba(15,23,42,.94),
+          rgba(7,16,25,.96)
+        );
+
+      box-shadow:
+        0 12px 30px rgba(0,0,0,.16);
+
+      text-align:center;
+    }
+
+    .mealwise-example h2{
+      margin:6px 0 0;
+
+      font-size:
+        clamp(1.4rem,4vw,1.9rem);
+    }
+
+    .mealwise-example-copy{
+      max-width:620px;
+      margin:8px auto 0;
+
+      color:#cbd5e1;
+      line-height:1.55;
+    }
+
+    .mealwise-example-image{
+      display:block;
+
+      width:100%;
+      max-width:720px;
+      height:auto;
+
+      margin:18px auto 0;
+
+      border-radius:18px;
+
+      border:
+        1px solid rgba(255,255,255,.08);
+
+      box-shadow:
+        0 18px 40px rgba(0,0,0,.28);
+    }
+
+    .mealwise-example-note{
+      margin:12px auto 0;
+
+      color:var(--mw-muted);
+
+      font-size:.82rem;
+      line-height:1.5;
+    }
+
     @media(prefers-reduced-motion:reduce){
       .upload-half{
         transition:none;
@@ -295,6 +359,36 @@
       </p>
 
     </header>
+
+        <!-- SCAN EXAMPLE -->
+
+    <section class="mealwise-example">
+
+      <p class="range-label">
+        What MealWise Gives You
+      </p>
+
+      <h2>
+        Scan once. See the meal clearly.
+      </h2>
+
+      <p class="mealwise-example-copy">
+        MealWise estimates calories, protein, carbohydrates,
+        and fats, then turns the scan into a simple FuelAI read.
+      </p>
+
+      <img
+        class="mealwise-example-image"
+        src="/assets/img/mealwise/mealwise-scan-example.png"
+        alt="Example MealWise scan showing a meal with calories, protein, carbohydrates, fats, and FuelAI guidance"
+      />
+
+      <p class="mealwise-example-note">
+        Example shown. Actual results depend on the meal,
+        portion visibility, and information available in the photo.
+      </p>
+
+    </section>
 
 
     <!-- SCAN -->
