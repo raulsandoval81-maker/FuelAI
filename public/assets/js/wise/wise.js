@@ -21,10 +21,22 @@ function getWiseSetup() {
 const setup =
   getWiseSetup();
 
+
+const profile =
+  setup.lifestyleType ||
+  "general-health";
+
+
+const combatStyle =
+  setup.combatStyle ||
+  "";
+
+
 const flavor =
   setup.wiseFlavor ||
   setup.coachStyle ||
   "sweetspot";
+
 
 const flavorOdds = {
   sweetspot: 0.15,
@@ -33,7 +45,9 @@ const flavorOdds = {
   internet: 0.40
 };
 
-let lastQuestion = "";
+
+let lastQuestion =
+  "";
 
 
 
@@ -140,23 +154,109 @@ if (
   wiseChatInput &&
   characterFace
 ) {
+
   wiseChatInput.addEventListener(
     "focus",
     () => {
+
       characterFace.classList.add(
         "is-listening"
       );
+
     }
   );
+
 
   wiseChatInput.addEventListener(
     "blur",
     () => {
+
       characterFace.classList.remove(
         "is-listening"
       );
+
     }
   );
+
+}
+
+
+
+/* =========================
+   PROFILE HELPERS
+========================= */
+
+function getProfileLabel() {
+
+  const labels = {
+
+    "general-health":
+      "General Health",
+
+    "fitness-enthusiast":
+      "Fitness Enthusiast",
+
+    "combat-athlete":
+      "Combat Athlete"
+
+  };
+
+
+  return (
+    labels[
+      profile
+    ] ||
+    "General Health"
+  );
+
+}
+
+
+function isFitnessProfile() {
+
+  return (
+    profile ===
+      "fitness-enthusiast" ||
+    profile ===
+      "combat-athlete"
+  );
+
+}
+
+
+function isCombatProfile() {
+
+  return (
+    profile ===
+    "combat-athlete"
+  );
+
+}
+
+
+function getCombatStyleLabel() {
+
+  const labels = {
+
+    grappling:
+      "Grappling Sports",
+
+    striking:
+      "Striking Sports",
+
+    mma:
+      "MMA / Mixed Combat"
+
+  };
+
+
+  return (
+    labels[
+      combatStyle
+    ] ||
+    "Combat Training"
+  );
+
 }
 
 
@@ -170,27 +270,41 @@ function getCoachName() {
 }
 
 
-function getPlanName(goal) {
+function getPlanName(
+  goal
+) {
 
   if (
-    goal === "cutwise"
+    goal ===
+    "cutwise"
   ) {
-    return "CutWise — Lean Out";
+    return (
+      "CutWise — Lean Out"
+    );
   }
+
 
   if (
-    goal === "gainwise"
+    goal ===
+    "gainwise"
   ) {
-    return "GainWise — Build / Recover";
+    return (
+      "GainWise — Build / Recover"
+    );
   }
 
-  return "FuelWise — Maintain / Balance";
+
+  return (
+    "FuelWise — Maintain / Balance"
+  );
+
 }
 
 
 function getActivityLabel() {
 
   const labels = {
+
     "1-2":
       "1–2 days per week",
 
@@ -205,7 +319,9 @@ function getActivityLabel() {
 
     "6-plus":
       "6+ days per week"
+
   };
+
 
   return (
     labels[
@@ -213,13 +329,16 @@ function getActivityLabel() {
     ] ||
     "Not set"
   );
+
 }
 
 
 function getGreeting() {
 
   const hour =
-    new Date().getHours();
+    new Date()
+      .getHours();
+
 
   if (
     hour < 12
@@ -227,13 +346,46 @@ function getGreeting() {
     return "Good morning";
   }
 
+
   if (
     hour < 18
   ) {
     return "Good afternoon";
   }
 
+
   return "Good evening";
+}
+
+
+function getProfileIntro() {
+
+  if (
+    isCombatProfile()
+  ) {
+
+    return (
+      `${getGreeting()}. Let’s look at your fuel, hydration, training, recovery, and combat workload.`
+    );
+
+  }
+
+
+  if (
+    isFitnessProfile()
+  ) {
+
+    return (
+      `${getGreeting()}. Let’s look at your training, food, hydration, and recovery.`
+    );
+
+  }
+
+
+  return (
+    `${getGreeting()}. Let’s look at your food, hydration, recovery, and daily habits.`
+  );
+
 }
 
 
@@ -243,6 +395,34 @@ function getGreeting() {
 ========================= */
 
 function getGoalTargets() {
+
+  const summary =
+    window.FuelAILog
+      ?.getFuelSummary?.() ||
+    {};
+
+
+  if (
+    summary.caloriesTarget ||
+    summary.proteinTarget
+  ) {
+
+    return {
+
+      calories:
+        summary.caloriesTarget
+          ? `${summary.caloriesTarget} calories`
+          : "Not set",
+
+      protein:
+        summary.proteinTarget
+          ? `${summary.proteinTarget}g protein`
+          : "Not set"
+
+    };
+
+  }
+
 
   const weight =
     Number(
@@ -254,6 +434,7 @@ function getGoalTargets() {
   if (
     !weight
   ) {
+
     return {
       calories:
         "Set weight in setup",
@@ -261,25 +442,20 @@ function getGoalTargets() {
       protein:
         "Set weight in setup"
     };
+
   }
 
 
-  let lowCal =
-    weight * 13;
-
-  let highCal =
-    weight * 15;
+  let calories =
+    weight * 14;
 
 
   if (
     setup.goal ===
     "cutwise"
   ) {
-    lowCal =
-      weight * 10;
-
-    highCal =
-      weight * 12;
+    calories =
+      weight * 11;
   }
 
 
@@ -287,32 +463,25 @@ function getGoalTargets() {
     setup.goal ===
     "gainwise"
   ) {
-    lowCal =
-      weight * 15;
-
-    highCal =
-      weight * 17;
+    calories =
+      weight * 16;
   }
 
 
-  const lowProtein =
-    Math.round(
-      weight * 0.7
-    );
-
-  const highProtein =
-    Math.round(
-      weight * 1.0
-    );
-
-
   return {
+
     calories:
-      `${Math.round(lowCal)}–${Math.round(highCal)} calories`,
+      `${Math.round(
+        calories
+      )} calories`,
 
     protein:
-      `${lowProtein}–${highProtein}g protein`
+      `${Math.round(
+        weight * 0.8
+      )}g protein`
+
   };
+
 }
 
 
@@ -330,10 +499,12 @@ function getTodayLogs() {
     return [];
   }
 
+
   return (
     window.FuelAILog
       .getTodayLogs()
   );
+
 }
 
 
@@ -345,6 +516,7 @@ function hasTrainingToday() {
         entry.type ===
         "training"
     );
+
 }
 
 
@@ -356,6 +528,7 @@ function hasWeightToday() {
         entry.type ===
         "weight"
     );
+
 }
 
 
@@ -372,10 +545,12 @@ function shouldUseFlavor() {
     ] ??
     flavorOdds.sweetspot;
 
+
   return (
     Math.random() <
     odds
   );
+
 }
 
 
@@ -392,117 +567,46 @@ function getFlavorLine(
   }
 
 
-  if (
-    flavor ===
-    "toughguy"
-  ) {
-    return (
-      lines.toughguy ||
-      lines.sweetspot
-    );
-  }
-
-
-  if (
-    flavor ===
-    "mafia"
-  ) {
-    return (
-      lines.mafia ||
-      lines.sweetspot
-    );
-  }
-
-
-  if (
-    flavor ===
-    "internet"
-  ) {
-    return (
-      lines.internet ||
-      lines.sweetspot
-    );
-  }
-
-
   return (
+    lines[
+      flavor
+    ] ||
     lines.sweetspot
   );
+
 }
 
 
 
 /* =========================
-   DAILY ADVICE
+   PROFILE DAILY ADVICE
 ========================= */
 
-function getAdvice(
+function getGeneralAdvice(
   summary
 ) {
-
-  const goal =
-    setup.goal ||
-    "fuelwise";
-
 
   if (
     summary.todayCount ===
     0
   ) {
 
-    if (
-      goal ===
-      "cutwise"
-    ) {
-      return getFlavorLine({
-        sweetspot:
-          "Start simple today. Water first, then keep meals steady and controlled.",
-
-        toughguy:
-          "Start with the basics. Water, movement, controlled choices.",
-
-        mafia:
-          "Water first. Then we keep the food moves nice and clean.",
-
-        internet:
-          "Tiny reset. Water first, chaos later."
-      });
-    }
-
-
-    if (
-      goal ===
-      "gainwise"
-    ) {
-      return getFlavorLine({
-        sweetspot:
-          "Start simple today. Water, food, and training all matter for recovery.",
-
-        toughguy:
-          "Fuel the work. Water, food, training. Start there.",
-
-        mafia:
-          "Feed the machine today. Water and real food first.",
-
-        internet:
-          "Water + food + movement. Growth needs supplies."
-      });
-    }
-
-
     return getFlavorLine({
+
       sweetspot:
-        "Start simple today. Log water, scan a meal, or mark training if you move.",
+        "Start simple today. Log a meal, drink some water, or complete your check-in.",
 
       toughguy:
-        "Small actions count. Water, food, movement. Start there.",
+        "Do the basics first. Food, water, consistency.",
 
       mafia:
-        "Let’s keep it simple today. Water first. Chaos later.",
+        "Keep it simple today. Handle one useful thing at a time.",
 
       internet:
-        "Tiny reset. Water + food + movement. We move."
+        "Tiny move first. No need to optimize the entire day."
+
     });
+
   }
 
 
@@ -513,75 +617,283 @@ function getAdvice(
     ) <
     32
   ) {
+
     return getFlavorLine({
+
       sweetspot:
-        "Hydration could use some attention today. Add water before overthinking food.",
+        "Hydration is still light today. Add some water and keep the next decision simple.",
 
       toughguy:
-        "You’re probably more dehydrated than tired. Drink water first.",
+        "Water is an easy box to check. Handle it.",
 
       mafia:
-        "Listen… the body’s asking for water. Let’s handle that first.",
+        "Let’s get some water in before we complicate anything else.",
 
       internet:
-        "Low-key dehydrated. Water first."
+        "Hydration is the easy win right now."
+
     });
-  }
 
-
-  if (
-    goal ===
-    "cutwise"
-  ) {
-    return getFlavorLine({
-      sweetspot:
-        "Stay steady. Keep portions lighter and avoid panic choices.",
-
-      toughguy:
-        "Control the easy stuff. Portions, water, consistency.",
-
-      mafia:
-        "No panic moves. Keep it lighter and steady.",
-
-      internet:
-        "No food spirals today. Keep the next choice clean."
-    });
-  }
-
-
-  if (
-    goal ===
-    "gainwise"
-  ) {
-    return getFlavorLine({
-      sweetspot:
-        "Fuel matters today. Make sure recovery matches the work.",
-
-      toughguy:
-        "Training hard without fueling hard makes no sense.",
-
-      mafia:
-        "You want growth? Feed the machine.",
-
-      internet:
-        "Muscles need snacks too."
-    });
   }
 
 
   return getFlavorLine({
+
     sweetspot:
-      "Keep it balanced. Nothing needs to be perfect.",
+      "Keep the day balanced. Consistency matters more than perfection.",
 
     toughguy:
-      "Stay consistent. That’s the whole game.",
+      "Stay consistent with the basics.",
 
     mafia:
-      "Nice and steady. We keep moving.",
+      "Nice and steady. Keep moving.",
 
     internet:
-      "You’re doing alright. Keep the basics moving."
+      "The basics are moving. Keep them moving."
+
   });
+
+}
+
+
+function getFitnessAdvice(
+  summary
+) {
+
+  if (
+    summary.todayCount ===
+    0
+  ) {
+
+    return getFlavorLine({
+
+      sweetspot:
+        "Start with recovery basics, then decide what today’s training actually needs.",
+
+      toughguy:
+        "Check recovery before chasing another hard session.",
+
+      mafia:
+        "Before we pile on more work, let’s see what the body has given us today.",
+
+      internet:
+        "Training plan first. Hero mode later."
+
+    });
+
+  }
+
+
+  if (
+    summary.sleepHours > 0 &&
+    summary.sleepHours < 6
+  ) {
+
+    return getFlavorLine({
+
+      sweetspot:
+        "Sleep was light. Keep today’s training and recovery decisions measured.",
+
+      toughguy:
+        "Bad sleep is data. Adjust instead of pretending it isn’t there.",
+
+      mafia:
+        "Rough sleep changes the day. No need to force a perfect workout.",
+
+      internet:
+        "Sleep score says maybe don’t audition for beast mode today."
+
+    });
+
+  }
+
+
+  if (
+    summary.trainingToday
+  ) {
+
+    return getFlavorLine({
+
+      sweetspot:
+        "Training is logged. Shift attention toward fluids, food, and recovery.",
+
+      toughguy:
+        "Work is done. Now recover like the session mattered.",
+
+      mafia:
+        "Training is handled. Now take care of the recovery side.",
+
+      internet:
+        "Workout complete. Recovery DLC unlocked."
+
+    });
+
+  }
+
+
+  return getFlavorLine({
+
+    sweetspot:
+      "Check how recovered you feel, then choose a training effort that fits the day.",
+
+    toughguy:
+      "Train with purpose, not just because the calendar says so.",
+
+    mafia:
+      "Make today’s training useful. More isn’t automatically better.",
+
+    internet:
+      "Useful training beats random suffering."
+
+  });
+
+}
+
+
+function getCombatAdvice(
+  summary
+) {
+
+  if (
+    summary.todayCount ===
+    0
+  ) {
+
+    return getFlavorLine({
+
+      sweetspot:
+        `Start with the basics for ${getCombatStyleLabel()}: hydration, fuel, recovery, and a clear training plan.`,
+
+      toughguy:
+        "Combat training punishes sloppy basics. Handle hydration and recovery first.",
+
+      mafia:
+        "Fight training gets complicated fast. Keep the fundamentals clean.",
+
+      internet:
+        "Combat athlete mode: hydrate first, chaos second."
+
+    });
+
+  }
+
+
+  if (
+    summary.sleepHours > 0 &&
+    summary.sleepHours < 6
+  ) {
+
+    return getFlavorLine({
+
+      sweetspot:
+        "Recovery is light today. Factor that into the quality and intensity of combat training.",
+
+      toughguy:
+        "Poor recovery plus hard combat work is not automatically toughness.",
+
+      mafia:
+        "Bad sleep changes the room today. Train smart.",
+
+      internet:
+        "Your nervous system did not subscribe to unlimited rounds."
+
+    });
+
+  }
+
+
+  if (
+    setup.goal ===
+    "cutwise"
+  ) {
+
+    return getFlavorLine({
+
+      sweetspot:
+        "Keep weight management gradual and separate it from panic decisions around training.",
+
+      toughguy:
+        "Don’t turn making weight into random restriction.",
+
+      mafia:
+        "No panic weight moves. Stay with the plan.",
+
+      internet:
+        "Scale drama does not get to rewrite the whole day."
+
+    });
+
+  }
+
+
+  if (
+    summary.trainingToday
+  ) {
+
+    return getFlavorLine({
+
+      sweetspot:
+        "Combat training is logged. Recovery, fluids, and enough food now matter for the next session.",
+
+      toughguy:
+        "Rounds are done. Recovery is part of training too.",
+
+      mafia:
+        "Work is handled. Now make sure tomorrow doesn’t pay for today.",
+
+      internet:
+        "Training complete. Recover before requesting another boss fight."
+
+    });
+
+  }
+
+
+  return getFlavorLine({
+
+    sweetspot:
+      `For ${getCombatStyleLabel()}, keep today's training decision connected to recovery, fuel, and your larger plan.`,
+
+    toughguy:
+      "Train hard when hard training makes sense. Train smart when it doesn’t.",
+
+    mafia:
+      "Make the session useful. We’re not collecting suffering for points.",
+
+    internet:
+      "Combat athletes still have recovery bars."
+
+  });
+
+}
+
+
+function getAdvice(
+  summary
+) {
+
+  if (
+    isCombatProfile()
+  ) {
+    return getCombatAdvice(
+      summary
+    );
+  }
+
+
+  if (
+    isFitnessProfile()
+  ) {
+    return getFitnessAdvice(
+      summary
+    );
+  }
+
+
+  return getGeneralAdvice(
+    summary
+  );
+
 }
 
 
@@ -616,22 +928,27 @@ function renderWise() {
   if (
     wiseTitle
   ) {
+
     wiseTitle.textContent =
       getCoachName();
+
   }
 
 
   if (
     wiseSub
   ) {
+
     wiseSub.textContent =
-      `${getGreeting()}. Let’s look at your food, hydration, training, and recovery.`;
+      getProfileIntro();
+
   }
 
 
   if (
     planOutput
   ) {
+
     planOutput.innerHTML = `
       ${getPlanName(
         setup.goal
@@ -639,9 +956,26 @@ function renderWise() {
 
       <br><br>
 
+      Profile:
+      ${getProfileLabel()}
+
+      <br><br>
+
       Activity:
       ${getActivityLabel()}
+
+      ${
+        isCombatProfile()
+          ? `
+            <br><br>
+
+            Combat:
+            ${getCombatStyleLabel()}
+          `
+          : ""
+      }
     `;
+
   }
 
 
@@ -652,6 +986,7 @@ function renderWise() {
     const targets =
       getGoalTargets();
 
+
     goalTargetOutput.innerHTML = `
       Calories:
       ${targets.calories}
@@ -661,14 +996,9 @@ function renderWise() {
       🥩 Protein:
       ${targets.protein}
     `;
+
   }
 
-
-  /*
-   * Optional legacy hook.
-   * Safe if older Wise HTML still
-   * contains todayOutput.
-   */
 
   if (
     todayOutput
@@ -699,45 +1029,61 @@ function renderWise() {
 
       <br><br>
 
-      ⚖️ Daily Weight Log:
+      😴 Sleep:
+      ${
+        summary.sleepHours
+          ? `${summary.sleepHours} hrs`
+          : "Not logged"
+      }
+
+      <br><br>
+
+      ⚖️ Weight:
       ${
         summary.today?.latestWeight
-          ? "Logged"
+          ? `${summary.today.latestWeight} lbs`
           : "Not logged"
       }
     `;
+
   }
 
 
   if (
     addTrainingBtn
   ) {
+
     addTrainingBtn
       .classList
       .toggle(
         "hidden",
         hasTrainingToday()
       );
+
   }
 
 
   if (
     addWeightBtn
   ) {
+
     addWeightBtn
       .classList
       .toggle(
         "hidden",
         hasWeightToday()
       );
+
   }
 
 
   if (
     wiseChatLabel
   ) {
+
     wiseChatLabel.textContent =
       "Coach Wright";
+
   }
 
 
@@ -764,7 +1110,9 @@ function renderWise() {
         "state-alert"
       );
 
-  } else if (
+  }
+
+  else if (
     summary.trainingToday
   ) {
 
@@ -774,7 +1122,9 @@ function renderWise() {
         "state-focused"
       );
 
-  } else {
+  }
+
+  else {
 
     characterFace
       ?.classList
@@ -788,11 +1138,86 @@ function renderWise() {
   if (
     wiseAdvice
   ) {
+
     wiseAdvice.textContent =
       getAdvice(
         summary
       );
+
   }
+
+}
+
+
+
+/* =========================
+   CHAT HELPERS
+========================= */
+
+function getProfileDefaultReply() {
+
+  if (
+    isCombatProfile()
+  ) {
+
+    return getFlavorLine({
+
+      sweetspot:
+        `Keep the next decision connected to ${getCombatStyleLabel()}, recovery, fuel, and the bigger training plan.`,
+
+      toughguy:
+        "Keep the combat work purposeful. Basics first.",
+
+      mafia:
+        "Stay with the plan. We don’t need random fight-camp decisions.",
+
+      internet:
+        "Combat mode still runs on boring basics."
+
+    });
+
+  }
+
+
+  if (
+    isFitnessProfile()
+  ) {
+
+    return getFlavorLine({
+
+      sweetspot:
+        "Connect the next decision to training quality, recovery, and consistency.",
+
+      toughguy:
+        "Train with purpose and recover with purpose.",
+
+      mafia:
+        "Useful work. Useful recovery. Keep moving.",
+
+      internet:
+        "Fitness progress loves boring consistency."
+
+    });
+
+  }
+
+
+  return getFlavorLine({
+
+    sweetspot:
+      "Stay aware, stay consistent, and keep the next decision simple.",
+
+    toughguy:
+      "Keep it simple. Do the basics.",
+
+    mafia:
+      "Nice and steady. We keep moving.",
+
+    internet:
+      "Pick the next useful move."
+
+  });
+
 }
 
 
@@ -813,7 +1238,7 @@ function generateWiseReply(
 
 
   /*
-   * FOLLOW-UP CONTEXT
+   * FOLLOW-UP
    */
 
   if (
@@ -822,12 +1247,15 @@ function generateWiseReply(
       lower.startsWith(
         "what about"
       ) ||
-      lower === "and that?" ||
-      lower === "how about that?"
+      lower ===
+        "and that?" ||
+      lower ===
+        "how about that?"
     )
   ) {
 
     return getFlavorLine({
+
       sweetspot:
         "That could work too. The bigger goal is choosing something useful you can stay consistent with.",
 
@@ -839,40 +1267,147 @@ function generateWiseReply(
 
       internet:
         "Still fine. The decision doesn’t need patch notes."
+
     });
 
   }
 
 
   /*
-   * CASUAL
+   * RECOVERY / TIRED
    */
 
   if (
     lower.includes(
-      "what you doing"
+      "tired"
     ) ||
     lower.includes(
-      "what you doin"
+      "exhausted"
     ) ||
     lower.includes(
-      "what are you doing"
+      "recovery"
+    ) ||
+    lower.includes(
+      "sore"
     )
   ) {
 
-    return getFlavorLine({
-      sweetspot:
-        "Trying to help you eat a little better and overthink a little less.",
+    if (
+      isCombatProfile()
+    ) {
 
-      toughguy:
-        "Keeping you honest. Food, water, training. Simple.",
+      return getFlavorLine({
 
-      mafia:
-        "Making sure you don’t turn one meal into a whole crisis.",
+        sweetspot:
+          "Factor recovery into the quality and intensity of your next combat session. Harder is not always better.",
 
-      internet:
-        "Trying to keep the food chaos under control."
-    });
+        toughguy:
+          "Being beat up is information. Use it.",
+
+        mafia:
+          "If the body is cooked, don’t pretend another war fixes it.",
+
+        internet:
+          "Your recovery bar is part of the game too."
+
+      });
+
+    }
+
+
+    if (
+      isFitnessProfile()
+    ) {
+
+      return getFlavorLine({
+
+        sweetspot:
+          "Check sleep, food, hydration, and recent training before deciding how hard the next session should be.",
+
+        toughguy:
+          "Recovery is training too.",
+
+        mafia:
+          "Don’t confuse being tired with needing more punishment.",
+
+        internet:
+          "Sometimes the gains are hiding in recovery."
+
+      });
+
+    }
+
+
+    return (
+      "Keep the basics steady today: food, fluids, sleep, and a manageable amount of activity."
+    );
+
+  }
+
+
+  /*
+   * TRAINING
+   */
+
+  if (
+    lower.includes(
+      "train"
+    ) ||
+    lower.includes(
+      "training"
+    ) ||
+    lower.includes(
+      "workout"
+    ) ||
+    lower.includes(
+      "practice"
+    )
+  ) {
+
+    if (
+      isCombatProfile()
+    ) {
+
+      return getFlavorLine({
+
+        sweetspot:
+          `For ${getCombatStyleLabel()}, choose training quality based on recovery and the purpose of the session.`,
+
+        toughguy:
+          "Don’t collect hard rounds just to say you did them.",
+
+        mafia:
+          "Know what today’s session is supposed to accomplish.",
+
+        internet:
+          "Random suffering is not a training plan."
+
+      });
+
+    }
+
+
+    if (
+      isFitnessProfile()
+    ) {
+
+      return getFlavorLine({
+
+        sweetspot:
+          "Match the workout to your recovery and the training goal for today.",
+
+        toughguy:
+          "Purpose before volume.",
+
+        mafia:
+          "Make the session earn its place.",
+
+        internet:
+          "Workout quality > chaos volume."
+
+      });
+
+    }
 
   }
 
@@ -899,41 +1434,33 @@ function generateWiseReply(
     ) {
 
       return getFlavorLine({
+
         sweetspot:
-          "Hydration could use some attention today. Add water first before overthinking food.",
+          "Hydration is still light today. Add some fluids before complicating the rest of the plan.",
 
         toughguy:
-          "Water first. You can’t outthink dehydration.",
+          "Handle the easy hydration win.",
 
         mafia:
-          "Listen… handle the water first. Easy win.",
+          "Water first. Then we talk about the complicated stuff.",
 
         internet:
-          "Low-key, water fixes more than people admit."
+          "Hydration bar needs attention."
+
       });
 
     }
 
 
-    return getFlavorLine({
-      sweetspot:
-        "Hydration looks pretty solid today.",
-
-      toughguy:
-        "Hydration is handled. Keep it that way.",
-
-      mafia:
-        "Water’s looking alright. We like that.",
-
-      internet:
-        "Hydration check passed."
-    });
+    return (
+      "Hydration looks reasonably steady today. Keep it moving."
+    );
 
   }
 
 
   /*
-   * CUT
+   * CUT / WEIGHT
    */
 
   if (
@@ -941,26 +1468,42 @@ function generateWiseReply(
       "cut"
     ) ||
     lower.includes(
-      "lose"
+      "lose weight"
     ) ||
     lower.includes(
-      "lean out"
+      "make weight"
+    ) ||
+    lower.includes(
+      "weight cut"
     )
   ) {
 
-    return getFlavorLine({
-      sweetspot:
-        "Stay steady. Consistency matters more than panic restriction.",
+    if (
+      isCombatProfile()
+    ) {
 
-      toughguy:
-        "Don’t crash diet. Stay disciplined with the basics.",
+      return getFlavorLine({
 
-      mafia:
-        "No panic cuts. We play the long game.",
+        sweetspot:
+          "Keep combat weight management planned and gradual. Avoid turning one scale reading into an aggressive last-minute reaction.",
 
-      internet:
-        "Do not spiral. Just tighten the next choice."
-    });
+        toughguy:
+          "Making weight is a plan, not a panic move.",
+
+        mafia:
+          "No emergency decisions because the scale got loud.",
+
+        internet:
+          "Scale drama does not get admin privileges."
+
+      });
+
+    }
+
+
+    return (
+      "Keep weight change gradual and consistent rather than reacting aggressively to individual weigh-ins."
+    );
 
   }
 
@@ -982,27 +1525,32 @@ function generateWiseReply(
   ) {
 
     return getFlavorLine({
+
       sweetspot:
-        "Fuel and recovery matter. Make sure intake supports the training you’re doing.",
+        "Training, enough food, protein, carbohydrate, and recovery all work together.",
 
       toughguy:
-        "If you train hard, you need to fuel the work.",
+        "Train hard enough to adapt and recover well enough to repeat it.",
 
       mafia:
-        "You want growth? Feed the machine.",
+        "Growth needs both work and supplies.",
 
       internet:
-        "Muscles need supplies too. Unfortunately, science."
+        "Muscle construction requires building materials."
+
     });
 
   }
 
 
   /*
-   * PROTEIN SOURCES
+   * PROTEIN
    */
 
   if (
+    lower.includes(
+      "protein"
+    ) ||
     lower.includes(
       "chicken"
     ) ||
@@ -1014,39 +1562,35 @@ function generateWiseReply(
     ) ||
     lower.includes(
       "pork"
-    ) ||
-    lower.includes(
-      "protein"
     )
   ) {
 
     return getFlavorLine({
+
       sweetspot:
-        "All of those can work. Chicken is simple and reliable, fish can add healthy fats, and lean pork can work too. Pick something you enjoy and can stay consistent with.",
+        "Choose a protein source you enjoy and can use consistently as part of a balanced meal.",
 
       toughguy:
-        "Pick a solid protein source you’ll actually eat consistently.",
+        "Pick a solid protein source and move on.",
 
       mafia:
-        "Chicken keeps it simple. Fish is solid. Lean pork works too. Don’t overcomplicate dinner.",
+        "Good protein, simple meal, no drama.",
 
       internet:
-        "All three can work. Dinner does not need an identity crisis."
+        "Protein does not need a personality test."
+
     });
 
   }
 
 
   /*
-   * SNACKS
+   * SNACK
    */
 
   if (
     lower.includes(
       "snack"
-    ) ||
-    lower.includes(
-      "between meal"
     ) ||
     lower.includes(
       "hungry"
@@ -1057,24 +1601,26 @@ function generateWiseReply(
   ) {
 
     return getFlavorLine({
+
       sweetspot:
-        "Try something simple: Greek yogurt and berries, apple with peanut butter, turkey roll-ups, eggs and toast, or a shake and banana.",
+        "Keep the snack useful: something with protein plus fruit, grains, or another simple carbohydrate source.",
 
       toughguy:
-        "Snack smart: protein first, then fruit or carbs. Yogurt, eggs, turkey, or a shake and banana.",
+        "Useful snack. Protein plus something that supports the day.",
 
       mafia:
-        "Keep the snack useful. Protein plus something steady: yogurt and berries, turkey, eggs, or a shake with a banana.",
+        "Make the snack earn its keep.",
 
       internet:
-        "Snack formula: protein + something useful. Easy win."
+        "Snack with a job description."
+
     });
 
   }
 
 
   /*
-   * GENERAL FOOD
+   * FOOD
    */
 
   if (
@@ -1089,25 +1635,26 @@ function generateWiseReply(
     )
   ) {
 
-    return getFlavorLine({
-      sweetspot:
-        "Keep meals practical and balanced. Nothing needs to be perfect.",
+    if (
+      isFitnessProfile()
+    ) {
 
-      toughguy:
-        "Pick a solid meal and move on.",
+      return (
+        "Keep the meal practical and connect it to what you’re doing next: training, recovery, or simply staying steady."
+      );
 
-      mafia:
-        "Simple plate. No drama.",
+    }
 
-      internet:
-        "You don’t need a perfect meal. You need a decent one."
-    });
+
+    return (
+      "Keep meals practical and balanced. Nothing needs to be perfect."
+    );
 
   }
 
 
   /*
-   * SCALE / WEIGHT
+   * SCALE
    */
 
   if (
@@ -1119,19 +1666,9 @@ function generateWiseReply(
     )
   ) {
 
-    return getFlavorLine({
-      sweetspot:
-        "Treat body weight as a trend, not a daily judgment.",
-
-      toughguy:
-        "One scale check does not define the work.",
-
-      mafia:
-        "One weird scale day isn’t the whole story.",
-
-      internet:
-        "The scale is noisy. Trends matter."
-    });
+    return (
+      "Treat body weight as a trend rather than a judgment from one isolated reading."
+    );
 
   }
 
@@ -1149,19 +1686,9 @@ function generateWiseReply(
     )
   ) {
 
-    return getFlavorLine({
-      sweetspot:
-        "Probably hard to explore galaxies while dehydrated.",
-
-      toughguy:
-        "Even astronauts need water.",
-
-      mafia:
-        "Space is cold. Bring snacks.",
-
-      internet:
-        "Intergalactic hydration matters."
-    });
+    return (
+      "Intergalactic performance still probably needs food, water, and recovery."
+    );
 
   }
 
@@ -1175,19 +1702,9 @@ function generateWiseReply(
     )
   ) {
 
-    return getFlavorLine({
-      sweetspot:
-        "Batman definitely has a recovery plan.",
-
-      toughguy:
-        "Recovery is the real superpower.",
-
-      mafia:
-        "No way Batman skips protein.",
-
-      internet:
-        "Bruce Wayne definitely tracks something."
-    });
+    return (
+      "Even superheroes need recovery days."
+    );
 
   }
 
@@ -1198,19 +1715,9 @@ function generateWiseReply(
     )
   ) {
 
-    return getFlavorLine({
-      sweetspot:
-        "Surviving zombies probably requires decent recovery meals.",
-
-      toughguy:
-        "Cardio suddenly matters a lot more.",
-
-      mafia:
-        "We’re grabbing water before the apocalypse starts.",
-
-      internet:
-        "Zombie survival still needs hydration."
-    });
+    return (
+      "Zombie survival sounds like a strong case for conditioning and hydration."
+    );
 
   }
 
@@ -1224,40 +1731,14 @@ function generateWiseReply(
     )
   ) {
 
-    return getFlavorLine({
-      sweetspot:
-        "That feels slightly outside the nutrition department.",
-
-      toughguy:
-        "I respect the creativity. Still drink water.",
-
-      mafia:
-        "Listen… I’m trying to help you survive lunch first.",
-
-      internet:
-        "That question has powerful side-quest energy."
-    });
+    return (
+      "That has powerful side-quest energy. I’m still voting for the basics."
+    );
 
   }
 
 
-  /*
-   * DEFAULT
-   */
-
-  return getFlavorLine({
-    sweetspot:
-      "Stay aware, stay consistent, and keep the next decision simple.",
-
-    toughguy:
-      "Keep it simple. Do the basics.",
-
-    mafia:
-      "Nice and steady. We keep moving.",
-
-    internet:
-      "You’re probably overthinking it. Pick the next useful move."
-  });
+  return getProfileDefaultReply();
 }
 
 
@@ -1281,6 +1762,7 @@ addWaterBtn
 
       window.FuelAILog
         .addFuelLog({
+
           type:
             "water",
 
@@ -1289,6 +1771,7 @@ addWaterBtn
 
           source:
             "wise"
+
         });
 
 
@@ -1313,17 +1796,16 @@ addTrainingBtn
 
       window.FuelAILog
         .addFuelLog({
+
           type:
             "training",
 
           sessions:
             1,
 
-          caloriesBurned:
-            0,
-
           source:
             "wise"
+
         });
 
 
@@ -1352,13 +1834,6 @@ addWeightBtn
         );
 
 
-      if (
-        !current
-      ) {
-        return;
-      }
-
-
       const weight =
         Number(
           current
@@ -1377,6 +1852,7 @@ addWeightBtn
 
       window.FuelAILog
         .addFuelLog({
+
           type:
             "weight",
 
@@ -1384,6 +1860,7 @@ addWeightBtn
 
           source:
             "wise"
+
         });
 
 
@@ -1433,30 +1910,23 @@ sendWiseChatBtn
       if (
         wiseChatReply
       ) {
+
         wiseChatReply.textContent =
           "Thinking...";
+
       }
 
 
       const previousQuestion =
         lastQuestion;
 
-      lastQuestion =
-        question;
-
 
       setTimeout(
         () => {
 
-          /*
-           * generateWiseReply uses
-           * lastQuestion for follow-ups.
-           * Temporarily restore the
-           * previous question as context.
-           */
-
-          const currentQuestion =
+          const storedQuestion =
             lastQuestion;
+
 
           lastQuestion =
             previousQuestion;
@@ -1470,14 +1940,17 @@ sendWiseChatBtn
 
 
           lastQuestion =
-            currentQuestion;
+            question ||
+            storedQuestion;
 
 
           if (
             wiseChatReply
           ) {
+
             wiseChatReply.textContent =
               reply;
+
           }
 
 
@@ -1489,17 +1962,19 @@ sendWiseChatBtn
 
         },
 
-        900 +
+        700 +
         Math.random() *
-        700
+        500
       );
 
 
       if (
         wiseChatInput
       ) {
+
         wiseChatInput.value =
           "";
+
       }
 
     }
@@ -1516,9 +1991,9 @@ const currentCoachStyle =
   setup.coachStyle ||
   "sweetspot";
 
+
 const currentAvatar =
   setup.gender ||
-  setup.genderType ||
   "male";
 
 
