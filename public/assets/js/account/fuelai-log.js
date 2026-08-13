@@ -1055,6 +1055,12 @@ function buildDailyLogForDate(
       sleep.sleepScore,
 
 
+    feeling:
+      latestCheckIn
+        ?.feeling ||
+      "",
+
+
     caloriesTarget:
       targets.caloriesTarget,
 
@@ -1294,6 +1300,11 @@ function getFuelSummary() {
     sleepScore:
       today.sleepScore ||
       0,
+
+
+    feeling:
+      today.feeling ||
+      "",
 
 
     wiseFlavor:
