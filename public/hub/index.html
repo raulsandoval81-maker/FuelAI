@@ -332,6 +332,77 @@
       color:#fff;
     }
 
+    .hub-today{
+      margin-top:18px;
+      padding:18px;
+
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:20px;
+
+      background:
+        rgba(15,23,42,.72);
+    }
+
+    .hub-today-head{
+      display:flex;
+      align-items:end;
+      justify-content:space-between;
+      gap:16px;
+
+      margin-bottom:12px;
+    }
+
+    .hub-today-head h2{
+      margin:0;
+      font-size:1.15rem;
+    }
+
+    .hub-today-head p{
+      margin:0;
+      color:var(--hub-muted);
+      font-size:.82rem;
+    }
+
+    .hub-today-grid{
+      display:grid;
+      grid-template-columns:
+        repeat(4,minmax(0,1fr));
+
+      gap:10px;
+    }
+
+    .hub-today-stat{
+      padding:13px;
+
+      border:1px solid rgba(255,255,255,.06);
+      border-radius:14px;
+
+      background:
+        rgba(255,255,255,.025);
+    }
+
+    .hub-today-stat span{
+      display:block;
+
+      color:#64748b;
+
+      font-size:.68rem;
+      font-weight:900;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+    }
+
+    .hub-today-stat strong{
+      display:block;
+
+      margin-top:6px;
+
+      color:#f8fafc;
+
+      font-size:.95rem;
+      line-height:1.3;
+    }
+
     .hub-section-head{
       margin:28px 0 12px;
     }
@@ -507,6 +578,11 @@
     }
 
     @media (max-width:760px){
+
+      .hub-today-grid{
+        grid-template-columns:
+          repeat(2,minmax(0,1fr));
+      }
 
       .hub-wrap{
         padding:18px 12px 30px;
@@ -727,6 +803,84 @@
     </header>
 
 
+    <!-- TODAY SNAPSHOT -->
+
+    <section
+      class="hub-today"
+      aria-label="Today's FuelAI snapshot"
+    >
+
+      <div class="hub-today-head">
+
+        <h2>
+          Today
+        </h2>
+
+        <p>
+          Quick fuel + recovery snapshot
+        </p>
+
+      </div>
+
+
+      <div class="hub-today-grid">
+
+        <div class="hub-today-stat">
+
+          <span>
+            Calories
+          </span>
+
+          <strong id="hubTodayCalories">
+            —
+          </strong>
+
+        </div>
+
+
+        <div class="hub-today-stat">
+
+          <span>
+            Protein
+          </span>
+
+          <strong id="hubTodayProtein">
+            —
+          </strong>
+
+        </div>
+
+
+        <div class="hub-today-stat">
+
+          <span>
+            Hydration
+          </span>
+
+          <strong id="hubTodayWater">
+            —
+          </strong>
+
+        </div>
+
+
+        <div class="hub-today-stat">
+
+          <span>
+            Sleep
+          </span>
+
+          <strong id="hubTodaySleep">
+            —
+          </strong>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
     <!-- TOOLS -->
 
     <div class="hub-section-head">
@@ -747,11 +901,11 @@
 
       <!-- TRACKWISE -->
 
-      <a
-        class="hub-card purple"
-        id="trackwiseCard"
-        href="/tools/trackwise/index.html"
-      >
+<a
+  class="hub-card purple"
+  id="trackwiseCard"
+  href="/tools/trackwise/dashboard.html"
+>
 
         <img
           src="/assets/img/hub/stayontrack.png"
@@ -908,6 +1062,8 @@
 
   <script src="/assets/js/core/auth-soft.js"></script>
 
+  <script src="/assets/js/account/fuelai-log.js"></script>
+
 
   <script>
     window.FuelAIAuth?.requireSoftLogin();
@@ -1040,6 +1196,30 @@
     const emptyState =
       document.getElementById(
         "hubEmptyState"
+      );
+
+
+    const todayCalories =
+      document.getElementById(
+        "hubTodayCalories"
+      );
+
+
+    const todayProtein =
+      document.getElementById(
+        "hubTodayProtein"
+      );
+
+
+    const todayWater =
+      document.getElementById(
+        "hubTodayWater"
+      );
+
+
+    const todaySleep =
+      document.getElementById(
+        "hubTodaySleep"
       );
 
 
@@ -1254,6 +1434,124 @@
     }
 
 
+    function renderTodaySnapshot() {
+
+      const summary =
+        window.FuelAILog
+          ?.getFuelSummary?.() ||
+        {};
+
+
+      const calories =
+        Number(
+          summary.caloriesToday ||
+          0
+        );
+
+
+      const protein =
+        Number(
+          summary.proteinToday ||
+          0
+        );
+
+
+      const water =
+        Number(
+          summary.waterToday ||
+          0
+        );
+
+
+      const calorieTarget =
+        Number(
+          summary.caloriesTarget ||
+          0
+        );
+
+
+      const proteinTarget =
+        Number(
+          summary.proteinTarget ||
+          0
+        );
+
+
+      const sleepHours =
+        Number(
+          summary.sleepHours ||
+          summary.today?.sleepHours ||
+          0
+        );
+
+
+      const sleepQuality =
+        summary.sleepQuality ||
+        summary.today?.sleepQuality ||
+        "";
+
+
+      if (
+        todayCalories
+      ) {
+
+        todayCalories.textContent =
+          calorieTarget
+            ? `${calories} / ${calorieTarget}`
+            : `${calories}`;
+
+      }
+
+
+      if (
+        todayProtein
+      ) {
+
+        todayProtein.textContent =
+          proteinTarget
+            ? `${protein}g / ${proteinTarget}g`
+            : `${protein}g`;
+
+      }
+
+
+      if (
+        todayWater
+      ) {
+
+        todayWater.textContent =
+          `${water} oz`;
+
+      }
+
+
+      if (
+        todaySleep
+      ) {
+
+        if (
+          sleepHours
+        ) {
+
+          todaySleep.textContent =
+            sleepQuality &&
+            sleepQuality !==
+              "Not Logged"
+              ? `${sleepHours} hrs · ${sleepQuality}`
+              : `${sleepHours} hrs`;
+
+        } else {
+
+          todaySleep.textContent =
+            "Not logged";
+
+        }
+
+      }
+
+    }
+
+
     function applyHubAccess() {
 
       if (
@@ -1331,6 +1629,8 @@
 
 
     renderHubProfile();
+
+    renderTodaySnapshot();
 
     applyHubAccess();
   </script>
