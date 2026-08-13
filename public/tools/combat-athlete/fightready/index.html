@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <meta charset="UTF-8" />
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+
+  <meta
+    name="description"
+    content="Combat-athlete readiness awareness using your existing FuelAI recovery and training signals."
+  />
+
+  <link rel="icon" href="data:," />
+
+  <title>
+    FightReady | FuelAI
+  </title>
+
+  <link
+    rel="stylesheet"
+    href="/assets/css/site.css"
+  />
+
+  <link
+    rel="stylesheet"
+    href="/assets/css/nav.css"
+  />
+
+  <link
+    rel="stylesheet"
+    href="./fightready.css"
+  />
+
+</head>
+
+
+<body data-theme="night">
+
+  <main class="fightready-wrap">
+
+
+    <!-- HERO -->
+
+    <header class="fightready-hero">
+
+      <p class="range-label">
+        FuelAI · Combat Athlete
+      </p>
+
+      <h1>
+        🥊 FightReady
+      </h1>
+
+      <p class="sub">
+        Turn your existing recovery,
+        sleep, training, and daily
+        check-in signals into one
+        combat-readiness picture.
+      </p>
+
+      <div class="focus-grid">
+
+        <div>
+          😴 Sleep
+        </div>
+
+        <div>
+          ⚡ Recovery
+        </div>
+
+        <div>
+          🥊 Training
+        </div>
+
+        <div>
+          📈 7-Day Picture
+        </div>
+
+      </div>
+
+    </header>
+
+
+    <!-- TODAY -->
+
+    <section class="fightready-section">
+
+      <p class="range-label">
+        Today
+      </p>
+
+      <h2>
+        Readiness Snapshot
+      </h2>
+
+
+      <div class="readiness-card">
+
+        <div>
+
+          <span class="metric-label">
+            Combat Readiness
+          </span>
+
+          <strong
+            id="readinessStatus"
+            class="readiness-status"
+          >
+            Loading...
+          </strong>
+
+        </div>
+
+
+        <p
+          id="readinessGuidance"
+          class="guidance"
+        >
+          Reading today’s FuelAI signals...
+        </p>
+
+      </div>
+
+
+      <div class="metric-grid">
+
+
+        <article class="metric-card">
+
+          <span class="metric-icon">
+            🙂
+          </span>
+
+          <span class="metric-label">
+            Feeling
+          </span>
+
+          <strong id="feelingOutput">
+            —
+          </strong>
+
+        </article>
+
+
+        <article class="metric-card">
+
+          <span class="metric-icon">
+            😴
+          </span>
+
+          <span class="metric-label">
+            Sleep
+          </span>
+
+          <strong id="sleepOutput">
+            —
+          </strong>
+
+          <small id="sleepQualityOutput">
+            Not logged
+          </small>
+
+        </article>
+
+
+        <article class="metric-card">
+
+          <span class="metric-icon">
+            🥊
+          </span>
+
+          <span class="metric-label">
+            Training Today
+          </span>
+
+          <strong id="trainingOutput">
+            —
+          </strong>
+
+        </article>
+
+
+        <article class="metric-card">
+
+          <span class="metric-icon">
+            💧
+          </span>
+
+          <span class="metric-label">
+            Hydration Logged
+          </span>
+
+          <strong id="waterOutput">
+            —
+          </strong>
+
+          <small>
+            Amount logged today
+          </small>
+
+        </article>
+
+
+      </div>
+
+    </section>
+
+
+    <!-- 7 DAY -->
+
+    <section class="fightready-section">
+
+      <p class="range-label">
+        Last 7 Days
+      </p>
+
+      <h2>
+        Recovery Picture
+      </h2>
+
+
+      <div class="metric-grid">
+
+
+        <article class="metric-card">
+
+          <span class="metric-label">
+            Avg Logged Sleep
+          </span>
+
+          <strong id="sleepAverageOutput">
+            —
+          </strong>
+
+        </article>
+
+
+        <article class="metric-card">
+
+          <span class="metric-label">
+            Training Days
+          </span>
+
+          <strong id="trainingDaysOutput">
+            —
+          </strong>
+
+        </article>
+
+
+        <article class="metric-card">
+
+          <span class="metric-label">
+            Hydration Log Days
+          </span>
+
+          <strong id="hydrationDaysOutput">
+            —
+          </strong>
+
+          <small>
+            Logging consistency only
+          </small>
+
+        </article>
+
+
+        <article class="metric-card">
+
+          <span class="metric-label">
+            Check-In Days
+          </span>
+
+          <strong id="checkInDaysOutput">
+            —
+          </strong>
+
+        </article>
+
+
+        <article class="metric-card">
+
+          <span class="metric-label">
+            Days of Data
+          </span>
+
+          <strong id="dataDaysOutput">
+            —
+          </strong>
+
+        </article>
+
+
+      </div>
+
+    </section>
+
+
+    <!-- CONTEXT -->
+
+    <section class="fightready-note">
+
+      <h2>
+        Readiness is a signal, not clearance.
+      </h2>
+
+      <p>
+        FightReady looks at patterns already
+        captured in FuelAI. It does not diagnose
+        injury, dehydration, illness, or determine
+        whether an athlete is medically safe to
+        train or compete.
+      </p>
+
+    </section>
+
+
+    <!-- ACTIONS -->
+
+    <nav class="fightready-actions">
+
+      <a
+        class="start-btn"
+        href="/wise/todays-check-in.html"
+      >
+        ✅ Daily Check-In
+      </a>
+
+      <a
+        class="secondary-btn"
+        href="/tools/combat-athlete/weightwise/"
+      >
+        ⚖️ WeightWise
+      </a>
+
+      <a
+        class="secondary-btn"
+        href="/tools/trackwise/dashboard.html"
+      >
+        📈 TrackWise
+      </a>
+
+      <a
+        class="secondary-btn"
+        href="/tools/combat-athlete/"
+      >
+        🥊 Combat Athlete
+      </a>
+
+    </nav>
+
+
+    <footer class="hero-note">
+      FuelAI™ · Powered by Sandman™
+    </footer>
+
+
+  </main>
+
+
+  <script src="/assets/js/core/plan.js"></script>
+
+  <script src="/assets/js/core/auth-soft.js"></script>
+
+  <script>
+    window.FuelAIAuth?.requireSoftLogin();
+  </script>
+
+  <script src="/assets/js/account/fuelai-log.js"></script>
+
+  <script src="./fightready.js"></script>
+
+  <script src="/assets/js/core/nav.js"></script>
+
+</body>
+</html>
