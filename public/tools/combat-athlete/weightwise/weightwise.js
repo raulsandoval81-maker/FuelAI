@@ -29,7 +29,7 @@ function getStatus(weeklyPace) {
     return {
       label: "ON TRACK ✓",
       className: "status-good",
-      guidance: "This pace is reasonable for a basic beta target. Keep logging and stay consistent."
+      guidance: "This pace is within the current planning range. Keep logging and reassess as conditions change."
     };
   }
 
