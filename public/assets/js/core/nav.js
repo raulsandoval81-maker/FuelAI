@@ -243,7 +243,7 @@ navLink(
     toolLinks.push(
       navLink(
         "/wise/wise.html",
-        "🧠 Wise"
+        "🧠 Coach Wise"
       )
     );
 

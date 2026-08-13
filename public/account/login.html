@@ -14,6 +14,84 @@
     rel="stylesheet"
     href="/assets/css/site.css"
   />
+
+  <style>
+    .welcome-stack{
+      display:grid;
+      gap:1rem;
+      margin-top:1rem;
+    }
+
+    .welcome-profile{
+      display:flex;
+      align-items:center;
+      gap:1rem;
+
+      padding:1rem;
+
+      border:1px solid
+        rgba(255,255,255,.10);
+
+      border-radius:18px;
+
+      background:
+        rgba(255,255,255,.03);
+    }
+
+    .welcome-profile-image{
+      width:84px;
+      height:84px;
+
+      flex:0 0 84px;
+
+      object-fit:contain;
+    }
+
+    .welcome-profile-copy{
+      min-width:0;
+    }
+
+    .welcome-feature-title{
+      display:block;
+
+      margin-bottom:.35rem;
+
+      font-weight:800;
+      letter-spacing:.08em;
+    }
+
+    .welcome-feature-text{
+      margin:0;
+
+      line-height:1.55;
+    }
+
+    .welcome-start{
+      margin-top:1.5rem;
+    }
+
+    .welcome-start-copy{
+      margin:.35rem 0 1rem;
+
+      line-height:1.55;
+    }
+
+    @media (max-width:600px){
+
+      .welcome-profile{
+        gap:.8rem;
+        padding:.9rem;
+      }
+
+      .welcome-profile-image{
+        width:68px;
+        height:68px;
+
+        flex-basis:68px;
+      }
+
+    }
+  </style>
 </head>
 
 <body data-theme="night">
@@ -31,8 +109,11 @@
       </h1>
 
       <p class="sub">
-        Daily intake tracking made easy, with training and performance tools that grow with you.
+        Daily intake tracking made easy, with
+        training and performance tools that grow
+        with you.
       </p>
+
 
       <section class="range-card">
 
@@ -40,113 +121,200 @@
           Built Around You
         </p>
 
-        <div class="welcome-feature">
 
-          <span class="welcome-feature-title">
-            GENERAL HEALTH
-          </span>
+        <div class="welcome-stack">
 
-          <p class="welcome-feature-text">
-            Build better nutrition, hydration, recovery, and daily habits.
-          </p>
+          <div class="welcome-profile">
 
-        </div>
+            <img
+              class="welcome-profile-image"
+              src="/assets/img/profiles/general-health.png"
+              alt="Wellness"
+            />
 
-        <div class="welcome-feature">
+            <div class="welcome-profile-copy">
 
-          <span class="welcome-feature-title">
-            FITNESS ENTHUSIAST
-          </span>
+              <span class="welcome-feature-title">
+                WELLNESS
+              </span>
 
-          <p class="welcome-feature-text">
-            Fuel your training, improve conditioning, and track progress.
-          </p>
+              <p class="welcome-feature-text">
+                Build better nutrition, hydration,
+                recovery, and daily habits.
+              </p>
 
-        </div>
+            </div>
 
-        <div class="welcome-feature">
+          </div>
 
-          <span class="welcome-feature-title">
-            COMBAT ATHLETE
-          </span>
 
-          <p class="welcome-feature-text">
-            Prepare, perform, recover, and manage competition weight.
-          </p>
+          <div class="welcome-profile">
+
+            <img
+              class="welcome-profile-image"
+              src="/assets/img/profiles/fitness-enthusiast.png"
+              alt="Fitness"
+            />
+
+            <div class="welcome-profile-copy">
+
+              <span class="welcome-feature-title">
+                FITNESS
+              </span>
+
+              <p class="welcome-feature-text">
+                Fuel your training, improve
+                conditioning, and track progress.
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <div class="welcome-profile">
+
+            <img
+              class="welcome-profile-image"
+              src="/assets/img/profiles/combat-athlete.png"
+              alt="Combat"
+            />
+
+            <div class="welcome-profile-copy">
+
+              <span class="welcome-feature-title">
+                COMBAT
+              </span>
+
+              <p class="welcome-feature-text">
+                Prepare, perform, recover, and manage
+                competition weight.
+              </p>
+
+            </div>
+
+          </div>
 
         </div>
 
       </section>
 
-      <div class="wise-links">
 
-        <input
-          id="emailInput"
-          class="goal-select"
-          type="email"
-          placeholder="Enter your email"
-          autocomplete="email"
-        />
+      <section class="welcome-start">
 
-        <button
-          id="continueBtn"
-          class="start-btn"
-          type="button"
-        >
-          Continue
-        </button>
+        <p class="range-label">
+          Get Started
+        </p>
 
-      </div>
+        <p class="welcome-start-copy">
+          Enter your email to continue.
+          New users will be guided through setup.
+        </p>
 
-      <p class="hero-note">
-        New here? We’ll guide you through setup in under 2 minutes.
-      </p>
+
+        <div class="wise-links">
+
+          <input
+            id="emailInput"
+            class="goal-select"
+            type="email"
+            placeholder="Enter your email"
+            autocomplete="email"
+            aria-label="Email address"
+          />
+
+          <button
+            id="continueBtn"
+            class="start-btn"
+            type="button"
+          >
+            Continue
+          </button>
+
+        </div>
+
+
+        <p class="hero-note">
+          New here? We’ll guide you through setup
+          in under 2 minutes.
+        </p>
+
+      </section>
 
     </section>
 
   </main>
 
+
   <script src="/assets/js/core/auth-soft.js"></script>
 
   <script>
     const continueBtn =
-      document.getElementById("continueBtn");
+      document.getElementById(
+        "continueBtn"
+      );
 
     const emailInput =
-      document.getElementById("emailInput");
+      document.getElementById(
+        "emailInput"
+      );
+
 
     function continueToFuelAI() {
+
       const email =
         emailInput.value.trim();
 
-      if (!email.includes("@")) {
+      if (
+        !email.includes("@")
+      ) {
         return;
       }
 
-      window.FuelAIAuth.softLogin(email);
+
+      window.FuelAIAuth
+        .softLogin(
+          email
+        );
+
 
       const hasSetup =
-        !!localStorage.getItem("fuelai-setup");
+        !!localStorage.getItem(
+          "fuelai-setup"
+        );
+
 
       window.location.href =
         hasSetup
           ? "/hub/"
           : "/account/setup.html";
+
     }
 
-    continueBtn?.addEventListener(
-      "click",
-      continueToFuelAI
-    );
 
-    emailInput?.addEventListener(
-      "keydown",
-      (e) => {
-        if (e.key === "Enter") {
-          continueToFuelAI();
+    continueBtn
+      ?.addEventListener(
+        "click",
+        continueToFuelAI
+      );
+
+
+    emailInput
+      ?.addEventListener(
+        "keydown",
+        (event) => {
+
+          if (
+            event.key ===
+            "Enter"
+          ) {
+
+            continueToFuelAI();
+
+          }
+
         }
-      }
-    );
+      );
   </script>
 
 </body>
