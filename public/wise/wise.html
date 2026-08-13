@@ -178,25 +178,28 @@
       justify-content:center;
     }
 
-    .character-face.image-face{
-      width:min(100%,340px);
+.character-face.image-face{
+  width:100%;
+  max-width:460px;
 
-      overflow:hidden;
+  overflow:hidden;
 
-      border-radius:20px;
+  border-radius:20px;
 
-      border:
-        1px solid rgba(255,255,255,.08);
+  border:
+    1px solid rgba(255,255,255,.08);
 
-      background:#020617;
-    }
+  background:#020617;
+}
 
-    .guide-image{
-      display:block;
+.guide-image{
+  display:block;
 
-      width:100%;
-      height:auto;
-    }
+  width:100%;
+  height:auto;
+
+  object-fit:contain;
+}
 
     #wiseAdvice{
       margin-top:12px;
@@ -385,23 +388,27 @@
       color:#64748b;
     }
 
-    @media(max-width:760px){
+@media(max-width:760px){
 
-      .wise-shell{
-        padding:18px 12px 30px;
-      }
+  .wise-shell{
+    padding:18px 12px 30px;
+  }
 
-      .wise-hero{
-        padding:18px;
+  .wise-hero{
+    padding:18px;
 
-        border-radius:20px;
-      }
+    border-radius:20px;
+  }
 
-      .wise-grid,
-      .guidance-tools{
-        grid-template-columns:1fr;
-      }
-    }
+  .wise-grid,
+  .guidance-tools{
+    grid-template-columns:1fr;
+  }
+
+  .character-face.image-face{
+    max-width:380px;
+  }
+}
 
     @media(prefers-reduced-motion:reduce){
 
