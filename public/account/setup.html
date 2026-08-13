@@ -365,6 +365,213 @@
         border-radius:14px;
       }
     }
+
+    /* =========================
+       COACH WISE
+    ========================= */
+
+    .setup-coach-wise{
+      margin-top:18px;
+      padding:20px;
+
+      border-radius:20px;
+
+      border:
+        1px solid rgba(56,189,248,.20);
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(8,47,73,.14),
+          rgba(7,16,25,.96)
+        );
+
+      text-align:center;
+    }
+
+    .setup-coach-wise h2{
+      margin:6px 0 0;
+
+      font-size:
+        clamp(1.5rem,4vw,2rem);
+    }
+
+    .setup-coach-wise-copy{
+      max-width:620px;
+      margin:10px auto 0;
+
+      color:#cbd5e1;
+
+      line-height:1.55;
+    }
+
+    .setup-coach-wise-face{
+      display:flex;
+      justify-content:center;
+
+      margin:18px auto 0;
+    }
+
+    .setup-coach-wise-face img{
+      display:block;
+
+      width:100%;
+      max-width:300px;
+      height:auto;
+
+      object-fit:contain;
+
+      border-radius:24px;
+
+      border:
+        1px solid rgba(255,255,255,.10);
+
+      background:#020617;
+
+      box-shadow:
+        0 14px 34px rgba(0,0,0,.30);
+    }
+
+    .setup-coach-wise-style{
+      margin:14px 0 0;
+
+      color:#7dd3fc;
+
+      font-size:.82rem;
+      font-weight:1000;
+
+      letter-spacing:.05em;
+
+      text-transform:uppercase;
+    }
+
+    @media(max-width:640px){
+
+      .setup-coach-wise{
+        padding:16px;
+      }
+
+      .setup-coach-wise-face img{
+        max-width:260px;
+      }
+
+    }
+
+
+    .coach-flavor-grid{
+      display:grid;
+
+      grid-template-columns:
+        repeat(4,minmax(0,1fr));
+
+      gap:12px;
+
+      margin-top:18px;
+    }
+
+    .coach-flavor-option{
+      position:relative;
+
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+
+      gap:10px;
+
+      padding:14px;
+
+      border-radius:16px;
+
+      border:
+        1px solid rgba(255,255,255,.08);
+
+      background:
+        rgba(255,255,255,.035);
+
+      cursor:pointer;
+
+      transition:
+        transform .15s ease,
+        border-color .15s ease,
+        background .15s ease;
+    }
+
+    .coach-flavor-option:hover{
+      transform:translateY(-2px);
+
+      border-color:
+        rgba(56,189,248,.32);
+    }
+
+    .coach-flavor-option input{
+      position:absolute;
+
+      opacity:0;
+
+      pointer-events:none;
+    }
+
+    .coach-flavor-option.is-selected{
+      border-color:
+        rgba(56,189,248,.62);
+
+      background:
+        rgba(56,189,248,.08);
+
+      box-shadow:
+        0 0 0 2px
+        rgba(56,189,248,.08);
+    }
+
+    .coach-flavor-thumb{
+      display:block;
+
+      width:100%;
+      aspect-ratio:1 / 1;
+
+      object-fit:cover;
+
+      border-radius:14px;
+
+      border:
+        1px solid rgba(255,255,255,.08);
+
+      background:#020617;
+    }
+
+    .coach-flavor-option strong{
+      font-size:.95rem;
+
+      color:#fff;
+    }
+
+    .coach-flavor-option span{
+      color:#cbd5e1;
+
+      font-size:.78rem;
+
+      line-height:1.35;
+
+      text-align:center;
+    }
+
+    @media(max-width:900px){
+
+      .coach-flavor-grid{
+        grid-template-columns:
+          repeat(2,minmax(0,1fr));
+      }
+
+    }
+
+    @media(max-width:520px){
+
+      .coach-flavor-grid{
+        grid-template-columns:1fr;
+      }
+
+    }
+
   </style>
 </head>
 
@@ -692,6 +899,167 @@
     </section>
 
 
+
+    <!-- COACH WISE -->
+
+    <section class="setup-coach-wise">
+
+      <p class="section-label">
+        Your FuelAI Coach
+      </p>
+
+      <h2>
+        Meet Coach Wise
+      </h2>
+
+      <p class="setup-coach-wise-copy">
+        Coach Wise uses your goals, habits, nutrition,
+        training, recovery, and FuelAI signals to help
+        you make a clearer next decision.
+      </p>
+
+      <div class="setup-coach-wise-face">
+
+        <img
+          id="setupCoachWiseImage"
+          src="/assets/img/guides/sweetspot-male.png"
+          alt="Coach Wise"
+        />
+
+      </div>
+
+
+      <div
+        id="coachWiseMiniProfile"
+        class="coach-wise-mini-profile"
+      >
+        <strong id="coachWiseMiniName">
+          Coach Wise
+        </strong>
+
+        <span id="coachWiseMiniMeta">
+          Male · Balanced
+        </span>
+
+        <button
+          type="button"
+          id="adjustCoachWise"
+          class="secondary-btn"
+        >
+          Adjust Your Coach
+        </button>
+      </div>
+
+      <div id="coachWiseChooser">
+
+      <div class="coach-wise-controls" id="coachWiseControls" hidden>
+
+        <div class="coach-wise-control-group">
+
+          <span class="setup-coach-wise-copy">
+            Coach
+          </span>
+
+          <div
+            class="coach-wise-toggle"
+            role="radiogroup"
+            aria-label="Choose Coach Wise presentation"
+          >
+
+            <label>
+              <input
+                type="radio"
+                name="wiseCoachGender"
+                value="male"
+              />
+              <span>Male</span>
+            </label>
+
+            <label>
+              <input
+                type="radio"
+                name="wiseCoachGender"
+                value="female"
+              />
+              <span>Female</span>
+            </label>
+
+          </div>
+
+        </div>
+
+
+        <div class="coach-wise-control-group">
+
+          <span class="setup-coach-wise-copy">
+            Style
+          </span>
+
+          <div
+            class="coach-wise-toggle coach-wise-style-toggle"
+            role="radiogroup"
+            aria-label="Choose Coach Wise coaching style"
+          >
+
+            <label>
+              <input
+                type="radio"
+                name="wiseFlavor"
+                value="sweetspot"
+              />
+              <span>Balanced</span>
+            </label>
+
+            <label>
+              <input
+                type="radio"
+                name="wiseFlavor"
+                value="toughguy"
+              />
+              <span>Military</span>
+            </label>
+
+            <label>
+              <input
+                type="radio"
+                name="wiseFlavor"
+                value="mafia"
+              />
+              <span>OG</span>
+            </label>
+
+            <label>
+              <input
+                type="radio"
+                name="wiseFlavor"
+                value="internet"
+              />
+              <span>Casual</span>
+            </label>
+
+          </div>
+
+        </div>
+
+        <button
+          type="button"
+          id="doneCoachWise"
+          class="secondary-btn"
+        >
+          Done
+        </button>
+
+      </div>
+
+
+      <p class="setup-coach-wise-copy">
+        Coach Wise is your coach. Your coaching style
+        controls how the guidance is delivered.
+      </p>
+
+    </section>
+
+
     <!-- GUIDANCE -->
 
     <div class="guidance-grid">
@@ -762,18 +1130,320 @@
     </p>
 
   </main>
-
-
   <script src="/assets/js/core/auth-soft.js"></script>
 
   <script>
     window.FuelAIAuth?.requireSoftLogin();
   </script>
 
+  <script src="/assets/js/wise/guides.js"></script>
+
   <script src="/assets/js/account/setup.js?v=9"></script>
+
+  <script>
+    (() => {
+      "use strict";
+
+      const image =
+        document.getElementById(
+          "setupCoachWiseImage"
+        );
+
+      const coachControls =
+        document.getElementById(
+          "coachWiseControls"
+        );
+
+      const adjustCoachButton =
+        document.getElementById(
+          "adjustCoachWise"
+        );
+
+      const doneCoachButton =
+        document.getElementById(
+          "doneCoachWise"
+        );
+
+      const miniMeta =
+        document.getElementById(
+          "coachWiseMiniMeta"
+        );
+
+
+      function readSetup() {
+
+        try {
+
+          return JSON.parse(
+            localStorage.getItem(
+              "fuelai-setup"
+            ) || "{}"
+          );
+
+        } catch {
+
+          return {};
+
+        }
+
+      }
+
+
+      function saveCoachPreference(
+        key,
+        value
+      ) {
+
+        const current =
+          readSetup();
+
+        current[key] =
+          value;
+
+        localStorage.setItem(
+          "fuelai-setup",
+          JSON.stringify(
+            current
+          )
+        );
+
+      }
+
+
+      function getFlavor() {
+
+        const checked =
+          document.querySelector(
+            "input[name='wiseFlavor']:checked"
+          );
+
+        return (
+          checked?.value ||
+          readSetup().wiseFlavor ||
+          "sweetspot"
+        );
+
+      }
+
+
+      function getCoachGender() {
+
+        const checked =
+          document.querySelector(
+            "input[name='wiseCoachGender']:checked"
+          );
+
+        const value =
+          checked?.value ||
+          readSetup().wiseCoachGender ||
+          "male";
+
+        return value === "female"
+          ? "female"
+          : "male";
+
+      }
+
+
+      function flavorLabel(
+        flavor
+      ) {
+
+        switch (flavor) {
+
+          case "toughguy":
+            return "Military";
+
+          case "mafia":
+            return "OG";
+
+          case "internet":
+            return "Casual";
+
+          case "sweetspot":
+          default:
+            return "Balanced";
+
+        }
+
+      }
+
+
+      function renderCoachWise() {
+
+        if (!image) {
+          return;
+        }
+
+        const flavor =
+          getFlavor();
+
+        const coachGender =
+          getCoachGender();
+
+
+        document
+          .querySelectorAll(
+            "input[name='wiseCoachGender']"
+          )
+          .forEach((input) => {
+
+            input.checked =
+              input.value ===
+              coachGender;
+
+          });
+
+
+        document
+          .querySelectorAll(
+            "input[name='wiseFlavor']"
+          )
+          .forEach((input) => {
+
+            input.checked =
+              input.value ===
+              flavor;
+
+          });
+
+
+        const guide =
+          window.GUIDES?.[flavor] ||
+          window.GUIDES?.sweetspot;
+
+        if (!guide) {
+          return;
+        }
+
+
+        const source =
+          guide[coachGender] ||
+          guide.male ||
+          guide.female;
+
+
+        if (source) {
+
+          image.src =
+            source;
+
+        }
+
+
+        if (miniMeta) {
+
+          const genderLabel =
+            coachGender === "female"
+              ? "Female"
+              : "Male";
+
+          miniMeta.textContent =
+            `${genderLabel} · ${flavorLabel(flavor)}`;
+
+        }
+
+      }
+
+
+      document.addEventListener(
+        "change",
+        (event) => {
+
+          const target =
+            event.target;
+
+
+          if (
+            target?.name ===
+            "wiseCoachGender"
+          ) {
+
+            saveCoachPreference(
+              "wiseCoachGender",
+              target.value
+            );
+
+            renderCoachWise();
+
+            return;
+
+          }
+
+
+          if (
+            target?.name ===
+            "wiseFlavor"
+          ) {
+
+            saveCoachPreference(
+              "wiseFlavor",
+              target.value
+            );
+
+            renderCoachWise();
+
+          }
+
+        }
+      );
+
+
+      if (
+        adjustCoachButton &&
+        coachControls
+      ) {
+
+        adjustCoachButton.addEventListener(
+          "click",
+          () => {
+
+            coachControls.hidden =
+              false;
+
+            adjustCoachButton.hidden =
+              true;
+
+          }
+        );
+
+      }
+
+
+      if (
+        doneCoachButton &&
+        coachControls
+      ) {
+
+        doneCoachButton.addEventListener(
+          "click",
+          () => {
+
+            coachControls.hidden =
+              true;
+
+            if (adjustCoachButton) {
+
+              adjustCoachButton.hidden =
+                false;
+
+            }
+
+          }
+        );
+
+      }
+
+
+      renderCoachWise();
+
+    })();
+  </script>
+
 
   <script src="/assets/js/core/plan.js"></script>
 
 
 </body>
 </html>
+

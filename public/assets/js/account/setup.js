@@ -581,12 +581,6 @@ function saveSetup() {
         .trim() ||
       "",
 
-    guide:
-      genderType?.value ===
-        "female"
-        ? "wisegal"
-        : "wiseguy",
-
     monthlyPlan:
       goal,
 

@@ -1993,7 +1993,7 @@ const currentCoachStyle =
 
 
 const currentAvatar =
-  setup.gender ||
+  setup.wiseCoachGender ||
   "male";
 
 
