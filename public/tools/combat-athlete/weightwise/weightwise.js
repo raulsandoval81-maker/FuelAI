@@ -666,24 +666,42 @@ function setupHistoryForm() {
 
 setupHistoryForm();
 function renderDescentSchedule() {
+
   const output =
-    document.getElementById("scheduleOutput");
+    document.getElementById(
+      "scheduleOutput"
+    );
 
-  if (!output) return;
-
-  const saved =
-    localStorage.getItem(STORAGE_KEY);
-
-  if (!saved) {
-    output.textContent =
-      "Complete WeightWise setup first.";
+  if (!output) {
     return;
   }
 
-  const plan = JSON.parse(saved);
+
+  const saved =
+    localStorage.getItem(
+      STORAGE_KEY
+    );
+
+
+  if (!saved) {
+
+    output.textContent =
+      "Complete WeightWise setup first.";
+
+    return;
+
+  }
+
+
+  const plan =
+    JSON.parse(
+      saved
+    );
+
 
   const latestWeighIn =
     getLatestWeighIn();
+
 
   const currentWeight =
     latestWeighIn
@@ -694,66 +712,177 @@ function renderDescentSchedule() {
           plan.currentWeight
         );
 
+
   const targetWeight =
-    Number(plan.targetWeight);
-
-  const competitionDate =
-    new Date(plan.competitionDate);
-
-  const today =
-    new Date();
-
-  const totalDays =
-    Math.max(
-      1,
-      Math.ceil(
-        (competitionDate - today) /
-        86400000
-      )
+    Number(
+      plan.targetWeight
     );
 
-  const totalLoss =
-    currentWeight - targetWeight;
+
+  const daysRemaining =
+    getDaysRemaining(
+      plan.competitionDate
+    );
+
+
+  const weightRemaining =
+    Math.max(
+      0,
+      currentWeight -
+        targetWeight
+    );
+
+
+  const weeklyPace =
+    daysRemaining > 0
+      ? (
+          weightRemaining /
+          daysRemaining
+        ) * 7
+      : 0;
+
+
+  const status =
+    getStatus(
+      weeklyPace
+    );
+
+
+  /*
+   * HIGH RISK
+   *
+   * Do not generate weekly target
+   * weights for an aggressive path.
+   */
+
+  if (
+    status.label ===
+      "HIGH RISK"
+  ) {
+
+    output.innerHTML = `
+      <div class="history-row">
+        <span>Current Weight</span>
+        <strong>
+          ${currentWeight.toFixed(1)} lb
+        </strong>
+      </div>
+
+      <div class="history-row">
+        <span>Target Weight</span>
+        <strong>
+          ${targetWeight.toFixed(1)} lb
+        </strong>
+      </div>
+
+      <div class="history-row">
+        <span>Days Remaining</span>
+        <strong>
+          ${Math.max(0, daysRemaining)}
+        </strong>
+      </div>
+
+      <div
+        class="status-pill ${status.className}"
+      >
+        ${status.label}
+      </div>
+
+      <p class="guidance">
+        This target requires review before
+        WeightWise builds a weekly descent
+        schedule. Recheck the weight class,
+        timeline, and coaching plan.
+      </p>
+    `;
+
+    return;
+
+  }
+
+
+  /*
+   * NORMAL / AGGRESSIVE
+   *
+   * Render planning projection.
+   */
 
   const weeks =
     Math.max(
       1,
-      Math.ceil(totalDays / 7)
+      Math.ceil(
+        Math.max(
+          1,
+          daysRemaining
+        ) / 7
+      )
     );
 
-  let html = "";
 
-  html += `
+  let html = `
     <div class="history-row">
       <span>Today</span>
-      <strong>${currentWeight.toFixed(1)} lb</strong>
+      <strong>
+        ${currentWeight.toFixed(1)} lb
+      </strong>
     </div>
   `;
 
-  for (let i = 1; i <= weeks; i++) {
-    const progress = i / weeks;
+
+  for (
+    let i = 1;
+    i <= weeks;
+    i++
+  ) {
+
+    const progress =
+      i / weeks;
+
 
     const projected =
       currentWeight -
-      totalLoss * progress;
+      (
+        weightRemaining *
+        progress
+      );
+
 
     html += `
       <div class="history-row">
-        <span>Week ${i}</span>
-        <strong>${projected.toFixed(1)} lb</strong>
+        <span>
+          Week ${i}
+        </span>
+
+        <strong>
+          ${projected.toFixed(1)} lb
+        </strong>
       </div>
     `;
+
   }
+
 
   html += `
     <div class="history-row">
       <span>Competition</span>
-      <strong>${targetWeight.toFixed(1)} lb</strong>
+      <strong>
+        ${targetWeight.toFixed(1)} lb
+      </strong>
+    </div>
+
+    <div
+      class="status-pill ${status.className}"
+    >
+      ${status.label}
     </div>
   `;
 
-  output.innerHTML = html;
+
+  output.innerHTML =
+    html;
+
 }
+
 
 renderDescentSchedule();
 function renderCompetitionMode() {
