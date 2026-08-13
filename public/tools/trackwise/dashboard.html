@@ -48,6 +48,7 @@
 
     body{
       margin:0;
+
       background:
         radial-gradient(
           circle at top,
@@ -55,6 +56,7 @@
           transparent 30%
         ),
         var(--tw-bg);
+
       color:var(--tw-text);
     }
 
@@ -67,10 +69,11 @@
 
     .trackwise-board{
       width:100%;
+      padding:0;
+
       background:transparent;
       border:0;
       box-shadow:none;
-      padding:0;
     }
 
     .trackwise-top{
@@ -78,22 +81,28 @@
       grid-template-columns:1fr auto;
       gap:20px;
       align-items:center;
+
       padding:24px;
+
       border-radius:24px;
       border:1px solid var(--tw-line);
+
       background:
         linear-gradient(
           135deg,
           rgba(76,29,149,.24),
           rgba(7,16,25,.96)
         );
+
       box-shadow:
         0 18px 50px rgba(0,0,0,.26);
     }
 
     .trackwise-kicker{
       margin:0 0 8px;
+
       color:var(--tw-purple);
+
       font-size:.78rem;
       font-weight:1000;
       letter-spacing:.14em;
@@ -102,8 +111,10 @@
 
     .trackwise-top h1{
       margin:0;
+
       font-size:
         clamp(2rem,5vw,3.4rem);
+
       line-height:1;
       letter-spacing:-.04em;
     }
@@ -111,6 +122,7 @@
     .trackwise-tag{
       margin:10px 0 0;
       max-width:560px;
+
       color:#cbd5e1;
       line-height:1.55;
     }
@@ -118,23 +130,29 @@
     .streak-card{
       min-width:180px;
       padding:18px;
+
       border-radius:18px;
+
       border:
         1px solid rgba(167,139,250,.22);
+
       background:
         rgba(15,23,42,.72);
+
       text-align:center;
     }
 
     .streak-card strong{
       display:block;
       margin-top:6px;
+
       font-size:1.8rem;
       color:#fff;
     }
 
     .streak-card p:last-child{
       margin:6px 0 0;
+
       color:var(--tw-muted);
       font-size:.88rem;
     }
@@ -144,6 +162,7 @@
       align-items:flex-end;
       justify-content:space-between;
       gap:18px;
+
       margin:28px 0 12px;
     }
 
@@ -154,28 +173,36 @@
 
     .trackwise-section-head p{
       margin:4px 0 0;
+
       color:var(--tw-muted);
       font-size:.9rem;
     }
 
     .trackwise-main-grid{
       display:grid;
+
       grid-template-columns:
         repeat(2,minmax(0,1fr));
+
       gap:14px;
     }
 
     .metric-card{
       min-height:150px;
       padding:18px;
+
       border-radius:20px;
-      border:1px solid var(--tw-line-soft);
+
+      border:
+        1px solid var(--tw-line-soft);
+
       background:
         linear-gradient(
           180deg,
           rgba(15,23,42,.94),
           rgba(7,16,25,.96)
         );
+
       box-shadow:
         0 12px 30px rgba(0,0,0,.18);
     }
@@ -189,6 +216,7 @@
       display:flex;
       align-items:center;
       gap:14px;
+
       margin-top:12px;
     }
 
@@ -214,17 +242,42 @@
 
     .lane-main h2{
       margin:0;
+
       font-size:
-        clamp(1.5rem,4vw,2rem);
+        clamp(1.45rem,4vw,2rem);
     }
 
     .metric-card > p:last-child{
-      color:var(--tw-muted);
       margin:12px 0 0;
+      color:var(--tw-muted);
     }
 
     .full-lane{
       grid-column:1 / -1;
+    }
+
+    .macro-style-card{
+      border-color:
+        rgba(34,197,94,.20);
+    }
+
+    .macro-style-value{
+      margin:10px 0 0;
+
+      color:#86efac;
+
+      font-size:
+        clamp(1.7rem,4vw,2.3rem);
+
+      line-height:1;
+      letter-spacing:-.03em;
+    }
+
+    .macro-style-note{
+      margin:8px 0 0;
+
+      color:#cbd5e1;
+      line-height:1.5;
     }
 
     .hydration-card{
@@ -260,8 +313,10 @@
 
     .trackwise-actions{
       display:grid;
+
       grid-template-columns:
-        repeat(3,minmax(0,1fr));
+        repeat(2,minmax(0,1fr));
+
       gap:14px;
       margin-top:28px;
     }
@@ -269,7 +324,7 @@
     .trackwise-action-row{
       margin:0;
       padding:18px;
-      min-height:180px;
+      min-height:170px;
 
       display:flex;
       flex-direction:column;
@@ -277,7 +332,9 @@
       gap:18px;
 
       border-radius:20px;
-      border:1px solid var(--tw-line-soft);
+
+      border:
+        1px solid var(--tw-line-soft);
 
       background:
         linear-gradient(
@@ -289,6 +346,7 @@
 
     .trackwise-action-row h2{
       margin:6px 0 0;
+
       font-size:1.15rem;
       line-height:1.35;
     }
@@ -307,6 +365,7 @@
     .trackwise-bottom{
       display:flex;
       justify-content:center;
+
       margin-top:20px;
     }
 
@@ -316,12 +375,15 @@
 
     .trackwise-note{
       margin:24px 0 0;
+
       text-align:center;
+
       color:#64748b;
       font-size:.82rem;
     }
 
     @media (max-width:800px){
+
       .trackwise-top{
         grid-template-columns:1fr;
       }
@@ -336,6 +398,7 @@
     }
 
     @media (max-width:640px){
+
       .trackwise-wrap{
         padding:18px 12px 30px;
       }
@@ -356,6 +419,7 @@
       .metric-card{
         min-height:auto;
         padding:16px;
+
         border-radius:18px;
       }
 
@@ -423,7 +487,7 @@
           </h2>
 
           <p>
-            Your intake and recovery signals for today.
+            Your nutrition, hydration, and recovery signals for today.
           </p>
 
         </div>
@@ -475,13 +539,92 @@
             </div>
 
             <h2 id="proteinOutput">
-              0 g / 0 g
+              0g / 0g
             </h2>
 
           </div>
 
           <p id="proteinGoalOutput">
             Daily protein target
+          </p>
+
+        </article>
+
+
+        <!-- CARBS -->
+
+        <article class="metric-card tracker-lane stat-card">
+
+          <p class="range-label">
+            Carbohydrates
+          </p>
+
+          <div class="lane-main">
+
+            <div class="metric-icon">
+              🍞
+            </div>
+
+            <h2 id="carbsOutput">
+              0g / 0g
+            </h2>
+
+          </div>
+
+          <p>
+            Daily carbohydrate target
+          </p>
+
+        </article>
+
+
+        <!-- FATS -->
+
+        <article class="metric-card tracker-lane stat-card">
+
+          <p class="range-label">
+            Fats
+          </p>
+
+          <div class="lane-main">
+
+            <div class="metric-icon">
+              🥑
+            </div>
+
+            <h2 id="fatsOutput">
+              0g / 0g
+            </h2>
+
+          </div>
+
+          <p>
+            Daily fat target
+          </p>
+
+        </article>
+
+
+        <!-- MACRO STYLE -->
+
+        <article class="metric-card full-lane macro-style-card">
+
+          <p class="range-label">
+            Macro Direction
+          </p>
+
+          <h2
+            id="macroSuggestion"
+            class="macro-style-value"
+          >
+            —
+          </h2>
+
+          <p
+            id="macroStyleNote"
+            class="macro-style-note"
+          >
+            Loading macro direction...
           </p>
 
         </article>
@@ -498,7 +641,7 @@
           <div class="lane-main">
 
             <div class="metric-icon h2o-mark">
-              H<sub>2</sub>O
+              💧
             </div>
 
             <h2 id="waterOutput">
@@ -560,7 +703,7 @@
           </h2>
 
           <p>
-            Check in, review details, or adjust your setup.
+            Check in, review your numbers, and keep building consistency.
           </p>
 
         </div>
@@ -569,6 +712,8 @@
 
 
       <section class="trackwise-actions">
+
+        <!-- CHECK IN -->
 
         <section class="trackwise-action-row">
 
@@ -594,25 +739,27 @@
         </section>
 
 
+        <!-- HISTORY -->
+
         <section class="trackwise-action-row">
 
           <div>
 
             <p class="range-label">
-              Go Deeper
+              History
             </p>
 
             <h2>
-              Macros, logs, setup, and history.
+              Review your recent logs, trends, and progress.
             </h2>
 
           </div>
 
           <a
             class="secondary-btn compact-btn"
-            href="/account/macros.html"
+            href="/account/logs.html"
           >
-            Explore →
+            View History →
           </a>
 
         </section>

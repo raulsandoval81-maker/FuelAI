@@ -40,6 +40,26 @@ const proteinGoalOutput =
     "proteinGoalOutput"
   );
 
+const carbsOutput =
+  document.getElementById(
+    "carbsOutput"
+  );
+
+const fatsOutput =
+  document.getElementById(
+    "fatsOutput"
+  );
+
+const macroSuggestion =
+  document.getElementById(
+    "macroSuggestion"
+  );
+
+const macroStyleNote =
+  document.getElementById(
+    "macroStyleNote"
+  );
+
 const workoutOutput =
   document.getElementById(
     "workoutOutput"
@@ -294,6 +314,13 @@ function estimateTargets(
       : 2200;
 
 
+  let split = {
+    protein: 35,
+    carbs: 40,
+    fats: 25
+  };
+
+
   if (
     goal ===
     "cutwise"
@@ -303,6 +330,12 @@ function estimateTargets(
       weight
         ? weight * 11
         : 1800;
+
+    split = {
+      protein: 40,
+      carbs: 35,
+      fats: 25
+    };
 
   }
 
@@ -317,22 +350,63 @@ function estimateTargets(
         ? weight * 16
         : 2600;
 
+    split = {
+      protein: 40,
+      carbs: 40,
+      fats: 20
+    };
+
   }
+
+
+  const roundedCalories =
+    Math.round(
+      calories
+    );
 
 
   return {
 
     calories:
-      Math.round(
-        calories
-      ),
+      roundedCalories,
 
     protein:
-      weight
-        ? Math.round(
-            weight * 0.8
+      Math.round(
+        (
+          roundedCalories *
+          (
+            split.protein /
+            100
           )
-        : 160
+        ) /
+        4
+      ),
+
+    carbs:
+      Math.round(
+        (
+          roundedCalories *
+          (
+            split.carbs /
+            100
+          )
+        ) /
+        4
+      ),
+
+    fats:
+      Math.round(
+        (
+          roundedCalories *
+          (
+            split.fats /
+            100
+          )
+        ) /
+        9
+      ),
+
+    split
 
   };
 
@@ -596,8 +670,22 @@ function renderCaloriesAndProtein() {
     );
 
 
+  let carbs =
+    cleanNumber(
+      summary.carbsToday ??
+      summary.carbs
+    );
+
+
+  let fats =
+    cleanNumber(
+      summary.fatsToday ??
+      summary.fats
+    );
+
+
   /*
-   * Safety guard against old
+   * Safety guards against old
    * corrupted/all-time totals.
    */
 
@@ -612,6 +700,20 @@ function renderCaloriesAndProtein() {
     protein > 500
   ) {
     protein = 0;
+  }
+
+
+  if (
+    carbs > 1000
+  ) {
+    carbs = 0;
+  }
+
+
+  if (
+    fats > 500
+  ) {
+    fats = 0;
   }
 
 
@@ -657,6 +759,26 @@ function renderCaloriesAndProtein() {
 
     proteinGoalOutput.textContent =
       "Daily protein target";
+
+  }
+
+
+  if (
+    carbsOutput
+  ) {
+
+    carbsOutput.textContent =
+      `${carbs}g / ${targets.carbs}g`;
+
+  }
+
+
+  if (
+    fatsOutput
+  ) {
+
+    fatsOutput.textContent =
+      `${fats}g / ${targets.fats}g`;
 
   }
 
@@ -1112,6 +1234,75 @@ function renderSleepWeek() {
 
 
 /* =========================
+   MACRO STYLE
+========================= */
+
+function renderMacroStyle() {
+
+  const setup =
+    getSetup();
+
+
+  const styles = {
+
+    fuelwise: {
+      split:
+        "35 / 40 / 25",
+
+      note:
+        "Protein / Carbs / Fat. Balanced eating for maintenance and consistency."
+    },
+
+    cutwise: {
+      split:
+        "40 / 35 / 25",
+
+      note:
+        "Protein / Carbs / Fat. Higher protein with controlled carbs for cutting."
+    },
+
+    gainwise: {
+      split:
+        "40 / 40 / 20",
+
+      note:
+        "Protein / Carbs / Fat. Higher protein and carbs for muscle growth and recovery."
+    }
+
+  };
+
+
+  const style =
+    styles[
+      setup.goal
+    ] ||
+    styles.fuelwise;
+
+
+  if (
+    macroSuggestion
+  ) {
+
+    macroSuggestion.textContent =
+      style.split;
+
+  }
+
+
+  if (
+    macroStyleNote
+  ) {
+
+    macroStyleNote.textContent =
+      style.note;
+
+  }
+
+}
+
+
+
+/* =========================
    START
 ========================= */
 
@@ -1124,3 +1315,5 @@ renderCaloriesAndProtein();
 renderWorkoutWeek();
 
 renderSleepWeek();
+
+renderMacroStyle();
