@@ -965,7 +965,117 @@ const status =
     : null;
 
   const coachReviewNeeded =
-  weeklyPace > 2 || projectedGap > 3;
+    weeklyPace > 2 ||
+    projectedGap > 3;
+
+
+  /*
+   * HIGH RISK
+   *
+   * Keep Competition Mode focused on
+   * awareness and review. Do not grade
+   * the athlete against an unsafe pace.
+   */
+
+  if (
+    status.label ===
+      "HIGH RISK"
+  ) {
+
+    output.innerHTML = `
+      <h2>
+        ${competitionName}
+      </h2>
+
+      <div class="history-row">
+        <span>
+          Current Weight
+        </span>
+
+        <strong>
+          ${currentWeight.toFixed(1)} lb
+        </strong>
+      </div>
+
+      <div class="history-row">
+        <span>
+          Target Weight
+        </span>
+
+        <strong>
+          ${targetWeight.toFixed(1)} lb
+        </strong>
+      </div>
+
+      <div class="history-row">
+        <span>
+          Weight Remaining
+        </span>
+
+        <strong>
+          ${weightRemaining.toFixed(1)} lb
+        </strong>
+      </div>
+
+      <div class="history-row">
+        <span>
+          Days Remaining
+        </span>
+
+        <strong>
+          ${Math.max(0, daysRemaining)}
+        </strong>
+      </div>
+
+      ${
+        trend
+          ? `
+            <div class="history-row">
+              <span>
+                7-Day Change
+              </span>
+
+              <strong>
+                ${
+                  trend.change >= 0
+                    ? "+"
+                    : ""
+                }${trend.change.toFixed(1)} lb
+              </strong>
+            </div>
+          `
+          : ""
+      }
+
+      <div
+        class="status-pill ${status.className}"
+      >
+        ${status.label}
+      </div>
+
+      <div class="history-row">
+        <span>
+          Coach Review
+        </span>
+
+        <strong>
+          Required
+        </strong>
+      </div>
+
+      <p class="guidance">
+        This target requires review.
+        Recheck the weight class,
+        competition timeline, and plan
+        before continuing weight-descent
+        planning.
+      </p>
+    `;
+
+    return;
+
+  }
+
 
   output.innerHTML = `
     <h2>${competitionName}</h2>
