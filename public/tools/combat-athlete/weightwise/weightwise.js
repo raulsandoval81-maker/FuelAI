@@ -145,12 +145,204 @@ competitionName:
   loadPlan();
 }
 
-const HISTORY_KEY = "fuelai-weightwise-history";
+function getWeightDateKey(
+  entry
+) {
+
+  if (
+    entry?.weighInDate
+  ) {
+    return entry.weighInDate;
+  }
+
+
+  if (
+    !entry?.createdAt
+  ) {
+    return "";
+  }
+
+
+  const date =
+    new Date(
+      entry.createdAt
+    );
+
+
+  if (
+    Number.isNaN(
+      date.getTime()
+    )
+  ) {
+    return "";
+  }
+
+
+  const parts =
+    new Intl.DateTimeFormat(
+      "en-US",
+      {
+        timeZone:
+          "America/Los_Angeles",
+
+        year:
+          "numeric",
+
+        month:
+          "2-digit",
+
+        day:
+          "2-digit"
+      }
+    )
+      .formatToParts(
+        date
+      );
+
+
+  const year =
+    parts.find(
+      (part) =>
+        part.type === "year"
+    )?.value;
+
+  const month =
+    parts.find(
+      (part) =>
+        part.type === "month"
+    )?.value;
+
+  const day =
+    parts.find(
+      (part) =>
+        part.type === "day"
+    )?.value;
+
+
+  return (
+    year &&
+    month &&
+    day
+  )
+    ? `${year}-${month}-${day}`
+    : "";
+
+}
+
+
+function getLegacyHistory() {
+
+  try {
+
+    const saved =
+      JSON.parse(
+        localStorage.getItem(
+          HISTORY_KEY
+        ) || "[]"
+      );
+
+    return Array.isArray(
+      saved
+    )
+      ? saved
+      : [];
+
+  } catch {
+
+    return [];
+
+  }
+
+}
+
+
+function getSharedWeightHistory() {
+
+  const logs =
+    window.FuelAILog
+      ?.getFuelLog?.() ||
+    [];
+
+
+  const userEmail =
+    window.FuelAIAuth
+      ?.getSoftUserEmail?.() ||
+    "";
+
+
+  if (
+    !userEmail
+  ) {
+    return [];
+  }
+
+
+  return logs
+    .filter(
+      (entry) =>
+
+        entry?.type ===
+          "weight" &&
+
+        entry?.userEmail ===
+          userEmail &&
+
+        Number.isFinite(
+          Number(
+            entry.weight
+          )
+        ) &&
+
+        Number(
+          entry.weight
+        ) > 0
+    )
+    .map(
+      (entry) => ({
+
+        athleteName:
+          entry.athleteName ||
+          "",
+
+        date:
+          getWeightDateKey(
+            entry
+          ),
+
+        weight:
+          Number(
+            entry.weight
+          ),
+
+        loggedAt:
+          entry.createdAt ||
+          "",
+
+        source:
+          entry.source ||
+          "fuelai",
+
+        sharedLogId:
+          entry.id ||
+          ""
+
+      })
+    )
+    .filter(
+      (entry) =>
+        entry.date
+    );
+
+}
+
 
 function getHistory() {
-  const saved = localStorage.getItem(HISTORY_KEY);
-  return saved ? JSON.parse(saved) : [];
+
+  return getSharedWeightHistory();
+
 }
+
+
 function getWeeklyTrend() {
   const history =
     getHistory()
@@ -236,86 +428,241 @@ function getTrendStatus(actualPace, requiredPace) {
 }
 
 function getLatestWeighIn() {
+
   const history =
     getHistory()
-      .filter((entry) =>
-        entry.date &&
-        entry.weight
+      .filter(
+        (entry) =>
+          entry.date &&
+          entry.weight
       )
-      .sort((a, b) =>
-        new Date(b.date) - new Date(a.date)
+      .sort(
+        (a, b) => {
+
+          const aTime =
+            new Date(
+              a.loggedAt ||
+              a.date
+            ).getTime();
+
+          const bTime =
+            new Date(
+              b.loggedAt ||
+              b.date
+            ).getTime();
+
+          return (
+            bTime -
+            aTime
+          );
+
+        }
       );
 
-  return history[0] || null;
+
+  return (
+    history[0] ||
+    null
+  );
+
 }
 
-
-function saveHistory(history) {
-  localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
-}
 
 function renderHistory() {
   const list = document.getElementById("historyList");
 
   if (!list) return;
 
-  const history = getHistory()
-    .sort((a, b) => new Date(b.date) - new Date(a.date));
+  const history =
+    getHistory()
+      .sort(
+        (a, b) => {
+
+          const aTime =
+            new Date(
+              a.loggedAt ||
+              a.date
+            ).getTime();
+
+          const bTime =
+            new Date(
+              b.loggedAt ||
+              b.date
+            ).getTime();
+
+          return (
+            bTime -
+            aTime
+          );
+
+        }
+      );
 
   if (!history.length) {
     list.textContent = "No weigh-ins yet.";
     return;
   }
 
+  const displayName =
+    getWeightwiseNickname();
+
+
   list.innerHTML = history
     .map((entry) => {
       return `
         <div class="history-row">
-        <span>
-  ${entry.athleteName || "Athlete"} · ${entry.date}
-</span>
+          <span>
+            ${displayName} · ${entry.date}
+          </span>
 
-          <strong>${Number(entry.weight).toFixed(1)} lb</strong>
+          <strong>
+            ${Number(entry.weight).toFixed(1)} lb
+          </strong>
         </div>
       `;
     })
     .join("");
 }
 
+function getWeightwiseNickname() {
+
+  try {
+
+    const setup =
+      JSON.parse(
+        localStorage.getItem(
+          "fuelai-setup"
+        ) || "{}"
+      );
+
+    return (
+      setup.nickname ||
+      "Athlete"
+    );
+
+  } catch {
+
+    return "Athlete";
+
+  }
+
+}
+
+
 function setupHistoryForm() {
-  const historyForm = document.getElementById("historyForm");
 
-  if (!historyForm) return;
-  const athleteInput = document.getElementById("athleteName");
-  const dateInput = document.getElementById("logDate");
-  const weightInput = document.getElementById("logWeight");
+  const historyForm =
+    document.getElementById(
+      "historyForm"
+    );
 
-  dateInput.value = new Date().toISOString().slice(0, 10);
+  if (!historyForm) {
+    return;
+  }
 
-  historyForm.addEventListener("submit", function (event) {
-    event.preventDefault();
 
-    const history = getHistory();
+  const dateInput =
+    document.getElementById(
+      "logDate"
+    );
 
-history.push({
-  athleteName: athleteInput
-    ? athleteInput.value.trim()
-    : "",
+  const weightInput =
+    document.getElementById(
+      "logWeight"
+    );
 
-  date: dateInput.value,
 
-  weight: weightInput.value,
+  if (
+    !dateInput ||
+    !weightInput
+  ) {
+    return;
+  }
 
-  loggedAt: new Date().toISOString()
-});
-    saveHistory(history);
 
-    weightInput.value = "";
-    renderHistory();
-  });
+  dateInput.value =
+    new Date()
+      .toISOString()
+      .slice(
+        0,
+        10
+      );
+
+
+  historyForm.addEventListener(
+    "submit",
+    function (event) {
+
+      event.preventDefault();
+
+
+      const weight =
+        Number(
+          weightInput.value
+        );
+
+      const date =
+        dateInput.value;
+
+      const userEmail =
+        window.FuelAIAuth
+          ?.getSoftUserEmail?.() ||
+        "";
+
+      const athleteName =
+        getWeightwiseNickname();
+
+
+      if (
+        !Number.isFinite(
+          weight
+        ) ||
+        weight <= 0 ||
+        !userEmail
+      ) {
+        return;
+      }
+
+
+      window.FuelAILog
+        ?.addFuelLog?.({
+
+          type:
+            "weight",
+
+          weight,
+
+          source:
+            "weightwise",
+
+          userEmail,
+
+          athleteName,
+
+          weighInDate:
+            date
+
+        });
+
+
+      weightInput.value =
+        "";
+
+
+      renderHistory();
+
+      renderDescentSchedule();
+
+      renderCompetitionMode();
+
+    }
+  );
+
 
   renderHistory();
+
 }
+
 
 setupHistoryForm();
 function renderDescentSchedule() {
@@ -335,8 +682,17 @@ function renderDescentSchedule() {
 
   const plan = JSON.parse(saved);
 
+  const latestWeighIn =
+    getLatestWeighIn();
+
   const currentWeight =
-    Number(plan.currentWeight);
+    latestWeighIn
+      ? Number(
+          latestWeighIn.weight
+        )
+      : Number(
+          plan.currentWeight
+        );
 
   const targetWeight =
     Number(plan.targetWeight);
