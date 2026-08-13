@@ -202,11 +202,11 @@
         ?.trackwise
     ) {
       toolLinks.push(
-        navLink(
-          "/tools/trackwise/",
-          "📈 TrackWise"
-        )
-      );
+navLink(
+  "/tools/trackwise/dashboard.html",
+  "📈 TrackWise"
+)
+    );
     }
 
 
