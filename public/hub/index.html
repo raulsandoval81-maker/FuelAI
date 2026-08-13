@@ -60,9 +60,9 @@
 
     .hub-header{
       display:grid;
-      grid-template-columns:1fr auto;
-      gap:20px;
-      align-items:center;
+      grid-template-columns:1fr 360px;
+      gap:22px;
+      align-items:stretch;
 
       padding:24px;
 
@@ -78,6 +78,12 @@
 
       box-shadow:
         0 18px 50px rgba(0,0,0,.26);
+    }
+
+    .hub-header-copy{
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
     }
 
     .hub-kicker{
@@ -101,7 +107,7 @@
       letter-spacing:-.05em;
     }
 
-    .hub-header p{
+    .hub-header-copy > p:last-child{
       margin:12px 0 0;
       max-width:560px;
 
@@ -110,18 +116,26 @@
     }
 
     .hub-profile{
-      min-width:190px;
-      padding:16px 18px;
+      width:100%;
+      padding:18px;
 
-      border-radius:18px;
+      border-radius:20px;
 
       border:
-        1px solid rgba(255,255,255,.08);
+        1px solid rgba(255,255,255,.09);
 
       background:
-        rgba(15,23,42,.72);
+        rgba(15,23,42,.80);
 
-      text-align:center;
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.02);
+    }
+
+    .hub-profile-top{
+      display:flex;
+      justify-content:space-between;
+      gap:14px;
+      align-items:flex-start;
     }
 
     .hub-profile-label{
@@ -135,21 +149,187 @@
       text-transform:uppercase;
     }
 
-    .hub-profile strong{
-      display:block;
-      margin-top:6px;
+    .hub-profile-name{
+      margin:5px 0 0;
 
       color:#fff;
-      font-size:1.05rem;
+
+      font-size:1.35rem;
+      line-height:1.15;
     }
 
-    .hub-profile span{
-      display:block;
-      margin-top:4px;
+    .hub-profile-type{
+      margin:5px 0 0;
+
+      color:#cbd5e1;
+
+      font-size:.92rem;
+      font-weight:700;
+    }
+
+    .hub-plan-badge{
+      flex:0 0 auto;
+
+      padding:7px 11px;
+
+      border-radius:999px;
+
+      border:
+        1px solid rgba(34,197,94,.28);
+
+      background:
+        rgba(34,197,94,.08);
 
       color:#86efac;
-      font-size:.85rem;
-      font-weight:800;
+
+      font-size:.72rem;
+      font-weight:1000;
+
+      letter-spacing:.08em;
+      text-transform:uppercase;
+    }
+
+    .hub-profile-grid{
+      display:grid;
+      grid-template-columns:
+        repeat(2,minmax(0,1fr));
+
+      gap:10px;
+
+      margin-top:16px;
+    }
+
+    .hub-profile-stat{
+      padding:11px 12px;
+
+      border-radius:14px;
+
+      border:
+        1px solid rgba(255,255,255,.06);
+
+      background:
+        rgba(255,255,255,.025);
+    }
+
+    .hub-profile-stat span{
+      display:block;
+
+      color:#64748b;
+
+      font-size:.68rem;
+      font-weight:900;
+
+      letter-spacing:.08em;
+      text-transform:uppercase;
+    }
+
+    .hub-profile-stat strong{
+      display:block;
+
+      margin-top:5px;
+
+      color:#f8fafc;
+
+      font-size:.9rem;
+      line-height:1.25;
+    }
+
+    .hub-weight-path{
+      margin-top:12px;
+      padding:12px;
+
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+
+      border-radius:14px;
+
+      border:
+        1px solid rgba(255,255,255,.06);
+
+      background:
+        rgba(255,255,255,.025);
+    }
+
+    .hub-weight-path strong{
+      font-size:.95rem;
+    }
+
+    .hub-weight-arrow{
+      color:#86efac;
+      font-weight:1000;
+    }
+
+    .hub-focus-card{
+      margin-top:12px;
+      padding:12px;
+
+      border-radius:14px;
+
+      border:
+        1px solid rgba(34,197,94,.12);
+
+      background:
+        rgba(34,197,94,.05);
+    }
+
+    .hub-focus-card span{
+      display:block;
+
+      color:#86efac;
+
+      font-size:.68rem;
+      font-weight:900;
+
+      letter-spacing:.08em;
+      text-transform:uppercase;
+    }
+
+    .hub-focus-card strong{
+      display:block;
+
+      margin-top:5px;
+
+      color:#f8fafc;
+
+      font-size:.92rem;
+    }
+
+    .hub-profile-action{
+      display:flex;
+
+      margin-top:14px;
+    }
+
+    .hub-profile-action a{
+      width:100%;
+      min-height:44px;
+
+      display:flex;
+      align-items:center;
+      justify-content:center;
+
+      border-radius:13px;
+
+      border:
+        1px solid rgba(255,255,255,.08);
+
+      background:
+        rgba(255,255,255,.04);
+
+      color:#cbd5e1;
+
+      text-decoration:none;
+      font-size:.86rem;
+      font-weight:900;
+    }
+
+    .hub-profile-action a:hover{
+      border-color:
+        rgba(34,197,94,.26);
+
+      color:#fff;
     }
 
     .hub-section-head{
@@ -318,6 +498,14 @@
       color:#22c55e;
     }
 
+    @media (max-width:900px){
+
+      .hub-header{
+        grid-template-columns:1fr;
+      }
+
+    }
+
     @media (max-width:760px){
 
       .hub-wrap{
@@ -325,13 +513,16 @@
       }
 
       .hub-header{
-        grid-template-columns:1fr;
         padding:18px;
         border-radius:20px;
       }
 
       .hub-profile{
         width:100%;
+      }
+
+      .hub-profile-grid{
+        grid-template-columns:1fr 1fr;
       }
 
       .hub-grid{
@@ -354,6 +545,18 @@
       }
     }
 
+    @media (max-width:480px){
+
+      .hub-profile-grid{
+        grid-template-columns:1fr;
+      }
+
+      .hub-profile-top{
+        align-items:center;
+      }
+
+    }
+
     @media (prefers-reduced-motion:reduce){
 
       .hub-card{
@@ -371,7 +574,7 @@
 
     <header class="hub-header">
 
-      <div>
+      <div class="hub-header-copy">
 
         <p class="hub-kicker">
           FuelAI
@@ -388,21 +591,138 @@
       </div>
 
 
-      <div class="hub-profile">
+      <!-- PROFILE OWNERSHIP -->
 
-        <p class="hub-profile-label">
-          Current Experience
-        </p>
+      <section
+        class="hub-profile"
+        aria-label="Your FuelAI profile"
+      >
 
-        <strong id="hubProfileOutput">
-          Loading...
-        </strong>
+        <div class="hub-profile-top">
 
-        <span id="hubPlanOutput">
-          Loading plan...
-        </span>
+          <div>
 
-      </div>
+            <p class="hub-profile-label">
+              Your FuelAI Profile
+            </p>
+
+            <h2
+              id="hubNicknameOutput"
+              class="hub-profile-name"
+            >
+              FuelAI User
+            </h2>
+
+            <p
+              id="hubProfileOutput"
+              class="hub-profile-type"
+            >
+              Loading profile...
+            </p>
+
+          </div>
+
+
+          <div
+            id="hubPlanOutput"
+            class="hub-plan-badge"
+          >
+            Loading...
+          </div>
+
+        </div>
+
+
+        <div class="hub-profile-grid">
+
+          <div class="hub-profile-stat">
+
+            <span>
+              Direction
+            </span>
+
+            <strong id="hubGoalOutput">
+              —
+            </strong>
+
+          </div>
+
+
+          <div class="hub-profile-stat">
+
+            <span>
+              Training
+            </span>
+
+            <strong id="hubActivityOutput">
+              —
+            </strong>
+
+          </div>
+
+
+          <div
+            id="hubCombatStat"
+            class="hub-profile-stat"
+            style="display:none;"
+          >
+
+            <span>
+              Combat Style
+            </span>
+
+            <strong id="hubCombatOutput">
+              —
+            </strong>
+
+          </div>
+
+        </div>
+
+
+        <div
+          id="hubWeightPath"
+          class="hub-weight-path"
+          style="display:none;"
+        >
+
+          <strong id="hubCurrentWeightOutput">
+            —
+          </strong>
+
+          <span class="hub-weight-arrow">
+            →
+          </span>
+
+          <strong id="hubTargetWeightOutput">
+            —
+          </strong>
+
+        </div>
+
+
+        <div class="hub-focus-card">
+
+          <span>
+            Weekly Focus
+          </span>
+
+          <strong id="hubWeeklyFocusOutput">
+            —
+          </strong>
+
+        </div>
+
+
+        <div class="hub-profile-action">
+
+          <a href="/account/setup.html">
+            Edit Profile →
+          </a>
+
+        </div>
+
+      </section>
 
     </header>
 
@@ -592,11 +912,37 @@
   <script>
     window.FuelAIAuth?.requireSoftLogin();
 
+
+    function getHubSetup() {
+
+      try {
+
+        return JSON.parse(
+          localStorage.getItem(
+            "fuelai-setup"
+          ) || "{}"
+        );
+
+      } catch {
+
+        return {};
+
+      }
+
+    }
+
+
+    const setup =
+      getHubSetup();
+
+
     const access =
       window.FuelAIPlan
         ?.getFuelAIAccess?.();
 
+
     const cards = {
+
       mealwise:
         document.getElementById(
           "mealwiseCard"
@@ -621,17 +967,75 @@
         document.getElementById(
           "combatAthleteCard"
         )
+
     };
+
+
+    const nicknameOutput =
+      document.getElementById(
+        "hubNicknameOutput"
+      );
+
 
     const profileOutput =
       document.getElementById(
         "hubProfileOutput"
       );
 
+
     const planOutput =
       document.getElementById(
         "hubPlanOutput"
       );
+
+
+    const goalOutput =
+      document.getElementById(
+        "hubGoalOutput"
+      );
+
+
+    const activityOutput =
+      document.getElementById(
+        "hubActivityOutput"
+      );
+
+
+    const combatStat =
+      document.getElementById(
+        "hubCombatStat"
+      );
+
+
+    const combatOutput =
+      document.getElementById(
+        "hubCombatOutput"
+      );
+
+
+    const weightPath =
+      document.getElementById(
+        "hubWeightPath"
+      );
+
+
+    const currentWeightOutput =
+      document.getElementById(
+        "hubCurrentWeightOutput"
+      );
+
+
+    const targetWeightOutput =
+      document.getElementById(
+        "hubTargetWeightOutput"
+      );
+
+
+    const weeklyFocusOutput =
+      document.getElementById(
+        "hubWeeklyFocusOutput"
+      );
+
 
     const emptyState =
       document.getElementById(
@@ -639,75 +1043,294 @@
       );
 
 
+    const GOAL_LABELS = {
+
+      fuelwise:
+        "Maintain / Balance",
+
+      cutwise:
+        "Lean Out",
+
+      gainwise:
+        "Build / Recover"
+
+    };
+
+
+    const ACTIVITY_LABELS = {
+
+      "1-2":
+        "1–2 Days / Week",
+
+      "2-3":
+        "2–3 Days / Week",
+
+      "4-5":
+        "4–5 Days / Week",
+
+      "6plus":
+        "6+ Days / Week",
+
+      "6-plus":
+        "6+ Days / Week"
+
+    };
+
+
+    const COMBAT_LABELS = {
+
+      grappling:
+        "Grappling Sports",
+
+      striking:
+        "Striking Sports",
+
+      mma:
+        "MMA / Mixed Combat"
+
+    };
+
+
+    function renderHubProfile() {
+
+      if (
+        nicknameOutput
+      ) {
+
+        nicknameOutput.textContent =
+          setup.nickname ||
+          "FuelAI User";
+
+      }
+
+
+      if (
+        profileOutput
+      ) {
+
+        profileOutput.textContent =
+          access?.profileLabel ||
+          (
+            setup.lifestyleType ===
+            "fitness-enthusiast"
+              ? "Fitness Enthusiast"
+              : setup.lifestyleType ===
+                "combat-athlete"
+                ? "Combat Athlete"
+                : "General Health"
+          );
+
+      }
+
+
+      if (
+        planOutput
+      ) {
+
+        planOutput.textContent =
+          access?.planLabel ||
+          access?.plan ||
+          "Free";
+
+      }
+
+
+      if (
+        goalOutput
+      ) {
+
+        goalOutput.textContent =
+          GOAL_LABELS[
+            setup.goal
+          ] ||
+          "Maintain / Balance";
+
+      }
+
+
+      if (
+        activityOutput
+      ) {
+
+        activityOutput.textContent =
+          ACTIVITY_LABELS[
+            setup.activityLevel
+          ] ||
+          "Not set";
+
+      }
+
+
+      const isCombat =
+        setup.lifestyleType ===
+        "combat-athlete";
+
+
+      if (
+        combatStat
+      ) {
+
+        combatStat.style.display =
+          isCombat
+            ? ""
+            : "none";
+
+      }
+
+
+      if (
+        combatOutput &&
+        isCombat
+      ) {
+
+        combatOutput.textContent =
+          COMBAT_LABELS[
+            setup.combatStyle
+          ] ||
+          "Not selected";
+
+      }
+
+
+      const hasCurrentWeight =
+        Boolean(
+          setup.weight
+        );
+
+
+      const hasTargetWeight =
+        Boolean(
+          setup.targetWeight
+        );
+
+
+      if (
+        weightPath
+      ) {
+
+        weightPath.style.display =
+          hasCurrentWeight ||
+          hasTargetWeight
+            ? "flex"
+            : "none";
+
+      }
+
+
+      if (
+        currentWeightOutput
+      ) {
+
+        currentWeightOutput.textContent =
+          hasCurrentWeight
+            ? `${setup.weight} lbs`
+            : "Current —";
+
+      }
+
+
+      if (
+        targetWeightOutput
+      ) {
+
+        targetWeightOutput.textContent =
+          hasTargetWeight
+            ? `${setup.targetWeight} lbs`
+            : "Target —";
+
+      }
+
+
+      if (
+        weeklyFocusOutput
+      ) {
+
+        weeklyFocusOutput.textContent =
+          setup.weeklyFocus ||
+          "Steady Energy Week";
+
+      }
+
+    }
+
+
     function applyHubAccess() {
 
-      if (!access) {
+      if (
+        !access
+      ) {
 
         console.warn(
           "FuelAI access data unavailable."
         );
 
         return;
+
       }
 
 
-      if (profileOutput) {
-        profileOutput.textContent =
-          access.profileLabel ||
-          "General Health";
-      }
-
-
-      if (planOutput) {
-        planOutput.textContent =
-          access.planLabel ||
-          access.plan ||
-          "Free";
-      }
-
-
-      let visibleCount = 0;
+      let visibleCount =
+        0;
 
 
       Object.entries(
         cards
-      ).forEach(
-        ([tool, card]) => {
+      )
+        .forEach(
+          (
+            [
+              tool,
+              card
+            ]
+          ) => {
 
-          if (!card) {
-            return;
+            if (
+              !card
+            ) {
+              return;
+            }
+
+
+            const allowed =
+              access.tools
+                ?.[tool] ===
+              true;
+
+
+            card.style.display =
+              allowed
+                ? ""
+                : "none";
+
+
+            if (
+              allowed
+            ) {
+
+              visibleCount++;
+
+            }
+
           }
-
-          const allowed =
-            access.tools?.[tool] ===
-            true;
-
-          card.style.display =
-            allowed
-              ? ""
-              : "none";
-
-          if (allowed) {
-            visibleCount += 1;
-          }
-        }
-      );
+        );
 
 
-      if (emptyState) {
+      if (
+        emptyState
+      ) {
+
         emptyState.style.display =
-          visibleCount === 0
+          visibleCount ===
+          0
             ? "block"
             : "none";
+
       }
 
-
-      console.log(
-        "FuelAI Hub Access:",
-        access
-      );
     }
 
+
+    renderHubProfile();
 
     applyHubAccess();
   </script>
