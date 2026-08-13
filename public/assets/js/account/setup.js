@@ -280,16 +280,18 @@ function updateGuidance() {
 
   const weight =
     Number.parseFloat(
-      weightInput
-        ?.value
+      weightInput?.value
+    );
+
+  const targetWeight =
+    Number.parseFloat(
+      targetWeightInput?.value
     );
 
 
   if (
     !height ||
-    !Number.isFinite(
-      weight
-    ) ||
+    !Number.isFinite(weight) ||
     weight <= 0
   ) {
 
@@ -297,37 +299,28 @@ function updateGuidance() {
       "Enter height and weight";
 
     return;
-
   }
 
 
-  const low =
-    Math.max(
-      1,
-      Math.round(
-        weight - 10
-      )
-    );
-
-  const high =
-    Math.round(
-      weight + 10
-    );
+  const targetText =
+    Number.isFinite(targetWeight) &&
+    targetWeight > 0
+      ? `${targetWeight} lbs`
+      : "Not set";
 
 
   rangeOutput.innerHTML = `
-
-    General range:<br>
-    ${low}–${high} lbs
-
-    <br><br>
-
     Current weight:<br>
     ${weight} lbs
 
     <br><br>
 
-    Training:<br>
+    Target weight:<br>
+    ${targetText}
+
+    <br><br>
+
+    Activity:<br>
     ${getActivityText()}
 
     <br><br>
@@ -335,21 +328,25 @@ function updateGuidance() {
     Profile:<br>
     ${getLifestyleText()}
 
-    <br><br>
+    ${
+      lifestyleType?.value ===
+      "combat-athlete"
+        ? `
+          <br><br>
 
-    Combat style:<br>
-    ${getCombatStyleText()}
+          Combat style:<br>
+          ${getCombatStyleText()}
+        `
+        : ""
+    }
 
     <br><br>
 
     Direction:<br>
     ${getGoalText()}
-
   `;
 
 }
-
-
 function syncCombatStyleVisibility() {
 
   if (

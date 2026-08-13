@@ -1,218 +1,666 @@
+"use strict";
+
+
+/* =========================
+   DOM
+========================= */
+
 const recoveryInput =
-  document.getElementById("recoveryInput");
+  document.getElementById(
+    "recoveryInput"
+  );
 
 const recoveryBtn =
-  document.getElementById("recoveryBtn");
+  document.getElementById(
+    "recoveryBtn"
+  );
 
 const recoveryOutput =
-  document.getElementById("recoveryOutput");
+  document.getElementById(
+    "recoveryOutput"
+  );
 
 const recoveryResponse =
-  document.getElementById("recoveryResponse");
+  document.getElementById(
+    "recoveryResponse"
+  );
+
+
+
+/* =========================
+   RESET PATTERNS
+========================= */
 
 const BREATHING_PATTERNS = {
+
   quick: {
-    label: "Quick Reset",
+    label:
+      "Quick Reset",
+
     steps: [
-      "Inhale 3 seconds.",
-      "Exhale 3 seconds.",
+      "Breathe in slowly for 3 seconds.",
+      "Breathe out slowly for 3 seconds.",
       "Repeat 3 times."
     ]
   },
+
 
   steady: {
-    label: "Steady Reset",
+    label:
+      "Steady Reset",
+
     steps: [
-      "Inhale 5 seconds.",
-      "Exhale 5 seconds.",
+      "Breathe in slowly for 4 seconds.",
+      "Breathe out slowly for 5 seconds.",
       "Repeat 3 times."
     ]
   },
+
 
   deep: {
-    label: "Deep Reset",
-    steps: [
-      "Inhale 4 seconds.",
-      "Hold 2 seconds.",
-      "Exhale 6 seconds.",
-      "Repeat 3 times."
-    ]
-  },
+    label:
+      "Slow Reset",
 
-  balance: {
-    label: "Balance Reset",
     steps: [
-      "Inhale 5 seconds.",
-      "Hold 5 seconds.",
-      "Exhale 5 seconds.",
+      "Breathe in gently for 4 seconds.",
+      "Breathe out slowly for 6 seconds.",
       "Repeat 3 times."
     ]
   }
+
 };
 
-function getRecoveryGuidance(text) {
+
+
+/* =========================
+   HELPERS
+========================= */
+
+function normalizeInput(
+  value
+) {
+
+  return String(
+    value ?? ""
+  )
+    .trim()
+    .toLowerCase();
+
+}
+
+
+function containsAny(
+  text,
+  terms
+) {
+
+  return terms.some(
+    (term) =>
+      text.includes(
+        term
+      )
+  );
+
+}
+
+
+
+/* =========================
+   RED FLAGS
+========================= */
+
+function hasRedFlag(
+  input
+) {
+
+  return containsAny(
+    input,
+    [
+      "chest pain",
+      "can't breathe",
+      "cannot breathe",
+      "trouble breathing",
+      "passed out",
+      "fainted",
+      "fainting",
+      "confused",
+      "confusion",
+      "severe dizziness",
+      "heart racing",
+      "irregular heartbeat",
+      "vomiting nonstop",
+      "can't keep fluids down",
+      "cannot keep fluids down"
+    ]
+  );
+
+}
+
+
+
+/* =========================
+   GUIDANCE
+========================= */
+
+function getRecoveryGuidance(
+  text
+) {
+
   const input =
-    String(text || "").toLowerCase();
+    normalizeInput(
+      text
+    );
+
+
+  /*
+   * SAFETY FIRST
+   */
 
   if (
-    input.includes("hydration") ||
-    input.includes("dehydrated") ||
-    input.includes("thirst") ||
-    input.includes("sweat") ||
-    input.includes("cramp")
+    hasRedFlag(
+      input
+    )
   ) {
+
     return {
-      pattern: BREATHING_PATTERNS.steady,
+      pattern:
+        null,
+
+      alert:
+        true,
+
       message:
-        "Start with water. If you trained hard or sweated a lot, add electrolytes. Coconut water can help with fluid and potassium, but pair it with real food after practice.",
+        "Those symptoms are outside what FuelAI should try to manage.",
+
       next:
-        "Water first. Then simple food."
+        "Stop training and get appropriate medical help rather than trying to push through it."
     };
+
   }
 
-  if (
-    input.includes("sore") ||
-    input.includes("soreness") ||
-    input.includes("aches") ||
-    input.includes("legs")
-  ) {
-    return {
-      pattern: BREATHING_PATTERNS.deep,
-      message:
-        "Soreness needs basics: protein, fluids, sleep, and light movement.",
-      next:
-        "Water plus eggs, Greek yogurt, berries, or a simple protein meal."
-    };
-  }
+
+  /*
+   * HYDRATION
+   */
 
   if (
-    input.includes("low energy") ||
-    input.includes("tired") ||
-    input.includes("flat") ||
-    input.includes("exhausted")
+    containsAny(
+      input,
+      [
+        "hydration",
+        "dehydrated",
+        "thirst",
+        "thirsty",
+        "sweat",
+        "sweating",
+        "cramp"
+      ]
+    )
   ) {
+
     return {
-      pattern: BREATHING_PATTERNS.steady,
+      pattern:
+        BREATHING_PATTERNS.steady,
+
       message:
-        "You probably need fuel, not punishment. Try water, electrolytes if needed, and simple carbs with protein.",
+        "Start by replacing fluids. If the session was long, hot, or involved heavy sweating, electrolytes may also be useful.",
+
       next:
-        "Banana + Greek yogurt, rice + eggs, or potatoes + chicken."
+        "Drink, cool down, and pair recovery with a normal meal or snack."
     };
+
   }
 
-  if (
-    input.includes("sleep") ||
-    input.includes("slept") ||
-    input.includes("poor sleep")
-  ) {
-    return {
-      pattern: BREATHING_PATTERNS.balance,
-      message:
-        "Poor sleep changes the day. Keep food simple, hydrate early, and avoid overcorrecting.",
-      next:
-        "Protect tonight. No perfect plan needed."
-    };
-  }
+
+  /*
+   * SORENESS
+   */
 
   if (
-    input.includes("practice") ||
-    input.includes("workout") ||
-    input.includes("training") ||
-    input.includes("lift")
+    containsAny(
+      input,
+      [
+        "sore",
+        "soreness",
+        "aches",
+        "aching",
+        "legs hurt",
+        "muscle pain"
+      ]
+    )
   ) {
+
     return {
-      pattern: BREATHING_PATTERNS.quick,
+      pattern:
+        BREATHING_PATTERNS.deep,
+
       message:
-        "Post-training recovery: water first, then protein plus carbs.",
+        "Training soreness is a signal to support recovery rather than chase another hard session.",
+
       next:
-        "Chicken or eggs, rice or potatoes, fruit, and electrolytes if you sweated hard."
+        "Fluids, normal food with protein and carbohydrate, light movement, and adequate sleep."
     };
+
   }
 
-  if (
-    input.includes("cut") ||
-    input.includes("weight") ||
-    input.includes("weigh")
-  ) {
-    return {
-      pattern: BREATHING_PATTERNS.deep,
-      message:
-        "Do not panic cut. Stabilize first with water, sodium balance, simple protein, and controlled carbs.",
-      next:
-        "No big swings. One controlled meal."
-    };
-  }
+
+  /*
+   * LOW ENERGY
+   */
 
   if (
-    input.includes("stress") ||
-    input.includes("overwhelmed") ||
-    input.includes("panic") ||
-    input.includes("anxious")
+    containsAny(
+      input,
+      [
+        "low energy",
+        "tired",
+        "flat",
+        "exhausted",
+        "drained",
+        "no energy"
+      ]
+    )
   ) {
+
     return {
-      pattern: BREATHING_PATTERNS.deep,
+      pattern:
+        BREATHING_PATTERNS.steady,
+
       message:
-        "Your brain is stacking everything equally. It is not all equal.",
+        "Low energy can have more than one cause. Start with the basics instead of guessing at one explanation.",
+
       next:
-        "Pick the smallest useful move."
+        "Check fluids, when you last ate, how you slept, and how hard you have been training."
     };
+
   }
+
+
+  /*
+   * SLEEP
+   */
+
+  if (
+    containsAny(
+      input,
+      [
+        "sleep",
+        "slept",
+        "poor sleep",
+        "didn't sleep",
+        "did not sleep"
+      ]
+    )
+  ) {
+
+    return {
+      pattern:
+        BREATHING_PATTERNS.steady,
+
+      message:
+        "A poor night of sleep can change how the day feels. Avoid turning one rough night into an all-or-nothing response.",
+
+      next:
+        "Keep food and hydration steady, adjust training if needed, and protect tonight's sleep."
+    };
+
+  }
+
+
+  /*
+   * POST TRAINING
+   */
+
+  if (
+    containsAny(
+      input,
+      [
+        "practice",
+        "workout",
+        "training",
+        "trained",
+        "lift",
+        "lifting",
+        "post workout"
+      ]
+    )
+  ) {
+
+    return {
+      pattern:
+        BREATHING_PATTERNS.quick,
+
+      message:
+        "After training, recovery starts with replacing fluids and giving the body enough nutrition to recover.",
+
+      next:
+        "Choose a normal meal or snack with protein and carbohydrate."
+    };
+
+  }
+
+
+  /*
+   * WEIGHT / CUTTING
+   */
+
+  if (
+    containsAny(
+      input,
+      [
+        "cut",
+        "cutting",
+        "weight cut",
+        "make weight",
+        "weigh in",
+        "weigh-in"
+      ]
+    )
+  ) {
+
+    return {
+      pattern:
+        BREATHING_PATTERNS.deep,
+
+      message:
+        "Avoid reacting to one weigh-in with extreme restriction or dehydration.",
+
+      next:
+        "Use your established WeightWise plan or qualified coaching guidance instead of making a last-minute aggressive change."
+    };
+
+  }
+
+
+  /*
+   * STRESS
+   */
+
+  if (
+    containsAny(
+      input,
+      [
+        "stress",
+        "stressed",
+        "overwhelmed",
+        "panic",
+        "anxious",
+        "anxiety",
+        "spiral"
+      ]
+    )
+  ) {
+
+    return {
+      pattern:
+        BREATHING_PATTERNS.deep,
+
+      message:
+        "When everything feels urgent, the useful move is usually to reduce the number of decisions you are trying to solve at once.",
+
+      next:
+        "Choose one basic action you can complete now, then reassess."
+    };
+
+  }
+
+
+  /*
+   * DEFAULT
+   */
 
   return {
-    pattern: BREATHING_PATTERNS.steady,
+    pattern:
+      BREATHING_PATTERNS.steady,
+
     message:
-      "Start simple: water first, then protein, then carbs if you trained hard.",
+      "Start with the basics and avoid trying to solve everything at once.",
+
     next:
-      "Pick one grounded next move."
+      "Check hydration, food, sleep, and training load. Then choose one useful next move."
   };
+
 }
 
-function renderRecoveryResponse(result) {
-  recoveryResponse.innerHTML = `
-    <div class="meal-plan">
 
-      <p class="meal-label">
-        ${result.pattern.label}
-      </p>
 
-      <ul class="meal-list">
-        ${result.pattern.steps.map(step => `
-          <li>${step}</li>
-        `).join("")}
-      </ul>
+/* =========================
+   DOM BUILDERS
+========================= */
 
-      <div class="meal-divider"></div>
+function createTextElement(
+  tagName,
+  className,
+  text
+) {
 
-      <p class="meal-label">
-        Recovery Read
-      </p>
+  const element =
+    document.createElement(
+      tagName
+    );
 
-      <p class="meal-line">
-        ${result.message}
-      </p>
 
-      <div class="meal-divider"></div>
+  if (
+    className
+  ) {
 
-      <p class="meal-label">
-        Next Move
-      </p>
+    element.className =
+      className;
 
-      <p class="meal-line">
-        ${result.next}
-      </p>
+  }
 
-    </div>
-  `;
+
+  element.textContent =
+    text;
+
+
+  return element;
+
 }
 
-recoveryBtn?.addEventListener("click", () => {
-  const text =
-    recoveryInput?.value.trim() || "";
 
-  const result =
-    getRecoveryGuidance(text);
 
-  recoveryOutput?.classList.remove("hidden");
+/* =========================
+   RENDER
+========================= */
 
-  renderRecoveryResponse(result);
-});
+function renderRecoveryResponse(
+  result
+) {
+
+  if (
+    !recoveryResponse
+  ) {
+    return;
+  }
+
+
+  recoveryResponse.innerHTML =
+    "";
+
+
+  const plan =
+    document.createElement(
+      "div"
+    );
+
+
+  plan.className =
+    "meal-plan";
+
+
+  /*
+   * RESET
+   */
+
+  if (
+    result.pattern
+  ) {
+
+    plan.appendChild(
+      createTextElement(
+        "p",
+        "meal-label",
+        result.pattern.label
+      )
+    );
+
+
+    const list =
+      document.createElement(
+        "ul"
+      );
+
+
+    list.className =
+      "meal-list";
+
+
+    result.pattern.steps
+      .forEach(
+        (step) => {
+
+          const item =
+            document.createElement(
+              "li"
+            );
+
+
+          item.textContent =
+            step;
+
+
+          list.appendChild(
+            item
+          );
+
+        }
+      );
+
+
+    plan.appendChild(
+      list
+    );
+
+
+    const divider =
+      document.createElement(
+        "div"
+      );
+
+
+    divider.className =
+      "meal-divider";
+
+
+    plan.appendChild(
+      divider
+    );
+
+  }
+
+
+  /*
+   * READ
+   */
+
+  plan.appendChild(
+    createTextElement(
+      "p",
+      "meal-label",
+      result.alert
+        ? "Safety Check"
+        : "Recovery Read"
+    )
+  );
+
+
+  plan.appendChild(
+    createTextElement(
+      "p",
+      "meal-line",
+      result.message
+    )
+  );
+
+
+  const divider =
+    document.createElement(
+      "div"
+    );
+
+
+  divider.className =
+    "meal-divider";
+
+
+  plan.appendChild(
+    divider
+  );
+
+
+  /*
+   * NEXT MOVE
+   */
+
+  plan.appendChild(
+    createTextElement(
+      "p",
+      "meal-label",
+      "Next Move"
+    )
+  );
+
+
+  plan.appendChild(
+    createTextElement(
+      "p",
+      "meal-line",
+      result.next
+    )
+  );
+
+
+  recoveryResponse.appendChild(
+    plan
+  );
+
+}
+
+
+
+/* =========================
+   ACTION
+========================= */
+
+recoveryBtn
+  ?.addEventListener(
+    "click",
+    () => {
+
+      const text =
+        recoveryInput
+          ?.value
+          .trim() ||
+        "";
+
+
+      const result =
+        getRecoveryGuidance(
+          text
+        );
+
+
+      recoveryOutput
+        ?.classList
+        .remove(
+          "hidden"
+        );
+
+
+      renderRecoveryResponse(
+        result
+      );
+
+    }
+  );

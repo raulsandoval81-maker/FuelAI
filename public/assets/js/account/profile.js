@@ -1,34 +1,77 @@
+"use strict";
+
+
+/* =========================
+   DOM
+========================= */
+
 const profileCard =
-  document.getElementById("profileCard");
+  document.getElementById(
+    "profileCard"
+  );
 
 const historyList =
-  document.getElementById("historyList");
+  document.getElementById(
+    "historyList"
+  );
+
+
+
+/* =========================
+   SAFE STORAGE
+========================= */
+
+function safeJSONParse(
+  value,
+  fallback
+) {
+  try {
+    return (
+      JSON.parse(value) ??
+      fallback
+    );
+  } catch {
+    return fallback;
+  }
+}
+
 
 const setup =
-  JSON.parse(
-    localStorage.getItem("fuelai-setup") || "{}"
+  safeJSONParse(
+    localStorage.getItem(
+      "fuelai-setup"
+    ) || "{}",
+    {}
   );
 
+
 const scans =
-  JSON.parse(
-    localStorage.getItem("fuelai-history") || "[]"
+  safeJSONParse(
+    localStorage.getItem(
+      "fuelai-history"
+    ) || "[]",
+    []
   );
+
+
+
+/* =========================
+   LABELS
+========================= */
 
 const displayGoal = {
 
   fuelwise:
-    "FuelWise — Maintain",
+    "FuelWise — Maintain / Balance",
 
   cutwise:
-    "CutWise — Cut",
+    "CutWise — Lean Out",
 
   gainwise:
-    "GainWise — Gain",
-
-  hydratewise:
-    "HydrateWise — Hydration"
+    "GainWise — Build / Recover"
 
 };
+
 
 const displayFoodStyle = {
 
@@ -52,13 +95,42 @@ const displayFoodStyle = {
 
 };
 
-const displaySport = {
 
-  general:
+const displayLifestyle = {
+
+  "general-health":
     "General Health",
 
-  fitness:
-    "General Fitness",
+  "fitness-enthusiast":
+    "Fitness Enthusiast",
+
+  "combat-athlete":
+    "Combat Athlete"
+
+};
+
+
+const displayActivity = {
+
+  "1-2":
+    "1–2 days per week",
+
+  "2-3":
+    "2–3 days per week",
+
+  "4-5":
+    "4–5 days per week",
+
+  "6-plus":
+    "6+ days per week",
+
+  "6plus":
+    "6+ days per week"
+
+};
+
+
+const displayCombatStyle = {
 
   grappling:
     "Grappling Sports",
@@ -67,249 +139,488 @@ const displaySport = {
     "Striking Sports",
 
   mma:
-    "MMA"
+    "MMA / Mixed Combat"
 
 };
 
-if (profileCard) {
+
+
+/* =========================
+   ELEMENT HELPERS
+========================= */
+
+function createTextElement(
+  tagName,
+  className,
+  text
+) {
+
+  const element =
+    document.createElement(
+      tagName
+    );
+
+
+  if (
+    className
+  ) {
+    element.className =
+      className;
+  }
+
+
+  element.textContent =
+    text;
+
+
+  return element;
+}
+
+
+function createProfileRow(
+  label,
+  value
+) {
+
+  const row =
+    document.createElement(
+      "div"
+    );
+
+
+  row.className =
+    "profile-row";
+
+
+  const labelEl =
+    createTextElement(
+      "span",
+      "profile-label",
+      label
+    );
+
+
+  const valueEl =
+    createTextElement(
+      "span",
+      "profile-value",
+      value
+    );
+
+
+  row.append(
+    labelEl,
+    valueEl
+  );
+
+
+  return row;
+}
+
+
+
+/* =========================
+   PROFILE
+========================= */
+
+function renderEmptyProfile() {
+
+  if (
+    !profileCard
+  ) {
+    return;
+  }
+
+
+  profileCard.innerHTML =
+    "";
+
+
+  const wrapper =
+    document.createElement(
+      "div"
+    );
+
+
+  wrapper.className =
+    "empty-profile";
+
+
+  wrapper.append(
+    createTextElement(
+      "h2",
+      "",
+      "No User Setup Yet"
+    ),
+
+    createTextElement(
+      "p",
+      "",
+      "Complete setup to personalize FuelAI."
+    )
+  );
+
+
+  const link =
+    document.createElement(
+      "a"
+    );
+
+
+  link.className =
+    "secondary-btn";
+
+
+  link.href =
+    "/account/setup.html";
+
+
+  link.textContent =
+    "⚙️ Start Setup";
+
+
+  wrapper.appendChild(
+    link
+  );
+
+
+  profileCard.appendChild(
+    wrapper
+  );
+
+}
+
+
+function renderProfile() {
+
+  if (
+    !profileCard
+  ) {
+    return;
+  }
+
 
   profileCard.style.display =
     "block";
 
+
+  const hasSetup =
+    Boolean(
+      setup.nickname ||
+      setup.goal ||
+      setup.lifestyleType ||
+      setup.weight ||
+      setup.height
+    );
+
+
   if (
-    !setup.nickname &&
-    !setup.goal
+    !hasSetup
   ) {
 
-    profileCard.innerHTML = `
-      <div class="empty-profile">
+    renderEmptyProfile();
 
-        <h2>
-          No User Setup Yet
-        </h2>
-
-        <p>
-          Complete setup to personalize FuelAI.
-        </p>
-
-        <a
-          class="secondary-btn"
-          href="/account/setup.html"
-        >
-          ⚙️ Start Setup
-        </a>
-
-      </div>
-    `;
-
-  } else {
-
-    profileCard.innerHTML = `
-
-<div class="profile-header">
-
-  <h2 class="profile-name">
-    ${setup.nickname || "FuelAI User"}
-  </h2>
-
-</div>
-
-
-      <div class="profile-details">
-
-        <div class="profile-row">
-
-          <span class="profile-label">
-            Weekly Focus
-          </span>
-
-          <span class="profile-value">
-            ${
-              setup.weeklyFocus ||
-              "Steady Energy Week"
-            }
-          </span>
-
-        </div>
-
-        <div class="profile-row">
-
-          <span class="profile-label">
-            Lifestyle
-          </span>
-
-          <span class="profile-value">
-            ${
-              displaySport[
-                setup.sportType ||
-                setup.lifestyleType
-              ] ||
-              "General Health"
-            }
-          </span>
-
-        </div>
-
-        <div class="profile-row">
-
-          <span class="profile-label">
-            Activity
-          </span>
-
-          <span class="profile-value">
-            ${setup.activityLevel || "--"}
-          </span>
-
-        </div>
-
-        <div class="profile-row">
-
-          <span class="profile-label">
-            Food Style
-          </span>
-
-          <span class="profile-value">
-            ${
-              displayFoodStyle[
-                setup.foodStyle
-              ] || "No Preference"
-            }
-          </span>
-
-        </div>
-
-        <div class="profile-row">
-
-          <span class="profile-label">
-            Avoids
-          </span>
-
-          <span class="profile-value">
-            ${setup.foodAvoid || "None"}
-          </span>
-
-        </div>
-
-        <div class="profile-row">
-
-          <span class="profile-label">
-            Height
-          </span>
-
-          <span class="profile-value">
-            ${setup.height || "--"}
-          </span>
-
-        </div>
-
-        <div class="profile-row">
-
-          <span class="profile-label">
-            Weight
-          </span>
-
-          <span class="profile-value">
-            ${setup.weight || "--"}
-          </span>
-
-        </div>
-
-        <div class="profile-row">
-
-          <span class="profile-label">
-            Target
-          </span>
-
-          <span class="profile-value">
-            ${setup.targetWeight || "--"}
-          </span>
-
-        </div>
-
-        <div class="profile-row">
-
-          <span class="profile-label">
-            Age Range
-          </span>
-
-          <span class="profile-value">
-            ${setup.ageRange || "--"}
-          </span>
-
-        </div>
-
-      </div>
-    `;
+    return;
 
   }
 
-}
 
-if (historyList) {
+  profileCard.innerHTML =
+    "";
 
-  if (!scans.length) {
 
-    historyList.innerHTML = `
-      <div class="history-empty">
-        No recent scans yet.
-      </div>
-    `;
+  const header =
+    document.createElement(
+      "div"
+    );
 
-  } else {
 
-    historyList.innerHTML =
-      scans.map(scan => `
+  header.className =
+    "profile-header";
 
-        <div class="history-item">
 
-          ${
-            scan.image
-              ? `
-                <img
-                  class="history-thumb"
-                  src="${scan.image}"
-                  alt="Meal scan"
-                />
-              `
-              : ""
-          }
+  header.appendChild(
+    createTextElement(
+      "h2",
+      "profile-name",
+      setup.nickname ||
+      "FuelAI User"
+    )
+  );
 
-          <div>
 
-            <strong>
-              ${scan.mealName || "Meal Scan"}
-            </strong>
+  const details =
+    document.createElement(
+      "div"
+    );
 
-            <div class="history-meta">
 
-              ${scan.calories || "--"} Calories ·
+  details.className =
+    "profile-details";
 
-              ${
-                displayGoal[scan.goal] ||
-                scan.goal ||
-                "FuelWise"
-              }
 
-            </div>
+  details.append(
+    createProfileRow(
+      "Profile",
+      displayLifestyle[
+        setup.lifestyleType
+      ] ||
+      "General Health"
+    ),
 
-            <div class="history-meta">
+    createProfileRow(
+      "Weekly Focus",
+      setup.weeklyFocus ||
+      "Steady Energy Week"
+    ),
 
-              ${
-                scan.confidence
-                  ? `${scan.confidence} confidence · `
-                  : ""
-              }
+    createProfileRow(
+      "Direction",
+      displayGoal[
+        setup.goal
+      ] ||
+      displayGoal.fuelwise
+    ),
 
-              ${scan.createdAt || ""}
+    createProfileRow(
+      "Activity",
+      displayActivity[
+        setup.activityLevel
+      ] ||
+      setup.activityLevel ||
+      "Not set"
+    ),
 
-            </div>
+    createProfileRow(
+      "Food Style",
+      displayFoodStyle[
+        setup.foodStyle
+      ] ||
+      "No Preference"
+    ),
 
-          </div>
+    createProfileRow(
+      "Avoids",
+      setup.foodAvoid ||
+      "None"
+    ),
 
-        </div>
+    createProfileRow(
+      "Height",
+      setup.height ||
+      "—"
+    ),
 
-      `).join("");
+    createProfileRow(
+      "Weight",
+      setup.weight
+        ? `${setup.weight}`
+        : "—"
+    ),
+
+    createProfileRow(
+      "Target",
+      setup.targetWeight
+        ? `${setup.targetWeight}`
+        : "—"
+    ),
+
+    createProfileRow(
+      "Age Range",
+      setup.ageRange ||
+      "—"
+    )
+  );
+
+
+  if (
+    setup.lifestyleType ===
+    "combat-athlete"
+  ) {
+
+    details.appendChild(
+      createProfileRow(
+        "Combat Style",
+        displayCombatStyle[
+          setup.combatStyle
+        ] ||
+        "Not selected"
+      )
+    );
 
   }
 
+
+  profileCard.append(
+    header,
+    details
+  );
+
 }
+
+
+
+/* =========================
+   LEGACY SCAN HISTORY
+========================= */
+
+function renderHistory() {
+
+  if (
+    !historyList
+  ) {
+    return;
+  }
+
+
+  historyList.innerHTML =
+    "";
+
+
+  if (
+    !Array.isArray(
+      scans
+    ) ||
+    !scans.length
+  ) {
+
+    historyList.appendChild(
+      createTextElement(
+        "div",
+        "history-empty",
+        "No recent scans yet."
+      )
+    );
+
+    return;
+
+  }
+
+
+  scans.forEach(
+    (scan) => {
+
+      const item =
+        document.createElement(
+          "div"
+        );
+
+
+      item.className =
+        "history-item";
+
+
+      if (
+        scan.image
+      ) {
+
+        const img =
+          document.createElement(
+            "img"
+          );
+
+
+        img.className =
+          "history-thumb";
+
+
+        img.src =
+          scan.image;
+
+
+        img.alt =
+          "Meal scan";
+
+
+        item.appendChild(
+          img
+        );
+
+      }
+
+
+      const copy =
+        document.createElement(
+          "div"
+        );
+
+
+      copy.appendChild(
+        createTextElement(
+          "strong",
+          "",
+          scan.mealName ||
+          "Meal Scan"
+        )
+      );
+
+
+      copy.appendChild(
+        createTextElement(
+          "div",
+          "history-meta",
+          `${
+            scan.calories ||
+            "—"
+          } Calories · ${
+            displayGoal[
+              scan.goal
+            ] ||
+            "FuelWise"
+          }`
+        )
+      );
+
+
+      const confidenceText =
+        scan.confidence
+          ? `${scan.confidence} confidence`
+          : "";
+
+
+      const dateText =
+        scan.createdAt ||
+        "";
+
+
+      copy.appendChild(
+        createTextElement(
+          "div",
+          "history-meta",
+          [
+            confidenceText,
+            dateText
+          ]
+            .filter(
+              Boolean
+            )
+            .join(
+              " · "
+            )
+        )
+      );
+
+
+      item.appendChild(
+        copy
+      );
+
+
+      historyList.appendChild(
+        item
+      );
+
+    }
+  );
+
+}
+
+
+
+/* =========================
+   START
+========================= */
+
+renderProfile();
+
+renderHistory();

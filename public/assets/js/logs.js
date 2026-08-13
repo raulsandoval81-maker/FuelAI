@@ -1,210 +1,469 @@
-console.log("logs.js loaded");
-console.log("FuelAIPlan:", window.FuelAIPlan);
-console.log("FuelAILog:", window.FuelAILog);
+"use strict";
 
+
+/* =========================
+   DOM
+========================= */
 
 const logsContainer =
-  document.getElementById("logsContainer");
+  document.getElementById(
+    "logsContainer"
+  );
 
 const todaySnapshot =
-  document.getElementById("todaySnapshot");
+  document.getElementById(
+    "todaySnapshot"
+  );
 
 const toggleFullHistoryBtn =
-  document.getElementById("toggleFullHistoryBtn");
+  document.getElementById(
+    "toggleFullHistoryBtn"
+  );
 
 const fullHistoryContainer =
-  document.getElementById("fullHistoryContainer");
+  document.getElementById(
+    "fullHistoryContainer"
+  );
 
-  if (!logsContainer) {
-  console.warn("logsContainer missing");
-}
-
-const features =
-  window.FuelAIPlan?.getFuelAIFeatures?.() || {
-    trackwiseDays: 3
-  };
-
-const historyDays =
-  features.trackwiseDays || 3;
-
-function getDailyLogsSafe() {
-  if (
-    !window.FuelAILog ||
-    typeof window.FuelAILog.getDailyLogs !== "function"
-  ) {
-    return {};
-  }
-
-  return window.FuelAILog.getDailyLogs() || {};
-}
 
 const LOGS_TIME_ZONE =
   "America/Los_Angeles";
 
+
+
+/* =========================
+   PLAN ACCESS
+========================= */
+
+const features =
+  window.FuelAIPlan
+    ?.getFuelAIFeatures?.() ||
+  {
+    trackwiseDays: 3
+  };
+
+
+const historyDays =
+  Number(
+    features.trackwiseDays
+  ) || 3;
+
+
+
+/* =========================
+   HELPERS
+========================= */
+
+function parseLogNumber(
+  value
+) {
+
+  const match =
+    String(
+      value ?? ""
+    )
+      .replace(
+        /,/g,
+        ""
+      )
+      .match(
+        /-?\d+(?:\.\d+)?/
+      );
+
+
+  if (
+    !match
+  ) {
+    return 0;
+  }
+
+
+  const number =
+    Number(
+      match[0]
+    );
+
+
+  return (
+    Number.isFinite(
+      number
+    )
+      ? number
+      : 0
+  );
+
+}
+
+
+function getDailyLogsSafe() {
+
+  if (
+    !window.FuelAILog ||
+    typeof window.FuelAILog
+      .getDailyLogs !==
+      "function"
+  ) {
+    return {};
+  }
+
+
+  return (
+    window.FuelAILog
+      .getDailyLogs() ||
+    {}
+  );
+
+}
+
+
+
+/* =========================
+   DATE HELPERS
+========================= */
+
 function getTodayKey() {
+
   const parts =
     new Intl.DateTimeFormat(
       "en-US",
       {
-        timeZone: LOGS_TIME_ZONE,
-        year: "numeric",
-        month: "2-digit",
-        day: "2-digit"
+        timeZone:
+          LOGS_TIME_ZONE,
+
+        year:
+          "numeric",
+
+        month:
+          "2-digit",
+
+        day:
+          "2-digit"
       }
-    ).formatToParts(new Date());
+    )
+      .formatToParts(
+        new Date()
+      );
+
 
   const year =
-    parts.find(p => p.type === "year").value;
+    parts.find(
+      (part) =>
+        part.type ===
+        "year"
+    )?.value;
+
 
   const month =
-    parts.find(p => p.type === "month").value;
+    parts.find(
+      (part) =>
+        part.type ===
+        "month"
+    )?.value;
+
 
   const day =
-    parts.find(p => p.type === "day").value;
+    parts.find(
+      (part) =>
+        part.type ===
+        "day"
+    )?.value;
 
-  return `${year}-${month}-${day}`;
+
+  return (
+    `${year}-${month}-${day}`
+  );
+
 }
 
-function formatLogDate(dateValue) {
-  if (!dateValue) return "DAY";
 
-  const date =
-    new Date(`${dateValue}T12:00:00`);
+function formatLogDate(
+  dateValue
+) {
 
-  if (Number.isNaN(date.getTime())) {
+  if (
+    !dateValue
+  ) {
     return "DAY";
   }
 
+
+  const date =
+    new Date(
+      `${dateValue}T12:00:00`
+    );
+
+
+  if (
+    Number.isNaN(
+      date.getTime()
+    )
+  ) {
+    return "DAY";
+  }
+
+
   return date
-    .toLocaleDateString("en-US", {
-      weekday: "short",
-      month: "short",
-      day: "numeric"
-    })
+    .toLocaleDateString(
+      "en-US",
+      {
+        weekday:
+          "short",
+
+        month:
+          "short",
+
+        day:
+          "numeric"
+      }
+    )
     .toUpperCase();
+
 }
 
-function formatLogTime(day) {
+
+function formatLogTime(
+  day
+) {
+
   const raw =
     day.updatedAt ||
     day.lastUpdated ||
     day.createdAt ||
-    day.date;
+    "";
 
-  const date =
-    new Date(raw);
 
-  if (Number.isNaN(date.getTime())) {
+  if (
+    !raw
+  ) {
     return "";
   }
 
-  return date.toLocaleTimeString("en-US", {
-    hour: "numeric",
-    minute: "2-digit"
-  });
+
+  const date =
+    new Date(
+      raw
+    );
+
+
+  if (
+    Number.isNaN(
+      date.getTime()
+    )
+  ) {
+    return "";
+  }
+
+
+  return date
+    .toLocaleTimeString(
+      "en-US",
+      {
+        hour:
+          "numeric",
+
+        minute:
+          "2-digit"
+      }
+    );
+
 }
 
-function normalizeDay(day) {
+
+
+/* =========================
+   NORMALIZE
+========================= */
+
+function normalizeDay(
+  day
+) {
+
   return {
+
     date:
-      day.date || "",
+      day.date ||
+      "",
 
     calories:
-      Number(day.calories || day.caloriesToday || 0),
+      parseLogNumber(
+        day.calories ??
+        day.caloriesToday
+      ),
 
     protein:
-      Number(day.protein || day.proteinToday || 0),
+      parseLogNumber(
+        day.protein ??
+        day.proteinToday
+      ),
 
     water:
-      Number(day.water || day.waterToday || 0),
+      parseLogNumber(
+        day.water ??
+        day.waterToday
+      ),
 
     caloriesTarget:
-      day.caloriesTarget || day.targetCalories || "—",
+      day.caloriesTarget ??
+      day.targetCalories ??
+      "—",
 
     proteinTarget:
-      day.proteinTarget || day.targetProtein || "—",
+      day.proteinTarget ??
+      day.targetProtein ??
+      "—",
 
     trainingToday:
-      !!day.trainingToday ||
-      !!day.training ||
-      Number(day.trainingSessions || 0) > 0,
+      Boolean(
+        day.trainingToday ||
+        day.training ||
+        Number(
+          day.trainingSessions ||
+          0
+        ) > 0
+      ),
 
     latestWeight:
-      day.latestWeight ||
-      day.weight ||
+      day.latestWeight ??
+      day.weight ??
       "",
 
     scanCount:
-      Number(day.scanCount || day.scans || 0),
+      parseLogNumber(
+        day.scanCount ??
+        day.scans
+      ),
 
     sleepQuality:
-      day.sleepQuality || "",
+      day.sleepQuality ||
+      "",
 
     sleepHours:
-      day.sleepHours || "",
+      day.sleepHours ||
+      "",
 
     updatedAt:
       day.updatedAt ||
       day.lastUpdated ||
       day.createdAt ||
-      day.date
+      ""
+
   };
+
 }
 
+
 function getSortedDays() {
+
   const dailyLogs =
     getDailyLogsSafe();
 
+
   return Object
-    .values(dailyLogs)
-    .map(normalizeDay)
-    .sort((a, b) =>
-      new Date(`${b.date}T12:00:00`) -
-      new Date(`${a.date}T12:00:00`)
+    .values(
+      dailyLogs
+    )
+    .map(
+      normalizeDay
+    )
+    .filter(
+      (day) =>
+        day.date
+    )
+    .sort(
+      (a, b) => {
+
+        return (
+          new Date(
+            `${b.date}T12:00:00`
+          ) -
+          new Date(
+            `${a.date}T12:00:00`
+          )
+        );
+
+      }
     );
+
 }
 
-function renderTodaySnapshot(days) {
-  if (!todaySnapshot) return;
+
+
+/* =========================
+   TODAY
+========================= */
+
+function renderTodaySnapshot(
+  days
+) {
+
+  if (
+    !todaySnapshot
+  ) {
+    return;
+  }
+
 
   const todayKey =
     getTodayKey();
 
+
   const today =
-    days.find(day =>
-      String(day.date || "").startsWith(todayKey)
+    days.find(
+      (day) =>
+        String(
+          day.date ||
+          ""
+        ).startsWith(
+          todayKey
+        )
     );
 
-  if (!today) {
+
+  if (
+    !today
+  ) {
+
     todaySnapshot.innerHTML = `
       No entries yet today.
 
       <br><br>
 
-      Use Simple Check-In, Scan Meal, or TrackWise to start today.
+      Use Daily Check-In, MealWise,
+      or TrackWise to start today.
     `;
 
     return;
+
   }
 
+
   todaySnapshot.innerHTML = `
-    🔥 Calories: ${today.calories}
+    🔥 Calories:
+    ${today.calories}
 
     <br><br>
 
-    🥩 Protein: ${today.protein}g
+    🥩 Protein:
+    ${today.protein}g
 
     <br><br>
 
-    💧 Hydration: ${today.water} oz
+    💧 Hydration:
+    ${today.water} oz
 
     <br><br>
 
-    🏋️ Training: ${today.trainingToday ? "Logged" : "—"}
+    🏋️ Training:
+    ${
+      today.trainingToday
+        ? "Logged"
+        : "—"
+    }
 
     <br><br>
 
-    ⚖️ Weight: ${
+    ⚖️ Weight:
+    ${
       today.latestWeight
         ? `${today.latestWeight} lbs`
         : "—"
@@ -212,76 +471,161 @@ function renderTodaySnapshot(days) {
 
     <br><br>
 
-    😴 Sleep: ${
-      today.sleepHours || today.sleepQuality
-        ? `${today.sleepHours || "—"} hrs ${today.sleepQuality || ""}`
+    😴 Sleep:
+    ${
+      today.sleepHours ||
+      today.sleepQuality
+        ? `
+            ${today.sleepHours || "—"} hrs
+            ${today.sleepQuality || ""}
+          `
         : "—"
     }
   `;
+
 }
 
-function renderLogCards(days) {
-  return days.map((day) => {
-    const dateLabel =
-      formatLogDate(day.date);
 
-    const timeLabel =
-      formatLogTime(day);
 
-    return `
-      <section class="range-card log-card">
+/* =========================
+   LOG CARDS
+========================= */
 
-        <div class="log-head">
-          <p class="log-date">
-            ${dateLabel}
-          </p>
+function renderLogCards(
+  days
+) {
 
-          <p class="log-time">
-            ${timeLabel ? `Logged ${timeLabel}` : ""}
-          </p>
-        </div>
+  return days
+    .map(
+      (day) => {
 
-        <p class="log-target">
-          🎯 ${day.caloriesTarget || "—"} cal / ${day.proteinTarget || "—"}g protein
-        </p>
+        const dateLabel =
+          formatLogDate(
+            day.date
+          );
 
-        <div class="log-grid">
 
-          <span>🔥 ${day.calories}</span>
+        const timeLabel =
+          formatLogTime(
+            day
+          );
 
-          <span>🥩 ${day.protein}g</span>
 
-          <span>💧 ${day.water} oz</span>
+        return `
+          <section class="range-card log-card">
 
-          <span>🏋️ ${day.trainingToday ? "Logged" : "—"}</span>
+            <div class="log-head">
 
-          <span>
-            ⚖️ ${
-              day.latestWeight
-                ? `${day.latestWeight} lbs`
-                : "—"
+              <p class="log-date">
+                ${dateLabel}
+              </p>
+
+              <p class="log-time">
+                ${
+                  timeLabel
+                    ? `Updated ${timeLabel}`
+                    : ""
+                }
+              </p>
+
+            </div>
+
+
+            <p class="log-target">
+              🎯
+              ${day.caloriesTarget || "—"} cal
+              /
+              ${day.proteinTarget || "—"}g protein
+            </p>
+
+
+            <div class="log-grid">
+
+              <span>
+                🔥 ${day.calories}
+              </span>
+
+              <span>
+                🥩 ${day.protein}g
+              </span>
+
+              <span>
+                💧 ${day.water} oz
+              </span>
+
+              <span>
+                🏋️ ${
+                  day.trainingToday
+                    ? "Logged"
+                    : "—"
+                }
+              </span>
+
+              <span>
+                ⚖️ ${
+                  day.latestWeight
+                    ? `${day.latestWeight} lbs`
+                    : "—"
+                }
+              </span>
+
+              <span>
+                📸 ${day.scanCount}
+              </span>
+
+            </div>
+
+
+            ${
+              day.sleepHours ||
+              day.sleepQuality
+                ? `
+                  <p class="range-note">
+                    😴 Sleep:
+                    ${day.sleepHours || "—"} hrs
+                    ${day.sleepQuality || ""}
+                  </p>
+                `
+                : ""
             }
-          </span>
 
-          <span>📸 ${day.scanCount}</span>
+          </section>
+        `;
 
-        </div>
+      }
+    )
+    .join("");
 
-      </section>
-    `;
-  })
-  .join("");
 }
+
+
+
+/* =========================
+   RECENT LOGS
+========================= */
 
 function renderLogs() {
-  if (!logsContainer) return;
+
+  if (
+    !logsContainer
+  ) {
+    return;
+  }
+
 
   const days =
     getSortedDays();
 
-  renderTodaySnapshot(days);
 
-  if (!days.length) {
+  renderTodaySnapshot(
+    days
+  );
+
+
+  if (
+    !days.length
+  ) {
+
     logsContainer.innerHTML = `
       <div class="range-card log-card">
         No logs yet.
@@ -289,57 +633,137 @@ function renderLogs() {
     `;
 
     return;
+
   }
 
-const recentDays =
-  days.slice(0, Math.min(3, historyDays));
+
+  const recentDays =
+    days.slice(
+      0,
+      Math.min(
+        3,
+        historyDays
+      )
+    );
+
 
   logsContainer.innerHTML =
-    renderLogCards(recentDays);
+    renderLogCards(
+      recentDays
+    );
+
 }
 
-function renderFullHistory(days) {
-  if (!fullHistoryContainer) return;
+
+
+/* =========================
+   FULL HISTORY
+========================= */
+
+function renderFullHistory(
+  days
+) {
+
+  if (
+    !fullHistoryContainer
+  ) {
+    return;
+  }
+
 
   const allowedDays =
-    days.slice(0, historyDays);
+    days.slice(
+      0,
+      historyDays
+    );
 
-  if (!allowedDays.length) {
+
+  if (
+    !allowedDays.length
+  ) {
+
     fullHistoryContainer.innerHTML = `
       <section class="range-card log-card">
         No history yet.
       </section>
     `;
+
+    return;
+
+  }
+
+
+  fullHistoryContainer.innerHTML =
+    renderLogCards(
+      allowedDays
+    );
+
+}
+
+
+
+/* =========================
+   HISTORY BUTTON
+========================= */
+
+function updateHistoryButton() {
+
+  if (
+    !toggleFullHistoryBtn ||
+    !fullHistoryContainer
+  ) {
     return;
   }
 
-  fullHistoryContainer.innerHTML =
-  renderAccordionHistory(allowedDays);
+
+  const isHidden =
+    fullHistoryContainer
+      .classList
+      .contains(
+        "hidden"
+      );
+
+
+  toggleFullHistoryBtn.textContent =
+    isHidden
+      ? `Show ${historyDays}-Day Log History ↓`
+      : `Hide ${historyDays}-Day Log History ↑`;
+
 }
 
-toggleFullHistoryBtn?.addEventListener(
-  "click",
-  () => {
-    const days =
-      getSortedDays();
 
-    renderFullHistory(days);
+toggleFullHistoryBtn
+  ?.addEventListener(
+    "click",
+    () => {
 
-    fullHistoryContainer.classList.toggle("hidden");
+      const days =
+        getSortedDays();
 
-    const isHidden =
-      fullHistoryContainer.classList.contains("hidden");
 
-toggleFullHistoryBtn.textContent =
-  isHidden
-    ? `Show ${historyDays}-Day Log History ↓`
-    : `Hide ${historyDays}-Day Log History ↑`;
+      renderFullHistory(
+        days
+      );
+
+
+      fullHistoryContainer
+        ?.classList
+        .toggle(
+          "hidden"
+        );
+
+
+      updateHistoryButton();
 
     }
-);
-if (toggleFullHistoryBtn) {
-  toggleFullHistoryBtn.textContent =
-    `Show ${historyDays}-Day Log History ↓`;
-}
+  );
+
+
+
+/* =========================
+   START
+========================= */
+
+updateHistoryButton();
 
 renderLogs();

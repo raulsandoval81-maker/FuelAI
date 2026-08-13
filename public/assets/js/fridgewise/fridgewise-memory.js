@@ -1,182 +1,466 @@
 window.FridgeWiseMemory = (() => {
+  "use strict";
+
   const KEY =
     "fuelai-fridgewise-memory";
 
+
   const DEFAULT_MEMORY = {
-    pantry: [
-      "rice",
-      "pasta",
-      "beans",
-      "tortillas"
-    ],
-
-    freezer: [
-      "frozen chicken",
-      "ground beef",
-      "frozen veggies"
-    ],
-
+    pantry: [],
+    freezer: [],
     extras: [],
-
     groceryList: [],
-
-    favoriteMeals: [
-      {
-        name: "Chicken Tacos",
-        ingredients: [
-          "chicken",
-          "tortillas",
-          "salsa"
-        ]
-      },
-
-      {
-        name: "Rice Bowl",
-        ingredients: [
-          "rice",
-          "chicken",
-          "veggies"
-        ]
-      }
-    ]
+    favoriteMeals: []
   };
+
+
+  function safeArray(value) {
+    return Array.isArray(value)
+      ? value
+      : [];
+  }
+
+
+  function normalizeText(value) {
+    return String(
+      value ?? ""
+    )
+      .trim()
+      .toLowerCase();
+  }
+
+
+  function normalizeTextArray(value) {
+    return safeArray(value)
+      .map(
+        normalizeText
+      )
+      .filter(
+        Boolean
+      );
+  }
+
+
+  function normalizeFavoriteMeals(value) {
+    return safeArray(value)
+      .map((meal) => {
+        if (
+          typeof meal ===
+          "string"
+        ) {
+          return {
+            name:
+              String(meal)
+                .trim(),
+
+            ingredients:
+              []
+          };
+        }
+
+
+        return {
+          name:
+            String(
+              meal?.name ?? ""
+            ).trim(),
+
+          ingredients:
+            normalizeTextArray(
+              meal?.ingredients
+            )
+        };
+      })
+      .filter(
+        (meal) =>
+          meal.name
+      );
+  }
+
+
+  function normalizeMemory(memory) {
+    return {
+      pantry:
+        normalizeTextArray(
+          memory?.pantry
+        ),
+
+      freezer:
+        normalizeTextArray(
+          memory?.freezer
+        ),
+
+      extras:
+        normalizeTextArray(
+          memory?.extras
+        ),
+
+      groceryList:
+        normalizeTextArray(
+          memory?.groceryList
+        ),
+
+      favoriteMeals:
+        normalizeFavoriteMeals(
+          memory?.favoriteMeals
+        )
+    };
+  }
+
 
   function load() {
     try {
-      return {
-        ...DEFAULT_MEMORY,
-        ...JSON.parse(
-          localStorage.getItem(KEY) || "{}"
-        )
-      };
+      const raw =
+        JSON.parse(
+          localStorage.getItem(
+            KEY
+          ) || "{}"
+        );
+
+      return normalizeMemory(
+        raw
+      );
     } catch {
-      return DEFAULT_MEMORY;
+      return {
+        ...DEFAULT_MEMORY
+      };
     }
   }
 
+
   function save(memory) {
+    const normalized =
+      normalizeMemory(
+        memory
+      );
+
     localStorage.setItem(
       KEY,
-      JSON.stringify(memory)
+      JSON.stringify(
+        normalized
+      )
     );
 
-    return memory;
+    return normalized;
   }
+
 
   function getAll() {
     return load();
   }
 
-  function updateBucket(bucket, items) {
+
+  function updateBucket(
+    bucket,
+    items
+  ) {
     const memory =
       load();
 
-    memory[bucket] =
-      items;
 
-    return save(memory);
+    if (
+      !Object.prototype
+        .hasOwnProperty
+        .call(
+          DEFAULT_MEMORY,
+          bucket
+        )
+    ) {
+      return memory;
+    }
+
+
+    if (
+      bucket ===
+      "favoriteMeals"
+    ) {
+      memory[bucket] =
+        normalizeFavoriteMeals(
+          items
+        );
+    } else {
+      memory[bucket] =
+        normalizeTextArray(
+          items
+        );
+    }
+
+
+    return save(
+      memory
+    );
   }
 
-  function addItem(bucket, item) {
-    const clean =
-      String(item || "")
-        .trim()
-        .toLowerCase();
 
-    if (!clean) return load();
+  function addItem(
+    bucket,
+    item
+  ) {
+    const clean =
+      normalizeText(
+        item
+      );
+
+
+    if (
+      !clean
+    ) {
+      return load();
+    }
+
+
+    if (
+      ![
+        "pantry",
+        "freezer",
+        "extras",
+        "groceryList"
+      ].includes(
+        bucket
+      )
+    ) {
+      return load();
+    }
+
 
     const memory =
       load();
 
-    const current =
-      memory[bucket] || [];
 
-    if (!current.includes(clean)) {
-      current.push(clean);
+    const current =
+      safeArray(
+        memory[bucket]
+      );
+
+
+    const exists =
+      current.some(
+        (existing) =>
+          normalizeText(
+            existing
+          ) ===
+          clean
+      );
+
+
+    if (
+      !exists
+    ) {
+      current.push(
+        clean
+      );
     }
+
 
     memory[bucket] =
       current;
 
-    return save(memory);
+
+    return save(
+      memory
+    );
   }
 
-  function removeItem(bucket, item) {
+
+  function removeItem(
+    bucket,
+    item
+  ) {
     const clean =
-      String(item || "")
-        .trim()
-        .toLowerCase();
+      normalizeText(
+        item
+      );
+
+
+    if (
+      ![
+        "pantry",
+        "freezer",
+        "extras",
+        "groceryList"
+      ].includes(
+        bucket
+      )
+    ) {
+      return load();
+    }
+
 
     const memory =
       load();
+
 
     memory[bucket] =
-      (memory[bucket] || [])
-        .filter(existing => existing !== clean);
+      safeArray(
+        memory[bucket]
+      )
+        .filter(
+          (existing) =>
+            normalizeText(
+              existing
+            ) !==
+            clean
+        );
 
-    return save(memory);
+
+    return save(
+      memory
+    );
   }
 
-  function addFavoriteMeal(name, ingredients) {
+
+  function addFavoriteMeal(
+    name,
+    ingredients
+  ) {
     const memory =
       load();
 
+
     const mealName =
-      String(name || "").trim();
+      String(
+        name ?? ""
+      ).trim();
+
 
     const mealIngredients =
-      String(ingredients || "")
-        .split(",")
-        .map(item => item.trim().toLowerCase())
-        .filter(Boolean);
+      Array.isArray(
+        ingredients
+      )
+        ? normalizeTextArray(
+            ingredients
+          )
+        : normalizeTextArray(
+            String(
+              ingredients ?? ""
+            ).split(
+              ","
+            )
+          );
 
-    if (!mealName || !mealIngredients.length) {
+
+    if (
+      !mealName
+    ) {
       return memory;
     }
 
-    memory.favoriteMeals.push({
-      name: mealName,
-      ingredients: mealIngredients
-    });
 
-    return save(memory);
+    const duplicate =
+      memory.favoriteMeals
+        .some(
+          (meal) =>
+            normalizeText(
+              meal.name
+            ) ===
+            normalizeText(
+              mealName
+            )
+        );
+
+
+    if (
+      !duplicate
+    ) {
+      memory.favoriteMeals.push({
+        name:
+          mealName,
+
+        ingredients:
+          mealIngredients
+      });
+    }
+
+
+    return save(
+      memory
+    );
   }
+
 
   function getAvailableFoods() {
     const memory =
       load();
 
+
     return [
-      ...(memory.pantry || []),
-      ...(memory.freezer || []),
-      ...(memory.extras || [])
+      ...safeArray(
+        memory.pantry
+      ),
+
+      ...safeArray(
+        memory.freezer
+      ),
+
+      ...safeArray(
+        memory.extras
+      )
     ];
   }
+
 
   function matchFavoriteMeals() {
     const memory =
       load();
 
+
     const available =
-      getAvailableFoods();
+      new Set(
+        getAvailableFoods()
+          .map(
+            normalizeText
+          )
+      );
 
-    return (memory.favoriteMeals || []).map(meal => {
-      const ingredients =
-        meal.ingredients || [];
 
-      const missing =
-        ingredients.filter(item =>
-          !available.includes(item)
-        );
+    return safeArray(
+      memory.favoriteMeals
+    )
+      .map(
+        (meal) => {
+          const ingredients =
+            normalizeTextArray(
+              meal.ingredients
+            );
 
-      return {
-        ...meal,
-        canMake:
-          missing.length === 0,
-        missing
-      };
-    });
+
+          const missing =
+            ingredients.filter(
+              (item) =>
+                !available.has(
+                  normalizeText(
+                    item
+                  )
+                )
+            );
+
+
+          return {
+            ...meal,
+
+            ingredients,
+
+            canMake:
+              missing.length ===
+              0,
+
+            missing
+          };
+        }
+      );
   }
+
+
+  function clearAll() {
+    localStorage.removeItem(
+      KEY
+    );
+
+    return {
+      ...DEFAULT_MEMORY
+    };
+  }
+
 
   return {
     getAll,
@@ -186,6 +470,7 @@ window.FridgeWiseMemory = (() => {
     removeItem,
     addFavoriteMeal,
     getAvailableFoods,
-    matchFavoriteMeals
+    matchFavoriteMeals,
+    clearAll
   };
 })();

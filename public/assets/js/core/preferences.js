@@ -2,26 +2,90 @@
    THEME
 ========================= */
 
+const VALID_THEMES = [
+  "night",
+  "light"
+];
+
+
 function getTheme() {
-  return localStorage.getItem("fuelai-theme") || "night";
+  const saved =
+    localStorage.getItem(
+      "fuelai-theme"
+    );
+
+  return VALID_THEMES.includes(
+    saved
+  )
+    ? saved
+    : "night";
 }
 
-function applyTheme(theme) {
-  document.body.setAttribute("data-theme", theme);
+
+function applyTheme(
+  theme
+) {
+
+  const nextTheme =
+    VALID_THEMES.includes(
+      theme
+    )
+      ? theme
+      : "night";
+
+
+  if (
+    document.body
+  ) {
+    document.body.setAttribute(
+      "data-theme",
+      nextTheme
+    );
+  }
+
 
   localStorage.setItem(
     "fuelai-theme",
-    theme
+    nextTheme
   );
+
+
+  return nextTheme;
 }
+
 
 /* =========================
    INIT
 ========================= */
 
-applyTheme(
-  getTheme()
-);
+function initTheme() {
+
+  applyTheme(
+    getTheme()
+  );
+
+}
+
+
+if (
+  document.readyState ===
+  "loading"
+) {
+
+  document.addEventListener(
+    "DOMContentLoaded",
+    initTheme,
+    {
+      once: true
+    }
+  );
+
+} else {
+
+  initTheme();
+
+}
+
 
 /* =========================
    GLOBAL

@@ -1,6 +1,7 @@
 (() => {
   "use strict";
 
+
   function getAccess() {
     return (
       window.FuelAIPlan
@@ -13,11 +14,15 @@
 
 
   function getSetup() {
-    return JSON.parse(
-      localStorage.getItem(
-        "fuelai-setup"
-      ) || "{}"
-    );
+    try {
+      return JSON.parse(
+        localStorage.getItem(
+          "fuelai-setup"
+        ) || "{}"
+      );
+    } catch {
+      return {};
+    }
   }
 
 
@@ -29,6 +34,72 @@
       setup.lifestyleType ||
       "general-health"
     );
+  }
+
+
+  function getCurrentPath() {
+    return (
+      window.location.pathname ||
+      "/"
+    );
+  }
+
+
+  function isCurrentPath(
+    href
+  ) {
+    const current =
+      getCurrentPath();
+
+    if (
+      href === "/hub/"
+    ) {
+      return (
+        current === "/hub/" ||
+        current === "/hub/index.html"
+      );
+    }
+
+    if (
+      href.endsWith("/")
+    ) {
+      return current.startsWith(
+        href
+      );
+    }
+
+    return (
+      current === href
+    );
+  }
+
+
+  function navLink(
+    href,
+    label
+  ) {
+    const current =
+      isCurrentPath(
+        href
+      );
+
+    return `
+      <a
+        class="fuelai-nav-link${
+          current
+            ? " current"
+            : ""
+        }"
+        href="${href}"
+        ${
+          current
+            ? 'aria-current="page"'
+            : ""
+        }
+      >
+        ${label}
+      </a>
+    `;
   }
 
 
@@ -66,8 +137,10 @@
         "header"
       );
 
+
     topbar.className =
       "fuelai-topbar";
+
 
     topbar.innerHTML = `
       <div class="fuelai-topbar-brand">
@@ -79,6 +152,7 @@
         type="button"
         aria-label="Open navigation"
         aria-expanded="false"
+        aria-controls="fuelaiNavDrawer"
       >
         ☰
       </button>
@@ -90,6 +164,7 @@
         "div"
       );
 
+
     backdrop.className =
       "fuelai-nav-backdrop";
 
@@ -99,8 +174,14 @@
         "aside"
       );
 
+
+    drawer.id =
+      "fuelaiNavDrawer";
+
+
     drawer.className =
       "fuelai-nav-drawer";
+
 
     drawer.setAttribute(
       "aria-hidden",
@@ -108,7 +189,8 @@
     );
 
 
-    const toolLinks = [];
+    const toolLinks =
+      [];
 
 
     /*
@@ -116,63 +198,54 @@
      */
 
     if (
-      access.tools?.trackwise
+      access.tools
+        ?.trackwise
     ) {
-      toolLinks.push(`
-        <a
-          class="fuelai-nav-link"
-          href="/tools/trackwise/"
-        >
-          📈 TrackWise
-        </a>
-      `);
+      toolLinks.push(
+        navLink(
+          "/tools/trackwise/",
+          "📈 TrackWise"
+        )
+      );
     }
 
 
     if (
-      access.tools?.mealwise
+      access.tools
+        ?.mealwise
     ) {
-      toolLinks.push(`
-        <a
-          class="fuelai-nav-link"
-          href="/tools/mealwise/app.html"
-        >
-          🥗 MealWise
-        </a>
-      `);
+      toolLinks.push(
+        navLink(
+          "/tools/mealwise/app.html",
+          "🥗 MealWise"
+        )
+      );
     }
 
 
     if (
-      access.tools?.fridgewise
+      access.tools
+        ?.fridgewise
     ) {
-      toolLinks.push(`
-        <a
-          class="fuelai-nav-link"
-          href="/tools/fridgewise/fridgewise.html"
-        >
-          🧊 FridgeWise
-        </a>
-      `);
+      toolLinks.push(
+        navLink(
+          "/tools/fridgewise/fridgewise.html",
+          "🧊 FridgeWise"
+        )
+      );
     }
 
 
     /*
-     * GUIDANCE LAYER
-     *
-     * Wise is a core FuelAI workspace.
-     * The user's profile changes the
-     * depth and type of guidance.
+     * GUIDANCE
      */
 
-    toolLinks.push(`
-      <a
-        class="fuelai-nav-link"
-        href="/wise/wise.html"
-      >
-        🧠 Wise
-      </a>
-    `);
+    toolLinks.push(
+      navLink(
+        "/wise/wise.html",
+        "🧠 Wise"
+      )
+    );
 
 
     /*
@@ -181,16 +254,15 @@
 
     if (
       isFitnessProfile &&
-      access.tools?.trainingwise
+      access.tools
+        ?.trainingwise
     ) {
-      toolLinks.push(`
-        <a
-          class="fuelai-nav-link"
-          href="/tools/trainingwise/"
-        >
-          💪 TrainingWise
-        </a>
-      `);
+      toolLinks.push(
+        navLink(
+          "/tools/trainingwise/",
+          "💪 TrainingWise"
+        )
+      );
     }
 
 
@@ -200,40 +272,74 @@
 
     if (
       isCombatProfile &&
-      access.tools?.combatAthlete
+      access.tools
+        ?.combatAthlete
     ) {
-      toolLinks.push(`
-        <a
-          class="fuelai-nav-link"
-          href="/tools/combat-athlete/"
-        >
-          🥊 Combat Athlete
-        </a>
-      `);
+      toolLinks.push(
+        navLink(
+          "/tools/combat-athlete/",
+          "🥊 Combat Athlete"
+        )
+      );
     }
 
 
     /*
      * WEIGHTWISE
-     *
-     * WeightWise is not shown merely
-     * because the profile is Combat Athlete.
-     * It appears only when access says the
-     * tool is actually unlocked.
      */
 
     if (
-      access.tools?.weightwise === true
+      isCombatProfile &&
+      access.tools
+        ?.weightwise ===
+        true
     ) {
-      toolLinks.push(`
-        <a
-          class="fuelai-nav-link"
-          href="/tools/combat-athlete/weightwise/"
-        >
-          ⚖️ WeightWise
-        </a>
-      `);
+      toolLinks.push(
+        navLink(
+          "/tools/combat-athlete/weightwise/",
+          "⚖️ WeightWise"
+        )
+      );
     }
+
+
+    const accountLinks =
+      [];
+
+
+    accountLinks.push(
+      navLink(
+        "/account/profile.html",
+        "👤 Profile"
+      )
+    );
+
+
+    /*
+     * Don't show Edit Setup while
+     * already on the Setup page.
+     */
+
+    if (
+      !isCurrentPath(
+        "/account/setup.html"
+      )
+    ) {
+      accountLinks.push(
+        navLink(
+          "/account/setup.html",
+          "⚙️ Edit Setup"
+        )
+      );
+    }
+
+
+    accountLinks.push(
+      navLink(
+        "/account/logs.html",
+        "📋 FuelAI Log"
+      )
+    );
 
 
     drawer.innerHTML = `
@@ -260,12 +366,10 @@
           Home
         </p>
 
-        <a
-          class="fuelai-nav-link"
-          href="/hub/"
-        >
-          🏠 Hub
-        </a>
+        ${navLink(
+          "/hub/",
+          "🏠 Hub"
+        )}
 
       </div>
 
@@ -287,26 +391,7 @@
           Account
         </p>
 
-        <a
-          class="fuelai-nav-link"
-          href="/account/profile.html"
-        >
-          👤 Profile
-        </a>
-
-        <a
-          class="fuelai-nav-link"
-          href="/account/setup.html"
-        >
-          ⚙️ Edit Setup
-        </a>
-
-        <a
-          class="fuelai-nav-link"
-          href="/account/logs.html"
-        >
-          📋 FuelAI Log
-        </a>
+        ${accountLinks.join("")}
 
         <button
           class="fuelai-nav-link danger"
@@ -325,9 +410,11 @@
       topbar
     );
 
+
     document.body.appendChild(
       backdrop
     );
+
 
     document.body.appendChild(
       drawer
@@ -339,10 +426,12 @@
         ".fuelai-menu-btn"
       );
 
+
     const closeBtn =
       drawer.querySelector(
         ".fuelai-nav-close"
       );
+
 
     const logoutBtn =
       drawer.querySelector(
@@ -355,23 +444,32 @@
         "open"
       );
 
+
       backdrop.classList.add(
         "open"
       );
+
 
       drawer.setAttribute(
         "aria-hidden",
         "false"
       );
 
+
       openBtn?.setAttribute(
         "aria-expanded",
         "true"
       );
 
-      document.body.classList.add(
-        "fuelai-nav-open"
-      );
+
+      document.body
+        .classList
+        .add(
+          "fuelai-nav-open"
+        );
+
+
+      closeBtn?.focus();
     }
 
 
@@ -380,42 +478,51 @@
         "open"
       );
 
+
       backdrop.classList.remove(
         "open"
       );
+
 
       drawer.setAttribute(
         "aria-hidden",
         "true"
       );
 
+
       openBtn?.setAttribute(
         "aria-expanded",
         "false"
       );
 
-      document.body.classList.remove(
-        "fuelai-nav-open"
-      );
+
+      document.body
+        .classList
+        .remove(
+          "fuelai-nav-open"
+        );
     }
 
 
-    openBtn?.addEventListener(
-      "click",
-      openNav
-    );
+    openBtn
+      ?.addEventListener(
+        "click",
+        openNav
+      );
 
 
-    closeBtn?.addEventListener(
-      "click",
-      closeNav
-    );
+    closeBtn
+      ?.addEventListener(
+        "click",
+        closeNav
+      );
 
 
-    backdrop?.addEventListener(
-      "click",
-      closeNav
-    );
+    backdrop
+      ?.addEventListener(
+        "click",
+        closeNav
+      );
 
 
     document.addEventListener(
@@ -437,27 +544,28 @@
       )
       .forEach(
         (link) => {
-
           link.addEventListener(
             "click",
             closeNav
           );
-
         }
       );
 
 
-    logoutBtn?.addEventListener(
-      "click",
-      () => {
+    logoutBtn
+      ?.addEventListener(
+        "click",
+        () => {
 
-        window.FuelAIAuth
-          ?.softLogout?.();
+          window.FuelAIAuth
+            ?.softLogout?.();
 
-        window.location.href =
-          "/account/login.html";
-      }
-    );
+
+          window.location.href =
+            "/account/login.html";
+
+        }
+      );
   }
 
 
@@ -469,6 +577,7 @@
       return;
     }
 
+
     buildNav();
   }
 
@@ -479,7 +588,10 @@
   ) {
     document.addEventListener(
       "DOMContentLoaded",
-      init
+      init,
+      {
+        once: true
+      }
     );
   } else {
     init();

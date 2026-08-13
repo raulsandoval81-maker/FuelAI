@@ -1,7 +1,8 @@
 window.GUIDES = {
 
   sweetspot: {
-    label: "Sweet Spot",
+    label: "Balanced Coach",
+    tone: "balanced",
     color: "#5eead4",
 
     male:
@@ -11,19 +12,9 @@ window.GUIDES = {
       "/assets/img/guides/sweetspot-female.png"
   },
 
-  mafia: {
-    label: "Mafia",
-    color: "#a855f7",
-
-    male:
-      "/assets/img/guides/mafia-male.png",
-
-    female:
-      "/assets/img/guides/mafia-female.png"
-  },
-
   toughguy: {
-    label: "Tough Guy",
+    label: "Direct Coach",
+    tone: "direct",
     color: "#ef4444",
 
     male:
@@ -33,8 +24,21 @@ window.GUIDES = {
       "/assets/img/guides/tough-female.png"
   },
 
+  mafia: {
+    label: "Streetwise Coach",
+    tone: "playful-direct",
+    color: "#a855f7",
+
+    male:
+      "/assets/img/guides/mafia-male.png",
+
+    female:
+      "/assets/img/guides/mafia-female.png"
+  },
+
   internet: {
-    label: "Internet",
+    label: "Casual Coach",
+    tone: "casual",
     color: "#38bdf8",
 
     male:
