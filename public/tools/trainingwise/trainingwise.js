@@ -96,6 +96,18 @@
       currentRound:
         1,
 
+      sessionRounds:
+        2,
+
+      currentSessionRound:
+        1,
+
+      roundRestSeconds:
+        90,
+
+      inRoundRest:
+        false,
+
       phase:
         "work",
 
@@ -126,7 +138,45 @@
       </p>
 
       <div class="trainingwise-preset">
-        8 rounds · 8 minutes
+        8 minutes per round
+      </div>
+
+      <div class="trainingwise-round-picker">
+
+        <span class="trainingwise-label">
+          ROUNDS
+        </span>
+
+        <div class="trainingwise-round-options">
+
+          <button
+            type="button"
+            data-interval-rounds="2"
+            class="active"
+          >
+            2
+          </button>
+
+          <button
+            type="button"
+            data-interval-rounds="3"
+          >
+            3
+          </button>
+
+          <button
+            type="button"
+            data-interval-rounds="4"
+          >
+            4
+          </button>
+
+        </div>
+
+        <small id="intervalDuration">
+          Total: 16 minutes
+        </small>
+
       </div>
 
       <div class="trainingwise-timer">
@@ -223,6 +273,10 @@
 
       round.textContent =
         `Round ${
+          intervalState.currentSessionRound
+        } / ${
+          intervalState.sessionRounds
+        } · Interval ${
           intervalState.currentRound
         } / ${
           intervalState.rounds
@@ -237,7 +291,10 @@
         intervalState.phase ===
         "work"
           ? "WORK"
-          : "RECOVER";
+          : intervalState.phase ===
+            "round-rest"
+              ? "ROUND REST"
+              : "RECOVER";
 
     }
 
@@ -374,10 +431,25 @@ timer?.classList.add(
           "45/15",
 
         rounds:
+          intervalState.sessionRounds,
+
+        intervalsPerRound:
           intervalState.rounds,
 
-        durationMinutes:
-          8,
+        durationSeconds:
+          (
+            8 *
+            60 *
+            intervalState.sessionRounds
+          ) +
+          (
+            intervalState.roundRestSeconds *
+            Math.max(
+              0,
+              intervalState.sessionRounds -
+              1
+            )
+          ),
 
         completed:
           true
@@ -393,6 +465,32 @@ timer?.classList.add(
       !intervalState
     ) {
       return;
+    }
+
+
+    if (
+      intervalState.inRoundRest
+    ) {
+
+      intervalState.inRoundRest =
+        false;
+
+      intervalState.currentSessionRound +=
+        1;
+
+      intervalState.currentRound =
+        1;
+
+      intervalState.phase =
+        "work";
+
+      intervalState.remaining =
+        intervalState.workSeconds;
+
+      updateIntervalDisplay();
+
+      return;
+
     }
 
 
@@ -419,7 +517,28 @@ timer?.classList.add(
       intervalState.rounds
     ) {
 
-      finishInterval();
+      if (
+        intervalState.currentSessionRound >=
+        intervalState.sessionRounds
+      ) {
+
+        finishInterval();
+
+        return;
+
+      }
+
+
+      intervalState.inRoundRest =
+        true;
+
+      intervalState.phase =
+        "round-rest";
+
+      intervalState.remaining =
+        intervalState.roundRestSeconds;
+
+      updateIntervalDisplay();
 
       return;
 
@@ -615,7 +734,136 @@ timer?.classList.add(
   }
 
 
+  function setIntervalSessionRounds(
+    rounds
+  ) {
+
+    if (
+      !intervalState ||
+      intervalState.running
+    ) {
+      return;
+    }
+
+
+    const selected =
+      Number(
+        rounds
+      );
+
+
+    if (
+      ![2, 3, 4]
+        .includes(
+          selected
+        )
+    ) {
+      return;
+    }
+
+
+    intervalState.sessionRounds =
+      selected;
+
+    intervalState.currentSessionRound =
+      1;
+
+
+    document
+      .querySelectorAll(
+        "[data-interval-rounds]"
+      )
+      .forEach(
+        (button) => {
+
+          button.classList.toggle(
+            "active",
+            Number(
+              button.dataset
+                .intervalRounds
+            ) === selected
+          );
+
+        }
+      );
+
+
+    const duration =
+      document.getElementById(
+        "intervalDuration"
+      );
+
+
+    if (duration) {
+
+      const totalSeconds =
+        (
+          selected *
+          8 *
+          60
+        ) +
+        (
+          Math.max(
+            0,
+            selected - 1
+          ) *
+          intervalState.roundRestSeconds
+        );
+
+
+      const minutes =
+        Math.floor(
+          totalSeconds / 60
+        );
+
+
+      const seconds =
+        totalSeconds % 60;
+
+
+      duration.textContent =
+        seconds
+          ? `Total: ${minutes}:${String(
+              seconds
+            ).padStart(
+              2,
+              "0"
+            )}`
+          : `Total: ${minutes} minutes`;
+
+    }
+
+
+    updateIntervalDisplay();
+
+  }
+
+
+
   function wireIntervalControls() {
+
+    document
+      .querySelectorAll(
+        "[data-interval-rounds]"
+      )
+      .forEach(
+        (button) => {
+
+          button.addEventListener(
+            "click",
+            () => {
+
+              setIntervalSessionRounds(
+                button.dataset
+                  .intervalRounds
+              );
+
+            }
+          );
+
+        }
+      );
+
 
     document
       .getElementById(
@@ -662,6 +910,18 @@ timer?.classList.add(
       currentMinute:
         1,
 
+      sessionRounds:
+        2,
+
+      currentSessionRound:
+        1,
+
+      roundRestSeconds:
+        120,
+
+      inRoundRest:
+        false,
+
       remaining:
         60,
 
@@ -690,7 +950,45 @@ timer?.classList.add(
       </p>
 
       <div class="trainingwise-preset">
-        10 rounds · 1 minute each
+        10 minutes per round
+      </div>
+
+      <div class="trainingwise-round-picker">
+
+        <span class="trainingwise-label">
+          ROUNDS
+        </span>
+
+        <div class="trainingwise-round-options">
+
+          <button
+            type="button"
+            data-emom-rounds="2"
+            class="active"
+          >
+            2
+          </button>
+
+          <button
+            type="button"
+            data-emom-rounds="3"
+          >
+            3
+          </button>
+
+          <button
+            type="button"
+            data-emom-rounds="4"
+          >
+            4
+          </button>
+
+        </div>
+
+        <small id="emomDuration">
+          Total: 20 minutes
+        </small>
+
       </div>
 
       <div
@@ -788,7 +1086,11 @@ timer?.classList.add(
     if (round) {
 
       round.textContent =
-        `Minute ${
+        `Round ${
+          emomState.currentSessionRound
+        } / ${
+          emomState.sessionRounds
+        } · Minute ${
           emomState.currentMinute
         } / ${
           emomState.totalMinutes
@@ -800,7 +1102,9 @@ timer?.classList.add(
     if (phase) {
 
       phase.textContent =
-        "GO";
+        emomState.inRoundRest
+          ? "ROUND REST"
+          : "GO";
 
     }
 
@@ -922,10 +1226,25 @@ timer?.classList.add(
           "10-minute",
 
         rounds:
+          emomState.sessionRounds,
+
+        minutesPerRound:
           emomState.totalMinutes,
 
-        durationMinutes:
-          10,
+        durationSeconds:
+          (
+            emomState.totalMinutes *
+            60 *
+            emomState.sessionRounds
+          ) +
+          (
+            emomState.roundRestSeconds *
+            Math.max(
+              0,
+              emomState.sessionRounds -
+              1
+            )
+          ),
 
         completed:
           true
@@ -945,11 +1264,52 @@ timer?.classList.add(
 
 
     if (
+      emomState.inRoundRest
+    ) {
+
+      emomState.inRoundRest =
+        false;
+
+      emomState.inRoundRest =
+        true;
+
+      emomState.remaining =
+        emomState.roundRestSeconds;
+
+      updateEmomDisplay();
+
+      return;
+
+    }
+
+
+    if (
       emomState.currentMinute >=
       emomState.totalMinutes
     ) {
 
-      finishEmom();
+      if (
+        emomState.currentSessionRound >=
+        emomState.sessionRounds
+      ) {
+
+        finishEmom();
+
+        return;
+
+      }
+
+
+      emomState.currentSessionRound +=
+        1;
+
+      emomState.currentMinute =
+        1;
+
+      emomState.remaining =
+        60;
+
+      updateEmomDisplay();
 
       return;
 
@@ -1027,7 +1387,9 @@ timer?.classList.add(
 
 
     timer?.classList.add(
-      "phase-work"
+      emomState.inRoundRest
+        ? "phase-rest"
+        : "phase-work"
     );
 
 
@@ -1182,7 +1544,136 @@ timer?.classList.add(
   }
 
 
+  function setEmomSessionRounds(
+    rounds
+  ) {
+
+    if (
+      !emomState ||
+      emomState.running
+    ) {
+      return;
+    }
+
+
+    const selected =
+      Number(
+        rounds
+      );
+
+
+    if (
+      ![2, 3, 4]
+        .includes(
+          selected
+        )
+    ) {
+      return;
+    }
+
+
+    emomState.sessionRounds =
+      selected;
+
+    emomState.currentSessionRound =
+      1;
+
+
+    document
+      .querySelectorAll(
+        "[data-emom-rounds]"
+      )
+      .forEach(
+        (button) => {
+
+          button.classList.toggle(
+            "active",
+            Number(
+              button.dataset
+                .emomRounds
+            ) === selected
+          );
+
+        }
+      );
+
+
+    const duration =
+      document.getElementById(
+        "emomDuration"
+      );
+
+
+    if (duration) {
+
+      const totalSeconds =
+        (
+          selected *
+          emomState.totalMinutes *
+          60
+        ) +
+        (
+          Math.max(
+            0,
+            selected - 1
+          ) *
+          emomState.roundRestSeconds
+        );
+
+
+      const minutes =
+        Math.floor(
+          totalSeconds / 60
+        );
+
+
+      const seconds =
+        totalSeconds % 60;
+
+
+      duration.textContent =
+        seconds
+          ? `Total: ${minutes}:${String(
+              seconds
+            ).padStart(
+              2,
+              "0"
+            )}`
+          : `Total: ${minutes} minutes`;
+
+    }
+
+
+    updateEmomDisplay();
+
+  }
+
+
+
   function wireEmomControls() {
+
+    document
+      .querySelectorAll(
+        "[data-emom-rounds]"
+      )
+      .forEach(
+        (button) => {
+
+          button.addEventListener(
+            "click",
+            () => {
+
+              setEmomSessionRounds(
+                button.dataset
+                  .emomRounds
+              );
+
+            }
+          );
+
+        }
+      );
+
 
     document
       .getElementById(
