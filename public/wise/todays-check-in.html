@@ -260,6 +260,44 @@
       line-height:1.55;
     }
 
+    .checkin-momentum{
+      margin-top:20px;
+
+      display:grid;
+
+      grid-template-columns:
+        1fr 1fr;
+
+      gap:14px;
+    }
+
+    .checkin-momentum-card{
+      padding:18px;
+
+      border-radius:20px;
+
+      border:
+        1px solid rgba(255,255,255,.10);
+
+      background:
+        rgba(255,255,255,.03);
+    }
+
+    .checkin-momentum-card h2{
+      margin:
+        6px 0 10px;
+
+      font-size:1.05rem;
+    }
+
+    .checkin-momentum-card p{
+      margin:0;
+
+      color:#cbd5e1;
+
+      line-height:1.55;
+    }
+
     .checkin-actions{
       display:grid;
 
@@ -309,7 +347,8 @@
 
       .checkin-grid,
       .checkin-basics,
-      .checkin-actions{
+      .checkin-actions,
+      .checkin-momentum{
         grid-template-columns:1fr;
       }
 
@@ -567,6 +606,49 @@
     </section>
 
 
+    <!-- MOMENTUM -->
+
+    <section
+      class="checkin-momentum"
+      aria-label="Today's momentum"
+    >
+
+      <article class="checkin-momentum-card">
+
+        <p class="range-label">
+          Today’s Momentum
+        </p>
+
+        <h2>
+          Keep the day moving.
+        </h2>
+
+        <p id="momentumOutput">
+          Loading today’s progress...
+        </p>
+
+      </article>
+
+
+      <article class="checkin-momentum-card">
+
+        <p class="range-label">
+          Coach Wise · Next Step
+        </p>
+
+        <h2 id="weeklyFocusOutput">
+          Today’s Focus
+        </h2>
+
+        <p id="nextStepOutput">
+          Loading your next useful step...
+        </p>
+
+      </article>
+
+    </section>
+
+
     <!-- ACTIONS -->
 
     <div class="checkin-actions">
@@ -581,7 +663,7 @@
 
       <a
         class="secondary-btn"
-        href="/tools/trackwise/index.html"
+        href="/tools/trackwise/dashboard.html"
       >
         🎯 Return to TrackWise
       </a>
@@ -701,6 +783,152 @@
     }
 
 
+    const momentumOutput =
+      document.getElementById(
+        "momentumOutput"
+      );
+
+    const weeklyFocusOutput =
+      document.getElementById(
+        "weeklyFocusOutput"
+      );
+
+    const nextStepOutput =
+      document.getElementById(
+        "nextStepOutput"
+      );
+
+
+    function getSetup() {
+
+      try {
+
+        return JSON.parse(
+          localStorage.getItem(
+            "fuelai-setup"
+          ) || "{}"
+        );
+
+      } catch {
+
+        return {};
+
+      }
+
+    }
+
+
+    const checkInSetup =
+      getSetup();
+
+    const checkInGoal =
+      checkInSetup.goal ||
+      checkInSetup.monthlyPlan ||
+      "fuelwise";
+
+
+    const WEEKLY_FOCUS_BY_GOAL = {
+
+      fuelwise:
+        "Steady Energy",
+
+      cutwise:
+        "Simple Cut",
+
+      gainwise:
+        "Build + Recover"
+
+    };
+
+
+    const NEXT_STEPS_BY_GOAL = {
+
+      fuelwise:
+        "Eat a simple protein meal, drink water, and keep the day steady.",
+
+      cutwise:
+        "Choose protein first, keep the next meal simple, and stay consistent.",
+
+      gainwise:
+        "Add an easy recovery meal or snack with protein and carbs."
+
+    };
+
+
+    function renderMomentum() {
+
+      const checkInDone =
+        hasLogged(
+          "todays-check-in"
+        );
+
+      const trainingDone =
+        hasLogged(
+          "training"
+        );
+
+      const weightDone =
+        hasLogged(
+          "weight"
+        );
+
+
+      const completeCount =
+        Number(
+          checkInDone
+        ) +
+        Number(
+          trainingDone
+        ) +
+        Number(
+          weightDone
+        );
+
+
+      if (
+        momentumOutput
+      ) {
+
+        momentumOutput.innerHTML = `
+          ${checkInDone ? "✅" : "⬜"} Check-In<br>
+          ${trainingDone ? "✅" : "⬜"} Training<br>
+          ${weightDone ? "✅" : "⬜"} Weight<br><br>
+          ${completeCount}/3 complete today.
+        `;
+
+      }
+
+
+      if (
+        weeklyFocusOutput
+      ) {
+
+        weeklyFocusOutput.textContent =
+          checkInSetup.weeklyFocus ||
+          WEEKLY_FOCUS_BY_GOAL[
+            checkInGoal
+          ] ||
+          "Steady Energy";
+
+      }
+
+
+      if (
+        nextStepOutput
+      ) {
+
+        nextStepOutput.textContent =
+          NEXT_STEPS_BY_GOAL[
+            checkInGoal
+          ] ||
+          NEXT_STEPS_BY_GOAL
+            .fuelwise;
+
+      }
+
+    }
+
+
     function renderDailyStatus() {
 
       const workoutDone =
@@ -777,6 +1005,8 @@
           `${completeCount}/2 daily basics complete.`;
 
       }
+
+      renderMomentum();
 
     }
 
@@ -1123,6 +1353,8 @@
 
             saveCheckInBtn.textContent =
               "✅ Check-In Saved";
+
+            renderMomentum();
 
 
             setTimeout(
