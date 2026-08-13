@@ -18,13 +18,13 @@
       "EMOM · 10 Minutes",
 
     conditioning:
-      "Guided Workout · Conditioning",
+      "Self-Guided · Conditioning",
 
     strength:
-      "Guided Workout · Strength",
+      "Self-Guided · Strength",
 
     recovery:
-      "Guided Workout · Recovery / Movement"
+      "Self-Guided · Recovery / Movement"
 
   };
 
@@ -1708,6 +1708,712 @@ timer?.classList.add(
 
 
 
+  const conditioningLibrary = {
+
+    beginner: {
+
+      15: {
+        title:
+          "Foundation Circuit",
+
+        warmup: [
+          "Easy march — 2 min",
+          "Arm circles — 1 min",
+          "Bodyweight squats — 1 min"
+        ],
+
+        main: [
+          "Air Squats — 10 reps",
+          "Wall Push-Ups — 8 reps",
+          "Reverse Lunges — 8 total",
+          "Standing Knee Drives — 10 total"
+        ],
+
+        mainMinutes:
+          8,
+
+        cooldown: [
+          "Easy walk — 2 min",
+          "Light stretch — 1 min"
+        ]
+      },
+
+
+      30: {
+        title:
+          "Foundation Builder",
+
+        warmup: [
+          "Easy march — 3 min",
+          "Arm circles — 1 min",
+          "Bodyweight squats — 1 min"
+        ],
+
+        main: [
+          "Air Squats — 12 reps",
+          "Incline Push-Ups — 10 reps",
+          "Reverse Lunges — 10 total",
+          "Standing Knee Drives — 12 total",
+          "Dead Bug — 8 per side"
+        ],
+
+        mainMinutes:
+          20,
+
+        cooldown: [
+          "Easy walk — 3 min",
+          "Light mobility — 2 min"
+        ]
+      },
+
+
+      45: {
+        title:
+          "Foundation Endurance",
+
+        warmup: [
+          "Easy march — 4 min",
+          "Dynamic mobility — 3 min"
+        ],
+
+        main: [
+          "Air Squats — 12 reps",
+          "Incline Push-Ups — 10 reps",
+          "Reverse Lunges — 12 total",
+          "Standing Knee Drives — 16 total",
+          "Glute Bridge — 12 reps",
+          "Dead Bug — 8 per side"
+        ],
+
+        mainMinutes:
+          30,
+
+        cooldown: [
+          "Easy walk — 4 min",
+          "Light mobility — 4 min"
+        ]
+      }
+
+    },
+
+
+    intermediate: {
+
+      15: {
+        title:
+          "Quick Conditioning",
+
+        warmup: [
+          "Light jog or march — 2 min",
+          "Dynamic mobility — 2 min"
+        ],
+
+        main: [
+          "Air Squats — 15 reps",
+          "Push-Ups — 10 reps",
+          "Mountain Climbers — 20 total",
+          "Reverse Lunges — 12 total",
+          "Plank — 30 sec"
+        ],
+
+        mainMinutes:
+          8,
+
+        cooldown: [
+          "Easy walk — 2 min",
+          "Reset breathing — 1 min"
+        ]
+      },
+
+
+      30: {
+        title:
+          "Full-Body Conditioning",
+
+        warmup: [
+          "Light jog or march — 3 min",
+          "Dynamic mobility — 2 min"
+        ],
+
+        main: [
+          "Air Squats — 15 reps",
+          "Push-Ups — 12 reps",
+          "Mountain Climbers — 24 total",
+          "Reverse Lunges — 16 total",
+          "Plank — 40 sec"
+        ],
+
+        mainMinutes:
+          20,
+
+        cooldown: [
+          "Easy walk — 3 min",
+          "Mobility and breathing — 2 min"
+        ]
+      },
+
+
+      45: {
+        title:
+          "Conditioning Builder",
+
+        warmup: [
+          "Light movement — 4 min",
+          "Dynamic mobility — 3 min"
+        ],
+
+        main: [
+          "Air Squats — 18 reps",
+          "Push-Ups — 12 reps",
+          "Mountain Climbers — 30 total",
+          "Reverse Lunges — 20 total",
+          "Glute Bridge — 15 reps",
+          "Plank — 45 sec"
+        ],
+
+        mainMinutes:
+          30,
+
+        cooldown: [
+          "Easy walk — 4 min",
+          "Mobility and breathing — 4 min"
+        ]
+      }
+
+    },
+
+
+    advanced: {
+
+      15: {
+        title:
+          "Fast Conditioning",
+
+        warmup: [
+          "Light jog — 2 min",
+          "Dynamic mobility — 2 min"
+        ],
+
+        main: [
+          "Squat Jumps — 10 reps",
+          "Push-Ups — 15 reps",
+          "Mountain Climbers — 30 total",
+          "Alternating Lunges — 16 total",
+          "Plank Shoulder Taps — 20 total"
+        ],
+
+        mainMinutes:
+          8,
+
+        cooldown: [
+          "Easy walk — 2 min",
+          "Reset breathing — 1 min"
+        ]
+      },
+
+
+      30: {
+        title:
+          "Work Capacity",
+
+        warmup: [
+          "Light jog — 3 min",
+          "Dynamic mobility — 2 min"
+        ],
+
+        main: [
+          "Squat Jumps — 12 reps",
+          "Push-Ups — 15 reps",
+          "Mountain Climbers — 40 total",
+          "Alternating Lunges — 20 total",
+          "Plank Shoulder Taps — 24 total"
+        ],
+
+        mainMinutes:
+          20,
+
+        cooldown: [
+          "Easy walk — 3 min",
+          "Mobility and breathing — 2 min"
+        ]
+      },
+
+
+      45: {
+        title:
+          "Extended Work Capacity",
+
+        warmup: [
+          "Light jog — 4 min",
+          "Dynamic mobility — 3 min"
+        ],
+
+        main: [
+          "Squat Jumps — 15 reps",
+          "Push-Ups — 18 reps",
+          "Mountain Climbers — 50 total",
+          "Alternating Lunges — 24 total",
+          "Burpees — 8 reps",
+          "Plank Shoulder Taps — 30 total"
+        ],
+
+        mainMinutes:
+          30,
+
+        cooldown: [
+          "Easy walk — 4 min",
+          "Mobility and breathing — 4 min"
+        ]
+      }
+
+    }
+
+  };
+
+
+  function getConditioningWorkout(
+    level,
+    duration
+  ) {
+
+    return (
+      conditioningLibrary
+        ?.[level]
+        ?.[duration] ||
+      null
+    );
+
+  }
+
+
+  function renderWorkoutList(
+    items
+  ) {
+
+    return items
+      .map(
+        (item) =>
+          `<li>${item}</li>`
+      )
+      .join("");
+
+  }
+
+
+
+  function getSelfGuidedTitle(
+    mode
+  ) {
+
+    const titles = {
+
+      conditioning:
+        "Conditioning",
+
+      strength:
+        "Strength",
+
+      recovery:
+        "Recovery / Movement"
+
+    };
+
+
+    return (
+      titles[mode] ||
+      "Self-Guided Workout"
+    );
+
+  }
+
+
+
+  function renderSelfGuidedSetup(
+    mode
+  ) {
+
+    clearTimer();
+
+
+    const title =
+      getSelfGuidedTitle(
+        mode
+      );
+
+
+    output.innerHTML = `
+      <p class="trainingwise-label">
+        SELF-GUIDED WORKOUT
+      </p>
+
+      <h2>
+        ${title}
+      </h2>
+
+      <p>
+        Choose the amount of time
+        and the level that fits
+        today's session.
+      </p>
+
+
+      <div class="trainingwise-setup-block">
+
+        <span class="trainingwise-label">
+          DURATION
+        </span>
+
+        <div
+          class="trainingwise-choice-grid"
+          data-choice-group="duration"
+        >
+
+          <button
+            type="button"
+            data-workout-duration="15"
+          >
+            15 min
+          </button>
+
+          <button
+            type="button"
+            data-workout-duration="30"
+            class="active"
+          >
+            30 min
+          </button>
+
+          <button
+            type="button"
+            data-workout-duration="45"
+          >
+            45 min
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <div class="trainingwise-setup-block">
+
+        <span class="trainingwise-label">
+          LEVEL
+        </span>
+
+        <div
+          class="trainingwise-choice-grid"
+          data-choice-group="level"
+        >
+
+          <button
+            type="button"
+            data-workout-level="beginner"
+          >
+            Beginner
+          </button>
+
+          <button
+            type="button"
+            data-workout-level="intermediate"
+            class="active"
+          >
+            Intermediate
+          </button>
+
+          <button
+            type="button"
+            data-workout-level="advanced"
+          >
+            Advanced
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <button
+        id="generateWorkoutBtn"
+        class="trainingwise-btn trainingwise-generate-btn"
+        type="button"
+      >
+        Generate Workout →
+      </button>
+
+
+      <div
+        id="generatedWorkoutPreview"
+        class="trainingwise-workout-preview hidden"
+      ></div>
+    `;
+
+
+    wireSelfGuidedSetup(
+      mode
+    );
+
+  }
+
+
+
+  function wireSelfGuidedSetup(
+    mode
+  ) {
+
+    let selectedDuration =
+      30;
+
+    let selectedLevel =
+      "intermediate";
+
+
+    document
+      .querySelectorAll(
+        "[data-workout-duration]"
+      )
+      .forEach(
+        (button) => {
+
+          button.addEventListener(
+            "click",
+            () => {
+
+              selectedDuration =
+                Number(
+                  button.dataset
+                    .workoutDuration
+                );
+
+
+              document
+                .querySelectorAll(
+                  "[data-workout-duration]"
+                )
+                .forEach(
+                  (item) => {
+
+                    item.classList.toggle(
+                      "active",
+                      item === button
+                    );
+
+                  }
+                );
+
+            }
+          );
+
+        }
+      );
+
+
+    document
+      .querySelectorAll(
+        "[data-workout-level]"
+      )
+      .forEach(
+        (button) => {
+
+          button.addEventListener(
+            "click",
+            () => {
+
+              selectedLevel =
+                button.dataset
+                  .workoutLevel;
+
+
+              document
+                .querySelectorAll(
+                  "[data-workout-level]"
+                )
+                .forEach(
+                  (item) => {
+
+                    item.classList.toggle(
+                      "active",
+                      item === button
+                    );
+
+                  }
+                );
+
+            }
+          );
+
+        }
+      );
+
+
+    document
+      .getElementById(
+        "generateWorkoutBtn"
+      )
+      ?.addEventListener(
+        "click",
+        () => {
+
+          const preview =
+            document.getElementById(
+              "generatedWorkoutPreview"
+            );
+
+
+          if (!preview) {
+            return;
+          }
+
+
+          preview.classList.remove(
+            "hidden"
+          );
+
+
+          if (
+            mode ===
+            "conditioning"
+          ) {
+
+            const workout =
+              getConditioningWorkout(
+                selectedLevel,
+                selectedDuration
+              );
+
+
+            if (!workout) {
+
+              preview.innerHTML =
+                "<p>Workout not available.</p>";
+
+              return;
+
+            }
+
+
+            preview.innerHTML = `
+              <p class="trainingwise-label">
+                CONDITIONING WORKOUT
+              </p>
+
+              <h3>
+                ${workout.title}
+              </h3>
+
+              <p>
+                ${selectedDuration} minutes
+                ·
+                ${
+                  selectedLevel
+                    .charAt(0)
+                    .toUpperCase() +
+                  selectedLevel.slice(1)
+                }
+              </p>
+
+              <div class="trainingwise-workout-section">
+
+                <strong>
+                  Warm-Up
+                </strong>
+
+                <ul>
+                  ${renderWorkoutList(
+                    workout.warmup
+                  )}
+                </ul>
+
+              </div>
+
+
+              <div class="trainingwise-workout-section">
+
+                <strong>
+                  Main Work ·
+                  ${workout.mainMinutes} min
+                </strong>
+
+                <p>
+                  Cycle through the movements
+                  with controlled form and
+                  sustainable effort.
+                </p>
+
+                <ul>
+                  ${renderWorkoutList(
+                    workout.main
+                  )}
+                </ul>
+
+              </div>
+
+
+              <div class="trainingwise-workout-section">
+
+                <strong>
+                  Cool Down
+                </strong>
+
+                <ul>
+                  ${renderWorkoutList(
+                    workout.cooldown
+                  )}
+                </ul>
+
+              </div>
+
+
+              <button
+                id="startSelfGuidedWorkoutBtn"
+                class="trainingwise-btn"
+                type="button"
+              >
+                Start Workout →
+              </button>
+            `;
+
+
+            return;
+
+          }
+
+
+          preview.innerHTML = `
+            <p class="trainingwise-label">
+              WORKOUT SETUP
+            </p>
+
+            <h3>
+              ${getSelfGuidedTitle(
+                mode
+              )}
+            </h3>
+
+            <p>
+              ${selectedDuration} minutes
+              ·
+              ${
+                selectedLevel
+                  .charAt(0)
+                  .toUpperCase() +
+                selectedLevel.slice(1)
+              }
+            </p>
+
+            <p>
+              Curated programming
+              for this lane comes next.
+            </p>
+          `;
+
+        }
+      );
+
+  }
+
+
+
   function openMode(
     mode
   ) {
@@ -1744,23 +2450,15 @@ timer?.classList.add(
 
     }
 
-    else {
+    else if (
+      mode === "conditioning" ||
+      mode === "strength" ||
+      mode === "recovery"
+    ) {
 
-      clearTimer();
-
-      output.innerHTML = `
-        <p class="trainingwise-label">
-          SELECTED SESSION
-        </p>
-
-        <h2>
-          ${modeLabels[mode]}
-        </h2>
-
-        <p>
-          Training engine coming next.
-        </p>
-      `;
+      renderSelfGuidedSetup(
+        mode
+      );
 
     }
 

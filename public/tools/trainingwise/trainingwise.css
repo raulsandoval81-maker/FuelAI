@@ -525,3 +525,170 @@ button:disabled {
 
   font-weight: 700;
 }
+
+
+
+/* =========================
+   SELF-GUIDED WORKOUT
+========================= */
+
+.trainingwise-setup-block {
+  margin-top: 22px;
+
+  padding:
+    18px;
+
+  border:
+    1px solid
+    rgba(255,255,255,.10);
+
+  border-radius: 18px;
+
+  background:
+    rgba(255,255,255,.035);
+}
+
+
+.trainingwise-choice-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      3,
+      minmax(0, 1fr)
+    );
+
+  gap: 8px;
+
+  margin-top: 10px;
+}
+
+
+.trainingwise-choice-grid button {
+  border:
+    1px solid
+    rgba(255,255,255,.12);
+
+  border-radius: 14px;
+
+  padding:
+    12px 10px;
+
+  background:
+    rgba(255,255,255,.045);
+
+  color: inherit;
+
+  font: inherit;
+
+  font-weight: 800;
+
+  cursor: pointer;
+}
+
+
+.trainingwise-choice-grid button.active {
+  border-color:
+    rgba(34,197,94,.75);
+
+  background:
+    rgba(34,197,94,.14);
+
+  color:
+    #4ade80;
+}
+
+
+.trainingwise-generate-btn {
+  margin-top: 22px;
+}
+
+
+.trainingwise-workout-preview {
+  margin-top: 18px;
+
+  padding:
+    18px;
+
+  border:
+    1px solid
+    rgba(255,255,255,.12);
+
+  border-radius: 18px;
+
+  background:
+    rgba(255,255,255,.045);
+}
+
+
+.trainingwise-workout-preview.hidden {
+  display: none;
+}
+
+
+.trainingwise-workout-preview h3 {
+  margin:
+    6px 0 8px;
+}
+
+
+@media (max-width: 560px) {
+
+  .trainingwise-choice-grid {
+    grid-template-columns:
+      1fr;
+  }
+
+}
+
+
+/* =========================
+   CURATED WORKOUT PREVIEW
+========================= */
+
+.trainingwise-workout-section {
+  margin-top: 16px;
+
+  padding:
+    16px;
+
+  border-radius: 16px;
+
+  background:
+    rgba(255,255,255,.04);
+}
+
+
+.trainingwise-workout-section strong {
+  display: block;
+
+  margin-bottom: 8px;
+}
+
+
+.trainingwise-workout-section p {
+  opacity: .72;
+
+  line-height: 1.5;
+}
+
+
+.trainingwise-workout-section ul {
+  margin:
+    10px 0 0;
+
+  padding-left: 20px;
+}
+
+
+.trainingwise-workout-section li {
+  margin:
+    6px 0;
+
+  line-height: 1.4;
+}
+
+
+#startSelfGuidedWorkoutBtn {
+  margin-top: 18px;
+}
