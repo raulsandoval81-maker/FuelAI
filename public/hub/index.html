@@ -20,29 +20,410 @@
     href="/assets/css/nav.css"
   />
 
+  <style>
+    :root{
+      --hub-bg:#030712;
+      --hub-panel:#071019;
+      --hub-panel-2:#0b1420;
+      --hub-line:rgba(34,197,94,.22);
+      --hub-line-soft:rgba(255,255,255,.08);
+      --hub-text:#f8fafc;
+      --hub-muted:#94a3b8;
+      --hub-green:#22c55e;
+      --hub-purple:#a78bfa;
+      --hub-blue:#38bdf8;
+      --hub-red:#ef4444;
+    }
+
+    *{
+      box-sizing:border-box;
+    }
+
+    body{
+      margin:0;
+      background:
+        radial-gradient(
+          circle at top,
+          rgba(20,83,45,.24),
+          transparent 30%
+        ),
+        var(--hub-bg);
+      color:var(--hub-text);
+    }
+
+    .hub-wrap{
+      width:100%;
+      max-width:1180px;
+      margin:0 auto;
+      padding:28px 18px 42px;
+    }
+
+    .hub-header{
+      display:grid;
+      grid-template-columns:1fr auto;
+      gap:20px;
+      align-items:center;
+
+      padding:24px;
+
+      border:1px solid var(--hub-line);
+      border-radius:24px;
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(20,83,45,.28),
+          rgba(7,16,25,.96)
+        );
+
+      box-shadow:
+        0 18px 50px rgba(0,0,0,.26);
+    }
+
+    .hub-kicker{
+      margin:0 0 8px;
+
+      color:#86efac;
+
+      font-size:.78rem;
+      font-weight:1000;
+      letter-spacing:.14em;
+      text-transform:uppercase;
+    }
+
+    .hub-header h1{
+      margin:0;
+
+      font-size:
+        clamp(2.4rem,6vw,4rem);
+
+      line-height:.95;
+      letter-spacing:-.05em;
+    }
+
+    .hub-header p{
+      margin:12px 0 0;
+      max-width:560px;
+
+      color:#cbd5e1;
+      line-height:1.55;
+    }
+
+    .hub-profile{
+      min-width:190px;
+      padding:16px 18px;
+
+      border-radius:18px;
+
+      border:
+        1px solid rgba(255,255,255,.08);
+
+      background:
+        rgba(15,23,42,.72);
+
+      text-align:center;
+    }
+
+    .hub-profile-label{
+      margin:0;
+
+      color:#64748b;
+
+      font-size:.72rem;
+      font-weight:900;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+    }
+
+    .hub-profile strong{
+      display:block;
+      margin-top:6px;
+
+      color:#fff;
+      font-size:1.05rem;
+    }
+
+    .hub-profile span{
+      display:block;
+      margin-top:4px;
+
+      color:#86efac;
+      font-size:.85rem;
+      font-weight:800;
+    }
+
+    .hub-section-head{
+      margin:28px 0 12px;
+    }
+
+    .hub-section-head h2{
+      margin:0;
+      font-size:1.35rem;
+    }
+
+    .hub-section-head p{
+      margin:5px 0 0;
+      color:var(--hub-muted);
+      font-size:.92rem;
+    }
+
+    .hub-grid{
+      display:grid;
+      grid-template-columns:
+        repeat(2,minmax(0,1fr));
+
+      gap:16px;
+    }
+
+    .hub-card{
+      position:relative;
+
+      min-height:180px;
+      padding:18px;
+
+      display:grid;
+      grid-template-columns:96px 1fr;
+      gap:18px;
+      align-items:center;
+
+      overflow:hidden;
+
+      border-radius:22px;
+
+      border:
+        1px solid var(--hub-line-soft);
+
+      background:
+        linear-gradient(
+          180deg,
+          rgba(15,23,42,.94),
+          rgba(7,16,25,.96)
+        );
+
+      color:#fff;
+      text-decoration:none;
+
+      box-shadow:
+        0 12px 30px rgba(0,0,0,.18);
+
+      transition:
+        transform .16s ease,
+        border-color .16s ease,
+        background .16s ease;
+    }
+
+    .hub-card:hover{
+      transform:translateY(-2px);
+    }
+
+    .hub-card:active{
+      transform:scale(.99);
+    }
+
+    .hub-card img{
+      width:88px;
+      height:88px;
+
+      object-fit:contain;
+
+      border-radius:18px;
+
+      background:
+        rgba(255,255,255,.03);
+    }
+
+    .hub-card-copy h3{
+      margin:0;
+      font-size:1.4rem;
+    }
+
+    .hub-card-copy p{
+      margin:8px 0 0;
+
+      color:#cbd5e1;
+      line-height:1.5;
+    }
+
+    .hub-card.purple{
+      border-color:
+        rgba(167,139,250,.28);
+    }
+
+    .hub-card.purple:hover{
+      border-color:
+        rgba(167,139,250,.56);
+    }
+
+    .hub-card.green{
+      border-color:
+        rgba(34,197,94,.28);
+    }
+
+    .hub-card.green:hover{
+      border-color:
+        rgba(34,197,94,.56);
+    }
+
+    .hub-card.blue{
+      border-color:
+        rgba(56,189,248,.28);
+    }
+
+    .hub-card.blue:hover{
+      border-color:
+        rgba(56,189,248,.56);
+    }
+
+    .hub-card.red{
+      border-color:
+        rgba(239,68,68,.30);
+    }
+
+    .hub-card.red:hover{
+      border-color:
+        rgba(239,68,68,.58);
+    }
+
+    .hub-empty{
+      display:none;
+
+      margin-top:18px;
+      padding:18px;
+
+      border-radius:18px;
+
+      border:
+        1px solid rgba(255,255,255,.08);
+
+      background:
+        rgba(15,23,42,.72);
+
+      color:#cbd5e1;
+      text-align:center;
+    }
+
+    .sandman-footer{
+      margin-top:30px;
+
+      text-align:center;
+
+      color:#64748b;
+
+      font-size:.8rem;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+    }
+
+    .sandman-footer strong{
+      color:#22c55e;
+    }
+
+    @media (max-width:760px){
+
+      .hub-wrap{
+        padding:18px 12px 30px;
+      }
+
+      .hub-header{
+        grid-template-columns:1fr;
+        padding:18px;
+        border-radius:20px;
+      }
+
+      .hub-profile{
+        width:100%;
+      }
+
+      .hub-grid{
+        grid-template-columns:1fr;
+      }
+
+      .hub-card{
+        min-height:150px;
+
+        grid-template-columns:78px 1fr;
+
+        padding:16px;
+
+        border-radius:18px;
+      }
+
+      .hub-card img{
+        width:72px;
+        height:72px;
+      }
+    }
+
+    @media (prefers-reduced-motion:reduce){
+
+      .hub-card{
+        transition:none;
+      }
+    }
+  </style>
 </head>
 
 <body data-theme="night">
 
   <main class="hub-wrap">
 
+    <!-- HERO -->
+
     <header class="hub-header">
 
       <div>
 
+        <p class="hub-kicker">
+          FuelAI
+        </p>
+
         <h1>
-          FuelAI™
+          Your Hub
         </h1>
 
         <p>
-          Less overthinking. Better decisions.
+          Your FuelAI tools, built around your profile and plan.
         </p>
+
+      </div>
+
+
+      <div class="hub-profile">
+
+        <p class="hub-profile-label">
+          Current Experience
+        </p>
+
+        <strong id="hubProfileOutput">
+          Loading...
+        </strong>
+
+        <span id="hubPlanOutput">
+          Loading plan...
+        </span>
 
       </div>
 
     </header>
 
+
+    <!-- TOOLS -->
+
+    <div class="hub-section-head">
+
+      <h2>
+        Your Tools
+      </h2>
+
+      <p>
+        Only the tools included in your current FuelAI experience are shown.
+      </p>
+
+    </div>
+
+
     <section class="hub-grid">
+
 
       <!-- TRACKWISE -->
 
@@ -64,7 +445,7 @@
           </h3>
 
           <p>
-            Track consistency, progress, and daily habits.
+            Track consistency, progress, intake, hydration, and daily habits.
           </p>
 
         </div>
@@ -92,7 +473,7 @@
           </h3>
 
           <p>
-            Track meals, hydration, and daily intake with less guesswork.
+            Scan meals and make better daily nutrition decisions with less guesswork.
           </p>
 
         </div>
@@ -120,38 +501,40 @@
           </h3>
 
           <p>
-            Build meal ideas from what you already have.
+            Turn the food you already have into practical meal ideas.
           </p>
 
         </div>
 
       </a>
+
+
       <!-- TRAININGWISE -->
 
-<a
-  class="hub-card blue"
-  id="trainingwiseCard"
-  href="/tools/trainingwise/"
->
+      <a
+        class="hub-card blue"
+        id="trainingwiseCard"
+        href="/tools/trainingwise/"
+      >
 
-  <img
-    src="/assets/img/hub/trainingwise.png"
-    alt="TrainingWise"
-  />
+        <img
+          src="/assets/img/hub/trainingwise.png"
+          alt="TrainingWise"
+        />
 
-  <div class="hub-card-copy">
+        <div class="hub-card-copy">
 
-    <h3>
-      TrainingWise
-    </h3>
+          <h3>
+            TrainingWise
+          </h3>
 
-    <p>
-      Structured workouts, conditioning, and progress built around your training.
-    </p>
+          <p>
+            Structured workouts, conditioning, and training progress.
+          </p>
 
-  </div>
+        </div>
 
-</a>
+      </a>
 
 
       <!-- COMBAT ATHLETE -->
@@ -174,7 +557,7 @@
           </h3>
 
           <p>
-            WeightWise, competition prep, and athlete readiness tools.
+            WeightWise, competition prep, readiness, and performance tools.
           </p>
 
         </div>
@@ -183,8 +566,19 @@
 
     </section>
 
+
+    <div
+      id="hubEmptyState"
+      class="hub-empty"
+    >
+      No FuelAI tools are available for this account yet.
+      Update your setup or plan to continue.
+    </div>
+
+
     <footer class="sandman-footer">
-      FuelAI™ · Powered by <strong>Sandman™</strong>
+      FuelAI™ · Powered by
+      <strong>Sandman™</strong>
     </footer>
 
   </main>
@@ -198,164 +592,124 @@
   <script>
     window.FuelAIAuth?.requireSoftLogin();
 
-    const DEV_UNLOCK_ALL = true;
+    const access =
+      window.FuelAIPlan
+        ?.getFuelAIAccess?.();
 
-    const setup =
-      JSON.parse(
-        localStorage.getItem("fuelai-setup") || "{}"
+    const cards = {
+      mealwise:
+        document.getElementById(
+          "mealwiseCard"
+        ),
+
+      fridgewise:
+        document.getElementById(
+          "fridgewiseCard"
+        ),
+
+      trackwise:
+        document.getElementById(
+          "trackwiseCard"
+        ),
+
+      trainingwise:
+        document.getElementById(
+          "trainingwiseCard"
+        ),
+
+      combatAthlete:
+        document.getElementById(
+          "combatAthleteCard"
+        )
+    };
+
+    const profileOutput =
+      document.getElementById(
+        "hubProfileOutput"
       );
 
-    const membership =
-      setup.membership === "basic"
-        ? "standard"
-        : setup.membership || "free";
+    const planOutput =
+      document.getElementById(
+        "hubPlanOutput"
+      );
 
-    const lifestyleType =
-      setup.lifestyleType || "general-health";
-
-    const isFitnessUser =
-      lifestyleType === "fitness-enthusiast";
-
-    const isCombatUser =
-      lifestyleType === "combat-athlete";
-
-    const trackwiseCard =
-      document.getElementById("trackwiseCard");
-
-    const combatAthleteCard =
-      document.getElementById("combatAthleteCard");
+    const emptyState =
+      document.getElementById(
+        "hubEmptyState"
+      );
 
 
-    function lockCard(
-      card,
-      label,
-      message,
-      href = "/account/setup.html"
-    ) {
-      if (!card) return;
+    function applyHubAccess() {
 
-      /*
-       * Developer override:
-       * keep every feature usable while building/testing.
-       */
-      if (DEV_UNLOCK_ALL) {
+      if (!access) {
+
+        console.warn(
+          "FuelAI access data unavailable."
+        );
+
         return;
       }
 
-      card.href = href;
 
-      card.classList.add(
-        "locked-card"
+      if (profileOutput) {
+        profileOutput.textContent =
+          access.profileLabel ||
+          "General Health";
+      }
+
+
+      if (planOutput) {
+        planOutput.textContent =
+          access.planLabel ||
+          access.plan ||
+          "Free";
+      }
+
+
+      let visibleCount = 0;
+
+
+      Object.entries(
+        cards
+      ).forEach(
+        ([tool, card]) => {
+
+          if (!card) {
+            return;
+          }
+
+          const allowed =
+            access.tools?.[tool] ===
+            true;
+
+          card.style.display =
+            allowed
+              ? ""
+              : "none";
+
+          if (allowed) {
+            visibleCount += 1;
+          }
+        }
       );
 
-      const copy =
-        card.querySelector("p");
 
-      if (copy && message) {
-        copy.textContent =
-          message;
+      if (emptyState) {
+        emptyState.style.display =
+          visibleCount === 0
+            ? "block"
+            : "none";
       }
 
-      if (
-        !card.querySelector(
-          ".unlock-badge"
-        )
-      ) {
-        const badge =
-          document.createElement(
-            "span"
-          );
 
-        badge.className =
-          "unlock-badge";
-
-        badge.textContent =
-          label;
-
-        card.appendChild(
-          badge
-        );
-      }
-    }
-
-
-    /*
-     * TRACKWISE
-     */
-
-    if (
-      trackwiseCard &&
-      membership === "free"
-    ) {
-      lockCard(
-        trackwiseCard,
-        "Upgrade",
-        "Standard feature: track consistency, progress, and daily habits.",
-        "/account/setup.html"
+      console.log(
+        "FuelAI Hub Access:",
+        access
       );
     }
 
 
-    /*
- * TRAININGWISE
- */
-
-if (trainingwiseCard) {
-
-  const canUseTrainingWise =
-    isFitnessUser ||
-    isCombatUser;
-
-  if (!canUseTrainingWise) {
-    lockCard(
-      trainingwiseCard,
-      "Fitness Profile",
-      "TrainingWise is available for Fitness Enthusiast and Combat Athlete profiles.",
-      "/account/setup.html"
-    );
-  }
-
-  if (
-    canUseTrainingWise &&
-    membership === "free"
-  ) {
-    lockCard(
-      trainingwiseCard,
-      "Unlock Standard",
-      "Standard feature: structured workouts, conditioning, and training progress.",
-      "/account/setup.html"
-    );
-  }
-}
-
-
-    /*
-     * COMBAT ATHLETE
-     */
-
-    if (combatAthleteCard) {
-
-      if (!isCombatUser) {
-        lockCard(
-          combatAthleteCard,
-          "Combat Profile",
-          "Designed for combat athletes. Update your profile to unlock competition tools.",
-          "/account/setup.html"
-        );
-      }
-
-      if (
-        isCombatUser &&
-        membership !== "plus"
-      ) {
-        lockCard(
-          combatAthleteCard,
-          "Unlock Plus",
-          "Plus feature: WeightWise, competition prep, and athlete readiness tools.",
-          "/account/setup.html"
-        );
-      }
-    }
+    applyHubAccess();
   </script>
 
 

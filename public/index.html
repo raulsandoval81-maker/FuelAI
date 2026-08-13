@@ -19,9 +19,11 @@
     .landing-wrap{
       min-height:100vh;
       padding:32px 20px;
+
       display:flex;
       align-items:center;
       justify-content:center;
+
       background:
         radial-gradient(
           circle at top,
@@ -29,26 +31,52 @@
           #020617 42%
         ),
         #020617;
+
       color:#fff;
     }
 
     .landing-card{
       width:100%;
       max-width:1100px;
-      padding:32px 22px;
-      border:1px solid rgba(34,197,94,.28);
+
+      padding:36px 24px;
+
+      border:
+        1px solid rgba(34,197,94,.28);
+
       border-radius:32px;
-      background:rgba(15,23,42,.82);
+
+      background:
+        rgba(15,23,42,.84);
+
       box-shadow:
-        0 0 40px rgba(34,197,94,.18);
+        0 0 44px rgba(34,197,94,.18);
+
       text-align:center;
-      animation:cardRise .55s ease-out both;
+
+      animation:
+        cardRise .55s ease-out both;
+    }
+
+    .landing-kicker{
+      margin:0 0 10px;
+
+      color:#86efac;
+
+      font-size:.78rem;
+      font-weight:1000;
+      letter-spacing:.16em;
+      text-transform:uppercase;
     }
 
     .landing-title{
       margin:0;
-      font-size:clamp(2.7rem,12vw,4.4rem);
+
+      font-size:
+        clamp(2.8rem,12vw,4.6rem);
+
       font-weight:1000;
+      line-height:.95;
       letter-spacing:-.06em;
     }
 
@@ -57,56 +85,93 @@
     }
 
     .landing-line{
-      margin:16px auto 0;
-      max-width:520px;
-      color:#e5e7eb;
+      margin:18px auto 0;
+
+      max-width:540px;
+
+      color:#f1f5f9;
+
       font-size:1.3rem;
       line-height:1.4;
       font-weight:900;
     }
 
-    .landing-sub{
-      margin:20px auto 0;
-      max-width:560px;
-      color:#cbd5e1;
-      font-size:1.02rem;
-      line-height:1.6;
-      font-weight:700;
-    }
-
     .hero-image{
       display:block;
+
       width:100%;
       max-width:520px;
       height:auto;
-      margin:28px auto 24px;
+
+      margin:30px auto 24px;
+
       border-radius:22px;
+
       filter:
         drop-shadow(
           0 0 40px rgba(34,197,94,.18)
         );
-      animation:heroFade .7s ease-out both;
+
+      animation:
+        heroFade .7s ease-out both;
     }
 
-    .profiles-image{
-      display:block;
+    .landing-sub{
+      margin:20px auto 0;
+
+      max-width:580px;
+
+      color:#cbd5e1;
+
+      font-size:1.02rem;
+      line-height:1.65;
+      font-weight:700;
+    }
+
+    .landing-system{
+      display:grid;
+
+      grid-template-columns:
+        repeat(4,minmax(0,1fr));
+
+      gap:10px;
+
       width:100%;
-      max-width:1040px;
-      height:auto;
-      margin:34px auto 10px;
-      border-radius:22px;
-      filter:
-        drop-shadow(
-          0 0 34px rgba(15,23,42,.42)
-        );
-      animation:heroFade .85s ease-out both;
+      max-width:700px;
+
+      margin:26px auto 0;
+    }
+
+    .landing-system span{
+      min-height:46px;
+
+      display:flex;
+      align-items:center;
+      justify-content:center;
+
+      padding:10px 12px;
+
+      border-radius:14px;
+
+      border:
+        1px solid rgba(255,255,255,.08);
+
+      background:
+        rgba(255,255,255,.04);
+
+      color:#d1fae5;
+
+      font-size:.86rem;
+      font-weight:900;
     }
 
     .landing-actions{
       display:grid;
       gap:12px;
+
       width:100%;
       max-width:520px;
+
       margin:30px auto 0;
     }
 
@@ -114,17 +179,26 @@
       display:flex;
       align-items:center;
       justify-content:center;
+
       min-height:58px;
+
       border-radius:18px;
+
       text-decoration:none;
+
       font-weight:1000;
       letter-spacing:.03em;
+
       transition:
         transform .14s ease,
         box-shadow .14s ease,
         opacity .14s ease;
-      -webkit-tap-highlight-color:transparent;
-      touch-action:manipulation;
+
+      -webkit-tap-highlight-color:
+        transparent;
+
+      touch-action:
+        manipulation;
     }
 
     .landing-btn.primary{
@@ -134,7 +208,9 @@
           #16a34a,
           #22c55e
         );
+
       color:#02130a;
+
       box-shadow:
         0 0 24px rgba(34,197,94,.3);
     }
@@ -142,13 +218,22 @@
     .landing-btn.secondary{
       background:
         rgba(255,255,255,.07);
+
       color:#e5e7eb;
+
       border:
         1px solid rgba(255,255,255,.12);
     }
 
+    .landing-btn:hover{
+      transform:
+        translateY(-1px);
+    }
+
     .landing-btn:active{
-      transform:scale(.975);
+      transform:
+        scale(.975);
+
       opacity:.92;
     }
 
@@ -158,8 +243,10 @@
     }
 
     .sandman-footer{
-      margin-top:28px;
+      margin-top:30px;
+
       color:#94a3b8;
+
       font-size:.82rem;
       letter-spacing:.08em;
       text-transform:uppercase;
@@ -172,6 +259,7 @@
     @keyframes heroFade{
       from{
         opacity:0;
+
         transform:
           translateY(12px)
           scale(.985);
@@ -179,6 +267,7 @@
 
       to{
         opacity:1;
+
         transform:
           translateY(0)
           scale(1);
@@ -188,25 +277,28 @@
     @keyframes cardRise{
       from{
         opacity:0;
+
         transform:
           translateY(18px);
       }
 
       to{
         opacity:1;
+
         transform:
           translateY(0);
       }
     }
 
     @media (max-width:700px){
+
       .landing-wrap{
         padding:18px 12px;
         align-items:flex-start;
       }
 
       .landing-card{
-        padding:24px 14px;
+        padding:26px 14px;
         border-radius:24px;
       }
 
@@ -228,9 +320,9 @@
         border-radius:18px;
       }
 
-      .profiles-image{
-        margin:26px auto 8px;
-        border-radius:16px;
+      .landing-system{
+        grid-template-columns:
+          repeat(2,minmax(0,1fr));
       }
 
       .landing-btn{
@@ -242,9 +334,9 @@
     @media (
       prefers-reduced-motion:reduce
     ){
+
       .landing-card,
-      .hero-image,
-      .profiles-image{
+      .hero-image{
         animation:none;
       }
 
@@ -259,52 +351,76 @@
 
   <main class="landing-wrap">
 
-<section class="landing-card">
+    <section class="landing-card">
 
-  <h1 class="landing-title">
-    Fuel<span>AI</span>
-  </h1>
+      <p class="landing-kicker">
+        Powered by Sandman™
+      </p>
 
-  <p class="landing-line">
-    Daily intake tracking.<br />
-    Made easy. Done right.
-  </p>
+      <h1 class="landing-title">
+        Fuel<span>AI</span>
+      </h1>
 
-  <img
-    class="hero-image"
-    src="/assets/img/hero/fuelai-hero-v1.png"
-    alt="FuelAI nutrition, hydration, training, and performance platform"
-  />
+      <p class="landing-line">
+        Daily intake tracking.<br />
+        Made easy. Done right.
+      </p>
 
-  <p class="landing-sub">
-    Food. Hydration. Training. Recovery.<br />
-    Built around the way you live and train.
-  </p>
+      <img
+        class="hero-image"
+        src="/assets/img/hero/fuelai-hero-v1.png"
+        alt="FuelAI nutrition, hydration, training, and performance platform"
+      />
 
-  <div class="landing-actions">
+      <p class="landing-sub">
+        Food. Hydration. Training. Recovery.<br />
+        One connected system built around the way you live and train.
+      </p>
 
-    <a
-      class="landing-btn primary"
-      href="/account/login.html"
-    >
-      Get Started →
-    </a>
+      <div class="landing-system">
 
-    <a
-      class="landing-btn secondary"
-      href="/account/login.html"
-    >
-      Sign In
-    </a>
+        <span>
+          🍽 Food
+        </span>
 
-  </div>
+        <span>
+          💧 Hydration
+        </span>
 
-  <footer class="sandman-footer">
-    FuelAI™ · Powered by
-    <strong>Sandman™</strong>
-  </footer>
+        <span>
+          💪 Training
+        </span>
 
-</section>
+        <span>
+          🌙 Recovery
+        </span>
+
+      </div>
+
+      <div class="landing-actions">
+
+        <a
+          class="landing-btn primary"
+          href="/account/login.html"
+        >
+          Get Started →
+        </a>
+
+        <a
+          class="landing-btn secondary"
+          href="/account/login.html"
+        >
+          Sign In
+        </a>
+
+      </div>
+
+      <footer class="sandman-footer">
+        FuelAI™ · Powered by
+        <strong>Sandman™</strong>
+      </footer>
+
+    </section>
 
   </main>
 
@@ -314,7 +430,8 @@
 
   <script>
     const isLoggedIn =
-      window.FuelAIAuth?.isSoftLoggedIn?.();
+      window.FuelAIAuth
+        ?.isSoftLoggedIn?.();
 
     const primaryBtn =
       document.querySelector(
@@ -326,17 +443,25 @@
         ".landing-btn.secondary"
       );
 
-    if (isLoggedIn && primaryBtn) {
+
+    if (
+      isLoggedIn &&
+      primaryBtn
+    ) {
       primaryBtn.textContent =
-        "Continue to Hub →";
+        "Continue to FuelAI →";
 
       primaryBtn.href =
         "/hub/";
     }
 
-    if (isLoggedIn && secondaryBtn) {
+
+    if (
+      isLoggedIn &&
+      secondaryBtn
+    ) {
       secondaryBtn.textContent =
-        "Account Setup";
+        "Edit My Setup";
 
       secondaryBtn.href =
         "/account/setup.html";

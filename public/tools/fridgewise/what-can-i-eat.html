@@ -8,9 +8,14 @@
     content="width=device-width, initial-scale=1.0"
   />
 
+  <meta
+    name="description"
+    content="Choose what you need right now and let FuelAI FridgeWise help decide what to eat."
+  />
+
   <link rel="icon" href="data:," />
 
-  <title>What Can I Eat?</title>
+  <title>What Should I Eat? | FridgeWise</title>
 
   <link
     rel="stylesheet"
@@ -22,209 +27,685 @@
     href="/assets/css/nav.css"
   />
 
+  <style>
+    :root{
+      --fw-bg:#030712;
+      --fw-panel:#071019;
+      --fw-line:rgba(56,189,248,.26);
+      --fw-soft:rgba(255,255,255,.08);
+      --fw-muted:#94a3b8;
+      --fw-blue:#38bdf8;
+      --fw-green:#22c55e;
+    }
+
+    *{
+      box-sizing:border-box;
+    }
+
+    body{
+      margin:0;
+
+      background:
+        radial-gradient(
+          circle at top,
+          rgba(14,116,144,.22),
+          transparent 30%
+        ),
+        var(--fw-bg);
+
+      color:#f8fafc;
+    }
+
+    .eat-shell{
+      width:100%;
+      max-width:1050px;
+      margin:0 auto;
+      padding:28px 18px 42px;
+    }
+
+    .eat-hero{
+      padding:24px;
+
+      border-radius:24px;
+
+      border:
+        1px solid var(--fw-line);
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(8,47,73,.30),
+          rgba(7,16,25,.96)
+        );
+
+      box-shadow:
+        0 18px 50px rgba(0,0,0,.24);
+
+      text-align:center;
+    }
+
+    .eat-hero h1{
+      margin:6px 0 0;
+
+      font-size:
+        clamp(2.3rem,6vw,3.8rem);
+
+      line-height:1;
+      letter-spacing:-.04em;
+    }
+
+    .eat-hero .sub{
+      max-width:600px;
+      margin:12px auto 0;
+
+      color:#cbd5e1;
+      line-height:1.55;
+    }
+
+    .eat-profile{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+
+      margin-top:16px;
+      padding:8px 12px;
+
+      border-radius:999px;
+
+      border:
+        1px solid rgba(34,197,94,.18);
+
+      background:
+        rgba(34,197,94,.07);
+
+      color:#86efac;
+
+      font-size:.82rem;
+      font-weight:900;
+    }
+
+    .eat-section-head{
+      margin:28px 0 12px;
+    }
+
+    .eat-section-head h2{
+      margin:0;
+      font-size:1.35rem;
+    }
+
+    .eat-section-head p{
+      margin:5px 0 0;
+      color:var(--fw-muted);
+      line-height:1.5;
+    }
+
+    .eat-grid{
+      display:grid;
+
+      grid-template-columns:
+        repeat(2,minmax(0,1fr));
+
+      gap:14px;
+    }
+
+    .eat-card{
+      min-height:160px;
+      padding:20px;
+
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+
+      border-radius:20px;
+
+      border:
+        1px solid var(--fw-soft);
+
+      background:
+        linear-gradient(
+          180deg,
+          rgba(15,23,42,.94),
+          rgba(7,16,25,.96)
+        );
+
+      color:#fff;
+      text-decoration:none;
+
+      box-shadow:
+        0 12px 30px rgba(0,0,0,.16);
+
+      transition:
+        transform .16s ease,
+        border-color .16s ease;
+    }
+
+    .eat-card:hover{
+      transform:translateY(-2px);
+
+      border-color:
+        rgba(56,189,248,.45);
+    }
+
+    .eat-card-icon{
+      font-size:1.8rem;
+    }
+
+    .eat-card h3{
+      margin:14px 0 0;
+      font-size:1.2rem;
+    }
+
+    .eat-card p{
+      margin:7px 0 0;
+
+      color:#cbd5e1;
+      line-height:1.45;
+      font-size:.92rem;
+    }
+
+    .eat-arrow{
+      display:block;
+      margin-top:16px;
+
+      color:var(--fw-blue);
+
+      font-size:.85rem;
+      font-weight:1000;
+    }
+
+    .eat-card.training{
+      border-color:
+        rgba(34,197,94,.22);
+    }
+
+    .eat-card.recovery{
+      border-color:
+        rgba(168,85,247,.22);
+    }
+
+    .eat-card.goal{
+      border-color:
+        rgba(250,204,21,.20);
+    }
+
+    .eat-memory{
+      margin-top:22px;
+      padding:18px;
+
+      border-radius:20px;
+
+      border:
+        1px solid rgba(34,197,94,.20);
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(20,83,45,.15),
+          rgba(7,16,25,.96)
+        );
+    }
+
+    .eat-memory h2{
+      margin:0;
+      font-size:1.15rem;
+    }
+
+    .eat-memory p{
+      margin:8px 0 0;
+
+      color:#cbd5e1;
+      line-height:1.5;
+    }
+
+    .eat-actions{
+      display:grid;
+
+      grid-template-columns:
+        repeat(2,minmax(0,1fr));
+
+      gap:14px;
+
+      margin-top:20px;
+    }
+
+    .eat-actions .secondary-btn{
+      width:100%;
+    }
+
+    .hero-note{
+      margin-top:26px;
+      text-align:center;
+      color:#64748b;
+    }
+
+    @media(max-width:700px){
+
+      .eat-shell{
+        padding:18px 12px 30px;
+      }
+
+      .eat-hero{
+        padding:18px;
+        border-radius:20px;
+      }
+
+      .eat-grid{
+        grid-template-columns:1fr;
+      }
+
+      .eat-card{
+        min-height:145px;
+      }
+
+      .eat-actions{
+        grid-template-columns:1fr;
+      }
+    }
+
+    @media(prefers-reduced-motion:reduce){
+
+      .eat-card{
+        transition:none;
+      }
+    }
+  </style>
 </head>
 
 <body data-theme="night">
 
-  <main class="scan-wrap">
+  <main class="eat-shell">
 
-    <section class="scan-card">
+    <!-- HERO -->
+
+    <header class="eat-hero">
 
       <p class="range-label">
-        FUELAI
+        FuelAI · FridgeWise
       </p>
 
       <h1>
-        🍽 What Can I Eat?
+        🍽️ What Should I Eat?
       </h1>
 
       <p class="sub">
-        Simple food direction based on your current FuelAI plan.
+        Tell FuelAI what moment you're in.
+        We'll help narrow down what makes sense right now.
       </p>
 
-      <section class="range-card">
-
-        <p class="range-label">
-          This Week’s Focus
-        </p>
-
-        <p
-          id="goalOutput"
-          class="range-output"
-        >
-          Loading your plan...
-        </p>
-
-      </section>
-
-      <section class="range-card">
-
-        <p class="range-label">
-          Suggested Meals
-        </p>
-
-        <p
-          id="eatOutput"
-          class="range-output"
-        >
-          Build a simple food direction from your current plan.
-        </p>
-
-        <button
-          id="eatBtn"
-          class="start-btn"
-          type="button"
-        >
-          Build Mini Plan
-        </button>
-
-      </section>
-
-      <div class="wise-links">
-
-
-        <a
-          class="secondary-btn"
-          href="/tools/fridgewise/cabinet-drawer.html"
-        >
-          🥫 Return to Cabinet Drawer
-        </a>
-
-
+      <div
+        id="eatProfileOutput"
+        class="eat-profile"
+      >
+        Loading your FuelAI profile...
       </div>
 
-      <p class="hero-note">
-        FuelAI • Less overthinking. Better decisions.
+    </header>
+
+
+    <!-- MOMENT -->
+
+    <div class="eat-section-head">
+
+      <h2>
+        What do you need right now?
+      </h2>
+
+      <p>
+        Pick the situation that best matches your day.
+      </p>
+
+    </div>
+
+
+    <section class="eat-grid">
+
+
+      <!-- QUICK -->
+
+      <a
+        class="eat-card"
+        href="/tools/fridgewise/what-can-i-eat.html?mode=quick"
+      >
+
+        <div>
+
+          <div class="eat-card-icon">
+            ⚡
+          </div>
+
+          <h3>
+            Quick Bite
+          </h3>
+
+          <p>
+            I'm hungry and need something simple right now.
+          </p>
+
+        </div>
+
+        <span class="eat-arrow">
+          Find something →
+        </span>
+
+      </a>
+
+
+      <!-- MEAL -->
+
+      <a
+        class="eat-card"
+        href="/tools/fridgewise/what-can-i-eat.html?mode=meal"
+      >
+
+        <div>
+
+          <div class="eat-card-icon">
+            🍽️
+          </div>
+
+          <h3>
+            Build a Meal
+          </h3>
+
+          <p>
+            I have time for a real breakfast, lunch, or dinner.
+          </p>
+
+        </div>
+
+        <span class="eat-arrow">
+          Build my meal →
+        </span>
+
+      </a>
+
+
+      <!-- BEFORE TRAINING -->
+
+      <a
+        class="eat-card training"
+        href="/tools/fridgewise/what-can-i-eat.html?mode=pre-training"
+      >
+
+        <div>
+
+          <div class="eat-card-icon">
+            🏋️
+          </div>
+
+          <h3>
+            Before Training
+          </h3>
+
+          <p>
+            Fuel my session without making me feel heavy.
+          </p>
+
+        </div>
+
+        <span class="eat-arrow">
+          Fuel my training →
+        </span>
+
+      </a>
+
+
+      <!-- AFTER TRAINING -->
+
+      <a
+        class="eat-card recovery"
+        href="/tools/fridgewise/what-can-i-eat.html?mode=post-training"
+      >
+
+        <div>
+
+          <div class="eat-card-icon">
+            🔋
+          </div>
+
+          <h3>
+            After Training
+          </h3>
+
+          <p>
+            Help me refuel, recover, and get ready for what's next.
+          </p>
+
+        </div>
+
+        <span class="eat-arrow">
+          Recover →
+        </span>
+
+      </a>
+
+
+      <!-- LATE NIGHT -->
+
+      <a
+        class="eat-card"
+        href="/tools/fridgewise/what-can-i-eat.html?mode=late-night"
+      >
+
+        <div>
+
+          <div class="eat-card-icon">
+            🌙
+          </div>
+
+          <h3>
+            Late Night
+          </h3>
+
+          <p>
+            I'm hungry, but I don't need to turn it into another full meal.
+          </p>
+
+        </div>
+
+        <span class="eat-arrow">
+          Keep it simple →
+        </span>
+
+      </a>
+
+
+      <!-- ON THE GO -->
+
+      <a
+        class="eat-card"
+        href="/tools/fridgewise/what-can-i-eat.html?mode=on-the-go"
+      >
+
+        <div>
+
+          <div class="eat-card-icon">
+            🥡
+          </div>
+
+          <h3>
+            On the Go
+          </h3>
+
+          <p>
+            I need something fast, portable, and realistic.
+          </p>
+
+        </div>
+
+        <span class="eat-arrow">
+          Give me options →
+        </span>
+
+      </a>
+
+
+      <!-- USE WHAT I HAVE -->
+
+      <a
+        class="eat-card"
+        href="/tools/fridgewise/fridgewise.html"
+      >
+
+        <div>
+
+          <div class="eat-card-icon">
+            🧊
+          </div>
+
+          <h3>
+            Use What I Have
+          </h3>
+
+          <p>
+            Scan my fridge and build ideas around what's actually available.
+          </p>
+
+        </div>
+
+        <span class="eat-arrow">
+          Scan my fridge →
+        </span>
+
+      </a>
+
+
+      <!-- GOAL -->
+
+      <a
+        class="eat-card goal"
+        href="/tools/fridgewise/what-can-i-eat.html?mode=goal"
+      >
+
+        <div>
+
+          <div class="eat-card-icon">
+            🎯
+          </div>
+
+          <h3>
+            Fit My Goal
+          </h3>
+
+          <p id="goalCardText">
+            Build an option around my current FuelAI goal.
+          </p>
+
+        </div>
+
+        <span class="eat-arrow">
+          Use my goal →
+        </span>
+
+      </a>
+
+    </section>
+
+
+    <!-- MEMORY -->
+
+    <section class="eat-memory">
+
+      <h2>
+        FuelAI already knows your direction.
+      </h2>
+
+      <p>
+        Your profile, goal, food preferences, foods to avoid,
+        and FridgeWise Cabinet Drawer can all help narrow the decision.
       </p>
 
     </section>
 
+
+    <!-- NAVIGATION -->
+
+    <div class="eat-actions">
+
+      <a
+        class="secondary-btn"
+        href="/tools/fridgewise/cabinet-drawer.html"
+      >
+        🥫 Cabinet Drawer
+      </a>
+
+      <a
+        class="secondary-btn"
+        href="/hub/"
+      >
+        🏠 Return to Hub
+      </a>
+
+    </div>
+
+
+    <footer class="hero-note">
+      FuelAI™ · Less overthinking. Better decisions.
+    </footer>
+
   </main>
 
-  <footer class="app-footer">
 
-    <p>
-      FuelAI • Simple meals matched to your goal.
-    </p>
-
-  </footer>
+  <script src="/assets/js/core/plan.js"></script>
 
   <script src="/assets/js/core/auth-soft.js"></script>
 
   <script>
     window.FuelAIAuth?.requireSoftLogin();
-  </script>
-
-  <script src="/assets/js/core/preferences.js"></script>
-
-  <script>
-    const goalOutput =
-      document.getElementById("goalOutput");
-
-    const eatOutput =
-      document.getElementById("eatOutput");
-
-    const eatBtn =
-      document.getElementById("eatBtn");
 
     const setup =
       JSON.parse(
-        localStorage.getItem("fuelai-setup") || "{}"
+        localStorage.getItem(
+          "fuelai-setup"
+        ) || "{}"
       );
 
-    const goal =
-      setup.goal ||
-      setup.monthlyPlan ||
-      "fuelwise";
+    const access =
+      window.FuelAIPlan
+        ?.getFuelAIAccess?.();
 
-    const WEEKLY_PLANS = {
-      fuelwise: {
-        focus: "Steady Energy Week",
-        line:
-          "Maintain: boring, steady meals that keep energy stable.",
-        meals: [
-          "Eggs + toast",
-          "Chicken rice bowl",
-          "Greek yogurt + fruit",
-          "Turkey sandwich",
-          "Protein shake after training"
-        ]
-      },
+    const profileOutput =
+      document.getElementById(
+        "eatProfileOutput"
+      );
 
-      cutwise: {
-        focus: "Simple Cut Week",
-        line:
-          "Cut: protein first, lighter carbs, no punishment meals.",
-        meals: [
-          "Eggs + fruit",
-          "Chicken salad bowl",
-          "Turkey lettuce wrap",
-          "Greek yogurt",
-          "Lean protein + vegetables"
-        ]
-      },
+    const goalCardText =
+      document.getElementById(
+        "goalCardText"
+      );
 
-      gainwise: {
-        focus: "Build and Recover Week",
-        line:
-          "Gain: protein first, bigger carbs, easy calories added.",
-        meals: [
-          "Oatmeal + peanut butter",
-          "Chicken rice bowl",
-          "Protein shake + banana",
-          "Eggs + tortillas",
-          "Milk + sandwich"
-        ]
-      }
+
+    const profileLabel =
+      access?.profileLabel ||
+      "General Health";
+
+
+    const goalLabels = {
+      fuelwise:
+        "Maintain balance and steady everyday energy.",
+
+      cutwise:
+        "Choose something that supports your current lean-out direction.",
+
+      gainwise:
+        "Choose something that supports building, fueling, and recovery."
     };
 
-    const plan =
-      WEEKLY_PLANS[goal] ||
-      WEEKLY_PLANS.fuelwise;
 
-    if (goalOutput) {
-      goalOutput.textContent =
-        setup.weeklyFocus ||
-        plan.focus;
+    if (profileOutput) {
+      profileOutput.textContent =
+        profileLabel;
     }
 
-function buildMiniPlan() {
 
-  return `
-    <div class="meal-plan">
-
-      <p class="meal-line">
-        ${plan.line}
-      </p>
-
-      <div class="meal-divider"></div>
-
-      <p class="meal-label">
-        Suggested meals
-      </p>
-
-      <ul class="meal-list">
-        ${plan.meals.map(meal => `
-          <li>${meal}</li>
-        `).join("")}
-      </ul>
-
-    </div>
-  `;
-}
-
-eatBtn?.addEventListener("click", () => {
-
-  eatOutput.innerHTML =
-    buildMiniPlan();
-
-});
-
-</script>
-
-
-  <script src="/assets/js/core/plan.js"></script>
-
+    if (goalCardText) {
+      goalCardText.textContent =
+        goalLabels[
+          setup.goal
+        ] ||
+        "Build an option around my current FuelAI goal.";
+    }
+  </script>
 
   <script src="/assets/js/core/nav.js"></script>
 

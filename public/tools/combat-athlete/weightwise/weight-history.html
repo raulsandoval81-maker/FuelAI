@@ -2,90 +2,590 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
 
   <title>Weight History | WeightWise</title>
 
-<link rel="stylesheet" href="../../assets/css/site.css" />
-<link rel="stylesheet" href="./weightwise.css" />
+  <link
+    rel="stylesheet"
+    href="/assets/css/site.css"
+  />
+
+  <link
+    rel="stylesheet"
+    href="./weightwise.css"
+  />
 
   <link
     rel="stylesheet"
     href="/assets/css/nav.css"
   />
 
+  <style>
+    :root{
+      --wh-bg:#030712;
+      --wh-line:rgba(239,68,68,.26);
+      --wh-line-soft:rgba(255,255,255,.08);
+      --wh-muted:#94a3b8;
+      --wh-red:#ef4444;
+      --wh-green:#22c55e;
+      --wh-blue:#38bdf8;
+    }
+
+    *{
+      box-sizing:border-box;
+    }
+
+    body{
+      margin:0;
+
+      background:
+        radial-gradient(
+          circle at top,
+          rgba(127,29,29,.24),
+          transparent 30%
+        ),
+        var(--wh-bg);
+
+      color:#f8fafc;
+    }
+
+    .history-shell{
+      width:100%;
+      max-width:980px;
+      margin:0 auto;
+      padding:28px 18px 42px;
+    }
+
+    .history-hero{
+      padding:24px;
+
+      border-radius:24px;
+
+      border:
+        1px solid var(--wh-line);
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(127,29,29,.24),
+          rgba(7,16,25,.96)
+        );
+
+      box-shadow:
+        0 18px 50px rgba(0,0,0,.24);
+
+      text-align:center;
+    }
+
+    .history-hero h1{
+      margin:6px 0 0;
+
+      font-size:
+        clamp(2.3rem,6vw,3.8rem);
+
+      line-height:1;
+      letter-spacing:-.04em;
+    }
+
+    .history-hero .sub{
+      max-width:600px;
+      margin:12px auto 0;
+
+      color:#cbd5e1;
+      line-height:1.55;
+    }
+
+    .history-focus{
+      display:grid;
+
+      grid-template-columns:
+        repeat(3,minmax(0,1fr));
+
+      gap:10px;
+      margin-top:18px;
+    }
+
+    .history-focus div{
+      padding:12px 10px;
+
+      border-radius:14px;
+
+      border:
+        1px solid rgba(255,255,255,.07);
+
+      background:
+        rgba(15,23,42,.70);
+
+      color:#e2e8f0;
+
+      font-size:.84rem;
+      font-weight:900;
+    }
+
+    .history-section{
+      margin-top:20px;
+      padding:20px;
+
+      border-radius:20px;
+
+      border:
+        1px solid var(--wh-line-soft);
+
+      background:
+        linear-gradient(
+          180deg,
+          rgba(15,23,42,.94),
+          rgba(7,16,25,.96)
+        );
+
+      box-shadow:
+        0 12px 30px rgba(0,0,0,.16);
+    }
+
+    .history-section h2{
+      margin:0;
+      font-size:1.25rem;
+    }
+
+    .history-form-grid{
+      display:grid;
+
+      grid-template-columns:
+        repeat(3,minmax(0,1fr));
+
+      gap:14px;
+      margin-top:14px;
+    }
+
+    .history-field label{
+      display:block;
+
+      margin-bottom:7px;
+
+      color:#cbd5e1;
+
+      font-size:.84rem;
+      font-weight:900;
+    }
+
+    .history-field input{
+      width:100%;
+      min-height:50px;
+
+      padding:0 14px;
+
+      border-radius:14px;
+
+      border:
+        1px solid rgba(255,255,255,.10);
+
+      background:#0b1220;
+
+      color:#f8fafc;
+
+      font:inherit;
+      outline:none;
+    }
+
+    .history-field input:focus{
+      border-color:
+        rgba(239,68,68,.48);
+
+      box-shadow:
+        0 0 0 3px rgba(239,68,68,.08);
+    }
+
+    .history-submit{
+      width:100%;
+      min-height:56px;
+
+      margin-top:16px;
+
+      border:0;
+      border-radius:16px;
+
+      background:
+        linear-gradient(
+          135deg,
+          #b91c1c,
+          #ef4444
+        );
+
+      color:#fff;
+
+      font:inherit;
+      font-weight:1000;
+
+      cursor:pointer;
+
+      box-shadow:
+        0 0 22px rgba(239,68,68,.18);
+    }
+
+    .history-submit:hover{
+      filter:brightness(1.07);
+    }
+
+    #scheduleOutput,
+    #historyList{
+      margin-top:14px;
+
+      color:#e2e8f0;
+
+      line-height:1.65;
+    }
+
+    .history-list{
+      display:grid;
+      gap:10px;
+    }
+
+    .history-note{
+      margin-top:20px;
+      padding:18px;
+
+      border-radius:20px;
+
+      border:
+        1px solid rgba(34,197,94,.18);
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(20,83,45,.13),
+          rgba(7,16,25,.96)
+        );
+    }
+
+    .history-note h2{
+      margin:0;
+      font-size:1.1rem;
+    }
+
+    .history-note p{
+      margin:8px 0 0;
+
+      color:#cbd5e1;
+      line-height:1.55;
+    }
+
+    .room-links{
+      display:grid;
+
+      grid-template-columns:
+        repeat(2,minmax(0,1fr));
+
+      gap:14px;
+      margin-top:20px;
+    }
+
+    .room-links a{
+      min-height:54px;
+
+      display:flex;
+      align-items:center;
+      justify-content:center;
+
+      padding:12px 14px;
+
+      border-radius:15px;
+
+      border:
+        1px solid rgba(255,255,255,.08);
+
+      background:
+        rgba(255,255,255,.04);
+
+      color:#e5e7eb;
+
+      text-decoration:none;
+      text-align:center;
+
+      font-weight:900;
+    }
+
+    .hero-note{
+      margin-top:26px;
+      text-align:center;
+      color:#64748b;
+    }
+
+    @media(max-width:760px){
+
+      .history-shell{
+        padding:18px 12px 30px;
+      }
+
+      .history-hero{
+        padding:18px;
+        border-radius:20px;
+      }
+
+      .history-focus,
+      .history-form-grid,
+      .room-links{
+        grid-template-columns:1fr;
+      }
+    }
+  </style>
 </head>
 
 <body data-theme="night">
-  <main class="weightwise-wrap">
-    <section class="weightwise-card">
-      <p class="range-label">FuelAI Beta</p>
 
-      <h1>📉 Weight History</h1>
+  <main class="history-shell">
 
-      <p class="sub">
-        Log weigh-ins and watch the trend.
+    <!-- HERO -->
+
+    <header class="history-hero">
+
+      <p class="range-label">
+        FuelAI · WeightWise
       </p>
 
-<form id="historyForm" class="wise-form">
-  <label>
-    Athlete Name
-    <input id="athleteName" type="text" placeholder="Max" required />
-  </label>
+      <h1>
+        📉 Weight History
+      </h1>
 
-  <label>
-    Date
-    <input id="logDate" type="date" required />
-  </label>
+      <p class="sub">
+        Log weigh-ins, watch the trend, and compare your actual progress with your competition plan.
+      </p>
 
-  <label>
-    Weight
-    <input id="logWeight" type="number" step="0.1" placeholder="152.4" required />
-  </label>
+      <div class="history-focus">
 
-  <button type="submit" class="btn btn-primary">
-    Save Weigh-In
-  </button>
-</form>
-<section class="output-card">
-  <h2>Descent Schedule</h2>
-
-  <div id="scheduleOutput">
-    No schedule available.
-  </div>
-</section>
-      <section class="output-card">
-        <h2>Recent Weigh-Ins</h2>
-
-        <div id="historyList" class="history-list">
-          No weigh-ins yet.
+        <div>
+          ⚖️ Weigh-Ins
         </div>
-      </section>
-<nav class="room-links">
+
+        <div>
+          📉 Trend
+        </div>
+
+        <div>
+          🎯 Target Path
+        </div>
+
+      </div>
+
+    </header>
 
 
-<a href="./index.html">
-  ⚖️ WeightWise
-</a>
+    <!-- LOG WEIGH-IN -->
+
+    <section class="history-section">
+
+      <p class="range-label">
+        Log Weigh-In
+      </p>
+
+      <h2>
+        Add today's weight
+      </h2>
+
+      <form
+        id="historyForm"
+        class="wise-form"
+      >
+
+        <div class="history-form-grid">
+
+          <div class="history-field">
+
+            <label for="athleteName">
+              Athlete Name
+            </label>
+
+            <input
+              id="athleteName"
+              type="text"
+              placeholder="Max"
+              autocomplete="off"
+              required
+            />
+
+          </div>
 
 
-<a class="secondary-btn" href="/hub/">
-  🏠 Return to Hub
-</a>
+          <div class="history-field">
 
-</nav>
+            <label for="logDate">
+              Date
+            </label>
 
+            <input
+              id="logDate"
+              type="date"
+              required
+            />
+
+          </div>
+
+
+          <div class="history-field">
+
+            <label for="logWeight">
+              Weight
+            </label>
+
+            <input
+              id="logWeight"
+              type="number"
+              step="0.1"
+              min="1"
+              inputmode="decimal"
+              placeholder="152.4"
+              required
+            />
+
+          </div>
+
+        </div>
+
+        <button
+          type="submit"
+          class="btn btn-primary history-submit"
+        >
+          Save Weigh-In →
+        </button>
+
+      </form>
 
     </section>
+
+
+    <!-- DESCENT SCHEDULE -->
+
+    <section class="history-section">
+
+      <p class="range-label">
+        WeightWise Projection
+      </p>
+
+      <h2>
+        Descent Schedule
+      </h2>
+
+      <div id="scheduleOutput">
+        No schedule available.
+      </div>
+
+    </section>
+
+
+    <!-- RECENT HISTORY -->
+
+    <section class="history-section">
+
+      <p class="range-label">
+        Trend History
+      </p>
+
+      <h2>
+        Recent Weigh-Ins
+      </h2>
+
+      <div
+        id="historyList"
+        class="history-list"
+        aria-live="polite"
+      >
+        No weigh-ins yet.
+      </div>
+
+    </section>
+
+
+    <!-- NOTE -->
+
+    <section class="history-note">
+
+      <h2>
+        Trends matter more than one number.
+      </h2>
+
+      <p>
+        Daily weight can move with hydration, food intake, sodium,
+        training load, sleep, and recovery. WeightWise should use
+        repeated measurements to understand direction rather than
+        overreacting to a single weigh-in.
+      </p>
+
+    </section>
+
+
+    <!-- NAV -->
+
+    <nav
+      class="room-links"
+      aria-label="Weight History navigation"
+    >
+
+      <a href="./index.html">
+        ⚖️ WeightWise
+      </a>
+
+      <a href="./descent-schedule.html">
+        📆 Descent Schedule
+      </a>
+
+      <a href="./competition-mode.html">
+        🏆 Competition Mode
+      </a>
+
+      <a
+        href="/tools/combat-athlete/intelligence/"
+      >
+        🧠 Athlete Intelligence
+      </a>
+
+      <a
+        class="secondary-btn"
+        href="/hub/"
+      >
+        🏠 Return to Hub
+      </a>
+
+    </nav>
+
+
+    <footer class="hero-note">
+      FuelAI™ · Powered by Sandman™
+    </footer>
+
   </main>
-
-<script src="./weightwise.js"></script>
-
-  <script src="/assets/js/core/plan.js"></script>
 
 
   <script src="/assets/js/core/auth-soft.js"></script>
 
+  <script>
+    window.FuelAIAuth?.requireSoftLogin();
+  </script>
+
+
+  <script src="/assets/js/core/plan.js"></script>
+
+
+  <script>
+    const access =
+      window.FuelAIPlan
+        ?.getFuelAIAccess?.();
+
+    if (
+      access &&
+      access.tools?.weightwise !== true
+    ) {
+      window.location.replace(
+        "/tools/combat-athlete/upgrade.html"
+      );
+    }
+  </script>
+
+
+  <script src="./weightwise.js"></script>
 
   <script src="/assets/js/core/nav.js"></script>
 

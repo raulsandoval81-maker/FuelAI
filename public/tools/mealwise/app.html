@@ -10,7 +10,7 @@
 
   <link rel="icon" href="data:," />
 
-  <title>FuelWise Scanner</title>
+  <title>MealWise | FuelAI</title>
 
   <link
     rel="stylesheet"
@@ -22,24 +22,287 @@
     href="/assets/css/nav.css"
   />
 
+  <style>
+    :root{
+      --mw-bg:#030712;
+      --mw-panel:#071019;
+      --mw-line:rgba(34,197,94,.28);
+      --mw-line-soft:rgba(255,255,255,.08);
+      --mw-text:#f8fafc;
+      --mw-muted:#94a3b8;
+      --mw-green:#22c55e;
+      --mw-blue:#38bdf8;
+    }
+
+    *{
+      box-sizing:border-box;
+    }
+
+    body{
+      margin:0;
+      background:
+        radial-gradient(
+          circle at top,
+          rgba(20,83,45,.24),
+          transparent 30%
+        ),
+        var(--mw-bg);
+      color:var(--mw-text);
+    }
+
+    .mealwise-shell{
+      width:100%;
+      max-width:1000px;
+      margin:0 auto;
+      padding:28px 18px 42px;
+    }
+
+    .mealwise-hero{
+      padding:24px;
+      border-radius:24px;
+      border:1px solid var(--mw-line);
+      background:
+        linear-gradient(
+          135deg,
+          rgba(20,83,45,.28),
+          rgba(7,16,25,.96)
+        );
+      box-shadow:
+        0 18px 50px rgba(0,0,0,.24);
+      text-align:center;
+    }
+
+    .mealwise-hero h1{
+      margin:6px 0 0;
+      font-size:
+        clamp(2.4rem,6vw,3.8rem);
+      line-height:1;
+      letter-spacing:-.04em;
+    }
+
+    .mealwise-hero .sub{
+      max-width:560px;
+      margin:12px auto 0;
+      color:#cbd5e1;
+      line-height:1.55;
+    }
+
+    .mealwise-section{
+      margin-top:18px;
+      padding:18px;
+      border-radius:20px;
+      border:1px solid var(--mw-line-soft);
+      background:
+        linear-gradient(
+          180deg,
+          rgba(15,23,42,.94),
+          rgba(7,16,25,.96)
+        );
+      box-shadow:
+        0 12px 30px rgba(0,0,0,.16);
+    }
+
+    .upload-actions{
+      display:grid;
+      grid-template-columns:
+        repeat(2,minmax(0,1fr));
+      gap:14px;
+    }
+
+    .upload-half{
+      min-height:145px;
+      padding:20px;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      border-radius:18px;
+      border:1px solid rgba(34,197,94,.20);
+      background:
+        linear-gradient(
+          180deg,
+          rgba(20,83,45,.10),
+          rgba(15,23,42,.72)
+        );
+      cursor:pointer;
+      transition:
+        transform .16s ease,
+        border-color .16s ease;
+    }
+
+    .upload-half:hover{
+      transform:translateY(-2px);
+      border-color:rgba(34,197,94,.46);
+    }
+
+    .upload-half input{
+      display:none;
+    }
+
+    .upload-title{
+      color:#fff;
+      font-size:1.05rem;
+      font-weight:1000;
+      text-align:center;
+    }
+
+    .upload-sub{
+      margin-top:6px;
+      color:var(--mw-muted);
+      font-size:.9rem;
+      text-align:center;
+    }
+
+    .quick-grid{
+      display:grid;
+      grid-template-columns:
+        1fr auto;
+      gap:14px;
+      align-items:center;
+    }
+
+    .quick-copy h2{
+      margin:0;
+      font-size:1.15rem;
+    }
+
+    .quick-copy p{
+      margin:6px 0 0;
+      color:#cbd5e1;
+      line-height:1.5;
+    }
+
+    #addWaterBtn{
+      min-width:170px;
+      min-height:52px;
+    }
+
+    #extraIngredients{
+      width:100%;
+      min-height:100px;
+      resize:vertical;
+    }
+
+    .preview{
+      display:block;
+      width:100%;
+      max-height:520px;
+      margin-top:18px;
+      object-fit:cover;
+      border-radius:20px;
+      border:1px solid rgba(255,255,255,.08);
+      box-shadow:
+        0 12px 30px rgba(0,0,0,.22);
+    }
+
+    #analyzeBtn{
+      width:100%;
+      margin-top:18px;
+      min-height:58px;
+      font-size:1.02rem;
+      font-weight:1000;
+    }
+
+    .loading-card{
+      margin-top:18px;
+      padding:22px;
+      border-radius:20px;
+      border:1px solid rgba(34,197,94,.22);
+      background:rgba(15,23,42,.78);
+      text-align:center;
+    }
+
+    .result-card{
+      margin-top:18px;
+      border-color:rgba(34,197,94,.24);
+      background:
+        linear-gradient(
+          135deg,
+          rgba(20,83,45,.14),
+          rgba(7,16,25,.96)
+        );
+    }
+
+    .mealwise-actions{
+      display:flex;
+      justify-content:center;
+      margin-top:20px;
+    }
+
+    .mealwise-actions .secondary-btn{
+      width:min(100%,360px);
+    }
+
+    .hero-note{
+      margin-top:26px;
+      text-align:center;
+      color:#64748b;
+    }
+
+    @media(max-width:700px){
+      .mealwise-shell{
+        padding:18px 12px 30px;
+      }
+
+      .mealwise-hero{
+        padding:18px;
+        border-radius:20px;
+      }
+
+      .upload-actions{
+        grid-template-columns:1fr;
+      }
+
+      .upload-half{
+        min-height:125px;
+      }
+
+      .quick-grid{
+        grid-template-columns:1fr;
+      }
+
+      #addWaterBtn{
+        width:100%;
+      }
+    }
+
+    @media(prefers-reduced-motion:reduce){
+      .upload-half{
+        transition:none;
+      }
+    }
+  </style>
 </head>
 
 <body data-theme="night">
 
-  <main class="scan-wrap">
+  <main class="mealwise-shell">
 
-    <section class="scan-card">
+    <!-- HERO -->
+
+    <header class="mealwise-hero">
 
       <p class="range-label">
-        FuelAI
+        FuelAI · MealWise
       </p>
 
       <h1>
-        FuelWise
+        🍽 MealWise
       </h1>
 
       <p class="sub">
-        Scan a meal. Log water. Keep it simple.
+        Scan a meal, log hydration, and keep your daily intake simple.
+      </p>
+
+    </header>
+
+
+    <!-- SCAN -->
+
+    <section class="mealwise-section">
+
+      <p class="range-label">
+        Step 1 · Scan Your Meal
       </p>
 
       <div
@@ -86,11 +349,30 @@
 
       </div>
 
-      <section class="range-card">
+    </section>
 
-        <p class="range-label">
-          Quick Action
-        </p>
+
+    <!-- QUICK HYDRATION -->
+
+    <section class="mealwise-section">
+
+      <p class="range-label">
+        Quick Action
+      </p>
+
+      <div class="quick-grid">
+
+        <div class="quick-copy">
+
+          <h2>
+            Log hydration without leaving MealWise.
+          </h2>
+
+          <p>
+            Add water quickly and keep your daily intake moving.
+          </p>
+
+        </div>
 
         <button
           id="addWaterBtn"
@@ -100,59 +382,90 @@
           💧 + 8 oz Water
         </button>
 
-      </section>
+      </div>
+
+    </section>
+
+
+    <!-- DETAILS -->
+
+    <section class="mealwise-section">
+
+      <p class="range-label">
+        Step 2 · Add Anything the Photo Missed
+      </p>
 
       <textarea
         id="extraIngredients"
         class="goal-select"
-        placeholder="Anything else in this meal? Oil, sauce, cheese, dressing..."
+        placeholder="Oil, sauce, cheese, dressing, sides..."
         rows="3"
       ></textarea>
 
-      <img
-        id="previewImage"
-        class="preview hidden"
-        alt="Food preview"
-      />
-
-      <button
-        id="analyzeBtn"
-        class="start-btn hidden"
-        type="button"
-      >
-        🔍 Scan Meal
-      </button>
-
-      <div
-        id="loadingCard"
-        class="loading-card hidden"
-      >
-
-        <div class="scanner"></div>
-
-        <p id="loadingText">
-          Loading...
-        </p>
-
-      </div>
-
-      <section
-        id="resultCard"
-        class="result-card hidden"
-      ></section>
-
-      <div class="wise-links">
-
-        <a
-          class="secondary-btn"
-          href="/hub/"
-        >
-          🏠 Return to Hub
-        </a>
-
-      </div>
-
     </section>
+
+
+    <!-- PREVIEW -->
+
+    <img
+      id="previewImage"
+      class="preview hidden"
+      alt="Food preview"
+    />
+
+
+    <!-- ANALYZE -->
+
+    <button
+      id="analyzeBtn"
+      class="start-btn hidden"
+      type="button"
+    >
+      🔍 Scan Meal →
+    </button>
+
+
+    <!-- LOADING -->
+
+    <div
+      id="loadingCard"
+      class="loading-card hidden"
+    >
+
+      <div class="scanner"></div>
+
+      <p id="loadingText">
+        Loading...
+      </p>
+
+    </div>
+
+
+    <!-- RESULT -->
+
+    <section
+      id="resultCard"
+      class="result-card hidden"
+    ></section>
+
+
+    <!-- NAVIGATION -->
+
+    <div class="mealwise-actions">
+
+      <a
+        class="secondary-btn"
+        href="/hub/"
+      >
+        🏠 Return to Hub
+      </a>
+
+    </div>
+
+
+    <p class="hero-note">
+      FuelAI™ · Less overthinking. Better decisions.
+    </p>
 
   </main>
 
@@ -164,12 +477,12 @@
   </script>
 
   <script src="/assets/js/core/preferences.js"></script>
+
   <script src="/assets/js/account/fuelai-log.js"></script>
+
   <script src="/assets/js/fuel/app.js"></script>
 
-
   <script src="/assets/js/core/plan.js"></script>
-
 
   <script src="/assets/js/core/nav.js"></script>
 

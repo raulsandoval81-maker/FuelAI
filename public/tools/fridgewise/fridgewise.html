@@ -10,7 +10,7 @@
 
   <link rel="icon" href="data:," />
 
-  <title>FridgeWise</title>
+  <title>FridgeWise | FuelAI</title>
 
   <link
     rel="stylesheet"
@@ -22,24 +22,305 @@
     href="/assets/css/nav.css"
   />
 
+  <style>
+    :root{
+      --fw-bg:#030712;
+      --fw-panel:#071019;
+      --fw-panel-2:#0b1420;
+      --fw-line:rgba(56,189,248,.28);
+      --fw-line-soft:rgba(255,255,255,.08);
+      --fw-text:#f8fafc;
+      --fw-muted:#94a3b8;
+      --fw-blue:#38bdf8;
+      --fw-green:#22c55e;
+    }
+
+    *{
+      box-sizing:border-box;
+    }
+
+    body{
+      margin:0;
+      background:
+        radial-gradient(
+          circle at top,
+          rgba(14,116,144,.24),
+          transparent 30%
+        ),
+        var(--fw-bg);
+      color:var(--fw-text);
+    }
+
+    .fridgewise-shell{
+      width:100%;
+      max-width:1000px;
+      margin:0 auto;
+      padding:28px 18px 42px;
+    }
+
+    .fridgewise-hero{
+      padding:24px;
+      border-radius:24px;
+      border:1px solid var(--fw-line);
+      background:
+        linear-gradient(
+          135deg,
+          rgba(8,47,73,.30),
+          rgba(7,16,25,.96)
+        );
+      box-shadow:
+        0 18px 50px rgba(0,0,0,.24);
+      text-align:center;
+    }
+
+    .fridgewise-hero h1{
+      margin:6px 0 0;
+      font-size:
+        clamp(2.3rem,6vw,3.8rem);
+      line-height:1;
+      letter-spacing:-.04em;
+    }
+
+    .fridgewise-hero .sub{
+      max-width:560px;
+      margin:12px auto 0;
+      color:#cbd5e1;
+      line-height:1.55;
+    }
+
+    .fridgewise-step{
+      margin-top:18px;
+      padding:18px;
+      border-radius:20px;
+      border:1px solid var(--fw-line-soft);
+      background:
+        linear-gradient(
+          180deg,
+          rgba(15,23,42,.94),
+          rgba(7,16,25,.96)
+        );
+      box-shadow:
+        0 12px 30px rgba(0,0,0,.16);
+    }
+
+    .fridgewise-step .range-label{
+      margin-bottom:10px;
+    }
+
+    .upload-actions{
+      display:grid;
+      grid-template-columns:
+        repeat(2,minmax(0,1fr));
+      gap:14px;
+      margin-top:0;
+    }
+
+    .upload-half{
+      min-height:150px;
+      padding:20px;
+
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+
+      border-radius:18px;
+      border:1px solid rgba(56,189,248,.20);
+
+      background:
+        linear-gradient(
+          180deg,
+          rgba(14,116,144,.10),
+          rgba(15,23,42,.72)
+        );
+
+      cursor:pointer;
+
+      transition:
+        transform .16s ease,
+        border-color .16s ease,
+        background .16s ease;
+    }
+
+    .upload-half:hover{
+      transform:translateY(-2px);
+      border-color:rgba(56,189,248,.46);
+      background:
+        linear-gradient(
+          180deg,
+          rgba(14,116,144,.16),
+          rgba(15,23,42,.80)
+        );
+    }
+
+    .upload-half input{
+      display:none;
+    }
+
+    .upload-title{
+      color:#fff;
+      font-size:1.05rem;
+      font-weight:1000;
+      text-align:center;
+    }
+
+    .upload-sub{
+      margin-top:6px;
+      color:var(--fw-muted);
+      font-size:.9rem;
+      text-align:center;
+    }
+
+    #pantryNotes{
+      width:100%;
+      margin-top:14px;
+      min-height:100px;
+      resize:vertical;
+    }
+
+    .preview{
+      display:block;
+      width:100%;
+      max-height:520px;
+      margin-top:18px;
+      object-fit:cover;
+      border-radius:20px;
+      border:1px solid rgba(255,255,255,.08);
+      box-shadow:
+        0 12px 30px rgba(0,0,0,.22);
+    }
+
+    #fridgeAnalyzeBtn{
+      width:100%;
+      margin-top:18px;
+      min-height:58px;
+      font-size:1.02rem;
+      font-weight:1000;
+    }
+
+    .loading-card{
+      margin-top:18px;
+      padding:22px;
+      border-radius:20px;
+      border:1px solid rgba(56,189,248,.22);
+      background:rgba(15,23,42,.78);
+      text-align:center;
+    }
+
+    .result-card{
+      margin-top:18px;
+      border-color:rgba(34,197,94,.24);
+      background:
+        linear-gradient(
+          135deg,
+          rgba(20,83,45,.14),
+          rgba(7,16,25,.96)
+        );
+    }
+
+    .fridgewise-memory{
+      margin-top:20px;
+      padding:18px;
+      border-radius:20px;
+      border:1px solid rgba(34,197,94,.18);
+      background:
+        linear-gradient(
+          135deg,
+          rgba(20,83,45,.14),
+          rgba(15,23,42,.78)
+        );
+    }
+
+    .fridgewise-memory h2{
+      margin:0;
+      font-size:1.15rem;
+    }
+
+    .fridgewise-memory p{
+      margin:8px 0 0;
+      color:#cbd5e1;
+      line-height:1.5;
+    }
+
+    .fridgewise-actions{
+      display:grid;
+      grid-template-columns:
+        repeat(2,minmax(0,1fr));
+      gap:14px;
+      margin-top:20px;
+    }
+
+    .fridgewise-actions .secondary-btn{
+      width:100%;
+      min-height:54px;
+    }
+
+    .hero-note{
+      margin-top:26px;
+      text-align:center;
+      color:#64748b;
+    }
+
+    @media (max-width:700px){
+      .fridgewise-shell{
+        padding:18px 12px 30px;
+      }
+
+      .fridgewise-hero{
+        padding:18px;
+        border-radius:20px;
+      }
+
+      .upload-actions{
+        grid-template-columns:1fr;
+      }
+
+      .upload-half{
+        min-height:125px;
+      }
+
+      .fridgewise-actions{
+        grid-template-columns:1fr;
+      }
+    }
+
+    @media (prefers-reduced-motion:reduce){
+      .upload-half{
+        transition:none;
+      }
+    }
+  </style>
 </head>
 
 <body data-theme="night">
 
-  <main class="scan-wrap">
+  <main class="fridgewise-shell">
 
-    <section class="scan-card">
+    <!-- HERO -->
+
+    <header class="fridgewise-hero">
 
       <p class="range-label">
-        FuelAI
+        FuelAI · FridgeWise
       </p>
 
       <h1>
-        FridgeWise
+        🧊 FridgeWise
       </h1>
 
       <p class="sub">
-        Scan your fridge. Get simple dinner ideas.
+        Scan what you have. Turn it into simple meal ideas without overthinking dinner.
+      </p>
+
+    </header>
+
+
+    <!-- STEP 1 -->
+
+    <section class="fridgewise-step">
+
+      <p class="range-label">
+        Step 1 · Show FridgeWise What You Have
       </p>
 
       <div
@@ -54,7 +335,7 @@
           </span>
 
           <span class="upload-sub">
-            Open camera
+            Open your camera
           </span>
 
           <input
@@ -66,6 +347,7 @@
 
         </label>
 
+
         <label class="upload-half">
 
           <span class="upload-title">
@@ -73,7 +355,7 @@
           </span>
 
           <span class="upload-sub">
-            Choose from library
+            Choose from your library
           </span>
 
           <input
@@ -86,6 +368,17 @@
 
       </div>
 
+    </section>
+
+
+    <!-- STEP 2 -->
+
+    <section class="fridgewise-step">
+
+      <p class="range-label">
+        Step 2 · Add Anything the Photo Missed
+      </p>
+
       <textarea
         id="pantryNotes"
         class="goal-select"
@@ -93,74 +386,109 @@
         rows="3"
       ></textarea>
 
-      <img
-        id="fridgePreview"
-        class="preview hidden"
-        alt="Fridge preview"
-      />
+    </section>
 
-      <button
-        id="fridgeAnalyzeBtn"
-        class="start-btn hidden"
-        type="button"
-      >
-        🧊 Build Dinner Ideas
-      </button>
 
-      <div
-        id="fridgeLoadingCard"
-        class="loading-card hidden"
-      >
-        <div class="scanner"></div>
+    <!-- PREVIEW -->
 
-        <p id="fridgeLoadingText">
-          Checking fridge...
-        </p>
-      </div>
+    <img
+      id="fridgePreview"
+      class="preview hidden"
+      alt="Fridge preview"
+    />
 
-      <section
-        id="fridgeResultCard"
-        class="result-card hidden"
-      ></section>
 
-      <div class="wise-links">
+    <!-- ANALYZE -->
 
-        <a
-          class="secondary-btn"
-          href="/tools/fridgewise/cabinet-drawer.html"
-        >
-          🥫 Cabinet Drawer
-        </a>
+    <button
+      id="fridgeAnalyzeBtn"
+      class="start-btn hidden"
+      type="button"
+    >
+      🧊 Build Meal Ideas →
+    </button>
 
-        <a
-          class="secondary-btn"
-          href="/hub/"
-        >
-          🏠 Return to Hub
-        </a>
 
-      </div>
+    <!-- LOADING -->
 
-      <p class="hero-note">
-        FuelAI • Less overthinking. Better decisions.
+    <div
+      id="fridgeLoadingCard"
+      class="loading-card hidden"
+    >
+
+      <div class="scanner"></div>
+
+      <p id="fridgeLoadingText">
+        Checking fridge...
+      </p>
+
+    </div>
+
+
+    <!-- RESULTS -->
+
+    <section
+      id="fridgeResultCard"
+      class="result-card hidden"
+    ></section>
+
+
+    <!-- MEMORY -->
+
+    <section class="fridgewise-memory">
+
+      <h2>
+        FridgeWise remembers more than one photo.
+      </h2>
+
+      <p>
+        Keep pantry, freezer, favorite meals, and grocery needs in your Cabinet Drawer so future suggestions fit your real kitchen.
       </p>
 
     </section>
 
+
+    <!-- ACTIONS -->
+
+    <div class="fridgewise-actions">
+
+      <a
+        class="secondary-btn"
+        href="/tools/fridgewise/cabinet-drawer.html"
+      >
+        🥫 Open Cabinet Drawer
+      </a>
+
+      <a
+        class="secondary-btn"
+        href="/hub/"
+      >
+        🏠 Return to Hub
+      </a>
+
+    </div>
+
+
+    <p class="hero-note">
+      FuelAI™ · Less overthinking. Better decisions.
+    </p>
+
   </main>
 
-<script src="/assets/js/core/auth-soft.js"></script>
 
-<script>
-  window.FuelAIAuth?.requireSoftLogin();
-</script>
+  <script src="/assets/js/core/auth-soft.js"></script>
 
-<script src="/assets/js/core/preferences.js"></script>
-<script src="/assets/js/fridgewise/fridgewise-memory.js"></script>
-<script src="/assets/js/fridgewise/fridgewise-page.js?v=9"></script>
+  <script>
+    window.FuelAIAuth?.requireSoftLogin();
+  </script>
+
+  <script src="/assets/js/core/preferences.js"></script>
+
+  <script src="/assets/js/fridgewise/fridgewise-memory.js"></script>
+
+  <script src="/assets/js/fridgewise/fridgewise-page.js?v=9"></script>
 
   <script src="/assets/js/core/plan.js"></script>
-
 
   <script src="/assets/js/core/nav.js"></script>
 

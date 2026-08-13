@@ -2,66 +2,410 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
 
   <title>Descent Schedule | WeightWise</title>
 
-  <link rel="stylesheet" href="/assets/css/site.css" />
-  <link rel="stylesheet" href="weightwise.css" />
+  <link
+    rel="stylesheet"
+    href="/assets/css/site.css"
+  />
+
+  <link
+    rel="stylesheet"
+    href="./weightwise.css"
+  />
 
   <link
     rel="stylesheet"
     href="/assets/css/nav.css"
   />
 
+  <style>
+    :root{
+      --ds-bg:#030712;
+      --ds-line:rgba(56,189,248,.26);
+      --ds-line-soft:rgba(255,255,255,.08);
+      --ds-muted:#94a3b8;
+      --ds-blue:#38bdf8;
+      --ds-green:#22c55e;
+      --ds-red:#ef4444;
+    }
+
+    *{
+      box-sizing:border-box;
+    }
+
+    body{
+      margin:0;
+
+      background:
+        radial-gradient(
+          circle at top,
+          rgba(8,47,73,.25),
+          transparent 30%
+        ),
+        var(--ds-bg);
+
+      color:#f8fafc;
+    }
+
+    .descent-shell{
+      width:100%;
+      max-width:980px;
+      margin:0 auto;
+      padding:28px 18px 42px;
+    }
+
+    .descent-hero{
+      padding:24px;
+
+      border-radius:24px;
+
+      border:
+        1px solid var(--ds-line);
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(8,47,73,.26),
+          rgba(7,16,25,.96)
+        );
+
+      box-shadow:
+        0 18px 50px rgba(0,0,0,.24);
+
+      text-align:center;
+    }
+
+    .descent-hero h1{
+      margin:6px 0 0;
+
+      font-size:
+        clamp(2.3rem,6vw,3.8rem);
+
+      line-height:1;
+      letter-spacing:-.04em;
+    }
+
+    .descent-hero .sub{
+      max-width:620px;
+      margin:12px auto 0;
+
+      color:#cbd5e1;
+      line-height:1.55;
+    }
+
+    .descent-focus{
+      display:grid;
+
+      grid-template-columns:
+        repeat(3,minmax(0,1fr));
+
+      gap:10px;
+      margin-top:18px;
+    }
+
+    .descent-focus div{
+      padding:12px 10px;
+
+      border-radius:14px;
+
+      border:
+        1px solid rgba(255,255,255,.07);
+
+      background:
+        rgba(15,23,42,.70);
+
+      color:#e2e8f0;
+
+      font-size:.84rem;
+      font-weight:900;
+    }
+
+    .descent-card{
+      margin-top:20px;
+      padding:20px;
+
+      border-radius:20px;
+
+      border:
+        1px solid var(--ds-line-soft);
+
+      background:
+        linear-gradient(
+          180deg,
+          rgba(15,23,42,.94),
+          rgba(7,16,25,.96)
+        );
+
+      box-shadow:
+        0 12px 30px rgba(0,0,0,.16);
+    }
+
+    .descent-card h2{
+      margin:0;
+      font-size:1.25rem;
+    }
+
+    #scheduleOutput{
+      margin-top:14px;
+
+      color:#e2e8f0;
+
+      line-height:1.65;
+    }
+
+    .descent-note{
+      margin-top:20px;
+      padding:18px;
+
+      border-radius:20px;
+
+      border:
+        1px solid rgba(250,204,21,.20);
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(113,63,18,.12),
+          rgba(7,16,25,.96)
+        );
+    }
+
+    .descent-note h2{
+      margin:0;
+      font-size:1.1rem;
+    }
+
+    .descent-note p{
+      margin:8px 0 0;
+
+      color:#cbd5e1;
+      line-height:1.55;
+    }
+
+    .room-links{
+      display:grid;
+
+      grid-template-columns:
+        repeat(2,minmax(0,1fr));
+
+      gap:14px;
+      margin-top:20px;
+    }
+
+    .room-links a{
+      min-height:54px;
+
+      display:flex;
+      align-items:center;
+      justify-content:center;
+
+      padding:12px 14px;
+
+      border-radius:15px;
+
+      border:
+        1px solid rgba(255,255,255,.08);
+
+      background:
+        rgba(255,255,255,.04);
+
+      color:#e5e7eb;
+
+      text-decoration:none;
+      text-align:center;
+
+      font-weight:900;
+    }
+
+    .room-links a:hover{
+      background:
+        rgba(255,255,255,.07);
+    }
+
+    .hero-note{
+      margin-top:26px;
+
+      text-align:center;
+
+      color:#64748b;
+    }
+
+    @media(max-width:700px){
+
+      .descent-shell{
+        padding:18px 12px 30px;
+      }
+
+      .descent-hero{
+        padding:18px;
+        border-radius:20px;
+      }
+
+      .descent-focus,
+      .room-links{
+        grid-template-columns:1fr;
+      }
+    }
+  </style>
 </head>
 
 <body data-theme="night">
-  <main class="weightwise-wrap">
-    <section class="weightwise-card">
-      <p class="range-label">FuelAI Beta</p>
 
-      <h1>📋 Descent Schedule</h1>
+  <main class="descent-shell">
 
-      <p class="sub">
-        Projected weight targets between today and competition day.
+    <!-- HERO -->
+
+    <header class="descent-hero">
+
+      <p class="range-label">
+        FuelAI · WeightWise
       </p>
 
-      <section class="output-card">
-        <h2>Descent Schedule</h2>
+      <h1>
+        📆 Descent Schedule
+      </h1>
 
-        <div id="scheduleOutput">
-          No schedule available.
+      <p class="sub">
+        See the projected path between your current weight,
+        target weight, and competition date.
+      </p>
+
+      <div class="descent-focus">
+
+        <div>
+          ⚖️ Starting Weight
         </div>
-      </section>
 
-<nav class="room-links">
+        <div>
+          🎯 Target Weight
+        </div>
 
+        <div>
+          📆 Competition Date
+        </div>
 
+      </div>
 
-<a href="./index.html">
-  ⚖️ WeightWise
-</a>
-
-
-
-<a class="secondary-btn" href="/hub/">
-  🏠 Return to Hub
-</a>
+    </header>
 
 
-</nav>
+    <!-- SCHEDULE -->
+
+    <section class="descent-card">
+
+      <p class="range-label">
+        WeightWise Projection
+      </p>
+
+      <h2>
+        Projected Schedule
+      </h2>
+
+      <div
+        id="scheduleOutput"
+        aria-live="polite"
+      >
+        No schedule available.
+      </div>
 
     </section>
+
+
+    <!-- SAFETY -->
+
+    <section class="descent-note">
+
+      <h2>
+        A schedule is a planning reference, not a command.
+      </h2>
+
+      <p>
+        Weight trends can change with hydration, recovery,
+        training load, illness, and other factors. Reassess
+        the plan as conditions change and avoid using a
+        projected number as justification for unsafe rapid
+        weight loss.
+      </p>
+
+    </section>
+
+
+    <!-- NAVIGATION -->
+
+    <nav
+      class="room-links"
+      aria-label="Descent Schedule navigation"
+    >
+
+      <a href="./index.html">
+        ⚖️ WeightWise
+      </a>
+
+      <a href="./weight-history.html">
+        📉 Weight History
+      </a>
+
+      <a href="./competition-mode.html">
+        🏆 Competition Mode
+      </a>
+
+      <a
+        href="/tools/combat-athlete/intelligence/"
+      >
+        🧠 Athlete Intelligence
+      </a>
+
+      <a
+        class="secondary-btn"
+        href="/hub/"
+      >
+        🏠 Return to Hub
+      </a>
+
+    </nav>
+
+
+    <footer class="hero-note">
+      FuelAI™ · Powered by Sandman™
+    </footer>
+
   </main>
-
-  <script src="weightwise.js"></script>
-
-  <script src="/assets/js/core/plan.js"></script>
 
 
   <script src="/assets/js/core/auth-soft.js"></script>
 
+  <script>
+    window.FuelAIAuth?.requireSoftLogin();
+  </script>
+
+
+  <script src="/assets/js/core/plan.js"></script>
+
+
+  <script>
+    const access =
+      window.FuelAIPlan
+        ?.getFuelAIAccess?.();
+
+    if (
+      access &&
+      access.tools?.weightwise !== true
+    ) {
+      window.location.replace(
+        "/tools/combat-athlete/upgrade.html"
+      );
+    }
+  </script>
+
+
+  <script src="./weightwise.js"></script>
 
   <script src="/assets/js/core/nav.js"></script>
 

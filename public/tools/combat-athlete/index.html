@@ -1,19 +1,18 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
 
-<meta
- name="viewport"
- content="width=device-width, initial-scale=1.0"
-/>
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
 
   <title>Combat Athlete | FuelAI</title>
 
   <link
     rel="stylesheet"
-    href="../assets/css/site.css"
+    href="/assets/css/site.css"
   />
 
   <link
@@ -21,47 +20,222 @@
     href="/assets/css/nav.css"
   />
 
+  <style>
+    :root{
+      --combat-bg:#030712;
+      --combat-panel:#071019;
+      --combat-line:rgba(239,68,68,.30);
+      --combat-line-soft:rgba(255,255,255,.08);
+      --combat-text:#f8fafc;
+      --combat-muted:#94a3b8;
+      --combat-red:#ef4444;
+      --combat-green:#22c55e;
+    }
+
+    *{
+      box-sizing:border-box;
+    }
+
+    body{
+      margin:0;
+      background:
+        radial-gradient(
+          circle at top,
+          rgba(127,29,29,.28),
+          transparent 32%
+        ),
+        var(--combat-bg);
+      color:var(--combat-text);
+    }
+
+    .combat-wrap{
+      width:100%;
+      max-width:980px;
+      margin:0 auto;
+      padding:28px 18px 42px;
+    }
+
+    .combat-hero{
+      padding:24px;
+
+      border-radius:24px;
+
+      border:
+        1px solid var(--combat-line);
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(127,29,29,.26),
+          rgba(7,16,25,.96)
+        );
+
+      box-shadow:
+        0 18px 50px rgba(0,0,0,.28);
+
+      text-align:center;
+    }
+
+    .combat-kicker{
+      margin:0 0 8px;
+
+      color:#fca5a5;
+
+      font-size:.78rem;
+      font-weight:1000;
+      letter-spacing:.14em;
+      text-transform:uppercase;
+    }
+
+    .combat-hero h1{
+      margin:0;
+
+      font-size:
+        clamp(2.4rem,7vw,4rem);
+
+      line-height:1;
+      letter-spacing:-.04em;
+    }
+
+    .combat-hero .sub{
+      max-width:560px;
+      margin:12px auto 0;
+
+      color:#cbd5e1;
+      line-height:1.55;
+    }
+
+    .combat-loader{
+      margin:22px auto 0;
+
+      width:46px;
+      height:46px;
+
+      border-radius:50%;
+
+      border:
+        4px solid rgba(255,255,255,.08);
+
+      border-top-color:
+        var(--combat-red);
+
+      animation:
+        combatSpin .8s linear infinite;
+    }
+
+    .combat-status{
+      margin:14px 0 0;
+
+      color:var(--combat-muted);
+      font-size:.9rem;
+    }
+
+    @keyframes combatSpin{
+      to{
+        transform:rotate(360deg);
+      }
+    }
+
+    @media (max-width:640px){
+      .combat-wrap{
+        padding:18px 12px 30px;
+      }
+
+      .combat-hero{
+        padding:20px 16px;
+        border-radius:20px;
+      }
+    }
+
+    @media (prefers-reduced-motion:reduce){
+      .combat-loader{
+        animation:none;
+      }
+    }
+  </style>
 </head>
 
 <body data-theme="night">
 
-  <main class="scan-wrap">
+  <main class="combat-wrap">
 
+    <section class="combat-hero">
 
-<section class="scan-card">
+      <p class="combat-kicker">
+        FuelAI · Plus
+      </p>
 
-  <h1>
-    Combat Athlete
-  </h1>
+      <h1>
+        Combat Athlete
+      </h1>
 
-  <p class="sub">
-    Loading your athlete tools...
-  </p>
+      <p class="sub">
+        Weight management, competition preparation,
+        readiness, and performance tools built for combat athletes.
+      </p>
 
-</section>
+      <div
+        class="combat-loader"
+        aria-hidden="true"
+      ></div>
 
+      <p
+        id="combatStatus"
+        class="combat-status"
+      >
+        Loading your athlete tools...
+      </p>
+
+    </section>
 
   </main>
 
-  <script>
 
-    const setup =
-      JSON.parse(
-        localStorage.getItem(
-          "fuelai-setup"
-        ) || "{}"
+  <script src="/assets/js/core/plan.js"></script>
+
+  <script src="/assets/js/core/auth-soft.js"></script>
+
+
+  <script>
+    window.FuelAIAuth?.requireSoftLogin();
+
+    const access =
+      window.FuelAIPlan
+        ?.getFuelAIAccess?.();
+
+    const statusOutput =
+      document.getElementById(
+        "combatStatus"
       );
 
-    const membership =
-      setup.membership ||
-      "free";
 
-    const lifestyleType =
-      setup.lifestyleType ||
-      "";
+    /*
+     * No access object:
+     * return safely to Hub.
+     */
 
-    if (
-      lifestyleType !==
+    if (!access) {
+
+      if (statusOutput) {
+        statusOutput.textContent =
+          "FuelAI access could not be verified.";
+      }
+
+      window.location.replace(
+        "/hub/"
+      );
+    }
+
+
+    /*
+     * Combat Athlete is a specific
+     * FuelAI profile.
+     *
+     * Other profiles return to Hub.
+     */
+
+    else if (
+      access.profile !==
       "combat-athlete"
     ) {
 
@@ -70,42 +244,48 @@
       );
     }
 
-    if (
-      membership ===
-      "plus"
+
+    /*
+     * Combat profile but no Combat
+     * Athlete entitlement:
+     * send to upgrade.
+     */
+
+    else if (
+      access.tools?.combatAthlete !==
+      true
     ) {
 
-      window.location.replace(
-        "/tools/combat-athlete/weightwise/"
-      );
-    }
-
-if (
-  membership ===
-  "standard"
-) {
-
-  window.location.replace(
-    "/tools/combat-athlete/upgrade.html"
-  );
-}
-    if (
-      membership ===
-      "free"
-    ) {
+      if (statusOutput) {
+        statusOutput.textContent =
+          "Combat Athlete requires FuelAI Plus.";
+      }
 
       window.location.replace(
         "/tools/combat-athlete/upgrade.html"
       );
     }
 
+
+    /*
+     * Full Combat Athlete access.
+     *
+     * WeightWise is currently the main
+     * Combat Athlete workspace.
+     */
+
+    else {
+
+      if (statusOutput) {
+        statusOutput.textContent =
+          "Opening WeightWise...";
+      }
+
+      window.location.replace(
+        "/tools/combat-athlete/weightwise/"
+      );
+    }
   </script>
-
-
-  <script src="/assets/js/core/plan.js"></script>
-
-
-  <script src="/assets/js/core/auth-soft.js"></script>
 
 
   <script src="/assets/js/core/nav.js"></script>

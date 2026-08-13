@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+
   <meta
     name="viewport"
     content="width=device-width, initial-scale=1.0"
@@ -9,130 +10,416 @@
 
   <title>Combat Athlete Plus | FuelAI</title>
 
-  <link rel="stylesheet" href="/assets/css/site.css" />
-
-  <style>
-    .upgrade-card{
-      text-align:center;
-    }
-
-    .plan-card{
-      margin-top:24px;
-      padding:28px 20px;
-      border:1px solid rgba(168,85,247,.9);
-      border-radius:24px;
-      background:rgba(15,23,42,.72);
-      box-shadow:0 0 24px rgba(168,85,247,.25);
-    }
-
-    .plan-badge{
-      display:inline-block;
-      margin-bottom:12px;
-      padding:8px 18px;
-      border-radius:999px;
-      background:linear-gradient(
-        135deg,
-        #7c3aed,
-        #a855f7
-      );
-      color:#fff;
-      font-size:.8rem;
-      font-weight:900;
-      text-transform:uppercase;
-      letter-spacing:.08em;
-    }
-
-    .plan-icon{
-      font-size:2.2rem;
-      color:#a855f7;
-      margin-bottom:8px;
-    }
-
-    .plan-card h2{
-      margin:0 0 8px;
-      font-size:2rem;
-    }
-
-    .plan-price{
-      margin:0 0 18px;
-      color:#a855f7;
-      font-size:1.4rem;
-      font-weight:900;
-    }
-
-    .plan-list{
-      max-width:340px;
-      margin:0 auto;
-      text-align:left;
-    }
-
-    .plan-list p{
-      margin:10px 0;
-      color:#f8fafc;
-    }
-
-    .plan-list span{
-      color:#a855f7;
-      font-weight:900;
-      margin-right:8px;
-    }
-
-    .upgrade-btn{
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      width:100%;
-      max-width:340px;
-      min-height:58px;
-      margin:24px auto 0;
-      border-radius:18px;
-      background:linear-gradient(
-        135deg,
-        #7c3aed,
-        #a855f7
-      );
-      color:#fff;
-      text-decoration:none;
-      font-size:1.1rem;
-      font-weight:900;
-      box-shadow:0 0 20px rgba(168,85,247,.25);
-    }
-
-    .upgrade-btn:hover{
-      filter:brightness(1.08);
-    }
-
-    .back-link{
-      display:inline-block;
-      margin-top:28px;
-      color:#a855f7;
-      font-weight:900;
-      text-decoration:none;
-    }
-  </style>
+  <link
+    rel="stylesheet"
+    href="/assets/css/site.css"
+  />
 
   <link
     rel="stylesheet"
     href="/assets/css/nav.css"
   />
 
+  <style>
+    :root{
+      --up-bg:#030712;
+      --up-panel:#071019;
+      --up-line:rgba(168,85,247,.34);
+      --up-line-soft:rgba(255,255,255,.08);
+      --up-text:#f8fafc;
+      --up-muted:#94a3b8;
+      --up-purple:#a855f7;
+      --up-green:#22c55e;
+      --up-gold:#facc15;
+    }
+
+    *{
+      box-sizing:border-box;
+    }
+
+    body{
+      margin:0;
+
+      background:
+        radial-gradient(
+          circle at top,
+          rgba(88,28,135,.28),
+          transparent 31%
+        ),
+        var(--up-bg);
+
+      color:var(--up-text);
+    }
+
+    .upgrade-shell{
+      width:100%;
+      max-width:1050px;
+
+      margin:0 auto;
+
+      padding:
+        28px 18px 42px;
+    }
+
+    .upgrade-hero{
+      padding:24px;
+
+      border-radius:24px;
+
+      border:
+        1px solid var(--up-line);
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(88,28,135,.26),
+          rgba(7,16,25,.96)
+        );
+
+      box-shadow:
+        0 18px 50px rgba(0,0,0,.26);
+
+      text-align:center;
+    }
+
+    .upgrade-hero h1{
+      margin:6px 0 0;
+
+      font-size:
+        clamp(2.4rem,6vw,4rem);
+
+      line-height:1;
+      letter-spacing:-.04em;
+    }
+
+    .upgrade-hero .sub{
+      max-width:620px;
+      margin:12px auto 0;
+
+      color:#cbd5e1;
+      line-height:1.55;
+    }
+
+    .upgrade-badge{
+      display:inline-block;
+
+      margin-top:16px;
+      padding:8px 14px;
+
+      border-radius:999px;
+
+      border:
+        1px solid rgba(168,85,247,.28);
+
+      background:
+        rgba(168,85,247,.08);
+
+      color:#d8b4fe;
+
+      font-size:.8rem;
+      font-weight:1000;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+    }
+
+    .plans-grid{
+      display:grid;
+
+      grid-template-columns:
+        repeat(2,minmax(0,1fr));
+
+      gap:18px;
+
+      margin-top:22px;
+    }
+
+    .plan-card{
+      padding:24px 20px;
+
+      border-radius:22px;
+
+      border:
+        1px solid var(--up-line-soft);
+
+      background:
+        linear-gradient(
+          180deg,
+          rgba(15,23,42,.94),
+          rgba(7,16,25,.96)
+        );
+
+      box-shadow:
+        0 12px 30px rgba(0,0,0,.17);
+
+      text-align:center;
+    }
+
+    .plan-card.featured{
+      border-color:
+        rgba(168,85,247,.60);
+
+      box-shadow:
+        0 0 28px rgba(168,85,247,.20);
+    }
+
+    .plan-card.annual{
+      border-color:
+        rgba(250,204,21,.30);
+    }
+
+    .plan-badge{
+      display:inline-block;
+
+      margin-bottom:12px;
+      padding:8px 16px;
+
+      border-radius:999px;
+
+      background:
+        linear-gradient(
+          135deg,
+          #7c3aed,
+          #a855f7
+        );
+
+      color:#fff;
+
+      font-size:.76rem;
+      font-weight:1000;
+      text-transform:uppercase;
+      letter-spacing:.08em;
+    }
+
+    .plan-card.annual .plan-badge{
+      background:
+        linear-gradient(
+          135deg,
+          #a16207,
+          #facc15
+        );
+
+      color:#1f1300;
+    }
+
+    .plan-icon{
+      font-size:2.3rem;
+      margin-bottom:8px;
+    }
+
+    .plan-card h2{
+      margin:0;
+
+      font-size:2rem;
+    }
+
+    .plan-price{
+      margin:10px 0 0;
+
+      font-size:1.5rem;
+      font-weight:1000;
+
+      color:#d8b4fe;
+    }
+
+    .plan-card.annual .plan-price{
+      color:#fde68a;
+    }
+
+    .plan-small{
+      margin:6px 0 0;
+
+      color:var(--up-muted);
+
+      font-size:.88rem;
+    }
+
+    .plan-list{
+      max-width:360px;
+
+      margin:
+        20px auto 0;
+
+      text-align:left;
+    }
+
+    .plan-list p{
+      margin:10px 0;
+
+      color:#f8fafc;
+
+      line-height:1.45;
+    }
+
+    .plan-list span{
+      margin-right:8px;
+
+      color:var(--up-green);
+
+      font-weight:1000;
+    }
+
+    .upgrade-btn{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+
+      width:100%;
+      max-width:360px;
+      min-height:58px;
+
+      margin:
+        24px auto 0;
+
+      border-radius:18px;
+
+      background:
+        linear-gradient(
+          135deg,
+          #7c3aed,
+          #a855f7
+        );
+
+      color:#fff;
+
+      text-decoration:none;
+
+      font-size:1.05rem;
+      font-weight:1000;
+
+      box-shadow:
+        0 0 20px rgba(168,85,247,.24);
+
+      transition:
+        transform .14s ease,
+        filter .14s ease;
+    }
+
+    .plan-card.annual .upgrade-btn{
+      background:
+        linear-gradient(
+          135deg,
+          #a16207,
+          #facc15
+        );
+
+      color:#1f1300;
+
+      box-shadow:
+        0 0 20px rgba(250,204,21,.18);
+    }
+
+    .upgrade-btn:hover{
+      transform:translateY(-1px);
+      filter:brightness(1.06);
+    }
+
+    .upgrade-note{
+      margin-top:20px;
+      padding:18px;
+
+      border-radius:20px;
+
+      border:
+        1px solid rgba(255,255,255,.07);
+
+      background:
+        rgba(15,23,42,.72);
+
+      text-align:center;
+    }
+
+    .upgrade-note p{
+      margin:0;
+
+      color:#cbd5e1;
+
+      line-height:1.55;
+    }
+
+    .back-link{
+      display:block;
+
+      width:max-content;
+
+      margin:24px auto 0;
+
+      color:#c4b5fd;
+
+      font-weight:900;
+      text-decoration:none;
+    }
+
+    .hero-note{
+      margin-top:26px;
+
+      text-align:center;
+
+      color:#64748b;
+    }
+
+    @media(max-width:760px){
+
+      .upgrade-shell{
+        padding:
+          18px 12px 30px;
+      }
+
+      .upgrade-hero{
+        padding:18px;
+
+        border-radius:20px;
+      }
+
+      .plans-grid{
+        grid-template-columns:1fr;
+      }
+    }
+
+    @media(prefers-reduced-motion:reduce){
+
+      .upgrade-btn{
+        transition:none;
+      }
+    }
+  </style>
 </head>
 
 <body data-theme="night">
 
-  <main class="scan-wrap">
+  <main class="upgrade-shell">
 
-    <section class="scan-card upgrade-card">
+    <!-- HERO -->
+
+    <header class="upgrade-hero">
+
+      <p class="range-label">
+        FuelAI · Combat Athlete
+      </p>
 
       <h1>
-        🥇 Combat Athlete
+        🥇 Unlock Plus
       </h1>
 
       <p class="sub">
-        Combat Athlete is a FuelAI Plus feature.
+        Combat Athlete is the full FuelAI performance lane,
+        including WeightWise and competition-focused tools.
       </p>
 
-      <div class="plan-card">
+      <div class="upgrade-badge">
+        Combat Athlete · Plus
+      </div>
+
+    </header>
+
+
+    <!-- PLANS -->
+
+    <section class="plans-grid">
+
+
+      <!-- MONTHLY -->
+
+      <article class="plan-card featured">
 
         <div class="plan-badge">
           Monthly
@@ -150,29 +437,67 @@
           $11.99/month
         </p>
 
+        <p class="plan-small">
+          Flexible month-to-month access
+        </p>
+
         <div class="plan-list">
-          <p><span>✓</span>Everything in Standard</p>
-          <p><span>✓</span>Combat Athlete</p>
-          <p><span>✓</span>WeightWise</p>
-          <p><span>✓</span>Weight History</p>
-          <p><span>✓</span>Descent Schedule</p>
-          <p><span>✓</span>Competition Mode</p>
+
+          <p>
+            <span>✓</span>
+            Everything in Standard
+          </p>
+
+          <p>
+            <span>✓</span>
+            Combat Athlete
+          </p>
+
+          <p>
+            <span>✓</span>
+            WeightWise
+          </p>
+
+          <p>
+            <span>✓</span>
+            Weight History
+          </p>
+
+          <p>
+            <span>✓</span>
+            Descent Schedule
+          </p>
+
+          <p>
+            <span>✓</span>
+            Competition Mode
+          </p>
+
+          <p>
+            <span>✓</span>
+            Athlete Intelligence
+          </p>
+
         </div>
 
         <a
           class="upgrade-btn"
           href="https://buy.stripe.com/test_5kQdR2bU36kD9pc1Jxa3u02"
           target="_blank"
+          rel="noopener noreferrer"
         >
           Choose Monthly →
         </a>
 
-      </div>
+      </article>
 
-      <div class="plan-card">
+
+      <!-- ANNUAL -->
+
+      <article class="plan-card annual">
 
         <div class="plan-badge">
-          Limited Time Offer
+          Best Value
         </div>
 
         <div class="plan-icon">
@@ -187,46 +512,98 @@
           $100/year
         </p>
 
-        <p class="sub">
-          Save $43.88 compared to monthly billing.
+        <p class="plan-small">
+          Save $43.88 versus monthly billing
         </p>
 
         <div class="plan-list">
-          <p><span>✓</span>One full year of FuelAI Plus</p>
-          <p><span>✓</span>Combat Athlete</p>
-          <p><span>✓</span>WeightWise</p>
-          <p><span>✓</span>Weight History</p>
-          <p><span>✓</span>Descent Schedule</p>
-          <p><span>✓</span>Competition Mode</p>
+
+          <p>
+            <span>✓</span>
+            One full year of FuelAI Plus
+          </p>
+
+          <p>
+            <span>✓</span>
+            Combat Athlete
+          </p>
+
+          <p>
+            <span>✓</span>
+            WeightWise
+          </p>
+
+          <p>
+            <span>✓</span>
+            Weight History
+          </p>
+
+          <p>
+            <span>✓</span>
+            Descent Schedule
+          </p>
+
+          <p>
+            <span>✓</span>
+            Competition Mode
+          </p>
+
+          <p>
+            <span>✓</span>
+            Athlete Intelligence
+          </p>
+
         </div>
 
         <a
           class="upgrade-btn"
           href="https://buy.stripe.com/test_28E3co4rBaATcBo2NBa3u04"
           target="_blank"
+          rel="noopener noreferrer"
         >
           Get Annual Pass →
         </a>
 
-      </div>
-
-      <a
-        class="back-link"
-        href="/hub/"
-      >
-        ← Back To FuelAI
-      </a>
+      </article>
 
     </section>
+
+
+    <!-- NOTE -->
+
+    <section class="upgrade-note">
+
+      <p>
+        You're currently using Stripe test checkout links.
+        These are appropriate for development, but they must
+        be replaced with live checkout links before launch.
+      </p>
+
+    </section>
+
+
+    <a
+      class="back-link"
+      href="/hub/"
+    >
+      ← Back to FuelAI
+    </a>
+
+
+    <footer class="hero-note">
+      FuelAI™ · Powered by Sandman™
+    </footer>
 
   </main>
 
 
   <script src="/assets/js/core/plan.js"></script>
 
-
   <script src="/assets/js/core/auth-soft.js"></script>
 
+  <script>
+    window.FuelAIAuth?.requireSoftLogin();
+  </script>
 
   <script src="/assets/js/core/nav.js"></script>
 

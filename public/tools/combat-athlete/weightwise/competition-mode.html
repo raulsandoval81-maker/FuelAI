@@ -2,63 +2,380 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
 
   <title>Competition Mode | WeightWise</title>
 
-  <link rel="stylesheet" href="/assets/css/site.css" />
-  <link rel="stylesheet" href="weightwise.css" />
+  <link
+    rel="stylesheet"
+    href="/assets/css/site.css"
+  />
 
+  <link
+    rel="stylesheet"
+    href="./weightwise.css"
+  />
 
   <link
     rel="stylesheet"
     href="/assets/css/nav.css"
   />
 
+  <style>
+    :root{
+      --cm-bg:#030712;
+      --cm-line:rgba(250,204,21,.28);
+      --cm-line-soft:rgba(255,255,255,.08);
+      --cm-muted:#94a3b8;
+      --cm-gold:#facc15;
+      --cm-red:#ef4444;
+    }
+
+    *{
+      box-sizing:border-box;
+    }
+
+    body{
+      margin:0;
+      background:
+        radial-gradient(
+          circle at top,
+          rgba(113,63,18,.24),
+          transparent 30%
+        ),
+        var(--cm-bg);
+      color:#f8fafc;
+    }
+
+    .competition-shell{
+      width:100%;
+      max-width:980px;
+      margin:0 auto;
+      padding:28px 18px 42px;
+    }
+
+    .competition-hero{
+      padding:24px;
+
+      border-radius:24px;
+
+      border:
+        1px solid var(--cm-line);
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(113,63,18,.22),
+          rgba(7,16,25,.96)
+        );
+
+      box-shadow:
+        0 18px 50px rgba(0,0,0,.24);
+
+      text-align:center;
+    }
+
+    .competition-hero h1{
+      margin:6px 0 0;
+
+      font-size:
+        clamp(2.3rem,6vw,3.8rem);
+
+      line-height:1;
+      letter-spacing:-.04em;
+    }
+
+    .competition-hero .sub{
+      max-width:620px;
+      margin:12px auto 0;
+
+      color:#cbd5e1;
+      line-height:1.55;
+    }
+
+    .competition-focus{
+      display:grid;
+      grid-template-columns:
+        repeat(3,minmax(0,1fr));
+
+      gap:10px;
+      margin-top:18px;
+    }
+
+    .competition-focus div{
+      padding:12px 10px;
+
+      border-radius:14px;
+
+      border:
+        1px solid rgba(255,255,255,.07);
+
+      background:
+        rgba(15,23,42,.70);
+
+      color:#e2e8f0;
+
+      font-size:.84rem;
+      font-weight:900;
+    }
+
+    .competition-card{
+      margin-top:20px;
+      padding:20px;
+
+      border-radius:20px;
+
+      border:
+        1px solid var(--cm-line-soft);
+
+      background:
+        linear-gradient(
+          180deg,
+          rgba(15,23,42,.94),
+          rgba(7,16,25,.96)
+        );
+
+      box-shadow:
+        0 12px 30px rgba(0,0,0,.16);
+    }
+
+    .competition-card h2{
+      margin:0;
+      font-size:1.25rem;
+    }
+
+    #competitionOutput{
+      margin-top:14px;
+
+      color:#e2e8f0;
+
+      line-height:1.65;
+    }
+
+    .competition-note{
+      margin-top:20px;
+      padding:18px;
+
+      border-radius:20px;
+
+      border:
+        1px solid rgba(239,68,68,.18);
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(127,29,29,.12),
+          rgba(7,16,25,.96)
+        );
+    }
+
+    .competition-note h2{
+      margin:0;
+      font-size:1.1rem;
+    }
+
+    .competition-note p{
+      margin:8px 0 0;
+
+      color:#cbd5e1;
+
+      line-height:1.55;
+    }
+
+    .room-links{
+      display:grid;
+
+      grid-template-columns:
+        repeat(2,minmax(0,1fr));
+
+      gap:14px;
+
+      margin-top:20px;
+    }
+
+    .room-links a{
+      min-height:54px;
+
+      display:flex;
+      align-items:center;
+      justify-content:center;
+
+      padding:12px 14px;
+
+      border-radius:15px;
+
+      border:
+        1px solid rgba(255,255,255,.08);
+
+      background:
+        rgba(255,255,255,.04);
+
+      color:#e5e7eb;
+
+      text-decoration:none;
+
+      text-align:center;
+
+      font-weight:900;
+    }
+
+    .hero-note{
+      margin-top:26px;
+      text-align:center;
+      color:#64748b;
+    }
+
+    @media(max-width:700px){
+      .competition-shell{
+        padding:18px 12px 30px;
+      }
+
+      .competition-hero{
+        padding:18px;
+        border-radius:20px;
+      }
+
+      .competition-focus,
+      .room-links{
+        grid-template-columns:1fr;
+      }
+    }
+  </style>
 </head>
 
 <body data-theme="night">
-  <main class="weightwise-wrap">
-    <section class="weightwise-card">
+
+  <main class="competition-shell">
+
+    <header class="competition-hero">
 
       <p class="range-label">
-        FuelAI Beta
+        FuelAI · WeightWise
       </p>
 
-      <h1>🏆 Competition Mode</h1>
+      <h1>
+        🏆 Competition Mode
+      </h1>
 
       <p class="sub">
-        Competition countdown and weight status.
+        See your competition countdown, current weight position,
+        and readiness picture in one focused view.
       </p>
 
-      <section class="output-card">
-        <div id="competitionOutput">
-          Complete WeightWise setup first.
+      <div class="competition-focus">
+
+        <div>
+          📆 Countdown
         </div>
-      </section>
 
-<nav class="room-links">
+        <div>
+          ⚖️ Weight Status
+        </div>
 
-<a href="./index.html">
-  ⚖️ WeightWise
-</a>
+        <div>
+          🥊 Competition Readiness
+        </div>
 
-<a class="secondary-btn" href="/hub/">
-  🏠 Return to Hub
-</a>
+      </div>
+
+    </header>
 
 
+    <section class="competition-card">
 
-</nav>
+      <p class="range-label">
+        Competition Snapshot
+      </p>
+
+      <h2>
+        Current Status
+      </h2>
+
+      <div id="competitionOutput">
+        Complete WeightWise setup first.
+      </div>
+
     </section>
-  </main>
-<script src="./weightwise.js"></script>
 
-  <script src="/assets/js/core/plan.js"></script>
+
+    <section class="competition-note">
+
+      <h2>
+        Competition Mode is about awareness, not last-minute cutting.
+      </h2>
+
+      <p>
+        Use WeightWise early enough to understand the timeline,
+        monitor trends, and make responsible decisions with appropriate
+        coaching and medical support when needed.
+      </p>
+
+    </section>
+
+
+    <nav
+      class="room-links"
+      aria-label="Competition Mode navigation"
+    >
+
+      <a href="./index.html">
+        ⚖️ WeightWise
+      </a>
+
+      <a
+        href="/tools/combat-athlete/intelligence/"
+      >
+        🧠 Athlete Intelligence
+      </a>
+
+      <a
+        class="secondary-btn"
+        href="/hub/"
+      >
+        🏠 Return to Hub
+      </a>
+
+    </nav>
+
+
+    <footer class="hero-note">
+      FuelAI™ · Powered by Sandman™
+    </footer>
+
+  </main>
 
 
   <script src="/assets/js/core/auth-soft.js"></script>
 
+  <script>
+    window.FuelAIAuth?.requireSoftLogin();
+  </script>
+
+
+  <script src="/assets/js/core/plan.js"></script>
+
+
+  <script>
+    const access =
+      window.FuelAIPlan
+        ?.getFuelAIAccess?.();
+
+    if (
+      access &&
+      access.tools?.weightwise !== true
+    ) {
+      window.location.replace(
+        "/tools/combat-athlete/upgrade.html"
+      );
+    }
+  </script>
+
+
+  <script src="./weightwise.js"></script>
 
   <script src="/assets/js/core/nav.js"></script>
 

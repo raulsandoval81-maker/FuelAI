@@ -8,7 +8,7 @@
     content="width=device-width, initial-scale=1.0"
   />
 
-  <title>Fuel My Body</title>
+  <title>Fuel My Body | FuelAI</title>
 
   <link
     rel="stylesheet"
@@ -20,76 +20,455 @@
     href="/assets/css/nav.css"
   />
 
+  <style>
+    :root{
+      --fuel-bg:#030712;
+      --fuel-panel:#071019;
+      --fuel-line:rgba(34,197,94,.28);
+      --fuel-line-soft:rgba(255,255,255,.08);
+      --fuel-text:#f8fafc;
+      --fuel-muted:#94a3b8;
+      --fuel-green:#22c55e;
+      --fuel-blue:#38bdf8;
+    }
+
+    *{
+      box-sizing:border-box;
+    }
+
+    body{
+      margin:0;
+
+      background:
+        radial-gradient(
+          circle at top,
+          rgba(20,83,45,.24),
+          transparent 30%
+        ),
+        var(--fuel-bg);
+
+      color:var(--fuel-text);
+    }
+
+    .fuel-shell{
+      width:100%;
+      max-width:980px;
+      margin:0 auto;
+      padding:28px 18px 42px;
+    }
+
+    .fuel-hero{
+      padding:24px;
+
+      border-radius:24px;
+
+      border:
+        1px solid var(--fuel-line);
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(20,83,45,.28),
+          rgba(7,16,25,.96)
+        );
+
+      box-shadow:
+        0 18px 50px rgba(0,0,0,.24);
+
+      text-align:center;
+    }
+
+    .fuel-hero h1{
+      margin:6px 0 0;
+
+      font-size:
+        clamp(2.3rem,6vw,3.8rem);
+
+      line-height:1;
+      letter-spacing:-.04em;
+    }
+
+    .fuel-hero .sub{
+      max-width:580px;
+      margin:12px auto 0;
+
+      color:#cbd5e1;
+      line-height:1.55;
+    }
+
+    .fuel-section{
+      margin-top:18px;
+      padding:18px;
+
+      border-radius:20px;
+
+      border:
+        1px solid var(--fuel-line-soft);
+
+      background:
+        linear-gradient(
+          180deg,
+          rgba(15,23,42,.94),
+          rgba(7,16,25,.96)
+        );
+
+      box-shadow:
+        0 12px 30px rgba(0,0,0,.16);
+    }
+
+    .fuel-section .range-label{
+      margin-bottom:12px;
+    }
+
+    .fuel-grid{
+      display:grid;
+
+      grid-template-columns:
+        repeat(2,minmax(0,1fr));
+
+      gap:14px;
+    }
+
+    .fuel-field label{
+      display:block;
+      margin-bottom:7px;
+
+      color:#cbd5e1;
+
+      font-size:.82rem;
+      font-weight:900;
+    }
+
+    .goal-select{
+      width:100%;
+      min-height:52px;
+    }
+
+    .fuel-output-card{
+      margin-top:18px;
+      padding:20px;
+
+      border-radius:20px;
+
+      border:
+        1px solid rgba(34,197,94,.22);
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(20,83,45,.14),
+          rgba(7,16,25,.96)
+        );
+    }
+
+    .fuel-output-card h2{
+      margin:0;
+      font-size:1.25rem;
+    }
+
+    #fuelBodyOutput{
+      margin:12px 0 0;
+
+      color:#e2e8f0;
+
+      line-height:1.65;
+      font-size:1rem;
+    }
+
+    #fuelBodyBtn{
+      width:100%;
+      min-height:58px;
+      margin-top:16px;
+
+      font-size:1.02rem;
+      font-weight:1000;
+    }
+
+    .fuel-principles{
+      display:grid;
+
+      grid-template-columns:
+        repeat(3,minmax(0,1fr));
+
+      gap:12px;
+
+      margin-top:18px;
+    }
+
+    .fuel-principle{
+      padding:14px;
+
+      border-radius:16px;
+
+      border:
+        1px solid rgba(255,255,255,.07);
+
+      background:
+        rgba(15,23,42,.72);
+
+      text-align:center;
+    }
+
+    .fuel-principle strong{
+      display:block;
+      color:#fff;
+    }
+
+    .fuel-principle span{
+      display:block;
+      margin-top:4px;
+
+      color:var(--fuel-muted);
+
+      font-size:.84rem;
+      line-height:1.4;
+    }
+
+    .fuel-actions{
+      display:flex;
+      justify-content:center;
+
+      margin-top:20px;
+    }
+
+    .fuel-actions .secondary-btn{
+      width:min(100%,360px);
+    }
+
+    .hero-note{
+      margin-top:26px;
+      text-align:center;
+      color:#64748b;
+    }
+
+    @media(max-width:700px){
+      .fuel-shell{
+        padding:18px 12px 30px;
+      }
+
+      .fuel-hero{
+        padding:18px;
+        border-radius:20px;
+      }
+
+      .fuel-grid,
+      .fuel-principles{
+        grid-template-columns:1fr;
+      }
+    }
+  </style>
 </head>
 
 <body data-theme="night">
 
-  <main class="scan-wrap">
-    <section class="scan-card">
+  <main class="fuel-shell">
 
-      <p class="range-label">FUEL</p>
+    <!-- HERO -->
 
-      <h1>💪 Fuel My Body</h1>
+    <header class="fuel-hero">
 
-      <p class="sub">
-        Simple sport fuel support for before, during, or after training.
+      <p class="range-label">
+        FuelAI · MealWise
       </p>
 
-      <section class="range-card">
-        <p class="range-label">Sport Fuel Check</p>
+      <h1>
+        💪 Fuel My Body
+      </h1>
 
-        <label class="range-label" for="sportInput">
-          Sport
-        </label>
+      <p class="sub">
+        Simple training-fuel guidance for before, during, and after activity.
+      </p>
 
-        <select id="sportInput" class="goal-select">
-          <option value="wrestling">Wrestling • Weight + Recovery</option>
-          <option value="boxing">Boxing • Fast Fuel + Recovery</option>
-          <option value="mma">MMA • Weight + Recovery</option>
-          <option value="soccer">Soccer • Endurance + Hydration</option>
-          <option value="track">Track • Speed + Hydration</option>
-          <option value="marathon">Marathon • Carbs + Sodium</option>
-          <option value="baseball">Baseball • Long Game Fuel</option>
-          <option value="basketball">Basketball • Quick Burst Fuel</option>
-          <option value="football">Football • Power + Recovery</option>
-          <option value="fitness">General Fitness • Balanced Fuel</option>
-        </select>
+    </header>
 
-        <label class="range-label" for="timingInput">
-          Timing
-        </label>
 
-        <select id="timingInput" class="goal-select">
-          <option value="Pregame">Pregame</option>
-          <option value="During">During</option>
-          <option value="Postgame">Postgame</option>
-        </select>
-      </section>
+    <!-- FUEL CHECK -->
 
-      <section class="range-card">
-        <p class="range-label">W. Suggests</p>
+    <section class="fuel-section">
 
-        <p id="fuelBodyOutput" class="range-output">
-          Pick your sport and timing for a simple fuel direction.
-        </p>
+      <p class="range-label">
+        Sport Fuel Check
+      </p>
 
-        <button id="fuelBodyBtn" class="start-btn" type="button">
-          Get Fuel Advice
-        </button>
-      </section>
+      <div class="fuel-grid">
 
-      <div class="wise-links">
-        <a class="secondary-btn" href="/tools/mealwise/app.html">
-          🍽 Return to MealWise
-        </a>
+        <div class="fuel-field">
+
+          <label for="sportInput">
+            Sport
+          </label>
+
+          <select
+            id="sportInput"
+            class="goal-select"
+          >
+            <option value="wrestling">
+              Wrestling · Weight + Recovery
+            </option>
+
+            <option value="boxing">
+              Boxing · Fast Fuel + Recovery
+            </option>
+
+            <option value="mma">
+              MMA · Weight + Recovery
+            </option>
+
+            <option value="soccer">
+              Soccer · Endurance + Hydration
+            </option>
+
+            <option value="track">
+              Track · Speed + Hydration
+            </option>
+
+            <option value="marathon">
+              Marathon · Carbs + Sodium
+            </option>
+
+            <option value="baseball">
+              Baseball · Long Game Fuel
+            </option>
+
+            <option value="basketball">
+              Basketball · Quick Burst Fuel
+            </option>
+
+            <option value="football">
+              Football · Power + Recovery
+            </option>
+
+            <option value="fitness">
+              General Fitness · Balanced Fuel
+            </option>
+          </select>
+
+        </div>
+
+
+        <div class="fuel-field">
+
+          <label for="timingInput">
+            Timing
+          </label>
+
+          <select
+            id="timingInput"
+            class="goal-select"
+          >
+            <option value="Pregame">
+              Before Training
+            </option>
+
+            <option value="During">
+              During Training
+            </option>
+
+            <option value="Postgame">
+              After Training
+            </option>
+          </select>
+
+        </div>
 
       </div>
 
-      <p class="hero-note">
-        FuelAI • Less overthinking. Better decisions.
-      </p>
+    </section>
+
+
+    <!-- PRINCIPLES -->
+
+    <section class="fuel-principles">
+
+      <div class="fuel-principle">
+
+        <strong>
+          Before
+        </strong>
+
+        <span>
+          Hydrate early and build steady energy.
+        </span>
+
+      </div>
+
+
+      <div class="fuel-principle">
+
+        <strong>
+          During
+        </strong>
+
+        <span>
+          Stay steady with fluids and simple fuel.
+        </span>
+
+      </div>
+
+
+      <div class="fuel-principle">
+
+        <strong>
+          After
+        </strong>
+
+        <span>
+          Rehydrate, refuel, and recover.
+        </span>
+
+      </div>
 
     </section>
+
+
+    <!-- OUTPUT -->
+
+    <section class="fuel-output-card">
+
+      <p class="range-label">
+        FuelAI Suggests
+      </p>
+
+      <h2>
+        Your training-fuel direction
+      </h2>
+
+      <p
+        id="fuelBodyOutput"
+        class="range-output"
+      >
+        Pick your sport and timing for a simple fuel direction.
+      </p>
+
+      <button
+        id="fuelBodyBtn"
+        class="start-btn"
+        type="button"
+      >
+        Get Fuel Advice →
+      </button>
+
+    </section>
+
+
+    <!-- NAV -->
+
+    <div class="fuel-actions">
+
+      <a
+        class="secondary-btn"
+        href="/tools/mealwise/app.html"
+      >
+        🍽 Return to MealWise
+      </a>
+
+    </div>
+
+
+    <p class="hero-note">
+      FuelAI™ · Less overthinking. Better decisions.
+    </p>
+
   </main>
 
 
@@ -98,74 +477,177 @@
   <script>
     window.FuelAIAuth?.requireSoftLogin();
 
-    const sportInput = document.getElementById("sportInput");
-    const timingInput = document.getElementById("timingInput");
-    const fuelBodyOutput = document.getElementById("fuelBodyOutput");
-    const fuelBodyBtn = document.getElementById("fuelBodyBtn");
+    const sportInput =
+      document.getElementById(
+        "sportInput"
+      );
+
+    const timingInput =
+      document.getElementById(
+        "timingInput"
+      );
+
+    const fuelBodyOutput =
+      document.getElementById(
+        "fuelBodyOutput"
+      );
+
+    const fuelBodyBtn =
+      document.getElementById(
+        "fuelBodyBtn"
+      );
+
 
     const SPORT_FUEL_TYPES = {
-      wrestling: "Weight + Recovery",
-      boxing: "Fast Fuel + Recovery",
-      mma: "Weight + Recovery",
-      soccer: "Endurance + Hydration",
-      track: "Speed + Hydration",
-      marathon: "Carbs + Sodium",
-      baseball: "Long Game Fuel",
-      basketball: "Quick Burst Fuel",
-      football: "Power + Recovery",
-      fitness: "Balanced Fuel"
+
+      wrestling:
+        "Weight + Recovery",
+
+      boxing:
+        "Fast Fuel + Recovery",
+
+      mma:
+        "Weight + Recovery",
+
+      soccer:
+        "Endurance + Hydration",
+
+      track:
+        "Speed + Hydration",
+
+      marathon:
+        "Carbs + Sodium",
+
+      baseball:
+        "Long Game Fuel",
+
+      basketball:
+        "Quick Burst Fuel",
+
+      football:
+        "Power + Recovery",
+
+      fitness:
+        "Balanced Fuel"
     };
+
 
     const SPORT_LABELS = {
-      wrestling: "Wrestling",
-      boxing: "Boxing",
-      mma: "MMA",
-      soccer: "Soccer",
-      track: "Track",
-      marathon: "Marathon",
-      baseball: "Baseball",
-      basketball: "Basketball",
-      football: "Football",
-      fitness: "General Fitness"
+
+      wrestling:
+        "Wrestling",
+
+      boxing:
+        "Boxing",
+
+      mma:
+        "MMA",
+
+      soccer:
+        "Soccer",
+
+      track:
+        "Track",
+
+      marathon:
+        "Marathon",
+
+      baseball:
+        "Baseball",
+
+      basketball:
+        "Basketball",
+
+      football:
+        "Football",
+
+      fitness:
+        "General Fitness"
     };
 
+
     function getSportFuelContext() {
-      const sportKey = sportInput?.value || "fitness";
+
+      const sportKey =
+        sportInput?.value ||
+        "fitness";
 
       return {
+
         sportKey,
-        sportLabel: SPORT_LABELS[sportKey] || "General Fitness",
-        fuelType: SPORT_FUEL_TYPES[sportKey] || "Balanced Fuel"
+
+        sportLabel:
+          SPORT_LABELS[
+            sportKey
+          ] ||
+          "General Fitness",
+
+        fuelType:
+          SPORT_FUEL_TYPES[
+            sportKey
+          ] ||
+          "Balanced Fuel"
+
       };
     }
 
-    function buildFuelBodyMessage() {
-      const { sportLabel, fuelType } = getSportFuelContext();
-      const timing = timingInput?.value || "Pregame";
 
-      if (timing === "Pregame") {
+    function buildFuelBodyMessage() {
+
+      const {
+        sportLabel,
+        fuelType
+      } =
+        getSportFuelContext();
+
+      const timing =
+        timingInput?.value ||
+        "Pregame";
+
+
+      if (
+        timing ===
+        "Pregame"
+      ) {
         return `${sportLabel} (${fuelType}): hydrate early, keep food light, and build steady energy before activity.`;
       }
 
-      if (timing === "During") {
+
+      if (
+        timing ===
+        "During"
+      ) {
         return `${sportLabel} (${fuelType}): sip fluids consistently, stay steady, and avoid heavy foods while active.`;
       }
 
-      if (timing === "Postgame") {
+
+      if (
+        timing ===
+        "Postgame"
+      ) {
         return `${sportLabel} (${fuelType}): recovery starts with fluids, protein, carbs, and slowing your system back down.`;
       }
 
-      return "Keep it simple. Hydrate, fuel, and recover.";
+
+      return (
+        "Keep it simple. Hydrate, fuel, and recover."
+      );
     }
 
-    fuelBodyBtn?.addEventListener("click", () => {
-      fuelBodyOutput.textContent = buildFuelBodyMessage();
-    });
+
+    fuelBodyBtn?.addEventListener(
+      "click",
+      () => {
+
+        fuelBodyOutput.textContent =
+          buildFuelBodyMessage();
+
+      }
+    );
   </script>
 
 
   <script src="/assets/js/core/plan.js"></script>
-
 
   <script src="/assets/js/core/nav.js"></script>
 
