@@ -1,52 +1,81 @@
 const saveSetupBtn =
-  document.getElementById("saveSetupBtn");
+  document.getElementById(
+    "saveSetupBtn"
+  );
 
 const heightInput =
-  document.getElementById("heightInput");
+  document.getElementById(
+    "heightInput"
+  );
 
 const weightInput =
-  document.getElementById("weightInput");
+  document.getElementById(
+    "weightInput"
+  );
 
 const targetWeightInput =
-  document.getElementById("targetWeightInput");
+  document.getElementById(
+    "targetWeightInput"
+  );
 
 const ageRange =
-  document.getElementById("ageRange");
+  document.getElementById(
+    "ageRange"
+  );
 
 const genderType =
-  document.getElementById("genderType");
+  document.getElementById(
+    "genderType"
+  );
 
 const activityLevel =
-  document.getElementById("activityLevel");
+  document.getElementById(
+    "activityLevel"
+  );
 
 const goalSelect =
-  document.getElementById("goalSelect");
-
-const membershipType =
-  document.getElementById("membershipType");
+  document.getElementById(
+    "goalSelect"
+  );
 
 const lifestyleType =
-  document.getElementById("lifestyleType");
+  document.getElementById(
+    "lifestyleType"
+  );
 
 const combatStyle =
-  document.getElementById("combatStyle");
+  document.getElementById(
+    "combatStyle"
+  );
 
 const rangeOutput =
-  document.getElementById("rangeOutput");
+  document.getElementById(
+    "rangeOutput"
+  );
 
 const nicknameInput =
-  document.getElementById("nicknameInput");
+  document.getElementById(
+    "nicknameInput"
+  );
 
 const foodStyle =
-  document.getElementById("foodStyle");
+  document.getElementById(
+    "foodStyle"
+  );
 
 const foodAvoid =
-  document.getElementById("foodAvoid");
+  document.getElementById(
+    "foodAvoid"
+  );
 
 const resetSetupBtn =
-  document.getElementById("resetSetupBtn");
+  document.getElementById(
+    "resetSetupBtn"
+  );
+
 
 const WEEKLY_FOCUS_BY_GOAL = {
+
   fuelwise:
     "Steady Energy Week",
 
@@ -55,41 +84,68 @@ const WEEKLY_FOCUS_BY_GOAL = {
 
   gainwise:
     "Build and Recover Week"
+
 };
 
-function normalizeMembership(value) {
 
-  if (value === "basic") {
-    return "standard";
+function getSavedSetup() {
+
+  try {
+
+    return JSON.parse(
+      localStorage.getItem(
+        "fuelai-setup"
+      ) || "{}"
+    );
+
+  } catch {
+
+    return {};
+
   }
 
-  return value || "free";
 }
+
 
 function renderSetupButtons() {
 
   const hasSetup =
-    !!localStorage.getItem("fuelai-setup");
+    Boolean(
+      localStorage.getItem(
+        "fuelai-setup"
+      )
+    );
 
-  if (resetSetupBtn) {
+
+  if (
+    resetSetupBtn
+  ) {
+
     resetSetupBtn.style.display =
-      hasSetup ? "block" : "none";
+      hasSetup
+        ? "block"
+        : "none";
+
   }
 
-  if (saveSetupBtn) {
+
+  if (
+    saveSetupBtn
+  ) {
+
     saveSetupBtn.textContent =
-      "Approve Setup";
+      hasSetup
+        ? "Save Changes →"
+        : "Start FuelAI →";
+
   }
+
 }
+
 
 function getActivityText() {
 
   const labels = {
-    low:
-      "Not selected",
-
-    "0-1":
-      "0–1 days per week",
 
     "1-2":
       "1–2 days per week",
@@ -105,50 +161,61 @@ function getActivityText() {
 
     "6-plus":
       "6+ days per week"
+
   };
 
+
   return (
-    labels[activityLevel?.value] ||
-    labels.low
+    labels[
+      activityLevel?.value
+    ] ||
+    "Not selected"
   );
+
 }
+
 
 function getLifestyleText() {
 
-  if (!lifestyleType) {
-    return "General Health";
-  }
-
   const labels = {
+
     "general-health":
       "General Health",
 
-    "general-fitness":
-      "General Fitness",
-
-    "sports-athlete":
-      "Sports Athlete",
+    "fitness-enthusiast":
+      "Fitness Enthusiast",
 
     "combat-athlete":
       "Combat Athlete"
+
   };
 
+
   return (
-    labels[lifestyleType.value] ||
+    labels[
+      lifestyleType?.value
+    ] ||
     "General Health"
   );
+
 }
+
 
 function getCombatStyleText() {
 
   if (
     !combatStyle ||
-    combatStyle.classList.contains("hidden")
+    lifestyleType?.value !==
+      "combat-athlete"
   ) {
-    return "Not selected";
+
+    return "Not applicable";
+
   }
 
+
   const labels = {
+
     grappling:
       "Grappling Sports",
 
@@ -157,70 +224,96 @@ function getCombatStyleText() {
 
     mma:
       "MMA / Mixed Combat"
+
   };
 
-  return (
-    labels[combatStyle.value] ||
-    "Not selected"
-  );
-}
-
-function getMembershipText() {
-
-  const labels = {
-    free:
-      "Free",
-
-    standard:
-      "Standard",
-
-    plus:
-      "Plus"
-  };
 
   return (
     labels[
-      normalizeMembership(membershipType?.value)
+      combatStyle.value
     ] ||
-    "Free"
+    "Not selected"
   );
+
 }
+
+
+function getGoalText() {
+
+  const labels = {
+
+    fuelwise:
+      "Maintain / Balance",
+
+    cutwise:
+      "Lean Out",
+
+    gainwise:
+      "Build / Recover"
+
+  };
+
+
+  return (
+    labels[
+      goalSelect?.value
+    ] ||
+    "Maintain / Balance"
+  );
+
+}
+
 
 function updateGuidance() {
 
+  if (
+    !rangeOutput
+  ) {
+    return;
+  }
+
+
   const height =
-    heightInput?.value.trim();
+    heightInput
+      ?.value
+      .trim();
 
   const weight =
-    parseInt(
-      weightInput?.value,
-      10
+    Number.parseFloat(
+      weightInput
+        ?.value
     );
 
-  if (!height || !weight) {
+
+  if (
+    !height ||
+    !Number.isFinite(
+      weight
+    ) ||
+    weight <= 0
+  ) {
 
     rangeOutput.textContent =
       "Enter height and weight";
 
     return;
+
   }
+
 
   const low =
-    weight - 10;
+    Math.max(
+      1,
+      Math.round(
+        weight - 10
+      )
+    );
 
   const high =
-    weight + 10;
+    Math.round(
+      weight + 10
+    );
 
-  let direction =
-    "Maintain";
-
-  if (goalSelect?.value === "cutwise") {
-    direction = "Gradual Cut";
-  }
-
-  if (goalSelect?.value === "gainwise") {
-    direction = "Gradual Gain";
-  }
 
   rangeOutput.innerHTML = `
 
@@ -239,13 +332,8 @@ function updateGuidance() {
 
     <br><br>
 
-    Lifestyle:<br>
+    Profile:<br>
     ${getLifestyleText()}
-
-    <br><br>
-
-    Membership:<br>
-    ${getMembershipText()}
 
     <br><br>
 
@@ -255,113 +343,221 @@ function updateGuidance() {
     <br><br>
 
     Direction:<br>
-    ${direction}
+    ${getGoalText()}
 
   `;
+
 }
+
+
+function syncCombatStyleVisibility() {
+
+  if (
+    !combatStyle
+  ) {
+    return;
+  }
+
+
+  const isCombat =
+    lifestyleType?.value ===
+    "combat-athlete";
+
+
+  combatStyle.classList.toggle(
+    "hidden",
+    !isCombat
+  );
+
+
+  if (
+    !isCombat
+  ) {
+
+    combatStyle.value =
+      "";
+
+  }
+
+}
+
 
 function loadSavedSetup() {
 
   const saved =
-    JSON.parse(
-      localStorage.getItem("fuelai-setup") ||
-      "{}"
-    );
+    getSavedSetup();
 
-  nicknameInput.value =
-    saved.nickname || "";
 
-  heightInput.value =
-    saved.height || "";
+  if (
+    nicknameInput
+  ) {
+    nicknameInput.value =
+      saved.nickname ||
+      "";
+  }
 
-  weightInput.value =
-    saved.weight || "";
 
-  targetWeightInput.value =
-    saved.targetWeight || "";
+  if (
+    heightInput
+  ) {
+    heightInput.value =
+      saved.height ||
+      "";
+  }
 
-  ageRange.value =
-    saved.ageRange || "13-18";
 
-  genderType.value =
-    saved.gender || "";
+  if (
+    weightInput
+  ) {
+    weightInput.value =
+      saved.weight ||
+      "";
+  }
 
-  activityLevel.value =
-    saved.activityLevel || "2-3";
 
-  goalSelect.value =
-    saved.goal || "fuelwise";
+  if (
+    targetWeightInput
+  ) {
+    targetWeightInput.value =
+      saved.targetWeight ||
+      "";
+  }
 
-  if (lifestyleType) {
+
+  if (
+    ageRange
+  ) {
+    ageRange.value =
+      saved.ageRange ||
+      "13-18";
+  }
+
+
+  if (
+    genderType
+  ) {
+    genderType.value =
+      saved.gender ||
+      "";
+  }
+
+
+  if (
+    activityLevel
+  ) {
+    activityLevel.value =
+      saved.activityLevel ||
+      "2-3";
+  }
+
+
+  if (
+    goalSelect
+  ) {
+    goalSelect.value =
+      saved.goal ||
+      "fuelwise";
+  }
+
+
+  if (
+    lifestyleType
+  ) {
     lifestyleType.value =
       saved.lifestyleType ||
       "general-health";
   }
 
-  if (membershipType) {
-    membershipType.value =
-      normalizeMembership(
-        saved.membership
-      );
-  }
 
-  if (combatStyle) {
-
+  if (
+    combatStyle
+  ) {
     combatStyle.value =
-      saved.combatStyle || "";
-
-    if (
-      lifestyleType?.value ===
-      "combat-athlete"
-    ) {
-      combatStyle.classList.remove("hidden");
-    } else {
-      combatStyle.classList.add("hidden");
-    }
+      saved.combatStyle ||
+      "";
   }
 
-  if (foodStyle) {
+
+  if (
+    foodStyle
+  ) {
     foodStyle.value =
-      saved.foodStyle || "none";
+      saved.foodStyle ||
+      "none";
   }
 
-  if (foodAvoid) {
+
+  if (
+    foodAvoid
+  ) {
     foodAvoid.value =
-      saved.foodAvoid || "";
+      saved.foodAvoid ||
+      "";
   }
+
+
+  syncCombatStyleVisibility();
+
 }
 
+
 function saveSetup() {
+
+  const previous =
+    getSavedSetup();
+
 
   const goal =
     goalSelect?.value ||
     "fuelwise";
 
+
   const weeklyFocus =
-    WEEKLY_FOCUS_BY_GOAL[goal] ||
+    WEEKLY_FOCUS_BY_GOAL[
+      goal
+    ] ||
     "Steady Energy Week";
 
+
   const setup = {
+
+    ...previous,
+
     nickname:
-      nicknameInput.value.trim(),
+      nicknameInput
+        ?.value
+        .trim() ||
+      "",
 
     height:
-      heightInput.value.trim(),
+      heightInput
+        ?.value
+        .trim() ||
+      "",
 
     weight:
-      weightInput.value.trim(),
+      weightInput
+        ?.value
+        .trim() ||
+      "",
 
     targetWeight:
-      targetWeightInput.value.trim(),
+      targetWeightInput
+        ?.value
+        .trim() ||
+      "",
 
     ageRange:
-      ageRange.value,
+      ageRange?.value ||
+      "13-18",
 
     gender:
-      genderType.value,
+      genderType?.value ||
+      "",
 
     activityLevel:
-      activityLevel.value,
+      activityLevel?.value ||
+      "2-3",
 
     goal,
 
@@ -369,25 +565,28 @@ function saveSetup() {
       lifestyleType?.value ||
       "general-health",
 
-    membership:
-      normalizeMembership(
-        membershipType?.value
-      ),
-
     combatStyle:
-      combatStyle?.value ||
-      "",
+      lifestyleType?.value ===
+        "combat-athlete"
+        ? (
+            combatStyle?.value ||
+            ""
+          )
+        : "",
 
     foodStyle:
       foodStyle?.value ||
       "none",
 
     foodAvoid:
-      foodAvoid?.value.trim() ||
+      foodAvoid
+        ?.value
+        .trim() ||
       "",
 
     guide:
-      genderType.value === "female"
+      genderType?.value ===
+        "female"
         ? "wisegal"
         : "wiseguy",
 
@@ -395,151 +594,248 @@ function saveSetup() {
       goal,
 
     weeklyFocus
+
   };
+
 
   localStorage.setItem(
     "fuelai-setup",
-    JSON.stringify(setup)
+    JSON.stringify(
+      setup
+    )
   );
 
+
   renderSetupButtons();
+
 
   window.location.href =
     "/tools/trackwise/";
+
 }
+
 
 function resetSetup() {
 
-  localStorage.removeItem("fuelai-setup");
+  localStorage.removeItem(
+    "fuelai-setup"
+  );
 
-  renderSetupButtons();
 
-  nicknameInput.value = "";
-  heightInput.value = "";
-  weightInput.value = "";
-  targetWeightInput.value = "";
+  if (
+    nicknameInput
+  ) {
+    nicknameInput.value =
+      "";
+  }
 
-  ageRange.value =
-    "13-18";
 
-  genderType.value =
-    "";
+  if (
+    heightInput
+  ) {
+    heightInput.value =
+      "";
+  }
 
-  activityLevel.value =
-    "low";
 
-  goalSelect.value =
-    "fuelwise";
+  if (
+    weightInput
+  ) {
+    weightInput.value =
+      "";
+  }
 
-  if (lifestyleType) {
+
+  if (
+    targetWeightInput
+  ) {
+    targetWeightInput.value =
+      "";
+  }
+
+
+  if (
+    ageRange
+  ) {
+    ageRange.value =
+      "13-18";
+  }
+
+
+  if (
+    genderType
+  ) {
+    genderType.value =
+      "";
+  }
+
+
+  if (
+    activityLevel
+  ) {
+    activityLevel.value =
+      "2-3";
+  }
+
+
+  if (
+    goalSelect
+  ) {
+    goalSelect.value =
+      "fuelwise";
+  }
+
+
+  if (
+    lifestyleType
+  ) {
     lifestyleType.value =
       "general-health";
   }
 
-  if (membershipType) {
-    membershipType.value =
-      "free";
-  }
 
-  if (combatStyle) {
+  if (
+    combatStyle
+  ) {
     combatStyle.value =
       "";
-
-    combatStyle.classList.add("hidden");
   }
 
-  if (foodStyle) {
+
+  if (
+    foodStyle
+  ) {
     foodStyle.value =
       "none";
   }
 
-  if (foodAvoid) {
+
+  if (
+    foodAvoid
+  ) {
     foodAvoid.value =
       "";
   }
 
+
+  syncCombatStyleVisibility();
+
+  renderSetupButtons();
+
   updateGuidance();
 
-  rangeOutput.textContent =
-    "Setup reset. Enter height and weight.";
+
+  if (
+    rangeOutput
+  ) {
+
+    rangeOutput.textContent =
+      "Setup reset. Enter height and weight.";
+
+  }
+
 }
 
-saveSetupBtn?.addEventListener(
-  "click",
-  saveSetup
-);
 
-resetSetupBtn?.addEventListener(
-  "click",
-  resetSetup
-);
+saveSetupBtn
+  ?.addEventListener(
+    "click",
+    saveSetup
+  );
 
-heightInput?.addEventListener(
-  "input",
-  updateGuidance
-);
 
-weightInput?.addEventListener(
-  "input",
-  updateGuidance
-);
+resetSetupBtn
+  ?.addEventListener(
+    "click",
+    resetSetup
+  );
 
-targetWeightInput?.addEventListener(
-  "input",
-  updateGuidance
-);
 
-ageRange?.addEventListener(
-  "change",
-  updateGuidance
-);
+heightInput
+  ?.addEventListener(
+    "input",
+    updateGuidance
+  );
 
-genderType?.addEventListener(
-  "change",
-  updateGuidance
-);
 
-activityLevel?.addEventListener(
-  "change",
-  updateGuidance
-);
+weightInput
+  ?.addEventListener(
+    "input",
+    updateGuidance
+  );
 
-goalSelect?.addEventListener(
-  "change",
-  updateGuidance
-);
 
-membershipType?.addEventListener(
-  "change",
-  updateGuidance
-);
+targetWeightInput
+  ?.addEventListener(
+    "input",
+    updateGuidance
+  );
 
-lifestyleType?.addEventListener(
-  "change",
-  () => {
 
-    if (
-      lifestyleType.value ===
-      "combat-athlete"
-    ) {
-      combatStyle?.classList.remove("hidden");
-    } else {
-      combatStyle?.classList.add("hidden");
+ageRange
+  ?.addEventListener(
+    "change",
+    updateGuidance
+  );
 
-      if (combatStyle) {
-        combatStyle.value = "";
-      }
+
+genderType
+  ?.addEventListener(
+    "change",
+    updateGuidance
+  );
+
+
+activityLevel
+  ?.addEventListener(
+    "change",
+    updateGuidance
+  );
+
+
+goalSelect
+  ?.addEventListener(
+    "change",
+    updateGuidance
+  );
+
+
+lifestyleType
+  ?.addEventListener(
+    "change",
+    () => {
+
+      syncCombatStyleVisibility();
+
+      updateGuidance();
+
     }
+  );
 
-    updateGuidance();
-  }
-);
 
-combatStyle?.addEventListener(
-  "change",
-  updateGuidance
-);
+combatStyle
+  ?.addEventListener(
+    "change",
+    updateGuidance
+  );
+
+
+foodStyle
+  ?.addEventListener(
+    "change",
+    updateGuidance
+  );
+
+
+foodAvoid
+  ?.addEventListener(
+    "input",
+    updateGuidance
+  );
+
 
 loadSavedSetup();
+
 renderSetupButtons();
+
 updateGuidance();
