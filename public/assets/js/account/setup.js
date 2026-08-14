@@ -830,3 +830,438 @@ loadSavedSetup();
 renderSetupButtons();
 
 updateGuidance();
+
+/* =========================
+   FUELAI USER AVATAR
+========================= */
+
+const fuelaiAvatarPreview =
+  document.getElementById(
+    "fuelaiAvatarPreview"
+  );
+
+const chooseFuelAIAvatar =
+  document.getElementById(
+    "chooseFuelAIAvatar"
+  );
+
+const uploadFuelAIPhoto =
+  document.getElementById(
+    "uploadFuelAIPhoto"
+  );
+
+const takeFuelAIPhoto =
+  document.getElementById(
+    "takeFuelAIPhoto"
+  );
+
+const removeFuelAIAvatar =
+  document.getElementById(
+    "removeFuelAIAvatar"
+  );
+
+const fuelaiAvatarPicker =
+  document.getElementById(
+    "fuelaiAvatarPicker"
+  );
+
+const fuelaiAvatarUploadInput =
+  document.getElementById(
+    "fuelaiAvatarUploadInput"
+  );
+
+const fuelaiAvatarCameraInput =
+  document.getElementById(
+    "fuelaiAvatarCameraInput"
+  );
+
+
+function saveFuelAIAvatar(
+  avatar
+) {
+
+  const setup =
+    getSavedSetup();
+
+  setup.avatar =
+    avatar;
+
+  localStorage.setItem(
+    "fuelai-setup",
+    JSON.stringify(setup)
+  );
+
+}
+
+
+function renderFuelAIAvatar(
+  avatar
+) {
+
+  if (!fuelaiAvatarPreview) {
+    return;
+  }
+
+
+  if (
+    avatar?.type === "photo" &&
+    avatar?.value
+  ) {
+
+    fuelaiAvatarPreview.innerHTML =
+      "";
+
+    const img =
+      document.createElement(
+        "img"
+      );
+
+    img.src =
+      avatar.value;
+
+    img.alt =
+      "Your FuelAI profile";
+
+    fuelaiAvatarPreview.appendChild(
+      img
+    );
+
+    return;
+
+  }
+
+
+  if (
+    avatar?.type === "preset" &&
+    avatar?.value
+  ) {
+
+    fuelaiAvatarPreview.textContent =
+      avatar.value;
+
+    return;
+
+  }
+
+
+  fuelaiAvatarPreview.textContent =
+    "👤";
+
+}
+
+
+function resizeFuelAIAvatar(
+  file
+) {
+
+  return new Promise(
+    (resolve, reject) => {
+
+      const reader =
+        new FileReader();
+
+
+      reader.onerror =
+        reject;
+
+
+      reader.onload =
+        () => {
+
+          const img =
+            new Image();
+
+
+          img.onerror =
+            reject;
+
+
+          img.onload =
+            () => {
+
+              const size =
+                320;
+
+              const canvas =
+                document.createElement(
+                  "canvas"
+                );
+
+              canvas.width =
+                size;
+
+              canvas.height =
+                size;
+
+
+              const ctx =
+                canvas.getContext(
+                  "2d"
+                );
+
+
+              const sourceSize =
+                Math.min(
+                  img.naturalWidth,
+                  img.naturalHeight
+                );
+
+
+              const sx =
+                (
+                  img.naturalWidth -
+                  sourceSize
+                ) / 2;
+
+              const sy =
+                (
+                  img.naturalHeight -
+                  sourceSize
+                ) / 2;
+
+
+              ctx.drawImage(
+                img,
+                sx,
+                sy,
+                sourceSize,
+                sourceSize,
+                0,
+                0,
+                size,
+                size
+              );
+
+
+              resolve(
+                canvas.toDataURL(
+                  "image/jpeg",
+                  .78
+                )
+              );
+
+            };
+
+
+          img.src =
+            reader.result;
+
+        };
+
+
+      reader.readAsDataURL(
+        file
+      );
+
+    }
+  );
+
+}
+
+
+async function handleFuelAIPhoto(
+  input
+) {
+
+  const file =
+    input?.files?.[0];
+
+
+  if (!file) {
+    return;
+  }
+
+
+  if (
+    !file.type.startsWith(
+      "image/"
+    )
+  ) {
+
+    alert(
+      "Please choose an image."
+    );
+
+    return;
+
+  }
+
+
+  try {
+
+    const value =
+      await resizeFuelAIAvatar(
+        file
+      );
+
+
+    const avatar = {
+      type: "photo",
+      value
+    };
+
+
+    saveFuelAIAvatar(
+      avatar
+    );
+
+    renderFuelAIAvatar(
+      avatar
+    );
+
+
+    if (fuelaiAvatarPicker) {
+      fuelaiAvatarPicker.hidden =
+        true;
+    }
+
+  }
+
+  catch (error) {
+
+    console.error(
+      "FuelAI avatar error:",
+      error
+    );
+
+    alert(
+      "FuelAI could not process that photo."
+    );
+
+  }
+
+
+  input.value =
+    "";
+
+}
+
+
+chooseFuelAIAvatar
+  ?.addEventListener(
+    "click",
+    () => {
+
+      fuelaiAvatarPicker.hidden =
+        !fuelaiAvatarPicker.hidden;
+
+    }
+  );
+
+
+uploadFuelAIPhoto
+  ?.addEventListener(
+    "click",
+    () => {
+
+      fuelaiAvatarUploadInput
+        ?.click();
+
+    }
+  );
+
+
+takeFuelAIPhoto
+  ?.addEventListener(
+    "click",
+    () => {
+
+      fuelaiAvatarCameraInput
+        ?.click();
+
+    }
+  );
+
+
+fuelaiAvatarUploadInput
+  ?.addEventListener(
+    "change",
+    () => {
+
+      handleFuelAIPhoto(
+        fuelaiAvatarUploadInput
+      );
+
+    }
+  );
+
+
+fuelaiAvatarCameraInput
+  ?.addEventListener(
+    "change",
+    () => {
+
+      handleFuelAIPhoto(
+        fuelaiAvatarCameraInput
+      );
+
+    }
+  );
+
+
+fuelaiAvatarPicker
+  ?.addEventListener(
+    "click",
+    (event) => {
+
+      const button =
+        event.target.closest(
+          "[data-fuelai-avatar]"
+        );
+
+
+      if (!button) {
+        return;
+      }
+
+
+      const avatar = {
+        type: "preset",
+        value:
+          button.dataset
+            .fuelaiAvatar
+      };
+
+
+      saveFuelAIAvatar(
+        avatar
+      );
+
+      renderFuelAIAvatar(
+        avatar
+      );
+
+
+      fuelaiAvatarPicker.hidden =
+        true;
+
+    }
+  );
+
+
+removeFuelAIAvatar
+  ?.addEventListener(
+    "click",
+    () => {
+
+      const setup =
+        getSavedSetup();
+
+      delete setup.avatar;
+
+      localStorage.setItem(
+        "fuelai-setup",
+        JSON.stringify(setup)
+      );
+
+      renderFuelAIAvatar(
+        null
+      );
+
+    }
+  );
+
+
+renderFuelAIAvatar(
+  getSavedSetup().avatar
+);

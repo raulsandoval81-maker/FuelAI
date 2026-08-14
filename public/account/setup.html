@@ -572,6 +572,129 @@
 
     }
 
+
+
+    /* =========================
+       FUELAI USER AVATAR
+    ========================= */
+
+    .fuelai-avatar-setup{
+      margin-top:28px;
+      padding-top:24px;
+      border-top:1px solid rgba(255,255,255,.08);
+    }
+
+    .fuelai-avatar-preview-wrap{
+      display:flex;
+      justify-content:center;
+      margin:16px 0 18px;
+    }
+
+    .fuelai-avatar-preview{
+      width:132px;
+      height:132px;
+
+      display:grid;
+      place-items:center;
+
+      overflow:hidden;
+
+      border-radius:50%;
+
+      border:3px solid rgba(34,197,94,.65);
+
+      background:
+        radial-gradient(
+          circle at 50% 30%,
+          rgba(34,197,94,.18),
+          rgba(15,23,42,.92)
+        );
+
+      box-shadow:
+        0 0 0 6px rgba(34,197,94,.06),
+        0 16px 38px rgba(0,0,0,.30);
+
+      font-size:4.5rem;
+    }
+
+    .fuelai-avatar-preview img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
+    }
+
+    .fuelai-avatar-actions{
+      display:flex;
+      justify-content:center;
+      flex-wrap:wrap;
+      gap:9px;
+    }
+
+    .fuelai-avatar-btn{
+      min-height:42px;
+
+      padding:9px 14px;
+
+      border:1px solid rgba(255,255,255,.13);
+      border-radius:12px;
+
+      background:rgba(255,255,255,.055);
+      color:inherit;
+
+      font:inherit;
+      font-weight:800;
+
+      cursor:pointer;
+    }
+
+    .fuelai-avatar-btn:hover{
+      background:rgba(255,255,255,.09);
+    }
+
+    .fuelai-avatar-btn.subtle{
+      opacity:.72;
+    }
+
+    .fuelai-avatar-picker{
+      display:grid;
+      grid-template-columns:
+        repeat(4, minmax(54px, 1fr));
+
+      gap:10px;
+
+      max-width:330px;
+
+      margin:
+        16px auto 0;
+    }
+
+    .fuelai-avatar-picker[hidden]{
+      display:none;
+    }
+
+    .fuelai-avatar-picker button{
+      aspect-ratio:1;
+
+      display:grid;
+      place-items:center;
+
+      border:1px solid rgba(255,255,255,.11);
+      border-radius:16px;
+
+      background:rgba(255,255,255,.045);
+
+      font-size:2rem;
+
+      cursor:pointer;
+    }
+
+    .fuelai-avatar-picker button:hover{
+      border-color:rgba(34,197,94,.55);
+      background:rgba(34,197,94,.08);
+    }
+
+
   </style>
 </head>
 
@@ -681,6 +804,153 @@
             Female
           </option>
         </select>
+
+      </div>
+
+
+      <!-- PROFILE PHOTO -->
+
+      <div class="fuelai-avatar-setup">
+
+        <p class="section-label">
+          Your Photo
+        </p>
+
+        <div class="fuelai-avatar-preview-wrap">
+
+          <div
+            id="fuelaiAvatarPreview"
+            class="fuelai-avatar-preview"
+            aria-label="Your FuelAI profile image"
+          >
+            👤
+          </div>
+
+        </div>
+
+
+        <div class="fuelai-avatar-actions">
+
+          <button
+            id="chooseFuelAIAvatar"
+            class="fuelai-avatar-btn"
+            type="button"
+          >
+            Choose Avatar
+          </button>
+
+          <button
+            id="uploadFuelAIPhoto"
+            class="fuelai-avatar-btn"
+            type="button"
+          >
+            Upload Photo
+          </button>
+
+          <button
+            id="takeFuelAIPhoto"
+            class="fuelai-avatar-btn"
+            type="button"
+          >
+            Take Photo
+          </button>
+
+          <button
+            id="removeFuelAIAvatar"
+            class="fuelai-avatar-btn subtle"
+            type="button"
+          >
+            Remove
+          </button>
+
+        </div>
+
+
+        <input
+          id="fuelaiAvatarUploadInput"
+          type="file"
+          accept="image/*"
+          hidden
+        />
+
+        <input
+          id="fuelaiAvatarCameraInput"
+          type="file"
+          accept="image/*"
+          capture="user"
+          hidden
+        />
+
+
+        <div
+          id="fuelaiAvatarPicker"
+          class="fuelai-avatar-picker"
+          hidden
+        >
+
+          <button
+            type="button"
+            data-fuelai-avatar="🧑"
+          >
+            🧑
+          </button>
+
+          <button
+            type="button"
+            data-fuelai-avatar="👩"
+          >
+            👩
+          </button>
+
+          <button
+            type="button"
+            data-fuelai-avatar="🧔"
+          >
+            🧔
+          </button>
+
+          <button
+            type="button"
+            data-fuelai-avatar="👩‍🦱"
+          >
+            👩‍🦱
+          </button>
+
+          <button
+            type="button"
+            data-fuelai-avatar="🥷"
+          >
+            🥷
+          </button>
+
+          <button
+            type="button"
+            data-fuelai-avatar="🏃"
+          >
+            🏃
+          </button>
+
+          <button
+            type="button"
+            data-fuelai-avatar="🏋️"
+          >
+            🏋️
+          </button>
+
+          <button
+            type="button"
+            data-fuelai-avatar="🥊"
+          >
+            🥊
+          </button>
+
+        </div>
+
+
+        <p class="profile-note">
+          Choose an avatar or use your own photo.
+          You can change it anytime.
+        </p>
 
       </div>
 
