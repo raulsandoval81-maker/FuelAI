@@ -104,6 +104,9 @@ const displayLifestyle = {
   "fitness-enthusiast":
     "Fitness Enthusiast",
 
+  "sports-athlete":
+    "Sports Athlete",
+
   "combat-athlete":
     "Combat Athlete"
 

@@ -28,6 +28,15 @@ const FUELAI_PROFILE_PLANS = {
     ]
   },
 
+  "sports-athlete": {
+    label: "Sports Athlete",
+    defaultPlan: "standard",
+    allowedPlans: [
+      "standard",
+      "plus"
+    ]
+  },
+
   "combat-athlete": {
     label: "Combat Athlete",
     defaultPlan: "plus",
@@ -64,7 +73,7 @@ const FUELAI_FEATURES = {
 
 
   standard: {
-    label: "Standard",
+    label: "FuelAI",
 
     mealScansPerDay: 5,
     fridgeScansPerDay: 2,
@@ -80,7 +89,7 @@ const FUELAI_FEATURES = {
 
 
   plus: {
-    label: "Plus",
+    label: "FuelAI+",
 
     mealScansPerDay: 8,
     fridgeScansPerDay: 4,
@@ -139,14 +148,14 @@ function normalizeFuelAIProfile(
    * Old profile migration
    */
   if (
-    value === "general-fitness" ||
-    value === "sports-athlete"
+    value === "general-fitness"
   ) {
     return "fitness-enthusiast";
   }
 
   if (
     value === "fitness-enthusiast" ||
+    value === "sports-athlete" ||
     value === "combat-athlete"
   ) {
     return value;
@@ -373,6 +382,9 @@ function canUseFuelAITool(tool) {
         (
           profile ===
             "fitness-enthusiast" ||
+
+          profile ===
+            "sports-athlete" ||
 
           profile ===
             "combat-athlete"

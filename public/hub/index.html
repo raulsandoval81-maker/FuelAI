@@ -1430,9 +1430,12 @@
             "fitness-enthusiast"
               ? "Fitness Enthusiast"
               : setup.lifestyleType ===
-                "combat-athlete"
-                ? "Combat Athlete"
-                : "General Health"
+                "sports-athlete"
+                ? "Sports Athlete"
+                : setup.lifestyleType ===
+                  "combat-athlete"
+                  ? "Combat Athlete"
+                  : "General Health"
           );
 
       }
