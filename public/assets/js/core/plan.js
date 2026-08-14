@@ -1,10 +1,13 @@
 const FUELAI_PLAN_KEY =
   "fuelai-plan";
 
+const FUELAI_BETA_KEY =
+  "fuelai-beta-access";
+
 
 /*
  * ========================================
- * PROFILE → VALID PLANS
+ * PROFILE → DEFAULT PLAN
  * ========================================
  */
 
@@ -15,7 +18,8 @@ const FUELAI_PROFILE_PLANS = {
     defaultPlan: "free",
     allowedPlans: [
       "free",
-      "standard"
+      "standard",
+      "plus"
     ]
   },
 
@@ -23,6 +27,7 @@ const FUELAI_PROFILE_PLANS = {
     label: "Fitness Enthusiast",
     defaultPlan: "standard",
     allowedPlans: [
+      "free",
       "standard",
       "plus"
     ]
@@ -32,6 +37,7 @@ const FUELAI_PROFILE_PLANS = {
     label: "Sports Athlete",
     defaultPlan: "standard",
     allowedPlans: [
+      "free",
       "standard",
       "plus"
     ]
@@ -41,6 +47,8 @@ const FUELAI_PROFILE_PLANS = {
     label: "Combat Athlete",
     defaultPlan: "plus",
     allowedPlans: [
+      "free",
+      "standard",
       "plus"
     ]
   }
@@ -254,13 +262,9 @@ function getFuelAIPlan() {
   }
 
   /*
-   * Invalid profile/plan combination.
-   *
-   * Example:
-   * Combat Athlete + Free
-   *
+   * Unknown or invalid plan.
    * Fall back to the profile's
-   * natural plan.
+   * natural starting plan.
    */
   return profileConfig.defaultPlan;
 }
@@ -306,12 +310,102 @@ function getAllowedFuelAIPlans() {
 
 function getFuelAIFeatures() {
   const plan =
-    getFuelAIPlan();
+    getFuelAIEffectivePlan();
 
   return (
     FUELAI_FEATURES[plan] ||
     FUELAI_FEATURES.free
   );
+}
+
+
+/*
+ * ========================================
+ * BETA ACCESS
+ * ========================================
+ */
+
+function getFuelAIBetaAccess() {
+  try {
+
+    const beta =
+      JSON.parse(
+        localStorage.getItem(
+          FUELAI_BETA_KEY
+        ) || "{}"
+      );
+
+    const enabled =
+      beta.enabled === true;
+
+    const accessLevel =
+      normalizeFuelAIPlan(
+        beta.accessLevel
+      );
+
+    return {
+      enabled,
+      accessLevel:
+        enabled
+          ? accessLevel
+          : null,
+      cohort:
+        String(
+          beta.cohort || ""
+        ),
+      startedAt:
+        beta.startedAt ||
+        null,
+      expiresAt:
+        beta.expiresAt ||
+        null
+    };
+
+  } catch (error) {
+
+    console.warn(
+      "Unable to read FuelAI beta access.",
+      error
+    );
+
+    return {
+      enabled: false,
+      accessLevel: null,
+      cohort: "",
+      startedAt: null,
+      expiresAt: null
+    };
+
+  }
+}
+
+
+function isFuelAIBetaUser() {
+  return (
+    getFuelAIBetaAccess()
+      .enabled === true
+  );
+}
+
+
+function getFuelAIEffectivePlan() {
+
+  const purchasedPlan =
+    getFuelAIPlan();
+
+  const beta =
+    getFuelAIBetaAccess();
+
+
+  if (
+    beta.enabled &&
+    beta.accessLevel
+  ) {
+    return beta.accessLevel;
+  }
+
+
+  return purchasedPlan;
 }
 
 
@@ -441,6 +535,12 @@ function getFuelAIAccess() {
   const plan =
     getFuelAIPlan();
 
+  const effectivePlan =
+    getFuelAIEffectivePlan();
+
+  const beta =
+    getFuelAIBetaAccess();
+
   const features =
     getFuelAIFeatures();
 
@@ -455,7 +555,19 @@ function getFuelAIAccess() {
     plan,
 
     planLabel:
+      FUELAI_FEATURES[plan]
+        ?.label ||
+      plan,
+
+    effectivePlan,
+
+    effectivePlanLabel:
       features.label,
+
+    betaUser:
+      beta.enabled,
+
+    beta,
 
     allowedPlans:
       getAllowedFuelAIPlans(),
@@ -541,6 +653,10 @@ window.FuelAIPlan = {
   getAllowedFuelAIPlans,
 
   getFuelAIFeatures,
+
+  getFuelAIBetaAccess,
+  isFuelAIBetaUser,
+  getFuelAIEffectivePlan,
 
   canUseFuelAITool,
   getFuelAIAccess,
