@@ -1334,3 +1334,186 @@ button:disabled {
   }
 
 }
+
+
+/* =========================
+   TRAININGWISE COUNTDOWN
+========================= */
+
+.trainingwise-countdown-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+
+  display: grid;
+  place-items: center;
+
+  background: rgba(0,0,0,.72);
+  backdrop-filter: blur(5px);
+}
+
+
+.trainingwise-countdown-card {
+  min-width: 190px;
+
+  padding: 28px;
+
+  border: 1px solid
+    rgba(255,255,255,.16);
+
+  border-radius: 24px;
+
+  background:
+    rgba(15,23,42,.96);
+
+  text-align: center;
+
+  box-shadow:
+    0 20px 60px
+    rgba(0,0,0,.45);
+}
+
+
+.trainingwise-countdown-card span {
+  display: block;
+
+  margin-bottom: 8px;
+
+  font-size: .82rem;
+  font-weight: 900;
+  letter-spacing: .12em;
+
+  opacity: .72;
+}
+
+
+.trainingwise-countdown-card strong {
+  display: block;
+
+  font-size: 4.8rem;
+  line-height: 1;
+  font-weight: 950;
+}
+
+
+/* =========================
+   TRAININGWISE ICON CONTROLS
+========================= */
+
+.trainingwise-view-controls {
+  gap: 10px;
+}
+
+
+.trainingwise-view-controls
+.trainingwise-sound-toggle,
+.trainingwise-full-clock-toggle {
+  display: inline-grid;
+  place-items: center;
+
+  width: 46px;
+  height: 46px;
+
+  padding: 0;
+
+  border-radius: 50%;
+
+  font-size: 1.15rem;
+
+  line-height: 1;
+}
+
+
+.trainingwise-view-controls
+.trainingwise-sound-toggle:hover,
+.trainingwise-full-clock-toggle:hover {
+  background:
+    rgba(255,255,255,.10);
+
+  border-color:
+    rgba(255,255,255,.24);
+}
+
+
+.trainingwise-view-controls
+.trainingwise-sound-toggle:active,
+.trainingwise-full-clock-toggle:active {
+  transform:
+    scale(.96);
+}
+
+
+@media (max-width: 560px) {
+
+  .trainingwise-view-controls
+  .trainingwise-sound-toggle,
+  .trainingwise-full-clock-toggle {
+    width: 44px;
+    height: 44px;
+  }
+
+}
+
+
+/* =========================
+   TRAININGWISE TIMER ICONS
+   FINAL COMPACT PASS
+========================= */
+
+.trainingwise-view-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 14px;
+
+  margin: 16px 0;
+}
+
+
+.trainingwise-view-controls
+.trainingwise-sound-toggle,
+.trainingwise-view-controls
+.trainingwise-full-clock-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  flex: 0 0 48px;
+
+  width: 48px;
+  height: 48px;
+
+  min-width: 48px;
+
+  padding: 0 !important;
+  margin: 0 !important;
+
+  overflow: hidden;
+
+  border-radius: 50%;
+
+  white-space: nowrap;
+
+  font-size: 1.25rem;
+  line-height: 1;
+
+  text-indent: 0;
+}
+
+
+@media (max-width: 560px) {
+
+  .trainingwise-view-controls
+  .trainingwise-sound-toggle,
+  .trainingwise-view-controls
+  .trainingwise-full-clock-toggle {
+    flex-basis: 50px;
+
+    width: 50px;
+    height: 50px;
+
+    min-width: 50px;
+  }
+
+}

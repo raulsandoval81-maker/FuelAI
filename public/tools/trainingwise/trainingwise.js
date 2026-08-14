@@ -252,6 +252,14 @@
       </div>
 
 
+      <div class="trainingwise-view-controls">
+
+        ${renderTrainingwiseSoundControl()}
+
+        ${renderTrainingwiseFullClockControl()}
+
+      </div>
+
       <div class="trainingwise-controls">
 
         <button
@@ -407,6 +415,728 @@
 
 
 
+  /*
+   * =====================================================
+   * TRAININGWISE SOUND
+   * Shared bell system for Interval, EMOM,
+   * Strength and Recovery.
+   * =====================================================
+   */
+
+  const TRAININGWISE_SOUND_KEY =
+    "fuelai-trainingwise-sound-v1";
+
+
+  let trainingwiseSoundEnabled =
+    localStorage.getItem(
+      TRAININGWISE_SOUND_KEY
+    ) !== "off";
+
+
+  let trainingwiseAudioContext =
+    null;
+
+
+  function getTrainingwiseAudioContext() {
+
+    if (!trainingwiseAudioContext) {
+
+      const AudioContextClass =
+        window.AudioContext ||
+        window.webkitAudioContext;
+
+
+      if (!AudioContextClass) {
+        return null;
+      }
+
+
+      trainingwiseAudioContext =
+        new AudioContextClass();
+
+    }
+
+
+    if (
+      trainingwiseAudioContext.state ===
+      "suspended"
+    ) {
+
+      trainingwiseAudioContext.resume();
+
+    }
+
+
+    return trainingwiseAudioContext;
+
+  }
+
+
+
+  function playTrainingwiseTone(
+    frequency = 880,
+    duration = .12,
+    delay = 0,
+    volume = .16
+  ) {
+
+    if (!trainingwiseSoundEnabled) {
+      return;
+    }
+
+
+    const ctx =
+      getTrainingwiseAudioContext();
+
+
+    if (!ctx) {
+      return;
+    }
+
+
+    const oscillator =
+      ctx.createOscillator();
+
+    const gain =
+      ctx.createGain();
+
+
+    const start =
+      ctx.currentTime + delay;
+
+    const stop =
+      start + duration;
+
+
+    oscillator.type =
+      "sine";
+
+    oscillator.frequency.setValueAtTime(
+      frequency,
+      start
+    );
+
+
+    gain.gain.setValueAtTime(
+      0.0001,
+      start
+    );
+
+    gain.gain.exponentialRampToValueAtTime(
+      volume,
+      start + .015
+    );
+
+    gain.gain.exponentialRampToValueAtTime(
+      0.0001,
+      stop
+    );
+
+
+    oscillator.connect(gain);
+    gain.connect(ctx.destination);
+
+    oscillator.start(start);
+    oscillator.stop(stop + .02);
+
+  }
+
+
+
+  function playTrainingwiseCountdownTick(
+    number
+  ) {
+
+    if (
+      number < 1 ||
+      number > 5
+    ) {
+      return;
+    }
+
+
+    const frequencies = {
+      5: 620,
+      4: 660,
+      3: 700,
+      2: 760,
+      1: 840
+    };
+
+
+    playTrainingwiseTone(
+      frequencies[number],
+      .08,
+      0,
+      .12
+    );
+
+  }
+
+
+
+  function trainingwiseCountdownCue(
+    remaining
+  ) {
+
+    if (
+      remaining >= 1 &&
+      remaining <= 5
+    ) {
+
+      playTrainingwiseCountdownTick(
+        remaining
+      );
+
+    }
+
+  }
+
+
+
+  function runTrainingwiseStartCountdown(
+    onComplete
+  ) {
+
+    const existing =
+      document.querySelector(
+        ".trainingwise-countdown-overlay"
+      );
+
+
+    if (existing) {
+      return;
+    }
+
+
+    const overlay =
+      document.createElement(
+        "div"
+      );
+
+
+    overlay.className =
+      "trainingwise-countdown-overlay";
+
+
+    overlay.innerHTML = `
+      <div class="trainingwise-countdown-card">
+
+        <span>
+          GET READY
+        </span>
+
+        <strong
+          id="trainingwiseCountdownNumber"
+        >
+          5
+        </strong>
+
+      </div>
+    `;
+
+
+    document.body.appendChild(
+      overlay
+    );
+
+
+    let count =
+      5;
+
+
+    const number =
+      overlay.querySelector(
+        "#trainingwiseCountdownNumber"
+      );
+
+
+    playTrainingwiseCountdownTick(
+      5
+    );
+
+
+    const countdown =
+      window.setInterval(
+        () => {
+
+          count -=
+            1;
+
+
+          if (count > 0) {
+
+            if (number) {
+              number.textContent =
+                String(count);
+            }
+
+
+            playTrainingwiseCountdownTick(
+              count
+            );
+
+            return;
+          }
+
+
+          window.clearInterval(
+            countdown
+          );
+
+
+          if (number) {
+            number.textContent =
+              "GO";
+          }
+
+
+          /*
+           * Existing bell system handles
+           * the GO cue.
+           */
+          playTrainingwiseBell(
+            "transition"
+          );
+
+
+          window.setTimeout(
+            () => {
+
+              overlay.remove();
+
+
+              if (
+                typeof onComplete ===
+                "function"
+              ) {
+
+                onComplete();
+
+              }
+
+            },
+            400
+          );
+
+        },
+        1000
+      );
+
+  }
+
+
+
+  function playTrainingwiseBell(
+    kind = "transition"
+  ) {
+
+    if (!trainingwiseSoundEnabled) {
+      return;
+    }
+
+
+    if (kind === "round") {
+
+      playTrainingwiseTone(
+        880,
+        .14,
+        0,
+        .18
+      );
+
+      playTrainingwiseTone(
+        1100,
+        .18,
+        .20,
+        .20
+      );
+
+      return;
+
+    }
+
+
+    if (kind === "finish") {
+
+      playTrainingwiseTone(
+        660,
+        .16,
+        0,
+        .18
+      );
+
+      playTrainingwiseTone(
+        880,
+        .18,
+        .19,
+        .19
+      );
+
+      playTrainingwiseTone(
+        1175,
+        .30,
+        .40,
+        .22
+      );
+
+      return;
+
+    }
+
+
+    playTrainingwiseTone(
+      920,
+      .16,
+      0,
+      .18
+    );
+
+  }
+
+
+
+  function toggleTrainingwiseSound() {
+
+    trainingwiseSoundEnabled =
+      !trainingwiseSoundEnabled;
+
+
+    localStorage.setItem(
+      TRAININGWISE_SOUND_KEY,
+      trainingwiseSoundEnabled
+        ? "on"
+        : "off"
+    );
+
+
+    updateTrainingwiseSoundButtons();
+
+
+    if (trainingwiseSoundEnabled) {
+
+      playTrainingwiseBell(
+        "transition"
+      );
+
+    }
+
+  }
+
+
+
+  function updateTrainingwiseSoundButtons() {
+
+    document
+      .querySelectorAll(
+        "[data-trainingwise-sound-toggle]"
+      )
+      .forEach(
+        (button) => {
+
+          button.textContent =
+            trainingwiseSoundEnabled
+              ? "🔊"
+              : "🔇";
+
+          button.setAttribute(
+            "aria-pressed",
+            trainingwiseSoundEnabled
+              ? "true"
+              : "false"
+          );
+
+        }
+      );
+
+  }
+
+
+
+  function isTrainingwiseFullClock() {
+
+    return output
+      ?.classList
+      .contains(
+        "trainingwise-full-clock-active"
+      ) ||
+      false;
+
+  }
+
+
+
+  function updateTrainingwiseFullClockButtons() {
+
+    const active =
+      isTrainingwiseFullClock();
+
+
+    document
+      .querySelectorAll(
+        "[data-trainingwise-fullclock-toggle]"
+      )
+      .forEach(
+        (button) => {
+
+          button.textContent =
+            active
+              ? "↙"
+              : "⛶";
+
+          button.setAttribute(
+            "aria-pressed",
+            active
+              ? "true"
+              : "false"
+          );
+
+        }
+      );
+
+  }
+
+
+
+  async function enterTrainingwiseFullClock() {
+
+    if (!output) {
+      return;
+    }
+
+
+    output.classList.add(
+      "trainingwise-full-clock-active"
+    );
+
+
+    document.body.classList.add(
+      "trainingwise-full-clock-body"
+    );
+
+
+    updateTrainingwiseFullClockButtons();
+
+
+    /*
+     * Try real browser fullscreen where supported.
+     * CSS fullscreen remains the fallback,
+     * especially on mobile browsers.
+     */
+    try {
+
+      if (
+        output.requestFullscreen &&
+        !document.fullscreenElement
+      ) {
+
+        await output
+          .requestFullscreen();
+
+      }
+
+    }
+
+    catch {
+
+      /*
+       * CSS fallback is already active.
+       */
+
+    }
+
+  }
+
+
+
+  async function exitTrainingwiseFullClock() {
+
+    if (!output) {
+      return;
+    }
+
+
+    output.classList.remove(
+      "trainingwise-full-clock-active"
+    );
+
+
+    document.body.classList.remove(
+      "trainingwise-full-clock-body"
+    );
+
+
+    updateTrainingwiseFullClockButtons();
+
+
+    try {
+
+      if (
+        document.fullscreenElement &&
+        document.exitFullscreen
+      ) {
+
+        await document
+          .exitFullscreen();
+
+      }
+
+    }
+
+    catch {
+
+      /*
+       * CSS mode has already exited.
+       */
+
+    }
+
+  }
+
+
+
+  function toggleTrainingwiseFullClock() {
+
+    if (
+      isTrainingwiseFullClock()
+    ) {
+
+      exitTrainingwiseFullClock();
+
+    }
+
+    else {
+
+      enterTrainingwiseFullClock();
+
+    }
+
+  }
+
+
+
+  function renderTrainingwiseFullClockControl() {
+
+    return `
+      <button
+        type="button"
+        class="trainingwise-full-clock-toggle"
+        data-trainingwise-fullclock-toggle
+        aria-pressed="false"
+      >
+        ⛶
+      </button>
+    `;
+
+  }
+
+
+
+  document.addEventListener(
+    "click",
+    (event) => {
+
+      const button =
+        event.target.closest(
+          "[data-trainingwise-fullclock-toggle]"
+        );
+
+
+      if (!button) {
+        return;
+      }
+
+
+      toggleTrainingwiseFullClock();
+
+    }
+  );
+
+
+
+  document.addEventListener(
+    "fullscreenchange",
+    () => {
+
+      /*
+       * User may exit native fullscreen
+       * with Escape or browser controls.
+       */
+
+      if (
+        !document.fullscreenElement &&
+        output
+          ?.classList
+          .contains(
+            "trainingwise-full-clock-active"
+          )
+      ) {
+
+        output.classList.remove(
+          "trainingwise-full-clock-active"
+        );
+
+        document.body.classList.remove(
+          "trainingwise-full-clock-body"
+        );
+
+      }
+
+
+      updateTrainingwiseFullClockButtons();
+
+    }
+  );
+
+
+
+  function renderTrainingwiseSoundControl() {
+
+    return `
+      <button
+        type="button"
+        class="trainingwise-sound-toggle"
+        data-trainingwise-sound-toggle
+        aria-pressed="${
+          trainingwiseSoundEnabled
+            ? "true"
+            : "false"
+        }"
+      >
+        ${
+          trainingwiseSoundEnabled
+            ? "🔊"
+            : "🔇"
+        }
+      </button>
+    `;
+
+  }
+
+
+
+  document.addEventListener(
+    "click",
+    (event) => {
+
+      const button =
+        event.target.closest(
+          "[data-trainingwise-sound-toggle]"
+        );
+
+
+      if (!button) {
+        return;
+      }
+
+
+      toggleTrainingwiseSound();
+
+    }
+  );
+
+
+
   function advanceInterval() {
 
     if (
@@ -440,6 +1170,10 @@
       intervalState.remaining =
         intervalState.workSeconds;
 
+      playTrainingwiseBell(
+        "round"
+      );
+
       updateIntervalDisplay();
 
       return;
@@ -463,6 +1197,10 @@
 
       intervalState.remaining =
         intervalState.restSeconds;
+
+      playTrainingwiseBell(
+        "transition"
+      );
 
       updateIntervalDisplay();
 
@@ -502,6 +1240,10 @@
       intervalState.remaining =
         intervalState.roundRestSeconds;
 
+      playTrainingwiseBell(
+        "round"
+      );
+
       updateIntervalDisplay();
 
       return;
@@ -517,6 +1259,10 @@
 
     intervalState.remaining =
       intervalState.workSeconds;
+
+    playTrainingwiseBell(
+      "transition"
+    );
 
     updateIntervalDisplay();
 
@@ -538,6 +1284,11 @@
       1;
 
 
+    trainingwiseCountdownCue(
+      intervalState.remaining
+    );
+
+
     if (
       intervalState.remaining <=
       0
@@ -557,6 +1308,28 @@
 
 
   function startInterval() {
+
+    if (
+      !intervalState ||
+      intervalState.completed ||
+      intervalState.running
+    ) {
+      return;
+    }
+
+
+    getTrainingwiseAudioContext();
+
+
+    runTrainingwiseStartCountdown(
+      startIntervalImmediate
+    );
+
+  }
+
+
+
+  function startIntervalImmediate() {
 
     if (
       !intervalState ||
@@ -692,6 +1465,11 @@
 
 
   function finishInterval() {
+
+    playTrainingwiseBell(
+      "finish"
+    );
+
 
     clearTimer();
 
@@ -1125,6 +1903,14 @@
       </div>
 
 
+      <div class="trainingwise-view-controls">
+
+        ${renderTrainingwiseSoundControl()}
+
+        ${renderTrainingwiseFullClockControl()}
+
+      </div>
+
       <div class="trainingwise-controls">
 
         <button
@@ -1287,6 +2073,10 @@
       emomState.remaining =
         60;
 
+      playTrainingwiseBell(
+        "round"
+      );
+
       updateEmomDisplay();
 
       return;
@@ -1321,6 +2111,10 @@
       emomState.remaining =
         emomState.roundRestSeconds;
 
+      playTrainingwiseBell(
+        "round"
+      );
+
       updateEmomDisplay();
 
       return;
@@ -1333,6 +2127,10 @@
 
     emomState.remaining =
       60;
+
+    playTrainingwiseBell(
+      "transition"
+    );
 
     updateEmomDisplay();
 
@@ -1354,6 +2152,11 @@
       1;
 
 
+    trainingwiseCountdownCue(
+      emomState.remaining
+    );
+
+
     if (
       emomState.remaining <=
       0
@@ -1373,6 +2176,28 @@
 
 
   function startEmom() {
+
+    if (
+      !emomState ||
+      emomState.completed ||
+      emomState.running
+    ) {
+      return;
+    }
+
+
+    getTrainingwiseAudioContext();
+
+
+    runTrainingwiseStartCountdown(
+      startEmomImmediate
+    );
+
+  }
+
+
+
+  function startEmomImmediate() {
 
     if (
       !emomState ||
@@ -1508,6 +2333,11 @@
 
 
   function finishEmom() {
+
+    playTrainingwiseBell(
+      "finish"
+    );
+
 
     clearTimer();
 
@@ -4934,6 +5764,14 @@
       </div>
 
 
+      <div class="trainingwise-view-controls">
+
+        ${renderTrainingwiseSoundControl()}
+
+        ${renderTrainingwiseFullClockControl()}
+
+      </div>
+
       <div class="trainingwise-controls">
 
         <button
@@ -5347,6 +6185,14 @@
       </div>
 
 
+      <div class="trainingwise-view-controls">
+
+        ${renderTrainingwiseSoundControl()}
+
+        ${renderTrainingwiseFullClockControl()}
+
+      </div>
+
       <div class="trainingwise-controls">
 
         <button
@@ -5745,6 +6591,11 @@
       0;
 
 
+    playTrainingwiseBell(
+      "transition"
+    );
+
+
     updateRecoveryMove();
 
   }
@@ -5765,6 +6616,11 @@
 
     selfGuidedState.moveRemaining -=
       1;
+
+
+    trainingwiseCountdownCue(
+      selfGuidedState.moveRemaining
+    );
 
 
     if (
@@ -5877,6 +6733,28 @@
 
 
   function startSelfGuidedTimer() {
+
+    if (
+      !selfGuidedState ||
+      selfGuidedState.completed ||
+      selfGuidedState.running
+    ) {
+      return;
+    }
+
+
+    getTrainingwiseAudioContext();
+
+
+    runTrainingwiseStartCountdown(
+      startSelfGuidedTimerImmediate
+    );
+
+  }
+
+
+
+  function startSelfGuidedTimerImmediate() {
 
     if (
       !selfGuidedState ||
@@ -6076,6 +6954,11 @@
 
 
   function finishSelfGuidedWorkout() {
+
+    playTrainingwiseBell(
+      "finish"
+    );
+
 
     clearTimer();
 
