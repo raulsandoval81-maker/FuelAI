@@ -692,3 +692,517 @@ button:disabled {
 #startSelfGuidedWorkoutBtn {
   margin-top: 18px;
 }
+
+
+/* =========================
+   STRENGTH V2
+========================= */
+
+.trainingwise-strength-editor,
+.trainingwise-strength-execution {
+  display: grid;
+  gap: 12px;
+  margin-top: 14px;
+}
+
+
+.trainingwise-strength-exercise {
+  padding: 14px;
+  border-radius: 14px;
+  background:
+    rgba(255,255,255,.045);
+}
+
+
+.trainingwise-strength-exercise strong {
+  display: block;
+  margin-bottom: 8px;
+}
+
+
+.trainingwise-strength-fields {
+  display: grid;
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+
+.trainingwise-strength-fields label {
+  display: grid;
+  gap: 6px;
+  font-size: .82rem;
+  font-weight: 800;
+  opacity: .88;
+}
+
+
+.trainingwise-strength-fields input,
+#strengthCustomTime {
+  width: 100%;
+  box-sizing: border-box;
+  border:
+    1px solid
+    rgba(255,255,255,.14);
+  border-radius: 12px;
+  padding: 11px 12px;
+  background:
+    rgba(255,255,255,.055);
+  color: inherit;
+  font: inherit;
+}
+
+
+.trainingwise-strength-execution p {
+  margin: 0;
+  opacity: .75;
+}
+
+
+@media (max-width: 560px) {
+
+  .trainingwise-strength-fields {
+    grid-template-columns: 1fr;
+  }
+
+}
+
+
+/* =========================
+   STRENGTH V2 POLISH
+========================= */
+
+.trainingwise-choice-grid {
+  gap: 10px;
+}
+
+
+.trainingwise-choice-grid button {
+  min-height: 46px;
+}
+
+
+.trainingwise-strength-editor {
+  gap: 14px;
+}
+
+
+.trainingwise-strength-exercise {
+  padding: 16px;
+}
+
+
+.trainingwise-strength-exercise > strong {
+  font-size: 1rem;
+  letter-spacing: .01em;
+}
+
+
+.trainingwise-strength-fields {
+  margin-top: 10px;
+}
+
+
+.trainingwise-strength-fields input,
+#strengthCustomTime {
+  min-height: 44px;
+  text-align: center;
+  font-weight: 800;
+}
+
+
+.trainingwise-strength-progress {
+  position: sticky;
+  top: 10px;
+  z-index: 2;
+
+  margin-bottom: 16px;
+
+  backdrop-filter:
+    blur(10px);
+}
+
+
+.trainingwise-set-list {
+  gap: 9px;
+}
+
+
+.trainingwise-set-row {
+  min-height: 48px;
+
+  transition:
+    transform .15s ease,
+    border-color .15s ease,
+    background .15s ease;
+}
+
+
+.trainingwise-set-row:hover {
+  transform:
+    translateY(-1px);
+}
+
+
+.trainingwise-set-row span:first-child {
+  font-weight: 850;
+}
+
+
+.trainingwise-set-row span:nth-child(2) {
+  opacity: .78;
+  font-weight: 750;
+}
+
+
+.trainingwise-set-row.complete {
+  border-color:
+    rgba(34,197,94,.72);
+
+  background:
+    rgba(34,197,94,.14);
+}
+
+
+.trainingwise-set-row.complete span:first-child,
+.trainingwise-set-row.complete
+.trainingwise-set-check {
+  color:
+    #4ade80;
+}
+
+
+.trainingwise-set-check {
+  min-width: 22px;
+  text-align: center;
+}
+
+
+#selfGuidedCompleteBtn {
+  margin-top: 14px;
+}
+
+
+#selfGuidedCompleteBtn:disabled {
+  opacity: .45;
+  cursor: default;
+}
+
+
+@media (max-width: 560px) {
+
+  .trainingwise-set-row {
+    gap: 8px;
+    padding: 11px 12px;
+  }
+
+
+  .trainingwise-strength-exercise {
+    padding: 14px;
+  }
+
+}
+
+
+/* =========================
+   STRENGTH BEST SET
+========================= */
+
+.trainingwise-strength-prescription {
+  margin:
+    6px 0 14px;
+
+  opacity:
+    .78;
+
+  font-weight:
+    700;
+}
+
+
+.trainingwise-last-best,
+.trainingwise-today-best {
+  margin-top:
+    12px;
+
+  padding:
+    13px 14px;
+
+  border-radius:
+    13px;
+
+  background:
+    rgba(255,255,255,.04);
+}
+
+
+.trainingwise-last-best p {
+  margin:
+    7px 0 0;
+}
+
+
+.trainingwise-last-best strong {
+  display:
+    inline;
+
+  margin:
+    0;
+}
+
+
+.trainingwise-today-best {
+  border:
+    1px solid
+    rgba(255,255,255,.10);
+}
+
+
+.trainingwise-best-set-note {
+  margin:
+    8px 0 0;
+
+  opacity:
+    .62;
+
+  font-size:
+    .82rem;
+}
+
+
+.trainingwise-today-best
+.trainingwise-strength-fields {
+  margin-top:
+    10px;
+}
+
+
+/* =========================
+   STRENGTH BEST SET POLISH
+========================= */
+
+.trainingwise-strength-execution {
+  gap: 16px;
+}
+
+
+.trainingwise-strength-execution
+.trainingwise-strength-exercise {
+  padding: 18px;
+
+  border:
+    1px solid
+    rgba(255,255,255,.10);
+
+  border-radius: 18px;
+
+  background:
+    rgba(255,255,255,.035);
+}
+
+
+.trainingwise-strength-execution
+.trainingwise-strength-exercise > strong {
+  font-size: 1.05rem;
+  font-weight: 900;
+}
+
+
+.trainingwise-strength-prescription {
+  margin: 6px 0 16px;
+
+  font-size: .9rem;
+  opacity: .68;
+}
+
+
+/* LAST SESSION = reference */
+
+.trainingwise-last-best {
+  margin-top: 0;
+  padding: 11px 13px;
+
+  border:
+    1px solid
+    rgba(255,255,255,.07);
+
+  border-radius: 12px;
+
+  background:
+    rgba(255,255,255,.025);
+}
+
+
+.trainingwise-last-best
+.trainingwise-label {
+  font-size: .68rem;
+  opacity: .55;
+}
+
+
+.trainingwise-last-best p {
+  margin: 5px 0 0;
+  font-size: .9rem;
+  opacity: .78;
+}
+
+
+/* TODAY = primary action */
+
+.trainingwise-today-best {
+  margin-top: 10px;
+  padding: 14px;
+
+  border:
+    1px solid
+    rgba(255,255,255,.13);
+
+  border-radius: 14px;
+
+  background:
+    rgba(255,255,255,.055);
+}
+
+
+.trainingwise-today-best
+.trainingwise-label {
+  opacity: .8;
+}
+
+
+.trainingwise-today-best
+.trainingwise-strength-fields {
+  margin-top: 10px;
+  gap: 10px;
+}
+
+
+.trainingwise-today-best
+.trainingwise-strength-fields label {
+  font-size: .75rem;
+  opacity: .75;
+}
+
+
+.trainingwise-today-best
+.trainingwise-strength-fields input {
+  min-height: 46px;
+
+  border:
+    1px solid
+    rgba(255,255,255,.11);
+
+  border-radius: 11px;
+
+  background:
+    rgba(0,0,0,.12);
+
+  text-align: center;
+
+  font-size: 1rem;
+  font-weight: 850;
+}
+
+
+.trainingwise-today-best
+.trainingwise-strength-fields input:focus {
+  outline: none;
+
+  border-color:
+    rgba(255,255,255,.28);
+
+  background:
+    rgba(255,255,255,.07);
+}
+
+
+.trainingwise-best-set-note {
+  margin: 8px 0 0;
+
+  text-align: center;
+
+  font-size: .72rem;
+  opacity: .48;
+}
+
+
+@media (max-width: 560px) {
+
+  .trainingwise-strength-execution
+  .trainingwise-strength-exercise {
+    padding: 15px;
+  }
+
+
+  .trainingwise-today-best {
+    padding: 12px;
+  }
+
+}
+
+
+/* =========================
+   STRENGTH PERFORMANCE COLOR
+========================= */
+
+/* Last Session — benchmark */
+
+.trainingwise-last-best {
+  border-color:
+    rgba(250, 204, 21, .42);
+
+  background:
+    rgba(250, 204, 21, .045);
+
+  box-shadow:
+    inset 0 0 18px
+    rgba(250, 204, 21, .025);
+}
+
+
+.trainingwise-last-best
+.trainingwise-label {
+  color:
+    #facc15;
+
+  opacity:
+    .9;
+}
+
+
+/* Today's Best — active performance */
+
+.trainingwise-today-best {
+  border-color:
+    rgba(74, 222, 128, .52);
+
+  background:
+    rgba(74, 222, 128, .05);
+
+  box-shadow:
+    inset 0 0 20px
+    rgba(74, 222, 128, .035),
+    0 0 14px
+    rgba(74, 222, 128, .035);
+}
+
+
+.trainingwise-today-best
+.trainingwise-label {
+  color:
+    #4ade80;
+
+  opacity:
+    1;
+}
+
+
+.trainingwise-today-best
+.trainingwise-strength-fields input:focus {
+  border-color:
+    rgba(74, 222, 128, .62);
+
+  box-shadow:
+    0 0 0 2px
+    rgba(74, 222, 128, .08);
+}

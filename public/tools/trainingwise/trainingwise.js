@@ -2158,11 +2158,1236 @@
 
 
 
+  const strengthLibrary = {
+
+    "full-body": {
+
+      20: {
+        title:
+          "Full Body Express",
+
+        warmup: [
+          "Easy movement — 2 min",
+          "Dynamic mobility — 2 min"
+        ],
+
+        main: [
+          {
+            name: "Bodyweight Squat",
+            sets: 3,
+            reps: 10
+          },
+          {
+            name: "Push-Ups",
+            sets: 3,
+            reps: 8
+          },
+          {
+            name: "Glute Bridge",
+            sets: 3,
+            reps: 12
+          },
+          {
+            name: "Dead Bug",
+            sets: 2,
+            reps: 8
+          }
+        ],
+
+        cooldown: [
+          "Easy walk — 2 min",
+          "Light mobility — 2 min"
+        ]
+      },
+
+
+      45: {
+        title:
+          "Full Body Builder",
+
+        warmup: [
+          "Easy movement — 3 min",
+          "Dynamic mobility — 4 min"
+        ],
+
+        main: [
+          {
+            name: "Bodyweight Squat",
+            sets: 4,
+            reps: 10
+          },
+          {
+            name: "Push-Ups",
+            sets: 4,
+            reps: 10
+          },
+          {
+            name: "Reverse Lunges",
+            sets: 3,
+            reps: 10
+          },
+          {
+            name: "Glute Bridge",
+            sets: 3,
+            reps: 15
+          },
+          {
+            name: "Pike Push-Ups",
+            sets: 3,
+            reps: 8
+          },
+          {
+            name: "Dead Bug",
+            sets: 3,
+            reps: 10
+          }
+        ],
+
+        cooldown: [
+          "Easy walk — 3 min",
+          "Full-body mobility — 3 min"
+        ]
+      },
+
+
+      60: {
+        title:
+          "Full Body Strength",
+
+        warmup: [
+          "Easy movement — 4 min",
+          "Dynamic mobility — 5 min"
+        ],
+
+        main: [
+          {
+            name: "Bodyweight Squat",
+            sets: 4,
+            reps: 12
+          },
+          {
+            name: "Push-Ups",
+            sets: 4,
+            reps: 12
+          },
+          {
+            name: "Reverse Lunges",
+            sets: 4,
+            reps: 10
+          },
+          {
+            name: "Glute Bridge",
+            sets: 4,
+            reps: 15
+          },
+          {
+            name: "Pike Push-Ups",
+            sets: 3,
+            reps: 10
+          },
+          {
+            name: "Calf Raises",
+            sets: 3,
+            reps: 15
+          },
+          {
+            name: "Dead Bug",
+            sets: 3,
+            reps: 12
+          }
+        ],
+
+        cooldown: [
+          "Easy walk — 4 min",
+          "Full-body mobility — 4 min"
+        ]
+      }
+
+    },
+
+
+    "upper-body": {
+
+      20: {
+        title:
+          "Upper Body Express",
+
+        warmup: [
+          "Arm circles — 2 min",
+          "Shoulder mobility — 2 min"
+        ],
+
+        main: [
+          {
+            name: "Push-Ups",
+            sets: 3,
+            reps: 8
+          },
+          {
+            name: "Pike Push-Ups",
+            sets: 3,
+            reps: 6
+          },
+          {
+            name: "Incline Push-Ups",
+            sets: 2,
+            reps: 10
+          },
+          {
+            name: "Plank Shoulder Taps",
+            sets: 2,
+            reps: 16
+          }
+        ],
+
+        cooldown: [
+          "Shoulder mobility — 2 min",
+          "Easy breathing — 2 min"
+        ]
+      },
+
+
+      45: {
+        title:
+          "Upper Body Builder",
+
+        warmup: [
+          "Easy movement — 2 min",
+          "Shoulder mobility — 4 min"
+        ],
+
+        main: [
+          {
+            name: "Push-Ups",
+            sets: 4,
+            reps: 10
+          },
+          {
+            name: "Pike Push-Ups",
+            sets: 3,
+            reps: 8
+          },
+          {
+            name: "Close-Grip Push-Ups",
+            sets: 3,
+            reps: 8
+          },
+          {
+            name: "Incline Push-Ups",
+            sets: 3,
+            reps: 12
+          },
+          {
+            name: "Plank Shoulder Taps",
+            sets: 3,
+            reps: 20
+          }
+        ],
+
+        cooldown: [
+          "Shoulder mobility — 3 min",
+          "Upper-body stretch — 3 min"
+        ]
+      },
+
+
+      60: {
+        title:
+          "Upper Body Strength",
+
+        warmup: [
+          "Easy movement — 3 min",
+          "Shoulder mobility — 5 min"
+        ],
+
+        main: [
+          {
+            name: "Push-Ups",
+            sets: 5,
+            reps: 10
+          },
+          {
+            name: "Pike Push-Ups",
+            sets: 4,
+            reps: 8
+          },
+          {
+            name: "Close-Grip Push-Ups",
+            sets: 4,
+            reps: 8
+          },
+          {
+            name: "Incline Push-Ups",
+            sets: 3,
+            reps: 12
+          },
+          {
+            name: "Plank Shoulder Taps",
+            sets: 4,
+            reps: 20
+          },
+          {
+            name: "Forearm Plank",
+            sets: 3,
+            reps: 45
+          }
+        ],
+
+        cooldown: [
+          "Shoulder mobility — 4 min",
+          "Upper-body stretch — 4 min"
+        ]
+      }
+
+    },
+
+
+    "lower-body": {
+
+      20: {
+        title:
+          "Lower Body Express",
+
+        warmup: [
+          "Easy march — 2 min",
+          "Hip mobility — 2 min"
+        ],
+
+        main: [
+          {
+            name: "Bodyweight Squat",
+            sets: 3,
+            reps: 12
+          },
+          {
+            name: "Reverse Lunges",
+            sets: 3,
+            reps: 8
+          },
+          {
+            name: "Glute Bridge",
+            sets: 3,
+            reps: 12
+          },
+          {
+            name: "Calf Raises",
+            sets: 2,
+            reps: 15
+          }
+        ],
+
+        cooldown: [
+          "Easy walk — 2 min",
+          "Hip mobility — 2 min"
+        ]
+      },
+
+
+      45: {
+        title:
+          "Lower Body Builder",
+
+        warmup: [
+          "Easy movement — 3 min",
+          "Hip and ankle mobility — 4 min"
+        ],
+
+        main: [
+          {
+            name: "Bodyweight Squat",
+            sets: 4,
+            reps: 12
+          },
+          {
+            name: "Reverse Lunges",
+            sets: 4,
+            reps: 10
+          },
+          {
+            name: "Split Squat",
+            sets: 3,
+            reps: 8
+          },
+          {
+            name: "Glute Bridge",
+            sets: 4,
+            reps: 15
+          },
+          {
+            name: "Calf Raises",
+            sets: 3,
+            reps: 18
+          }
+        ],
+
+        cooldown: [
+          "Easy walk — 3 min",
+          "Lower-body mobility — 3 min"
+        ]
+      },
+
+
+      60: {
+        title:
+          "Lower Body Strength",
+
+        warmup: [
+          "Easy movement — 4 min",
+          "Hip and ankle mobility — 5 min"
+        ],
+
+        main: [
+          {
+            name: "Bodyweight Squat",
+            sets: 5,
+            reps: 12
+          },
+          {
+            name: "Reverse Lunges",
+            sets: 4,
+            reps: 10
+          },
+          {
+            name: "Split Squat",
+            sets: 4,
+            reps: 10
+          },
+          {
+            name: "Single-Leg Glute Bridge",
+            sets: 3,
+            reps: 10
+          },
+          {
+            name: "Glute Bridge",
+            sets: 3,
+            reps: 15
+          },
+          {
+            name: "Calf Raises",
+            sets: 4,
+            reps: 20
+          }
+        ],
+
+        cooldown: [
+          "Easy walk — 4 min",
+          "Lower-body mobility — 4 min"
+        ]
+      }
+
+    },
+
+
+    core: {
+
+      20: {
+        title:
+          "Core Express",
+
+        warmup: [
+          "Easy movement — 2 min",
+          "Trunk mobility — 2 min"
+        ],
+
+        main: [
+          {
+            name: "Dead Bug",
+            sets: 3,
+            reps: 8
+          },
+          {
+            name: "Bird Dog",
+            sets: 3,
+            reps: 8
+          },
+          {
+            name: "Plank",
+            sets: 3,
+            reps: 30
+          },
+          {
+            name: "Side Plank",
+            sets: 2,
+            reps: 20
+          }
+        ],
+
+        cooldown: [
+          "Easy breathing — 2 min",
+          "Trunk mobility — 2 min"
+        ]
+      },
+
+
+      45: {
+        title:
+          "Core Builder",
+
+        warmup: [
+          "Easy movement — 3 min",
+          "Trunk mobility — 3 min"
+        ],
+
+        main: [
+          {
+            name: "Dead Bug",
+            sets: 4,
+            reps: 10
+          },
+          {
+            name: "Bird Dog",
+            sets: 4,
+            reps: 10
+          },
+          {
+            name: "Plank",
+            sets: 4,
+            reps: 40
+          },
+          {
+            name: "Side Plank",
+            sets: 3,
+            reps: 30
+          },
+          {
+            name: "Glute Bridge",
+            sets: 3,
+            reps: 15
+          }
+        ],
+
+        cooldown: [
+          "Easy breathing — 3 min",
+          "Trunk mobility — 3 min"
+        ]
+      },
+
+
+      60: {
+        title:
+          "Core Strength",
+
+        warmup: [
+          "Easy movement — 4 min",
+          "Trunk mobility — 4 min"
+        ],
+
+        main: [
+          {
+            name: "Dead Bug",
+            sets: 4,
+            reps: 12
+          },
+          {
+            name: "Bird Dog",
+            sets: 4,
+            reps: 12
+          },
+          {
+            name: "Plank",
+            sets: 4,
+            reps: 45
+          },
+          {
+            name: "Side Plank",
+            sets: 4,
+            reps: 30
+          },
+          {
+            name: "Plank Shoulder Taps",
+            sets: 4,
+            reps: 20
+          },
+          {
+            name: "Glute Bridge",
+            sets: 4,
+            reps: 15
+          }
+        ],
+
+        cooldown: [
+          "Easy breathing — 4 min",
+          "Trunk mobility — 4 min"
+        ]
+      }
+
+    }
+
+  };
+
+
+
+  function getStrengthTier(
+    duration
+  ) {
+
+    if (
+      duration <= 30
+    ) {
+      return 20;
+    }
+
+
+    if (
+      duration <= 52
+    ) {
+      return 45;
+    }
+
+
+    return 60;
+
+  }
+
+
+
+  function getStrengthWorkout(
+    focus,
+    duration
+  ) {
+
+    const tier =
+      getStrengthTier(
+        duration
+      );
+
+
+    const base =
+      strengthLibrary
+        ?.[focus]
+        ?.[tier];
+
+
+    if (!base) {
+      return null;
+    }
+
+
+    return {
+
+      ...base,
+
+      focus,
+
+      duration,
+
+      main:
+        base.main.map(
+          (exercise) => ({
+            ...exercise
+          })
+        )
+
+    };
+
+  }
+
+
+
+  function getStrengthFocusLabel(
+    focus
+  ) {
+
+    const labels = {
+
+      "full-body":
+        "Full Body",
+
+      "upper-body":
+        "Upper Body",
+
+      "lower-body":
+        "Lower Body",
+
+      core:
+        "Core"
+
+    };
+
+
+    return (
+      labels[focus] ||
+      "Strength"
+    );
+
+  }
+
+
+
+  function renderStrengthExerciseEditor(
+    workout
+  ) {
+
+    return workout.main
+      .map(
+        (exercise, index) => `
+          <div
+            class="trainingwise-strength-exercise"
+            data-strength-exercise="${index}"
+          >
+
+            <strong>
+              ${exercise.name}
+            </strong>
+
+            <div class="trainingwise-strength-fields">
+
+              <label>
+                Sets
+
+                <input
+                  type="number"
+                  min="1"
+                  max="10"
+                  step="1"
+                  value="${exercise.sets}"
+                  data-strength-sets="${index}"
+                />
+              </label>
+
+
+              <label>
+                Reps
+
+                <input
+                  type="number"
+                  min="1"
+                  max="100"
+                  step="1"
+                  value="${exercise.reps}"
+                  data-strength-reps="${index}"
+                />
+              </label>
+
+            </div>
+
+          </div>
+        `
+      )
+      .join("");
+
+  }
+
+
+
+  function readStrengthExercises(
+    workout
+  ) {
+
+    return workout.main
+      .map(
+        (exercise, index) => {
+
+          const sets =
+            Number(
+              document
+                .querySelector(
+                  `[data-strength-sets="${index}"]`
+                )
+                ?.value
+            );
+
+
+          const reps =
+            Number(
+              document
+                .querySelector(
+                  `[data-strength-reps="${index}"]`
+                )
+                ?.value
+            );
+
+
+          return {
+
+            name:
+              exercise.name,
+
+            sets:
+              Number.isFinite(sets) &&
+              sets >= 1
+                ? Math.min(
+                    10,
+                    Math.round(sets)
+                  )
+                : exercise.sets,
+
+            reps:
+              Number.isFinite(reps) &&
+              reps >= 1
+                ? Math.min(
+                    100,
+                    Math.round(reps)
+                  )
+                : exercise.reps
+
+          };
+
+        }
+      );
+
+  }
+
+
+
+  function renderStrengthSetup() {
+
+    clearTimer();
+
+
+    output.innerHTML = `
+      <p class="trainingwise-label">
+        SELF-GUIDED WORKOUT
+      </p>
+
+      <h2>
+        Strength
+      </h2>
+
+      <p>
+        What do you want to train?
+      </p>
+
+
+      <div class="trainingwise-setup-block">
+
+        <span class="trainingwise-label">
+          TRAINING FOCUS
+        </span>
+
+        <div class="trainingwise-choice-grid">
+
+          <button
+            type="button"
+            data-strength-focus="full-body"
+            class="active"
+          >
+            Full Body
+          </button>
+
+          <button
+            type="button"
+            data-strength-focus="upper-body"
+          >
+            Upper Body
+          </button>
+
+          <button
+            type="button"
+            data-strength-focus="lower-body"
+          >
+            Lower Body
+          </button>
+
+          <button
+            type="button"
+            data-strength-focus="core"
+          >
+            Core
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <div class="trainingwise-setup-block">
+
+        <span class="trainingwise-label">
+          HOW LONG?
+        </span>
+
+        <div class="trainingwise-choice-grid">
+
+          <button
+            type="button"
+            data-strength-duration="20"
+            class="active"
+          >
+            20 min
+          </button>
+
+          <button
+            type="button"
+            data-strength-duration="45"
+          >
+            45 min
+          </button>
+
+          <button
+            type="button"
+            data-strength-duration="60"
+          >
+            60 min
+          </button>
+
+          <button
+            type="button"
+            data-strength-duration="custom"
+          >
+            Custom
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <div
+        id="strengthCustomTimeWrap"
+        class="trainingwise-setup-block hidden"
+      >
+
+        <span class="trainingwise-label">
+          CUSTOM TIME
+        </span>
+
+        <input
+          id="strengthCustomTime"
+          type="number"
+          min="5"
+          max="180"
+          step="5"
+          value="30"
+          inputmode="numeric"
+          aria-label="Custom workout time in minutes"
+        />
+
+      </div>
+
+
+      <button
+        id="generateStrengthWorkoutBtn"
+        class="trainingwise-btn trainingwise-generate-btn"
+        type="button"
+      >
+        Continue →
+      </button>
+
+
+      <div
+        id="generatedWorkoutPreview"
+        class="trainingwise-workout-preview hidden"
+      ></div>
+    `;
+
+
+    wireStrengthSetup();
+
+  }
+
+
+
+  function wireStrengthSetup() {
+
+    let selectedFocus =
+      "full-body";
+
+    let selectedDuration =
+      20;
+
+
+    document
+      .querySelectorAll(
+        "[data-strength-focus]"
+      )
+      .forEach(
+        (button) => {
+
+          button.addEventListener(
+            "click",
+            () => {
+
+              selectedFocus =
+                button.dataset
+                  .strengthFocus;
+
+
+              document
+                .querySelectorAll(
+                  "[data-strength-focus]"
+                )
+                .forEach(
+                  (item) => {
+
+                    item.classList.toggle(
+                      "active",
+                      item === button
+                    );
+
+                  }
+                );
+
+            }
+          );
+
+        }
+      );
+
+
+    document
+      .querySelectorAll(
+        "[data-strength-duration]"
+      )
+      .forEach(
+        (button) => {
+
+          button.addEventListener(
+            "click",
+            () => {
+
+              const value =
+                button.dataset
+                  .strengthDuration;
+
+
+              selectedDuration =
+                value === "custom"
+                  ? "custom"
+                  : Number(value);
+
+
+              document
+                .querySelectorAll(
+                  "[data-strength-duration]"
+                )
+                .forEach(
+                  (item) => {
+
+                    item.classList.toggle(
+                      "active",
+                      item === button
+                    );
+
+                  }
+                );
+
+
+              document
+                .getElementById(
+                  "strengthCustomTimeWrap"
+                )
+                ?.classList.toggle(
+                  "hidden",
+                  value !== "custom"
+                );
+
+            }
+          );
+
+        }
+      );
+
+
+    document
+      .getElementById(
+        "generateStrengthWorkoutBtn"
+      )
+      ?.addEventListener(
+        "click",
+        () => {
+
+          let duration =
+            selectedDuration;
+
+
+          if (
+            selectedDuration ===
+            "custom"
+          ) {
+
+            const input =
+              document.getElementById(
+                "strengthCustomTime"
+              );
+
+            duration =
+              Number(
+                input?.value
+              );
+
+
+            if (
+              !Number.isFinite(duration) ||
+              duration < 5 ||
+              duration > 180
+            ) {
+
+              return;
+
+            }
+
+          }
+
+
+          const workout =
+            getStrengthWorkout(
+              selectedFocus,
+              duration
+            );
+
+
+          const preview =
+            document.getElementById(
+              "generatedWorkoutPreview"
+            );
+
+
+          if (
+            !preview ||
+            !workout
+          ) {
+            return;
+          }
+
+
+          preview.classList.remove(
+            "hidden"
+          );
+
+
+          preview.innerHTML = `
+            <p class="trainingwise-label">
+              STRENGTH WORKOUT
+            </p>
+
+            <h3>
+              ${workout.title}
+            </h3>
+
+            <p>
+              ${getStrengthFocusLabel(
+                selectedFocus
+              )}
+              ·
+              ${duration} minutes
+            </p>
+
+
+            <div class="trainingwise-workout-section">
+
+              <strong>
+                Warm-Up
+              </strong>
+
+              <ul>
+                ${renderWorkoutList(
+                  workout.warmup
+                )}
+              </ul>
+
+            </div>
+
+
+            <div class="trainingwise-workout-section">
+
+              <strong>
+                Strength Work
+              </strong>
+
+              <p>
+                Recommended sets and reps
+                are provided below.
+                Adjust them before starting
+                if needed.
+              </p>
+
+              <div
+                class="trainingwise-strength-editor"
+              >
+                ${renderStrengthExerciseEditor(
+                  workout
+                )}
+              </div>
+
+            </div>
+
+
+            <div class="trainingwise-workout-section">
+
+              <strong>
+                Cool Down
+              </strong>
+
+              <ul>
+                ${renderWorkoutList(
+                  workout.cooldown
+                )}
+              </ul>
+
+            </div>
+
+
+            <button
+              id="startStrengthWorkoutBtn"
+              class="trainingwise-btn"
+              type="button"
+            >
+              Start Workout →
+            </button>
+          `;
+
+
+          document
+            .getElementById(
+              "startStrengthWorkoutBtn"
+            )
+            ?.addEventListener(
+              "click",
+              () => {
+
+                const exercises =
+                  readStrengthExercises(
+                    workout
+                  );
+
+
+                const configuredWorkout = {
+
+                  ...workout,
+
+                  focus:
+                    selectedFocus,
+
+                  main:
+                    exercises
+
+                };
+
+
+                renderSelfGuidedExecution(
+                  "strength",
+                  configuredWorkout,
+                  duration,
+                  null
+                );
+
+              }
+            );
+
+        }
+      );
+
+  }
+
+
+
   function renderSelfGuidedSetup(
     mode
   ) {
 
     clearTimer();
+
+
+    if (
+      mode === "strength"
+    ) {
+
+      renderStrengthSetup();
+
+      return;
+
+    }
 
 
     const title =
@@ -2580,6 +3805,32 @@
 
       level,
 
+      strengthFocus:
+        workout.focus ||
+        null,
+
+      exercises:
+        Array.isArray(
+          workout.main
+        )
+          ? workout.main
+              .filter(
+                (item) =>
+                  typeof item ===
+                  "object"
+              )
+              .map(
+                (item) => ({
+                  name:
+                    item.name,
+                  sets:
+                    item.sets,
+                  reps:
+                    item.reps
+                })
+              )
+          : [],
+
       totalSeconds:
         duration * 60,
 
@@ -2608,12 +3859,15 @@
         ${getSelfGuidedTitle(mode)}
         ·
         ${duration} min
-        ·
         ${
           level
-            .charAt(0)
-            .toUpperCase() +
-          level.slice(1)
+            ? `· ${
+                level
+                  .charAt(0)
+                  .toUpperCase() +
+                level.slice(1)
+              }`
+            : ""
         }
       </p>
 
@@ -2663,15 +3917,32 @@
       <div class="trainingwise-workout-section">
 
         <strong>
-          Main Work ·
-          ${workout.mainMinutes} min
+          ${
+            mode === "strength"
+              ? "Strength Work"
+              : `Main Work · ${workout.mainMinutes} min`
+          }
         </strong>
 
-        <ul>
-          ${renderWorkoutList(
-            workout.main
-          )}
-        </ul>
+        ${
+          mode === "strength"
+            ? `
+              <div class="trainingwise-strength-execution">
+
+                ${renderStrengthBestSetTracker(
+                  workout
+                )}
+
+              </div>
+            `
+            : `
+              <ul>
+                ${renderWorkoutList(
+                  workout.main
+                )}
+              </ul>
+            `
+        }
 
       </div>
 
@@ -2740,6 +4011,305 @@
     wireSelfGuidedExecution(
       workout
     );
+
+
+  }
+
+
+
+  function getTrainingWiseLogs() {
+
+    try {
+
+      return JSON.parse(
+        localStorage.getItem(
+          "fuelai-log-v1"
+        ) || "[]"
+      );
+
+    }
+
+    catch {
+
+      return [];
+
+    }
+
+  }
+
+
+
+  function getLastStrengthBestSet(
+    exerciseName
+  ) {
+
+    const logs =
+      getTrainingWiseLogs();
+
+
+    const strengthLogs =
+      logs
+        .filter(
+          (entry) =>
+            entry.type ===
+              "training" &&
+            entry.source ===
+              "trainingwise" &&
+            entry.trainingType ===
+              "self-guided" &&
+            entry.workoutType ===
+              "strength" &&
+            Array.isArray(
+              entry.bestSets
+            )
+        )
+        .reverse();
+
+
+    for (
+      const entry of strengthLogs
+    ) {
+
+      const match =
+        entry.bestSets.find(
+          (item) =>
+            item.exercise ===
+            exerciseName
+        );
+
+
+      if (match) {
+
+        return {
+          ...match,
+          createdAt:
+            entry.createdAt ||
+            null
+        };
+
+      }
+
+    }
+
+
+    return null;
+
+  }
+
+
+
+  function renderLastBestSet(
+    exerciseName
+  ) {
+
+    const last =
+      getLastStrengthBestSet(
+        exerciseName
+      );
+
+
+    if (!last) {
+
+      return `
+        <div class="trainingwise-last-best">
+
+          <span class="trainingwise-label">
+            LAST SESSION
+          </span>
+
+          <p>
+            No previous best set recorded.
+          </p>
+
+        </div>
+      `;
+
+    }
+
+
+    const weightText =
+      Number(last.weight) > 0
+        ? ` · ${last.weight} lb`
+        : "";
+
+
+    return `
+      <div class="trainingwise-last-best">
+
+        <span class="trainingwise-label">
+          LAST SESSION
+        </span>
+
+        <p>
+          Best Set:
+          <strong>
+            ${last.reps} reps${weightText}
+          </strong>
+        </p>
+
+      </div>
+    `;
+
+  }
+
+
+
+  function renderStrengthBestSetTracker(
+    workout
+  ) {
+
+    return workout.main
+      .map(
+        (exercise, index) => {
+
+          return `
+            <div
+              class="trainingwise-strength-exercise"
+              data-best-set-exercise="${index}"
+            >
+
+              <strong>
+                ${exercise.name}
+              </strong>
+
+              <p class="trainingwise-strength-prescription">
+                Prescription:
+                ${exercise.sets}
+                sets
+                ·
+                ${exercise.reps}
+                reps
+              </p>
+
+
+              ${renderLastBestSet(
+                exercise.name
+              )}
+
+
+              <div class="trainingwise-today-best">
+
+                <span class="trainingwise-label">
+                  TODAY — BEST SET
+                </span>
+
+                <div class="trainingwise-strength-fields">
+
+                  <label>
+                    Reps
+
+                    <input
+                      type="number"
+                      min="1"
+                      max="100"
+                      step="1"
+                      placeholder="${exercise.reps}"
+                      data-best-set-reps="${index}"
+                    />
+                  </label>
+
+
+                  <label>
+                    Weight (lb)
+
+                    <input
+                      type="number"
+                      min="0"
+                      max="2000"
+                      step="0.5"
+                      placeholder="0"
+                      data-best-set-weight="${index}"
+                    />
+                  </label>
+
+                </div>
+
+                <p class="trainingwise-best-set-note">
+                  Leave weight at 0 for
+                  bodyweight-only work.
+                </p>
+
+              </div>
+
+            </div>
+          `;
+
+        }
+      )
+      .join("");
+
+  }
+
+
+
+  function readStrengthBestSets() {
+
+    if (
+      !selfGuidedState ||
+      selfGuidedState.mode !==
+      "strength"
+    ) {
+
+      return [];
+
+    }
+
+
+    return selfGuidedState.exercises
+      .map(
+        (exercise, index) => {
+
+          const reps =
+            Number(
+              document
+                .querySelector(
+                  `[data-best-set-reps="${index}"]`
+                )
+                ?.value
+            );
+
+
+          const weight =
+            Number(
+              document
+                .querySelector(
+                  `[data-best-set-weight="${index}"]`
+                )
+                ?.value
+            );
+
+
+          if (
+            !Number.isFinite(reps) ||
+            reps <= 0
+          ) {
+
+            return null;
+
+          }
+
+
+          return {
+
+            exercise:
+              exercise.name,
+
+            reps:
+              Math.round(
+                reps
+              ),
+
+            weight:
+              Number.isFinite(weight) &&
+              weight >= 0
+                ? weight
+                : 0
+
+          };
+
+        }
+      )
+      .filter(Boolean);
 
   }
 
@@ -3025,6 +4595,18 @@
     selfGuidedState.running =
       false;
 
+
+    if (
+      selfGuidedState.mode ===
+      "strength"
+    ) {
+
+      selfGuidedState.bestSets =
+        readStrengthBestSets();
+
+    }
+
+
     selfGuidedState.completed =
       true;
 
@@ -3124,6 +4706,23 @@
 
         level:
           selfGuidedState.level,
+
+        strengthFocus:
+          selfGuidedState
+            .strengthFocus,
+
+        exercises:
+          selfGuidedState
+            .exercises,
+
+        bestSets:
+          selfGuidedState.mode ===
+          "strength"
+            ? (
+                selfGuidedState.bestSets ||
+                []
+              )
+            : null,
 
         plannedDurationMinutes:
           selfGuidedState.plannedMinutes,
