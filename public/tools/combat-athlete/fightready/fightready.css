@@ -603,3 +603,237 @@ body{
   }
 
 }
+
+
+/* =========================
+   FIGHTREADY MOBILE V2
+   COMPACT LAYOUT
+========================= */
+
+@media (max-width: 640px) {
+
+  /*
+   * HERO SIGNALS
+   * 2 x 2 instead of long stack
+   */
+
+  .fightready-hero .focus-grid {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+
+    gap: 8px;
+
+    margin-top: 15px;
+  }
+
+
+  .fightready-hero .focus-grid div {
+    padding: 10px 8px;
+
+    min-height: 46px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: .78rem;
+
+    border-radius: 12px;
+  }
+
+
+  /*
+   * SECTIONS
+   */
+
+  .fightready-section {
+    margin-top: 14px;
+
+    padding: 16px 14px;
+
+    border-radius: 17px;
+  }
+
+
+  .fightready-section h2 {
+    margin:
+      3px 0 13px;
+
+    font-size: 1.5rem;
+  }
+
+
+  /*
+   * MAIN READINESS RESULT
+   */
+
+  .readiness-card {
+    padding: 16px;
+
+    border-radius: 15px;
+  }
+
+
+  .readiness-status {
+    font-size: 1.65rem;
+  }
+
+
+  .guidance {
+    margin-top: 7px;
+
+    font-size: .9rem;
+
+    line-height: 1.4;
+  }
+
+
+  /*
+   * METRICS
+   * 2 columns on phone
+   */
+
+  .fightready-section .metric-grid {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+
+    gap: 9px;
+
+    margin-top: 11px;
+  }
+
+
+  .fightready-section .metric-card {
+    min-height: 92px;
+
+    padding: 12px;
+
+    border-radius: 14px;
+
+    justify-content: flex-start;
+  }
+
+
+  .fightready-section .metric-card strong {
+    margin-top: 5px;
+
+    font-size: 1.1rem;
+  }
+
+
+  .fightready-section .metric-card small {
+    margin-top: 3px;
+
+    font-size: .72rem;
+
+    line-height: 1.25;
+  }
+
+
+  .fightready-section .metric-icon {
+    margin-bottom: 5px;
+
+    font-size: 1.25rem;
+  }
+
+
+  .fightready-section .metric-label {
+    font-size: .64rem;
+
+    letter-spacing: .05em;
+  }
+
+
+  /*
+   * 7-DAY LAST CARD
+   * Lets Days of Data finish cleanly.
+   */
+
+  .fightready-section:nth-of-type(2)
+  .metric-card:last-child {
+    grid-column: 1 / -1;
+
+    min-height: 72px;
+  }
+
+
+  /*
+   * MEDICAL CONTEXT
+   * Important but visually secondary
+   */
+
+  .fightready-note {
+    margin-top: 14px;
+
+    padding: 14px;
+
+    border-radius: 15px;
+  }
+
+
+  .fightready-note h2 {
+    font-size: 1rem;
+
+    line-height: 1.25;
+  }
+
+
+  .fightready-note p {
+    margin-top: 6px;
+
+    font-size: .78rem;
+
+    line-height: 1.4;
+
+    opacity: .72;
+  }
+
+
+  /*
+   * ACTIONS
+   * Compact 2 x 2
+   */
+
+  .fightready-actions {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+
+    gap: 8px;
+
+    margin-top: 14px;
+  }
+
+
+  .fightready-actions a {
+    min-height: 44px;
+
+    padding: 10px 8px;
+
+    border-radius: 13px;
+
+    font-size: .82rem;
+  }
+
+
+  .hero-note {
+    margin-top: 18px;
+
+    font-size: .72rem;
+  }
+
+}
+
+
+@media (max-width: 360px) {
+
+  .fightready-section .metric-grid {
+    grid-template-columns: 1fr;
+  }
+
+
+  .fightready-section:nth-of-type(2)
+  .metric-card:last-child {
+    grid-column: auto;
+  }
+
+}
