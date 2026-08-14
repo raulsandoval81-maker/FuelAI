@@ -284,24 +284,6 @@ navLink(
     }
 
 
-    /*
-     * WEIGHTWISE
-     */
-
-    if (
-      isCombatProfile &&
-      access.tools
-        ?.weightwise ===
-        true
-    ) {
-      toolLinks.push(
-        navLink(
-          "/tools/combat-athlete/weightwise/",
-          "⚖️ WeightWise"
-        )
-      );
-    }
-
 
     const accountLinks =
       [];
