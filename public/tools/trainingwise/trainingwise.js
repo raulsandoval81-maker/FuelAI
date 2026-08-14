@@ -2722,6 +2722,7 @@
         id="selfGuidedCompleteBtn"
         class="trainingwise-btn"
         type="button"
+        disabled
       >
         Complete Workout
       </button>
@@ -2877,6 +2878,20 @@
     if (pauseBtn) {
 
       pauseBtn.disabled =
+        false;
+
+    }
+
+
+    const completeBtn =
+      document.getElementById(
+        "selfGuidedCompleteBtn"
+      );
+
+
+    if (completeBtn) {
+
+      completeBtn.disabled =
         false;
 
     }
