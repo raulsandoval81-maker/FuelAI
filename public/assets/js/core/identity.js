@@ -9,6 +9,22 @@ const FUELAI_VALID_ROLES =
   ]);
 
 
+const FUELAI_VALID_TEAM_ROLES =
+  new Set([
+    "athlete",
+    "coach",
+    "admin"
+  ]);
+
+
+const FUELAI_VALID_TEAM_STATUSES =
+  new Set([
+    "active",
+    "invited",
+    "inactive"
+  ]);
+
+
 function normalizeFuelAIRoles(
   roles
 ) {
@@ -44,6 +60,119 @@ function normalizeFuelAIRoles(
 }
 
 
+function normalizeFuelAITeamMembership(
+  membership
+) {
+
+  if (
+    !membership ||
+    typeof membership !== "object"
+  ) {
+    return null;
+  }
+
+
+  const teamId =
+    String(
+      membership.teamId || ""
+    ).trim();
+
+
+  if (!teamId) {
+    return null;
+  }
+
+
+  const role =
+    String(
+      membership.role || ""
+    )
+      .trim()
+      .toLowerCase();
+
+
+  const status =
+    String(
+      membership.status || ""
+    )
+      .trim()
+      .toLowerCase();
+
+
+  return {
+
+    teamId,
+
+    teamName:
+      String(
+        membership.teamName || ""
+      ).trim(),
+
+    role:
+      FUELAI_VALID_TEAM_ROLES
+        .has(role)
+        ? role
+        : "athlete",
+
+    status:
+      FUELAI_VALID_TEAM_STATUSES
+        .has(status)
+        ? status
+        : "active",
+
+    joinedAt:
+      membership.joinedAt ||
+      null
+
+  };
+
+}
+
+
+function normalizeFuelAITeamMemberships(
+  memberships
+) {
+
+  if (
+    !Array.isArray(
+      memberships
+    )
+  ) {
+    return [];
+  }
+
+
+  const normalized =
+    memberships
+      .map(
+        normalizeFuelAITeamMembership
+      )
+      .filter(Boolean);
+
+
+  const unique =
+    new Map();
+
+
+  normalized.forEach(
+    membership => {
+
+      unique.set(
+        membership.teamId,
+        membership
+      );
+
+    }
+  );
+
+
+  return [
+    ...unique.values()
+  ];
+
+}
+
+
 function getFuelAIIdentity() {
 
   try {
@@ -64,11 +193,9 @@ function getFuelAIIdentity() {
         ),
 
       teamMemberships:
-        Array.isArray(
+        normalizeFuelAITeamMemberships(
           stored.teamMemberships
-        )
-          ? stored.teamMemberships
-          : [],
+        ),
 
       updatedAt:
         stored.updatedAt ||
@@ -109,11 +236,9 @@ function saveFuelAIIdentity(
       ),
 
     teamMemberships:
-      Array.isArray(
+      normalizeFuelAITeamMemberships(
         identity?.teamMemberships
-      )
-        ? identity.teamMemberships
-        : [],
+      ),
 
     updatedAt:
       new Date()
@@ -223,6 +348,94 @@ function getFuelAITeamMemberships() {
 }
 
 
+function addFuelAITeamMembership(
+  membership
+) {
+
+  const normalized =
+    normalizeFuelAITeamMembership(
+      membership
+    );
+
+
+  if (!normalized) {
+    return false;
+  }
+
+
+  const current =
+    getFuelAIIdentity();
+
+
+  const memberships =
+    current.teamMemberships
+      .filter(
+        item =>
+          item.teamId !==
+          normalized.teamId
+      );
+
+
+  memberships.push(
+    normalized
+  );
+
+
+  return saveFuelAIIdentity({
+    ...current,
+    teamMemberships:
+      memberships
+  });
+
+}
+
+
+function removeFuelAITeamMembership(
+  teamId
+) {
+
+  const normalizedTeamId =
+    String(
+      teamId || ""
+    ).trim();
+
+
+  if (!normalizedTeamId) {
+    return false;
+  }
+
+
+  const current =
+    getFuelAIIdentity();
+
+
+  return saveFuelAIIdentity({
+    ...current,
+
+    teamMemberships:
+      current.teamMemberships
+        .filter(
+          membership =>
+            membership.teamId !==
+            normalizedTeamId
+        )
+  });
+
+}
+
+
+function hasFuelAIActiveTeam() {
+
+  return getFuelAITeamMemberships()
+    .some(
+      membership =>
+        membership.status ===
+        "active"
+    );
+
+}
+
+
 window.FuelAIIdentity = {
 
   getFuelAIIdentity,
@@ -235,6 +448,12 @@ window.FuelAIIdentity = {
 
   getFuelAIUserTypeLabel,
 
-  getFuelAITeamMemberships
+  getFuelAITeamMemberships,
+
+  addFuelAITeamMembership,
+
+  removeFuelAITeamMembership,
+
+  hasFuelAIActiveTeam
 
 };
