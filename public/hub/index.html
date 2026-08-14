@@ -1425,7 +1425,7 @@
         profileOutput
       ) {
 
-        profileOutput.textContent =
+        const profileLabel =
           access?.profileLabel ||
           (
             setup.lifestyleType ===
@@ -1440,6 +1440,16 @@
                   : "General Health"
           );
 
+
+        const identityLabel =
+          window.FuelAIIdentity
+            ?.getFuelAIUserTypeLabel?.() ||
+          "Individual";
+
+
+        profileOutput.textContent =
+          `${profileLabel} · ${identityLabel}`;
+
       }
 
 
@@ -1447,10 +1457,17 @@
         planOutput
       ) {
 
-        planOutput.textContent =
+        const effectivePlanLabel =
+          access?.effectivePlanLabel ||
           access?.planLabel ||
           access?.plan ||
           "Free";
+
+
+        planOutput.textContent =
+          access?.betaUser
+            ? `${effectivePlanLabel} · BETA`
+            : effectivePlanLabel;
 
       }
 

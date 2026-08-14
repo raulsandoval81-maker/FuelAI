@@ -362,6 +362,18 @@ function renderProfile() {
     "profile-details";
 
 
+  const access =
+    window.FuelAIPlan
+      ?.getFuelAIAccess?.() ||
+    {};
+
+
+  const identityLabel =
+    window.FuelAIIdentity
+      ?.getFuelAIUserTypeLabel?.() ||
+    "Individual";
+
+
   details.append(
     createProfileRow(
       "Profile",
@@ -369,6 +381,26 @@ function renderProfile() {
         setup.lifestyleType
       ] ||
       "General Health"
+    ),
+
+    createProfileRow(
+      "Role",
+      identityLabel
+    ),
+
+    createProfileRow(
+      "Plan",
+      access.effectivePlanLabel ||
+      access.planLabel ||
+      access.plan ||
+      "Free"
+    ),
+
+    createProfileRow(
+      "Beta Access",
+      access.betaUser
+        ? "Active"
+        : "No"
     ),
 
     createProfileRow(
