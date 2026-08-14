@@ -73,6 +73,11 @@ const resetSetupBtn =
     "resetSetupBtn"
   );
 
+const usageRole =
+  document.getElementById(
+    "usageRole"
+  );
+
 
 const WEEKLY_FOCUS_BY_GOAL = {
 
@@ -86,6 +91,87 @@ const WEEKLY_FOCUS_BY_GOAL = {
     "Build and Recover Week"
 
 };
+
+
+function getUsageRoleValue() {
+
+  const roles =
+    window.FuelAIIdentity
+      ?.getFuelAIIdentity?.()
+      ?.roles ||
+    [];
+
+
+  const athlete =
+    roles.includes(
+      "athlete"
+    );
+
+  const coach =
+    roles.includes(
+      "coach"
+    );
+
+
+  if (
+    athlete &&
+    coach
+  ) {
+    return "athlete-coach";
+  }
+
+
+  if (athlete) {
+    return "athlete";
+  }
+
+
+  if (coach) {
+    return "coach";
+  }
+
+
+  return "individual";
+
+}
+
+
+function saveUsageRole() {
+
+  if (
+    !window.FuelAIIdentity
+  ) {
+    return;
+  }
+
+
+  const value =
+    usageRole?.value ||
+    "individual";
+
+
+  const roles =
+    value ===
+      "athlete"
+      ? ["athlete"]
+      : value ===
+        "coach"
+        ? ["coach"]
+        : value ===
+          "athlete-coach"
+          ? [
+              "athlete",
+              "coach"
+            ]
+          : [];
+
+
+  window.FuelAIIdentity
+    .setFuelAIRoles(
+      roles
+    );
+
+}
 
 
 function getSavedSetup() {
@@ -496,6 +582,14 @@ function loadSavedSetup() {
   }
 
 
+  if (
+    usageRole
+  ) {
+    usageRole.value =
+      getUsageRoleValue();
+  }
+
+
   syncCombatStyleVisibility();
 
 }
@@ -598,6 +692,9 @@ function saveSetup() {
       setup
     )
   );
+
+
+  saveUsageRole();
 
 
   renderSetupButtons();
@@ -710,6 +807,20 @@ function resetSetup() {
     foodAvoid.value =
       "";
   }
+
+
+  if (
+    usageRole
+  ) {
+    usageRole.value =
+      "individual";
+  }
+
+
+  window.FuelAIIdentity
+    ?.setFuelAIRoles?.(
+      []
+    );
 
 
   syncCombatStyleVisibility();
