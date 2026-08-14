@@ -3372,6 +3372,1033 @@
 
 
 
+  const recoveryLibrary = {
+
+    "full-body": {
+
+      10: {
+        title:
+          "Full Body Reset",
+
+        moves: [
+          {
+            name: "Easy Walk / March",
+            seconds: 120
+          },
+          {
+            name: "Arm Circles",
+            seconds: 60
+          },
+          {
+            name: "Hip Circles",
+            seconds: 60
+          },
+          {
+            name: "Bodyweight Squat Flow",
+            seconds: 90
+          },
+          {
+            name: "Cat-Cow",
+            seconds: 90
+          },
+          {
+            name: "Easy Breathing",
+            seconds: 180
+          }
+        ]
+      },
+
+
+      20: {
+        title:
+          "Full Body Restore",
+
+        moves: [
+          {
+            name: "Easy Walk / March",
+            seconds: 180
+          },
+          {
+            name: "Shoulder Mobility",
+            seconds: 120
+          },
+          {
+            name: "Hip Circles",
+            seconds: 120
+          },
+          {
+            name: "Squat-to-Stand",
+            seconds: 120
+          },
+          {
+            name: "Reverse Lunge Reach",
+            seconds: 120
+          },
+          {
+            name: "Cat-Cow",
+            seconds: 120
+          },
+          {
+            name: "Bird Dog",
+            seconds: 120
+          },
+          {
+            name: "Glute Bridge",
+            seconds: 120
+          },
+          {
+            name: "Easy Breathing",
+            seconds: 180
+          }
+        ]
+      },
+
+
+      30: {
+        title:
+          "Full Body Mobility",
+
+        moves: [
+          {
+            name: "Easy Walk / March",
+            seconds: 240
+          },
+          {
+            name: "Shoulder Mobility",
+            seconds: 150
+          },
+          {
+            name: "Thoracic Rotation",
+            seconds: 150
+          },
+          {
+            name: "Hip Circles",
+            seconds: 150
+          },
+          {
+            name: "Squat-to-Stand",
+            seconds: 150
+          },
+          {
+            name: "Reverse Lunge Reach",
+            seconds: 150
+          },
+          {
+            name: "Cat-Cow",
+            seconds: 150
+          },
+          {
+            name: "Bird Dog",
+            seconds: 150
+          },
+          {
+            name: "Glute Bridge",
+            seconds: 150
+          },
+          {
+            name: "Calf / Ankle Mobility",
+            seconds: 150
+          },
+          {
+            name: "Easy Breathing",
+            seconds: 210
+          }
+        ]
+      }
+
+    },
+
+
+    "upper-body": {
+
+      10: {
+        title:
+          "Upper Body Reset",
+
+        moves: [
+          {
+            name: "Easy Arm Swing",
+            seconds: 90
+          },
+          {
+            name: "Arm Circles",
+            seconds: 90
+          },
+          {
+            name: "Shoulder Rolls",
+            seconds: 90
+          },
+          {
+            name: "Wall Slides",
+            seconds: 120
+          },
+          {
+            name: "Thoracic Rotation",
+            seconds: 120
+          },
+          {
+            name: "Easy Breathing",
+            seconds: 90
+          }
+        ]
+      },
+
+
+      20: {
+        title:
+          "Upper Body Restore",
+
+        moves: [
+          {
+            name: "Easy Arm Swing",
+            seconds: 120
+          },
+          {
+            name: "Arm Circles",
+            seconds: 120
+          },
+          {
+            name: "Shoulder Rolls",
+            seconds: 120
+          },
+          {
+            name: "Wall Slides",
+            seconds: 150
+          },
+          {
+            name: "Thoracic Rotation",
+            seconds: 150
+          },
+          {
+            name: "Scapular Push-Up",
+            seconds: 120
+          },
+          {
+            name: "Chest / Shoulder Mobility",
+            seconds: 150
+          },
+          {
+            name: "Easy Breathing",
+            seconds: 150
+          }
+        ]
+      },
+
+
+      30: {
+        title:
+          "Upper Body Mobility",
+
+        moves: [
+          {
+            name: "Easy Arm Swing",
+            seconds: 180
+          },
+          {
+            name: "Arm Circles",
+            seconds: 150
+          },
+          {
+            name: "Shoulder Rolls",
+            seconds: 150
+          },
+          {
+            name: "Wall Slides",
+            seconds: 180
+          },
+          {
+            name: "Thoracic Rotation",
+            seconds: 180
+          },
+          {
+            name: "Scapular Push-Up",
+            seconds: 150
+          },
+          {
+            name: "Chest / Shoulder Mobility",
+            seconds: 180
+          },
+          {
+            name: "Upper Back Rotation",
+            seconds: 180
+          },
+          {
+            name: "Easy Breathing",
+            seconds: 210
+          }
+        ]
+      }
+
+    },
+
+
+    "lower-body": {
+
+      10: {
+        title:
+          "Lower Body Reset",
+
+        moves: [
+          {
+            name: "Easy Walk / March",
+            seconds: 120
+          },
+          {
+            name: "Hip Circles",
+            seconds: 90
+          },
+          {
+            name: "Ankle Rocks",
+            seconds: 90
+          },
+          {
+            name: "Squat-to-Stand",
+            seconds: 120
+          },
+          {
+            name: "Glute Bridge",
+            seconds: 120
+          },
+          {
+            name: "Easy Breathing",
+            seconds: 60
+          }
+        ]
+      },
+
+
+      20: {
+        title:
+          "Lower Body Restore",
+
+        moves: [
+          {
+            name: "Easy Walk / March",
+            seconds: 180
+          },
+          {
+            name: "Hip Circles",
+            seconds: 120
+          },
+          {
+            name: "Ankle Rocks",
+            seconds: 120
+          },
+          {
+            name: "Squat-to-Stand",
+            seconds: 150
+          },
+          {
+            name: "Reverse Lunge Reach",
+            seconds: 150
+          },
+          {
+            name: "Glute Bridge",
+            seconds: 150
+          },
+          {
+            name: "Calf Mobility",
+            seconds: 120
+          },
+          {
+            name: "Easy Breathing",
+            seconds: 120
+          }
+        ]
+      },
+
+
+      30: {
+        title:
+          "Lower Body Mobility",
+
+        moves: [
+          {
+            name: "Easy Walk / March",
+            seconds: 240
+          },
+          {
+            name: "Hip Circles",
+            seconds: 150
+          },
+          {
+            name: "Ankle Rocks",
+            seconds: 150
+          },
+          {
+            name: "Squat-to-Stand",
+            seconds: 180
+          },
+          {
+            name: "Reverse Lunge Reach",
+            seconds: 180
+          },
+          {
+            name: "Glute Bridge",
+            seconds: 180
+          },
+          {
+            name: "Adductor Rock Back",
+            seconds: 150
+          },
+          {
+            name: "Calf Mobility",
+            seconds: 150
+          },
+          {
+            name: "Easy Breathing",
+            seconds: 210
+          }
+        ]
+      }
+
+    },
+
+
+    "hips-back": {
+
+      10: {
+        title:
+          "Hips & Back Reset",
+
+        moves: [
+          {
+            name: "Pelvic Tilt",
+            seconds: 90
+          },
+          {
+            name: "Cat-Cow",
+            seconds: 120
+          },
+          {
+            name: "Hip Circles",
+            seconds: 90
+          },
+          {
+            name: "Bird Dog",
+            seconds: 120
+          },
+          {
+            name: "Glute Bridge",
+            seconds: 120
+          },
+          {
+            name: "Easy Breathing",
+            seconds: 60
+          }
+        ]
+      },
+
+
+      20: {
+        title:
+          "Hips & Back Restore",
+
+        moves: [
+          {
+            name: "Pelvic Tilt",
+            seconds: 120
+          },
+          {
+            name: "Cat-Cow",
+            seconds: 150
+          },
+          {
+            name: "Hip Circles",
+            seconds: 120
+          },
+          {
+            name: "Thoracic Rotation",
+            seconds: 150
+          },
+          {
+            name: "Bird Dog",
+            seconds: 150
+          },
+          {
+            name: "Glute Bridge",
+            seconds: 150
+          },
+          {
+            name: "Adductor Rock Back",
+            seconds: 120
+          },
+          {
+            name: "Easy Breathing",
+            seconds: 120
+          }
+        ]
+      },
+
+
+      30: {
+        title:
+          "Hips & Back Mobility",
+
+        moves: [
+          {
+            name: "Pelvic Tilt",
+            seconds: 150
+          },
+          {
+            name: "Cat-Cow",
+            seconds: 180
+          },
+          {
+            name: "Hip Circles",
+            seconds: 150
+          },
+          {
+            name: "Thoracic Rotation",
+            seconds: 180
+          },
+          {
+            name: "Bird Dog",
+            seconds: 180
+          },
+          {
+            name: "Glute Bridge",
+            seconds: 180
+          },
+          {
+            name: "Adductor Rock Back",
+            seconds: 150
+          },
+          {
+            name: "Hip Flexor Mobility",
+            seconds: 180
+          },
+          {
+            name: "Easy Breathing",
+            seconds: 210
+          }
+        ]
+      }
+
+    }
+
+  };
+
+
+
+  function getRecoveryTier(
+    duration
+  ) {
+
+    if (
+      duration <= 15
+    ) {
+      return 10;
+    }
+
+
+    if (
+      duration <= 25
+    ) {
+      return 20;
+    }
+
+
+    return 30;
+
+  }
+
+
+
+  function getRecoveryWorkout(
+    focus,
+    duration
+  ) {
+
+    const tier =
+      getRecoveryTier(
+        duration
+      );
+
+
+    const base =
+      recoveryLibrary
+        ?.[focus]
+        ?.[tier];
+
+
+    if (!base) {
+      return null;
+    }
+
+
+    return {
+
+      ...base,
+
+      focus,
+
+      duration,
+
+      moves:
+        base.moves.map(
+          (move) => ({
+            ...move
+          })
+        )
+
+    };
+
+  }
+
+
+
+  function getRecoveryFocusLabel(
+    focus
+  ) {
+
+    const labels = {
+
+      "full-body":
+        "Full Body",
+
+      "upper-body":
+        "Upper Body",
+
+      "lower-body":
+        "Lower Body",
+
+      "hips-back":
+        "Hips / Back"
+
+    };
+
+
+    return (
+      labels[focus] ||
+      "Recovery / Movement"
+    );
+
+  }
+
+
+
+  function renderRecoveryMoveList(
+    moves
+  ) {
+
+    return moves
+      .map(
+        (move, index) => `
+          <div class="trainingwise-recovery-move">
+
+            <span class="trainingwise-recovery-number">
+              ${index + 1}
+            </span>
+
+            <div>
+              <strong>
+                ${move.name}
+              </strong>
+
+              <p>
+                ${formatSessionTime(
+                  move.seconds
+                )}
+              </p>
+            </div>
+
+          </div>
+        `
+      )
+      .join("");
+
+  }
+
+
+
+  function renderRecoverySetup() {
+
+    clearTimer();
+
+
+    output.innerHTML = `
+      <p class="trainingwise-label">
+        SELF-GUIDED WORKOUT
+      </p>
+
+      <h2>
+        Recovery / Movement
+      </h2>
+
+      <p>
+        What needs attention today?
+      </p>
+
+
+      <div class="trainingwise-setup-block">
+
+        <span class="trainingwise-label">
+          RECOVERY FOCUS
+        </span>
+
+        <div class="trainingwise-choice-grid">
+
+          <button
+            type="button"
+            data-recovery-focus="full-body"
+            class="active"
+          >
+            Full Body
+          </button>
+
+          <button
+            type="button"
+            data-recovery-focus="upper-body"
+          >
+            Upper Body
+          </button>
+
+          <button
+            type="button"
+            data-recovery-focus="lower-body"
+          >
+            Lower Body
+          </button>
+
+          <button
+            type="button"
+            data-recovery-focus="hips-back"
+          >
+            Hips / Back
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <div class="trainingwise-setup-block">
+
+        <span class="trainingwise-label">
+          HOW LONG?
+        </span>
+
+        <div class="trainingwise-choice-grid">
+
+          <button
+            type="button"
+            data-recovery-duration="10"
+            class="active"
+          >
+            10 min
+          </button>
+
+          <button
+            type="button"
+            data-recovery-duration="20"
+          >
+            20 min
+          </button>
+
+          <button
+            type="button"
+            data-recovery-duration="30"
+          >
+            30 min
+          </button>
+
+          <button
+            type="button"
+            data-recovery-duration="custom"
+          >
+            Custom
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <div
+        id="recoveryCustomTimeWrap"
+        class="trainingwise-setup-block hidden"
+      >
+
+        <span class="trainingwise-label">
+          CUSTOM TIME
+        </span>
+
+        <input
+          id="recoveryCustomTime"
+          type="number"
+          min="5"
+          max="90"
+          step="5"
+          value="15"
+          inputmode="numeric"
+          aria-label="Custom recovery time in minutes"
+        />
+
+      </div>
+
+
+      <button
+        id="generateRecoveryWorkoutBtn"
+        class="trainingwise-btn trainingwise-generate-btn"
+        type="button"
+      >
+        Continue →
+      </button>
+
+
+      <div
+        id="generatedWorkoutPreview"
+        class="trainingwise-workout-preview hidden"
+      ></div>
+    `;
+
+
+    wireRecoverySetup();
+
+  }
+
+
+
+  function wireRecoverySetup() {
+
+    let selectedFocus =
+      "full-body";
+
+    let selectedDuration =
+      10;
+
+
+    document
+      .querySelectorAll(
+        "[data-recovery-focus]"
+      )
+      .forEach(
+        (button) => {
+
+          button.addEventListener(
+            "click",
+            () => {
+
+              selectedFocus =
+                button.dataset
+                  .recoveryFocus;
+
+
+              document
+                .querySelectorAll(
+                  "[data-recovery-focus]"
+                )
+                .forEach(
+                  (item) => {
+
+                    item.classList.toggle(
+                      "active",
+                      item === button
+                    );
+
+                  }
+                );
+
+            }
+          );
+
+        }
+      );
+
+
+    document
+      .querySelectorAll(
+        "[data-recovery-duration]"
+      )
+      .forEach(
+        (button) => {
+
+          button.addEventListener(
+            "click",
+            () => {
+
+              const value =
+                button.dataset
+                  .recoveryDuration;
+
+
+              selectedDuration =
+                value === "custom"
+                  ? "custom"
+                  : Number(value);
+
+
+              document
+                .querySelectorAll(
+                  "[data-recovery-duration]"
+                )
+                .forEach(
+                  (item) => {
+
+                    item.classList.toggle(
+                      "active",
+                      item === button
+                    );
+
+                  }
+                );
+
+
+              document
+                .getElementById(
+                  "recoveryCustomTimeWrap"
+                )
+                ?.classList.toggle(
+                  "hidden",
+                  value !== "custom"
+                );
+
+            }
+          );
+
+        }
+      );
+
+
+    document
+      .getElementById(
+        "generateRecoveryWorkoutBtn"
+      )
+      ?.addEventListener(
+        "click",
+        () => {
+
+          let duration =
+            selectedDuration;
+
+
+          if (
+            selectedDuration ===
+            "custom"
+          ) {
+
+            duration =
+              Number(
+                document
+                  .getElementById(
+                    "recoveryCustomTime"
+                  )
+                  ?.value
+              );
+
+
+            if (
+              !Number.isFinite(duration) ||
+              duration < 5 ||
+              duration > 90
+            ) {
+              return;
+            }
+
+          }
+
+
+          const workout =
+            getRecoveryWorkout(
+              selectedFocus,
+              duration
+            );
+
+
+          const preview =
+            document.getElementById(
+              "generatedWorkoutPreview"
+            );
+
+
+          if (
+            !preview ||
+            !workout
+          ) {
+            return;
+          }
+
+
+          preview.classList.remove(
+            "hidden"
+          );
+
+
+          preview.innerHTML = `
+            <p class="trainingwise-label">
+              RECOVERY / MOVEMENT
+            </p>
+
+            <h3>
+              ${workout.title}
+            </h3>
+
+            <p>
+              ${getRecoveryFocusLabel(
+                selectedFocus
+              )}
+              ·
+              ${duration} minutes
+            </p>
+
+
+            <div class="trainingwise-workout-section">
+
+              <strong>
+                Movement Sequence
+              </strong>
+
+              <p>
+                Move comfortably.
+                Recovery work should
+                feel controlled,
+                not forced.
+              </p>
+
+              <div class="trainingwise-recovery-list">
+
+                ${renderRecoveryMoveList(
+                  workout.moves
+                )}
+
+              </div>
+
+            </div>
+
+
+            <button
+              id="startRecoveryWorkoutBtn"
+              class="trainingwise-btn"
+              type="button"
+            >
+              Start Recovery →
+            </button>
+          `;
+
+
+          document
+            .getElementById(
+              "startRecoveryWorkoutBtn"
+            )
+            ?.addEventListener(
+              "click",
+              () => {
+
+                renderRecoveryExecution(
+                  workout
+                );
+
+              }
+            );
+
+        }
+      );
+
+  }
+
+
+
   function renderSelfGuidedSetup(
     mode
   ) {
@@ -3384,6 +4411,17 @@
     ) {
 
       renderStrengthSetup();
+
+      return;
+
+    }
+
+
+    if (
+      mode === "recovery"
+    ) {
+
+      renderRecoverySetup();
 
       return;
 
@@ -3778,6 +4816,353 @@
 
         }
       );
+
+  }
+
+
+
+  function renderRecoveryExecution(
+    workout
+  ) {
+
+    clearTimer();
+
+
+    selfGuidedState = {
+
+      mode:
+        "recovery",
+
+      workoutTitle:
+        workout.title,
+
+      recoveryFocus:
+        workout.focus,
+
+      plannedMinutes:
+        workout.duration,
+
+      totalSeconds:
+        workout.duration * 60,
+
+      remaining:
+        workout.duration * 60,
+
+      recoveryMoves:
+        workout.moves,
+
+      currentMove:
+        0,
+
+      moveRemaining:
+        workout.moves?.[0]?.seconds || 0,
+
+      running:
+        false,
+
+      completed:
+        false
+
+    };
+
+
+    output.innerHTML = `
+      <p class="trainingwise-label">
+        RECOVERY / MOVEMENT
+      </p>
+
+      <h2>
+        ${workout.title}
+      </h2>
+
+      <p>
+        ${getRecoveryFocusLabel(
+          workout.focus
+        )}
+        ·
+        ${workout.duration} min
+      </p>
+
+
+      <div class="trainingwise-timer phase-rest">
+
+        <div class="trainingwise-timer-round">
+          Session Time
+        </div>
+
+        <div
+          id="selfGuidedPhase"
+          class="trainingwise-timer-phase"
+        >
+          READY
+        </div>
+
+        <div
+          id="selfGuidedClock"
+          class="trainingwise-clock"
+        >
+          ${formatSessionTime(
+            selfGuidedState.remaining
+          )}
+        </div>
+
+      </div>
+
+
+      <div
+        id="recoveryCurrentMove"
+        class="trainingwise-recovery-current"
+      ></div>
+
+
+      <div class="trainingwise-recovery-nav">
+
+        <button
+          id="recoveryPreviousBtn"
+          type="button"
+        >
+          ← Previous
+        </button>
+
+        <button
+          id="recoveryNextBtn"
+          type="button"
+        >
+          Next →
+        </button>
+
+      </div>
+
+
+      <div class="trainingwise-controls">
+
+        <button
+          id="selfGuidedStartBtn"
+          type="button"
+        >
+          Start
+        </button>
+
+        <button
+          id="selfGuidedPauseBtn"
+          type="button"
+          disabled
+        >
+          Pause
+        </button>
+
+        <button
+          id="selfGuidedEndBtn"
+          type="button"
+        >
+          End
+        </button>
+
+      </div>
+
+
+      <button
+        id="selfGuidedCompleteBtn"
+        class="trainingwise-btn"
+        type="button"
+        disabled
+      >
+        Complete Recovery
+      </button>
+
+
+      <p
+        id="selfGuidedMessage"
+        class="trainingwise-session-message"
+      >
+        Start when ready.
+      </p>
+    `;
+
+
+    updateRecoveryMove();
+
+
+    wireSelfGuidedExecution(
+      workout
+    );
+
+
+    document
+      .getElementById(
+        "recoveryPreviousBtn"
+      )
+      ?.addEventListener(
+        "click",
+        () => {
+
+          changeRecoveryMove(
+            -1
+          );
+
+        }
+      );
+
+
+    document
+      .getElementById(
+        "recoveryNextBtn"
+      )
+      ?.addEventListener(
+        "click",
+        () => {
+
+          changeRecoveryMove(
+            1
+          );
+
+        }
+      );
+
+  }
+
+
+
+  function updateRecoveryMove() {
+
+    if (
+      !selfGuidedState ||
+      selfGuidedState.mode !==
+        "recovery"
+    ) {
+      return;
+    }
+
+
+    const move =
+      selfGuidedState
+        .recoveryMoves[
+          selfGuidedState
+            .currentMove
+        ];
+
+
+    const box =
+      document.getElementById(
+        "recoveryCurrentMove"
+      );
+
+
+    if (
+      !move ||
+      !box
+    ) {
+      return;
+    }
+
+
+    box.innerHTML = `
+      <p class="trainingwise-label">
+        MOVEMENT ${
+          selfGuidedState.currentMove +
+          1
+        } / ${
+          selfGuidedState
+            .recoveryMoves
+            .length
+        }
+      </p>
+
+      <h3>
+        ${move.name}
+      </h3>
+
+      <div
+        id="recoveryMoveClock"
+        class="trainingwise-recovery-move-time"
+      >
+        ${formatSessionTime(
+          selfGuidedState.moveRemaining
+        )}
+      </div>
+    `;
+
+
+    const previous =
+      document.getElementById(
+        "recoveryPreviousBtn"
+      );
+
+
+    const next =
+      document.getElementById(
+        "recoveryNextBtn"
+      );
+
+
+    if (previous) {
+
+      previous.disabled =
+        selfGuidedState
+          .currentMove ===
+        0;
+
+    }
+
+
+    if (next) {
+
+      next.disabled =
+        selfGuidedState
+          .currentMove >=
+        selfGuidedState
+          .recoveryMoves
+          .length - 1;
+
+    }
+
+  }
+
+
+
+  function changeRecoveryMove(
+    direction
+  ) {
+
+    if (
+      !selfGuidedState ||
+      selfGuidedState.mode !==
+        "recovery"
+    ) {
+      return;
+    }
+
+
+    const next =
+      selfGuidedState.currentMove +
+      direction;
+
+
+    if (
+      next < 0 ||
+      next >=
+        selfGuidedState
+          .recoveryMoves
+          .length
+    ) {
+      return;
+    }
+
+
+    selfGuidedState.currentMove =
+      next;
+
+
+    selfGuidedState.moveRemaining =
+      selfGuidedState
+        .recoveryMoves[
+          next
+        ]
+        ?.seconds ||
+      0;
+
+
+    updateRecoveryMove();
 
   }
 
@@ -4315,6 +5700,107 @@
 
 
 
+  function advanceRecoveryMove() {
+
+    if (
+      !selfGuidedState ||
+      selfGuidedState.mode !==
+      "recovery"
+    ) {
+      return;
+    }
+
+
+    const lastIndex =
+      selfGuidedState
+        .recoveryMoves
+        .length - 1;
+
+
+    if (
+      selfGuidedState.currentMove >=
+      lastIndex
+    ) {
+
+      selfGuidedState.moveRemaining =
+        0;
+
+      updateRecoveryMove();
+
+      return;
+
+    }
+
+
+    selfGuidedState.currentMove +=
+      1;
+
+
+    selfGuidedState.moveRemaining =
+      selfGuidedState
+        .recoveryMoves[
+          selfGuidedState.currentMove
+        ]
+        ?.seconds ||
+      0;
+
+
+    updateRecoveryMove();
+
+  }
+
+
+
+  function tickRecoveryMove() {
+
+    if (
+      !selfGuidedState ||
+      selfGuidedState.mode !==
+      "recovery" ||
+      !selfGuidedState.running
+    ) {
+      return;
+    }
+
+
+    selfGuidedState.moveRemaining -=
+      1;
+
+
+    if (
+      selfGuidedState.moveRemaining <=
+      0
+    ) {
+
+      selfGuidedState.moveRemaining =
+        0;
+
+      advanceRecoveryMove();
+
+      return;
+
+    }
+
+
+    const moveClock =
+      document.getElementById(
+        "recoveryMoveClock"
+      );
+
+
+    if (moveClock) {
+
+      moveClock.textContent =
+        formatSessionTime(
+          selfGuidedState.moveRemaining
+        );
+
+    }
+
+  }
+
+
+
   function updateSelfGuidedDisplay() {
 
     if (
@@ -4355,6 +5841,16 @@
 
     selfGuidedState.remaining -=
       1;
+
+
+    if (
+      selfGuidedState.mode ===
+      "recovery"
+    ) {
+
+      tickRecoveryMove();
+
+    }
 
 
     if (
@@ -4710,6 +6206,21 @@
         strengthFocus:
           selfGuidedState
             .strengthFocus,
+
+        recoveryFocus:
+          selfGuidedState
+            .recoveryFocus ||
+          null,
+
+        recoveryMoves:
+          selfGuidedState.mode ===
+          "recovery"
+            ? (
+                selfGuidedState
+                  .recoveryMoves ||
+                []
+              )
+            : null,
 
         exercises:
           selfGuidedState
