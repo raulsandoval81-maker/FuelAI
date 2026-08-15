@@ -34,14 +34,37 @@ function getPrivateKey() {
       "FIREBASE_PRIVATE_KEY_B64"
     );
 
-  return Buffer
-    .from(
-      encoded,
-      "base64"
+  const decoded =
+    Buffer
+      .from(
+        encoded,
+        "base64"
+      )
+      .toString(
+        "utf8"
+      );
+
+  if (
+    !decoded.startsWith(
+      "-----BEGIN PRIVATE KEY-----"
     )
-    .toString(
-      "utf8"
+  ) {
+    throw new Error(
+      "Decoded Firebase key has invalid beginning"
     );
+  }
+
+  if (
+    !decoded.trim().endsWith(
+      "-----END PRIVATE KEY-----"
+    )
+  ) {
+    throw new Error(
+      "Decoded Firebase key has invalid ending"
+    );
+  }
+
+  return decoded;
 }
 
 
