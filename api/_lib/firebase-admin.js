@@ -29,12 +29,19 @@ function requireEnv(name) {
 
 
 function getPrivateKey() {
-  return requireEnv(
-    "FIREBASE_PRIVATE_KEY"
-  ).replace(
-    /\\n/g,
-    "\n"
-  );
+  const encoded =
+    requireEnv(
+      "FIREBASE_PRIVATE_KEY_B64"
+    );
+
+  return Buffer
+    .from(
+      encoded,
+      "base64"
+    )
+    .toString(
+      "utf8"
+    );
 }
 
 
