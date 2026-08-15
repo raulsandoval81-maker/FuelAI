@@ -14,17 +14,24 @@ import {
 } from "firebase-admin/firestore";
 
 
-function getPrivateKey() {
-  const key =
-    process.env.FIREBASE_PRIVATE_KEY;
+function requireEnv(name) {
+  const value =
+    process.env[name];
 
-  if (!key) {
+  if (!value) {
     throw new Error(
-      "Missing FIREBASE_PRIVATE_KEY"
+      `Missing ${name}`
     );
   }
 
-  return key.replace(
+  return value;
+}
+
+
+function getPrivateKey() {
+  return requireEnv(
+    "FIREBASE_PRIVATE_KEY"
+  ).replace(
     /\\n/g,
     "\n"
   );
@@ -32,9 +39,7 @@ function getPrivateKey() {
 
 
 function getAdminApp() {
-  if (
-    getApps().length
-  ) {
+  if (getApps().length) {
     return getApps()[0];
   }
 
@@ -42,12 +47,14 @@ function getAdminApp() {
     credential:
       cert({
         projectId:
-          process.env
-            .FIREBASE_PROJECT_ID,
+          requireEnv(
+            "FIREBASE_PROJECT_ID"
+          ),
 
         clientEmail:
-          process.env
-            .FIREBASE_CLIENT_EMAIL,
+          requireEnv(
+            "FIREBASE_CLIENT_EMAIL"
+          ),
 
         privateKey:
           getPrivateKey()
@@ -56,16 +63,18 @@ function getAdminApp() {
 }
 
 
-const app =
-  getAdminApp();
+export function getAdminAuth() {
+  return getAuth(
+    getAdminApp()
+  );
+}
 
 
-export const adminAuth =
-  getAuth(app);
-
-
-export const adminDb =
-  getFirestore(app);
+export function getAdminDb() {
+  return getFirestore(
+    getAdminApp()
+  );
+}
 
 
 export {

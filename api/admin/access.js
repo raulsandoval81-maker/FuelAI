@@ -1,6 +1,6 @@
 import {
-  adminAuth,
-  adminDb,
+  getAdminAuth,
+  getAdminDb,
   FieldValue
 } from "../_lib/firebase-admin.js";
 
@@ -54,7 +54,7 @@ async function requireFuelAIAdmin(
 
 
   const decoded =
-    await adminAuth
+    await getAdminAuth()
       .verifyIdToken(
         token
       );
@@ -106,13 +106,13 @@ async function resolveTargetUser({
 
 
   if (uid) {
-    return adminAuth
+    return getAdminAuth()
       .getUser(uid);
   }
 
 
   if (email) {
-    return adminAuth
+    return getAdminAuth()
       .getUserByEmail(
         email
       );
@@ -303,7 +303,7 @@ export default async function handler(
 
 
     const ref =
-      adminDb
+      getAdminDb()
         .collection("users")
         .doc(target.uid);
 
