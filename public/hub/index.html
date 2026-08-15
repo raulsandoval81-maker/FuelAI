@@ -535,6 +535,82 @@
         rgba(239,68,68,.58);
     }
 
+    .hub-team{
+      display:none;
+
+      margin:24px 0 6px;
+      padding:20px;
+
+      border-radius:22px;
+
+      border:
+        1px solid rgba(34,197,94,.26);
+
+      background:
+        linear-gradient(
+          180deg,
+          rgba(15,23,42,.92),
+          rgba(7,16,25,.96)
+        );
+    }
+
+    .hub-team-top{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+    }
+
+    .hub-team-label{
+      margin:0 0 6px;
+
+      color:#22c55e;
+
+      font-size:.72rem;
+      font-weight:800;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+    }
+
+    .hub-team h2{
+      margin:0;
+      font-size:1.35rem;
+    }
+
+    .hub-team-meta{
+      margin:7px 0 0;
+      color:#94a3b8;
+      text-transform:capitalize;
+    }
+
+    .hub-team-link{
+      flex:0 0 auto;
+
+      padding:10px 14px;
+
+      border-radius:13px;
+
+      border:
+        1px solid rgba(34,197,94,.28);
+
+      background:
+        rgba(34,197,94,.10);
+
+      color:#86efac;
+      text-decoration:none;
+      font-weight:800;
+    }
+
+    @media (max-width:560px){
+
+      .hub-team-top{
+        align-items:flex-start;
+        flex-direction:column;
+      }
+
+    }
+
+
     .hub-empty{
       display:none;
 
@@ -942,6 +1018,48 @@
           </strong>
 
         </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- TEAM MEMBERSHIP -->
+
+    <section
+      id="hubTeam"
+      class="hub-team"
+      aria-label="Your FuelAI team"
+    >
+
+      <div class="hub-team-top">
+
+        <div>
+
+          <p class="hub-team-label">
+            Your Team
+          </p>
+
+          <h2 id="hubTeamName">
+            FuelAI Team
+          </h2>
+
+          <p
+            id="hubTeamMeta"
+            class="hub-team-meta"
+          >
+            Active membership
+          </p>
+
+        </div>
+
+
+        <a
+          class="hub-team-link"
+          href="/team/"
+        >
+          Open Team →
+        </a>
 
       </div>
 
@@ -1714,6 +1832,85 @@
     }
 
 
+    function renderHubTeam() {
+
+      const teamSection =
+        document.getElementById(
+          "hubTeam"
+        );
+
+
+      if (!teamSection) {
+        return;
+      }
+
+
+      const memberships =
+        window.FuelAIIdentity
+          ?.getFuelAITeamMemberships?.() ||
+        [];
+
+
+      const activeTeam =
+        memberships.find(
+          membership =>
+            membership.status ===
+            "active"
+        );
+
+
+      if (!activeTeam) {
+
+        teamSection.style.display =
+          "none";
+
+        return;
+
+      }
+
+
+      teamSection.style.display =
+        "block";
+
+
+      const name =
+        document.getElementById(
+          "hubTeamName"
+        );
+
+
+      const meta =
+        document.getElementById(
+          "hubTeamMeta"
+        );
+
+
+      if (name) {
+
+        name.textContent =
+          activeTeam.teamName ||
+          activeTeam.teamId ||
+          "FuelAI Team";
+
+      }
+
+
+      if (meta) {
+
+        const role =
+          activeTeam.role ||
+          "member";
+
+
+        meta.textContent =
+          `${role} · active`;
+
+      }
+
+    }
+
+
+
     function applyHubAccess() {
 
       if (
@@ -1793,6 +1990,8 @@
     renderHubProfile();
 
     renderTodaySnapshot();
+
+    renderHubTeam();
 
     applyHubAccess();
   </script>

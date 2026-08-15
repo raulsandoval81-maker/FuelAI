@@ -285,6 +285,42 @@ navLink(
 
 
 
+    const teamMemberships =
+      window.FuelAIIdentity
+        ?.getFuelAITeamMemberships?.() ||
+      [];
+
+
+    const activeTeam =
+      teamMemberships.find(
+        membership =>
+          membership.status ===
+          "active"
+      );
+
+
+    const teamSection =
+      activeTeam
+        ? `
+      <div class="fuelai-nav-section">
+
+        <p class="fuelai-nav-label">
+          Team
+        </p>
+
+        ${navLink(
+          "/team/",
+          `👥 ${
+            activeTeam.teamName ||
+            "Your Team"
+          }`
+        )}
+
+      </div>
+    `
+        : "";
+
+
     const accountLinks =
       [];
 
@@ -365,6 +401,9 @@ navLink(
         ${toolLinks.join("")}
 
       </div>
+
+
+      ${teamSection}
 
 
       <div class="fuelai-nav-section">
