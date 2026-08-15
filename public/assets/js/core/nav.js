@@ -537,14 +537,14 @@ navLink(
     logoutBtn
       ?.addEventListener(
         "click",
-        () => {
+        async () => {
 
-          window.FuelAIAuth
+          await window.FuelAIAuth
             ?.softLogout?.();
 
 
           window.location.href =
-            "/account/login.html";
+            "/account/login.html?logout=1";
 
         }
       );

@@ -75,6 +75,19 @@
 
       line-height:1.55;
     }
+    .wise-links{
+  display:grid;
+  gap:.8rem;
+}
+
+.wise-links .goal-select,
+.wise-links button{
+  width:100%;
+}
+
+#createAccountBtn{
+  margin-top:.1rem;
+}
 
     @media (max-width:600px){
 
@@ -207,8 +220,8 @@
         </p>
 
         <p class="welcome-start-copy">
-          Enter your email to continue.
-          New users will be guided through setup.
+          Sign in to your FuelAI account,
+          or create one if you are new.
         </p>
 
 
@@ -218,25 +231,46 @@
             id="emailInput"
             class="goal-select"
             type="email"
-            placeholder="Enter your email"
+            placeholder="Email"
             autocomplete="email"
             aria-label="Email address"
           />
 
+          <input
+            id="passwordInput"
+            class="goal-select"
+            type="password"
+            placeholder="Password"
+            autocomplete="current-password"
+            aria-label="Password"
+          />
+
           <button
-            id="continueBtn"
+            id="signInBtn"
             class="start-btn"
             type="button"
           >
-            Continue
+            Sign In
+          </button>
+
+          <button
+            id="createAccountBtn"
+            class="secondary-btn"
+            type="button"
+          >
+            Create Account
           </button>
 
         </div>
 
 
-        <p class="hero-note">
-          New here? We’ll guide you through setup
-          in under 2 minutes.
+        <p
+          id="authMessage"
+          class="hero-note"
+          aria-live="polite"
+        >
+          New here? Create your account,
+          then we’ll guide you through setup.
         </p>
 
       </section>
@@ -246,75 +280,280 @@
   </main>
 
 
+  <script
+    type="module"
+    src="/assets/js/core/firebase.js?v=2"
+  ></script>
+
   <script src="/assets/js/core/auth-soft.js"></script>
 
   <script>
-    const continueBtn =
-      document.getElementById(
-        "continueBtn"
-      );
+    (() => {
+      "use strict";
 
-    const emailInput =
-      document.getElementById(
-        "emailInput"
-      );
+      const signInBtn =
+        document.getElementById("signInBtn");
+
+      const createAccountBtn =
+        document.getElementById(
+          "createAccountBtn"
+        );
+
+      const emailInput =
+        document.getElementById("emailInput");
+
+      const passwordInput =
+        document.getElementById(
+          "passwordInput"
+        );
+
+      const authMessage =
+        document.getElementById(
+          "authMessage"
+        );
 
 
-    function continueToFuelAI() {
-
-      const email =
-        emailInput.value.trim();
-
-      if (
-        !email.includes("@")
-      ) {
-        return;
+      function setMessage(message) {
+        if (authMessage) {
+          authMessage.textContent =
+            message;
+        }
       }
 
 
-      window.FuelAIAuth
-        .softLogin(
-          email
-        );
+      function getCredentials() {
+        return {
+          email:
+            emailInput?.value
+              .trim()
+              .toLowerCase() || "",
+
+          password:
+            passwordInput?.value || ""
+        };
+      }
 
 
-      const hasSetup =
-        !!localStorage.getItem(
-          "fuelai-setup"
-        );
+      function waitForFirebase() {
+        if (window.FuelAIFirebase) {
+          return Promise.resolve(
+            window.FuelAIFirebase
+          );
+        }
+
+        return new Promise(resolve => {
+          window.addEventListener(
+            "fuelai:firebase-ready",
+            () => resolve(
+              window.FuelAIFirebase
+            ),
+            { once: true }
+          );
+        });
+      }
 
 
-      window.location.href =
-        hasSetup
-          ? "/hub/"
-          : "/account/setup.html";
+      async function finishPendingLogout() {
 
-    }
-
-
-    continueBtn
-      ?.addEventListener(
-        "click",
-        continueToFuelAI
-      );
+        const params =
+          new URLSearchParams(
+            window.location.search
+          );
 
 
-    emailInput
-      ?.addEventListener(
-        "keydown",
-        (event) => {
+        if (
+          params.get("logout") !== "1"
+        ) {
+          return;
+        }
 
-          if (
-            event.key ===
-            "Enter"
-          ) {
 
-            continueToFuelAI();
+        try {
 
-          }
+          const firebase =
+            await waitForFirebase();
+
+
+          await firebase.signOut();
+
+        } catch (error) {
+
+          console.warn(
+            "FuelAI Firebase logout cleanup failed.",
+            error
+          );
 
         }
+
+
+        localStorage.removeItem(
+          "fuelai-user"
+        );
+
+
+        window.history.replaceState(
+          {},
+          "",
+          "/account/login.html"
+        );
+
+
+        setMessage(
+          "You’re signed out."
+        );
+
+      }
+
+
+      finishPendingLogout();
+
+
+      function finishLogin(user) {
+        window.FuelAIAuth.softLogin(
+          user.email
+        );
+
+        const hasSetup =
+          Boolean(
+            localStorage.getItem(
+              "fuelai-setup"
+            )
+          );
+
+        window.location.href =
+          hasSetup
+            ? "/hub/"
+            : "/account/setup.html";
+      }
+
+
+      async function signIn() {
+        const {
+          email,
+          password
+        } = getCredentials();
+
+        if (!email || !password) {
+          setMessage(
+            "Enter your email and password."
+          );
+          return;
+        }
+
+        signInBtn.disabled = true;
+        setMessage("Signing in...");
+
+        try {
+          const firebase =
+            await waitForFirebase();
+
+          const user =
+            await firebase.signIn(
+              email,
+              password
+            );
+
+          finishLogin(user);
+
+        } catch (error) {
+          console.error(
+            "FuelAI sign-in error:",
+            error
+          );
+
+          setMessage(
+            "Unable to sign in. Check your email and password."
+          );
+
+        } finally {
+          signInBtn.disabled = false;
+        }
+      }
+
+
+      async function createAccount() {
+        const {
+          email,
+          password
+        } = getCredentials();
+
+        if (!email || !password) {
+          setMessage(
+            "Enter an email and password."
+          );
+          return;
+        }
+
+        if (password.length < 6) {
+          setMessage(
+            "Use a password with at least 6 characters."
+          );
+          return;
+        }
+
+        createAccountBtn.disabled = true;
+        setMessage(
+          "Creating your account..."
+        );
+
+        try {
+          const firebase =
+            await waitForFirebase();
+
+          const user =
+            await firebase.createAccount(
+              email,
+              password
+            );
+
+          finishLogin(user);
+
+        } catch (error) {
+          console.error(
+            "FuelAI account creation error:",
+            error
+          );
+
+          if (
+            error?.code ===
+            "auth/email-already-in-use"
+          ) {
+            setMessage(
+              "That email already has an account. Sign in instead."
+            );
+          } else {
+            setMessage(
+              "Unable to create the account. Check the email and password and try again."
+            );
+          }
+
+        } finally {
+          createAccountBtn.disabled =
+            false;
+        }
+      }
+
+
+      signInBtn?.addEventListener(
+        "click",
+        signIn
       );
+
+      createAccountBtn?.addEventListener(
+        "click",
+        createAccount
+      );
+
+      passwordInput?.addEventListener(
+        "keydown",
+        event => {
+          if (event.key === "Enter") {
+            signIn();
+          }
+        }
+      );
+
+    })();
   </script>
 
 </body>

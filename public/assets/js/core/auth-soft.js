@@ -82,13 +82,35 @@ function softLogin(email) {
 }
 
 
-function softLogout() {
+async function softLogout() {
   /*
-   * Logout only removes the active session.
+   * Sign out of Firebase when available,
+   * then clear the compatibility session.
    *
    * Account-specific setup and plan data
    * remain stored for the next login.
    */
+
+  try {
+
+    if (
+      window.FuelAIFirebase
+        ?.signOut
+    ) {
+      await window.FuelAIFirebase
+        .signOut();
+    }
+
+  } catch (error) {
+
+    console.warn(
+      "FuelAI Firebase sign-out failed.",
+      error
+    );
+
+  }
+
+
   localStorage.removeItem(
     "fuelai-user"
   );
