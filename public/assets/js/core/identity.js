@@ -348,6 +348,25 @@ function getFuelAITeamMemberships() {
 }
 
 
+function setFuelAITeamMemberships(
+  memberships
+) {
+
+  const current =
+    getFuelAIIdentity();
+
+
+  return saveFuelAIIdentity({
+    ...current,
+
+    teamMemberships:
+      memberships
+  });
+
+}
+
+
+
 function addFuelAITeamMembership(
   membership
 ) {
@@ -449,6 +468,8 @@ window.FuelAIIdentity = {
   getFuelAIUserTypeLabel,
 
   getFuelAITeamMemberships,
+
+  setFuelAITeamMemberships,
 
   addFuelAITeamMembership,
 

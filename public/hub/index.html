@@ -1860,6 +1860,128 @@
     }
 
 
+    async function refreshHubTeamMemberships() {
+
+      /*
+       * firebase.js is a module, so it may
+       * finish after this inline Hub script.
+       *
+       * Wait briefly for the Firebase bridge
+       * and the signed-in Firebase user.
+       */
+
+      let attempts =
+        0;
+
+
+      while (
+        attempts < 100 &&
+        !window.FuelAIFirebase
+          ?.getCurrentUserTeamMemberships
+      ) {
+
+        await new Promise(
+          resolve =>
+            setTimeout(
+              resolve,
+              50
+            )
+        );
+
+
+        attempts++;
+
+      }
+
+
+      const firebase =
+        window.FuelAIFirebase;
+
+
+      if (
+        !firebase
+          ?.getCurrentUserTeamMemberships
+      ) {
+
+        throw new Error(
+          "FuelAI Firebase team loader unavailable"
+        );
+
+      }
+
+
+      attempts =
+        0;
+
+
+      while (
+        attempts < 100 &&
+        !firebase.auth
+          ?.currentUser
+      ) {
+
+        await new Promise(
+          resolve =>
+            setTimeout(
+              resolve,
+              50
+            )
+        );
+
+
+        attempts++;
+
+      }
+
+
+      if (
+        !firebase.auth
+          ?.currentUser
+      ) {
+
+        throw new Error(
+          "Firebase user unavailable"
+        );
+
+      }
+
+
+      const memberships =
+        await firebase
+          .getCurrentUserTeamMemberships();
+
+
+      window.FuelAIIdentity
+        ?.setFuelAITeamMemberships?.(
+          memberships
+        );
+
+
+      /*
+       * Re-render anything whose appearance
+       * depends on authoritative team data.
+       */
+
+      renderHubProfile();
+
+      renderHubTeam();
+
+
+      /*
+       * nav.js listens for this and rebuilds
+       * its Team section from the new cache.
+       */
+
+      window.dispatchEvent(
+        new CustomEvent(
+          "fuelai:team-memberships-ready"
+        )
+      );
+
+    }
+
+
+
     function renderHubTeam() {
 
       const teamSection =
@@ -1868,9 +1990,10 @@
         );
 
 
-      if (!teamSection) {
-        return;
-      }
+      const logisticsCard =
+        document.getElementById(
+          "teamLogisticsCard"
+        );
 
 
       const memberships =
@@ -1889,16 +2012,27 @@
 
       if (!activeTeam) {
 
-        teamSection.style.display =
-          "none";
+        if (teamSection) {
+          teamSection.style.display =
+            "none";
+        }
+
+
+        if (logisticsCard) {
+          logisticsCard.style.display =
+            "none";
+        }
+
 
         return;
 
       }
 
 
-      teamSection.style.display =
-        "block";
+      if (teamSection) {
+        teamSection.style.display =
+          "block";
+      }
 
 
       const name =
@@ -1935,8 +2069,24 @@
 
       }
 
-    }
 
+      const canManageTeam =
+        activeTeam.role ===
+          "coach" ||
+        activeTeam.role ===
+          "admin";
+
+
+      if (logisticsCard) {
+
+        logisticsCard.style.display =
+          canManageTeam
+            ? ""
+            : "none";
+
+      }
+
+    }
 
 
     function applyHubAccess() {
@@ -2022,6 +2172,19 @@
     renderHubTeam();
 
     applyHubAccess();
+
+
+    refreshHubTeamMemberships()
+      .catch(
+        error => {
+
+          console.warn(
+            "FuelAI team refresh failed.",
+            error
+          );
+
+        }
+      );
   </script>
 
 

@@ -590,6 +590,35 @@ navLink(
   }
 
 
+  function refreshNav() {
+
+    document
+      .querySelector(
+        ".fuelai-topbar"
+      )
+      ?.remove();
+
+
+    document
+      .querySelector(
+        ".fuelai-nav-backdrop"
+      )
+      ?.remove();
+
+
+    document
+      .querySelector(
+        ".fuelai-nav-drawer"
+      )
+      ?.remove();
+
+
+    buildNav();
+
+  }
+
+
+
   function init() {
     if (
       !window.FuelAIAuth
@@ -601,6 +630,12 @@ navLink(
 
     buildNav();
   }
+
+
+  window.addEventListener(
+    "fuelai:team-memberships-ready",
+    refreshNav
+  );
 
 
   if (
