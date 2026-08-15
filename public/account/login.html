@@ -408,10 +408,144 @@
       finishPendingLogout();
 
 
-      function finishLogin(user) {
+      function clearAccountCache() {
+
+        [
+          "fuelai-setup",
+          "fuelai-plan",
+          "fuelai-beta-access",
+          "fuelai-identity"
+        ].forEach(
+          key => {
+            localStorage.removeItem(
+              key
+            );
+          }
+        );
+
+      }
+
+
+      function hydrateAccountCache(
+        record
+      ) {
+
+        clearAccountCache();
+
+
+        if (
+          record?.setup &&
+          typeof record.setup ===
+            "object"
+        ) {
+
+          localStorage.setItem(
+            "fuelai-setup",
+            JSON.stringify(
+              record.setup
+            )
+          );
+
+        }
+
+
+        if (
+          typeof record?.plan ===
+            "string" &&
+          record.plan
+        ) {
+
+          localStorage.setItem(
+            "fuelai-plan",
+            record.plan
+          );
+
+        }
+
+
+        if (
+          record?.beta &&
+          typeof record.beta ===
+            "object"
+        ) {
+
+          localStorage.setItem(
+            "fuelai-beta-access",
+            JSON.stringify(
+              record.beta
+            )
+          );
+
+        }
+
+
+        if (
+          record?.identity &&
+          typeof record.identity ===
+            "object"
+        ) {
+
+          localStorage.setItem(
+            "fuelai-identity",
+            JSON.stringify(
+              record.identity
+            )
+          );
+
+        }
+
+      }
+
+
+      async function finishLogin(user) {
+
         window.FuelAIAuth.softLogin(
           user.email
         );
+
+
+        let record =
+          null;
+
+
+        try {
+
+          const firebase =
+            await waitForFirebase();
+
+
+          record =
+            await firebase
+              .getCurrentUserRecord();
+
+        } catch (error) {
+
+          console.warn(
+            "FuelAI account record could not be loaded.",
+            error
+          );
+
+        }
+
+
+        if (record) {
+
+          hydrateAccountCache(
+            record
+          );
+
+        } else {
+
+          /*
+           * A real Firebase account with no
+           * Firestore record is a new FuelAI
+           * account. Never inherit another
+           * browser user's setup.
+           */
+          clearAccountCache();
+
+        }
+
 
         const hasSetup =
           Boolean(
@@ -420,10 +554,12 @@
             )
           );
 
+
         window.location.href =
           hasSetup
             ? "/hub/"
             : "/account/setup.html";
+
       }
 
 
@@ -453,7 +589,9 @@
               password
             );
 
-          finishLogin(user);
+          await finishLogin(
+            user
+          );
 
         } catch (error) {
           console.error(
@@ -506,7 +644,9 @@
               password
             );
 
-          finishLogin(user);
+          await finishLogin(
+            user
+          );
 
         } catch (error) {
           console.error(

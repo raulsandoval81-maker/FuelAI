@@ -11,7 +11,11 @@ import {
 } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-auth.js";
 
 import {
-  getFirestore
+  getFirestore,
+  doc,
+  getDoc,
+  setDoc,
+  serverTimestamp
 } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
 
 
@@ -128,3 +132,102 @@ console.info(
   "FuelAI Firebase connected:",
   firebaseConfig.projectId
 );
+
+
+async function saveCurrentUserRecord(
+  data = {}
+) {
+
+  const user =
+    auth.currentUser;
+
+
+  if (!user) {
+    throw new Error(
+      "No Firebase user is signed in."
+    );
+  }
+
+
+  const ref =
+    doc(
+      db,
+      "users",
+      user.uid
+    );
+
+
+  await setDoc(
+    ref,
+    {
+      uid:
+        user.uid,
+
+      email:
+        user.email ||
+        "",
+
+      ...data,
+
+      updatedAt:
+        serverTimestamp()
+    },
+    {
+      merge: true
+    }
+  );
+
+
+  return true;
+}
+
+
+async function getCurrentUserRecord() {
+
+  const user =
+    auth.currentUser;
+
+
+  if (!user) {
+    return null;
+  }
+
+
+  const ref =
+    doc(
+      db,
+      "users",
+      user.uid
+    );
+
+
+  const snapshot =
+    await getDoc(
+      ref
+    );
+
+
+  if (
+    !snapshot.exists()
+  ) {
+    return null;
+  }
+
+
+  return {
+    id:
+      snapshot.id,
+
+    ...snapshot.data()
+  };
+}
+
+
+window.FuelAIFirebase
+  .saveCurrentUserRecord =
+    saveCurrentUserRecord;
+
+
+window.FuelAIFirebase
+  .getCurrentUserRecord =
+    getCurrentUserRecord;

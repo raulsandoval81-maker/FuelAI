@@ -595,7 +595,7 @@ function loadSavedSetup() {
 }
 
 
-function saveSetup() {
+async function saveSetup() {
 
   const previous =
     getSavedSetup();
@@ -695,6 +695,120 @@ function saveSetup() {
 
 
   saveUsageRole();
+
+
+  /*
+   * localStorage remains the compatibility
+   * cache while Firestore becomes the
+   * durable account record.
+   */
+
+  try {
+
+    if (
+      !window.FuelAIFirebase
+    ) {
+
+      await new Promise(
+        resolve => {
+
+          const timeout =
+            window.setTimeout(
+              resolve,
+              2500
+            );
+
+
+          window.addEventListener(
+            "fuelai:firebase-ready",
+            () => {
+
+              window.clearTimeout(
+                timeout
+              );
+
+              resolve();
+
+            },
+            {
+              once: true
+            }
+          );
+
+        }
+      );
+
+    }
+
+
+    if (
+      window.FuelAIFirebase
+        ?.saveCurrentUserRecord
+    ) {
+
+      let beta = {
+        enabled: false,
+        accessLevel: null,
+        cohort: "",
+        startedAt: null,
+        expiresAt: null
+      };
+
+
+      try {
+
+        beta =
+          JSON.parse(
+            localStorage.getItem(
+              "fuelai-beta-access"
+            ) || "null"
+          ) ||
+          beta;
+
+      } catch {
+        // keep safe default
+      }
+
+
+      await window.FuelAIFirebase
+        .saveCurrentUserRecord({
+
+          setup,
+
+          plan:
+            localStorage.getItem(
+              "fuelai-plan"
+            ) ||
+            "free",
+
+          identity:
+            window.FuelAIIdentity
+              ?.getFuelAIIdentity?.() ||
+            {
+              roles: [],
+              teamMemberships: []
+            },
+
+          beta
+
+        });
+
+    }
+
+  } catch (error) {
+
+    /*
+     * Do not destroy a completed Setup
+     * if Firestore temporarily fails.
+     * Local cache remains usable.
+     */
+
+    console.warn(
+      "FuelAI account sync failed.",
+      error
+    );
+
+  }
 
 
   renderSetupButtons();
