@@ -534,6 +534,46 @@
             record
           );
 
+
+          try {
+
+            const firebase =
+              await waitForFirebase();
+
+
+            const memberships =
+              await firebase
+                .getCurrentUserTeamMemberships();
+
+
+            const identity =
+              JSON.parse(
+                localStorage.getItem(
+                  "fuelai-identity"
+                ) || "{}"
+              );
+
+
+            identity.teamMemberships =
+              memberships;
+
+
+            localStorage.setItem(
+              "fuelai-identity",
+              JSON.stringify(
+                identity
+              )
+            );
+
+          } catch (error) {
+
+            console.warn(
+              "FuelAI team memberships could not be loaded.",
+              error
+            );
+
+          }
+
         } else {
 
           /*

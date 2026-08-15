@@ -15,7 +15,12 @@ import {
   doc,
   getDoc,
   setDoc,
-  serverTimestamp
+  serverTimestamp,
+  collection,
+  getDocs,
+  collectionGroup,
+  query,
+  where
 } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
 
 
@@ -231,3 +236,108 @@ window.FuelAIFirebase
 window.FuelAIFirebase
   .getCurrentUserRecord =
     getCurrentUserRecord;
+
+
+async function getCurrentUserTeamMemberships() {
+
+  const user =
+    auth.currentUser;
+
+
+  if (!user) {
+    return [];
+  }
+
+
+  const membershipsQuery =
+    query(
+      collectionGroup(
+        db,
+        "members"
+      ),
+      where(
+        "uid",
+        "==",
+        user.uid
+      )
+    );
+
+
+  const snapshot =
+    await getDocs(
+      membershipsQuery
+    );
+
+
+  const memberships =
+    [];
+
+
+  for (
+    const memberDoc
+    of snapshot.docs
+  ) {
+
+    const memberData =
+      memberDoc.data();
+
+
+    const teamRef =
+      memberDoc.ref.parent.parent;
+
+
+    if (!teamRef) {
+      continue;
+    }
+
+
+    const teamSnapshot =
+      await getDoc(
+        teamRef
+      );
+
+
+    if (!teamSnapshot.exists()) {
+      continue;
+    }
+
+
+    const teamData =
+      teamSnapshot.data();
+
+
+    memberships.push({
+
+      teamId:
+        teamRef.id,
+
+      teamName:
+        teamData.name ||
+        "",
+
+      role:
+        memberData.role ||
+        "athlete",
+
+      status:
+        memberData.status ||
+        "inactive",
+
+      joinedAt:
+        memberData.joinedAt
+          ?.toDate?.()
+          ?.toISOString?.() ||
+        null
+
+    });
+
+  }
+
+
+  return memberships;
+}
+
+
+window.FuelAIFirebase
+  .getCurrentUserTeamMemberships =
+    getCurrentUserTeamMemberships;
