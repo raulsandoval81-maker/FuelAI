@@ -775,21 +775,13 @@ async function saveSetup() {
 
           setup,
 
-          plan:
-            localStorage.getItem(
-              "fuelai-plan"
-            ) ||
-            "free",
-
           identity:
             window.FuelAIIdentity
               ?.getFuelAIIdentity?.() ||
             {
               roles: [],
               teamMemberships: []
-            },
-
-          beta
+            }
 
         });
 
