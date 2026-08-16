@@ -14,6 +14,11 @@
       {};
 
 
+    const getLogsForDate =
+      window.FuelAILog
+        ?.getLogsForDate;
+
+
     return Object.entries(
       dailyLogs
     )
@@ -23,43 +28,106 @@
             dateKey,
             day
           ]
-        ) => ({
+        ) => {
 
           /*
            * Some older daily records may
            * not contain their own date.
            * The object key is authoritative.
            */
-          date:
+          const date =
             day?.date ||
-            dateKey,
+            dateKey;
 
-          weight:
-            day?.latestWeight ??
-            null,
 
-          sleepHours:
-            day?.sleepHours ??
-            null,
+          const logs =
+            typeof getLogsForDate ===
+              "function"
+              ? (
+                  getLogsForDate(
+                    date
+                  ) ||
+                  []
+                )
+              : [];
 
-          hydrationOz:
-            day?.water ??
-            null,
 
-          calories:
-            day?.calories ??
-            null,
+          const caloriesLogged =
+            logs.some(
+              entry =>
+                entry?.calories !==
+                  null &&
+                entry?.calories !==
+                  undefined &&
+                entry?.calories !==
+                  ""
+            );
 
-          caloriesTarget:
-            day?.caloriesTarget ??
-            null,
 
-          trainingToday:
-            Boolean(
-              day?.trainingToday
-            )
+          const hydrationLogged =
+            logs.some(
+              entry =>
+                entry?.type ===
+                  "water"
+            ) ||
+            localStorage.getItem(
+              `fuelai-water-oz-${date}`
+            ) !== null;
 
-        })
+
+          const sleepLogged =
+            (
+              day?.sleepHours !==
+                null &&
+              day?.sleepHours !==
+                undefined &&
+              Number(
+                day.sleepHours
+              ) > 0
+            );
+
+
+          return {
+
+            date,
+
+            weight:
+              day?.latestWeight ??
+              null,
+
+            sleepHours:
+              sleepLogged
+                ? day.sleepHours
+                : null,
+
+            hydrationOz:
+              hydrationLogged
+                ? (
+                    day?.water ??
+                    0
+                  )
+                : null,
+
+            calories:
+              caloriesLogged
+                ? (
+                    day?.calories ??
+                    0
+                  )
+                : null,
+
+            caloriesTarget:
+              day?.caloriesTarget ??
+              null,
+
+            trainingToday:
+              Boolean(
+                day?.trainingToday
+              )
+
+          };
+
+        }
       )
       .filter(
         day =>

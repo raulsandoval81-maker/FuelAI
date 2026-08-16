@@ -1144,6 +1144,9 @@
       const clean =
         values.filter(
           value =>
+            value !== null &&
+            value !== undefined &&
+            value !== "" &&
             Number.isFinite(
               Number(value)
             )
@@ -1378,6 +1381,9 @@
         )
           .filter(
             point =>
+              point.value !== null &&
+              point.value !== undefined &&
+              point.value !== "" &&
               Number.isFinite(
                 Number(
                   point.value
@@ -2006,6 +2012,9 @@
 
           const calories =
             latest &&
+            latest.calories !== null &&
+            latest.calories !== undefined &&
+            latest.calories !== "" &&
             Number(
               latest.caloriesTarget
             ) > 0
