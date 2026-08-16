@@ -1,43 +1,78 @@
 import OpenAI from "openai";
 
+import {
+  MealWiseApiError,
+  validateMealWiseRequest,
+  validateMealWiseResult
+} from "./_lib/mealwise-security.js";
+
+import {
+  authenticateMealWise,
+  finalizeMealWiseScan,
+  finalizeSuccessfulMealWiseScan,
+  getMealWiseUsageResponse,
+  reserveMealWiseScan
+} from "./_lib/mealwise-metering.js";
+
 const client = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
 export default async function handler(req, res) {
+  res.setHeader(
+    "Cache-Control",
+    "no-store"
+  );
+
+  res.setHeader(
+    "X-Content-Type-Options",
+    "nosniff"
+  );
+
   if (req.method !== "POST") {
+    res.setHeader("Allow", "POST");
+
     return res.status(405).json({
-      error: "Method not allowed",
+      error: {
+        code: "METHOD_NOT_ALLOWED",
+        message: "Method not allowed."
+      }
     });
   }
 
+  let reservation = null;
+  let providerUsage = null;
+
   try {
+    const user =
+      await authenticateMealWise(req);
+
+    const input =
+      validateMealWiseRequest(
+        req.body
+      );
+
+    reservation =
+      await reserveMealWiseScan({
+        uid: user.uid,
+        requestId:
+          req.headers[
+            "x-fuelai-request-id"
+          ]
+      });
+
     const {
       image,
-      goal = "fuelwise",
-      height = "",
-      weight = "",
-      targetWeight = "",
-      ageRange = "",
-      gender = "",
-      lang = "en",
-      extraIngredients = "",
-    } = req.body;
-
-    if (!image) {
-      return res.status(400).json({
-        error: "Missing image",
-      });
-    }
-
-    const safeImage =
-      String(image || "").trim();
-
-    if (!safeImage.startsWith("data:image/")) {
-      return res.status(400).json({
-        error: "Invalid image format",
-      });
-    }
+      goal,
+      height,
+      weight,
+      targetWeight,
+      ageRange,
+      gender,
+      activityLevel,
+      lang,
+      extraIngredients
+    } = input;
 
     const language =
       lang === "es"
@@ -71,6 +106,7 @@ User context:
 - Target weight: ${targetWeight || "not provided"}
 - Age range: ${ageRange}
 - Body type: ${gender}
+- Activity level: ${activityLevel}
 - Mode: ${goal}
 
 Mode rules:
@@ -132,21 +168,29 @@ Return ONLY valid JSON with this exact shape:
               {
                 type: "image_url",
                 image_url: {
-                  url: safeImage,
+                  url: image,
                 },
               },
             ],
           },
         ],
+        max_tokens: 900,
+      }, {
+        timeout: 30000,
       });
+
+    providerUsage =
+      response.usage || null;
 
     const content =
       response.choices?.[0]?.message?.content;
 
     if (!content) {
-      return res.status(500).json({
-        error: "No AI response returned",
-      });
+      throw new MealWiseApiError(
+        502,
+        "AI_PROVIDER_UNAVAILABLE",
+        "MealWise could not complete this scan."
+      );
     }
 
     let parsed;
@@ -154,22 +198,74 @@ Return ONLY valid JSON with this exact shape:
     try {
       parsed = JSON.parse(content);
     } catch {
-      return res.status(500).json({
-        error: "AI formatting failed",
-      });
+      throw new MealWiseApiError(
+        422,
+        "AI_RESULT_INVALID",
+        "MealWise could not read this result. Try another photo."
+      );
     }
 
+    const result =
+      validateMealWiseResult(parsed);
+
+    await finalizeSuccessfulMealWiseScan({
+      reservation,
+      providerUsage
+    });
+
     return res.status(200).json({
-      result: parsed,
+      result,
+      usage:
+        getMealWiseUsageResponse(
+          reservation
+        )
     });
 
   } catch (err) {
     console.error("ANALYZE ERROR:", err);
 
-    return res.status(500).json({
-      error:
-        err.message ||
-        "Failed to analyze image",
+    if (reservation) {
+      try {
+        await finalizeMealWiseScan({
+          reservation,
+          succeeded: false,
+          providerUsage,
+          failureCode:
+            err.code ||
+            "AI_PROVIDER_UNAVAILABLE"
+        });
+      } catch (meteringError) {
+        console.error(
+          "MEALWISE METERING ERROR:",
+          meteringError
+        );
+      }
+    }
+
+    const isSafeError =
+      err instanceof MealWiseApiError;
+
+    const statusCode =
+      isSafeError
+        ? err.statusCode
+        : 500;
+
+    const code =
+      isSafeError
+        ? err.code
+        : "INTERNAL_ERROR";
+
+    const message =
+      isSafeError
+        ? err.message
+        : "MealWise could not complete this scan.";
+
+    return res.status(statusCode).json({
+      error: {
+        code,
+        message,
+        ...(err.details || {})
+      }
     });
   }
 }

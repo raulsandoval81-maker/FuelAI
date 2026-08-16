@@ -112,6 +112,127 @@ const waterKey =
    HELPERS
 ========================= */
 
+function escapeMealWiseHtml(
+  value
+) {
+  return String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+
+function createMealWiseRequestId() {
+  if (
+    window.crypto
+      ?.randomUUID
+  ) {
+    return window.crypto.randomUUID();
+  }
+
+  const bytes =
+    new Uint8Array(16);
+
+  window.crypto.getRandomValues(bytes);
+
+  bytes[6] =
+    (bytes[6] & 0x0f) | 0x40;
+
+  bytes[8] =
+    (bytes[8] & 0x3f) | 0x80;
+
+  const hex =
+    [...bytes].map(
+      byte =>
+        byte.toString(16)
+          .padStart(2, "0")
+    );
+
+  return [
+    hex.slice(0, 4).join(""),
+    hex.slice(4, 6).join(""),
+    hex.slice(6, 8).join(""),
+    hex.slice(8, 10).join(""),
+    hex.slice(10, 16).join("")
+  ].join("-");
+}
+
+
+async function getMealWiseAuthToken() {
+  if (!window.FuelAIFirebase) {
+    await new Promise(
+      (resolve, reject) => {
+        const timeout =
+          window.setTimeout(
+            () => reject(
+              new Error(
+                "FuelAI sign-in could not be loaded."
+              )
+            ),
+            5000
+          );
+
+        window.addEventListener(
+          "fuelai:firebase-ready",
+          () => {
+            window.clearTimeout(timeout);
+            resolve();
+          },
+          { once: true }
+        );
+      }
+    );
+  }
+
+  for (
+    let attempt = 0;
+    attempt < 50;
+    attempt++
+  ) {
+    const user =
+      window.FuelAIFirebase
+        ?.auth
+        ?.currentUser;
+
+    if (user) {
+      return user.getIdToken();
+    }
+
+    await new Promise(
+      resolve =>
+        window.setTimeout(
+          resolve,
+          100
+        )
+    );
+  }
+
+  const error =
+    new Error(
+      "Sign in to use MealWise."
+    );
+
+  error.code = "AUTH_REQUIRED";
+
+  throw error;
+}
+
+
+function safeMealWiseResult(result) {
+  return Object.fromEntries(
+    Object.entries(result || {})
+      .map(
+        ([key, value]) => [
+          key,
+          escapeMealWiseHtml(value)
+        ]
+      )
+  );
+}
+
+
 function parseFuelNumber(
   value
 ) {
@@ -627,8 +748,10 @@ function showError(
 
     <p class="feedback">
       ${
-        message ||
-        "Could not analyze meal. Try another photo."
+        escapeMealWiseHtml(
+          message ||
+          "Could not analyze meal. Try another photo."
+        )
       }
     </p>
   `;
@@ -860,6 +983,12 @@ analyzeBtn
 
       try {
 
+        const token =
+          await getMealWiseAuthToken();
+
+        const requestId =
+          createMealWiseRequestId();
+
         const response =
           await fetch(
             "/api/analyze",
@@ -870,7 +999,13 @@ analyzeBtn
 
               headers: {
                 "Content-Type":
-                  "application/json"
+                  "application/json",
+
+                "Authorization":
+                  `Bearer ${token}`,
+
+                "X-FuelAI-Request-ID":
+                  requestId
               },
 
               body:
@@ -927,10 +1062,18 @@ analyzeBtn
           !response.ok
         ) {
 
-          throw new Error(
-            data.error ||
-            "API request failed"
-          );
+          const apiError =
+            new Error(
+              data.error?.message ||
+              data.error ||
+              "MealWise could not complete this scan."
+            );
+
+          apiError.code =
+            data.error?.code ||
+            "API_REQUEST_FAILED";
+
+          throw apiError;
 
         }
 
@@ -949,6 +1092,18 @@ analyzeBtn
         const parsed =
           data.result;
 
+        const safeParsed =
+          safeMealWiseResult(
+            parsed
+          );
+
+        const safeUsageMessage =
+          data.usage
+            ? escapeMealWiseHtml(
+                `${data.usage.remaining} of ${data.usage.limit} MealWise scans remaining today.`
+              )
+            : "";
+
 
         if (
           !resultCard
@@ -960,14 +1115,14 @@ analyzeBtn
         resultCard.innerHTML = `
           <h2>
             ${
-              parsed.mealName ||
+              safeParsed.mealName ||
               "Meal Scan"
             }
           </h2>
 
           <div class="calories">
             ${
-              parsed.calories ||
+              safeParsed.calories ||
               "Unknown"
             } Calories
           </div>
@@ -981,7 +1136,7 @@ analyzeBtn
 
               <span>
                 ${
-                  parsed.protein ||
+                  safeParsed.protein ||
                   "—"
                 }
               </span>
@@ -994,7 +1149,7 @@ analyzeBtn
 
               <span>
                 ${
-                  parsed.carbs ||
+                  safeParsed.carbs ||
                   "—"
                 }
               </span>
@@ -1007,8 +1162,8 @@ analyzeBtn
 
               <span>
                 ${
-                  parsed.fat ??
-                  parsed.fats ??
+                  safeParsed.fat ??
+                  safeParsed.fats ??
                   "—"
                 }
               </span>
@@ -1018,16 +1173,16 @@ analyzeBtn
 
           <p class="feedback">
             ${
-              parsed.feedback ||
+              safeParsed.feedback ||
               ""
             }
           </p>
 
           ${
-            parsed.extraNoteResponse
+            safeParsed.extraNoteResponse
               ? `
                 <p class="feedback">
-                  ${parsed.extraNoteResponse}
+                  ${safeParsed.extraNoteResponse}
                 </p>
               `
               : ""
@@ -1036,7 +1191,7 @@ analyzeBtn
           <p class="feedback">
             Fuel Check:
             ${
-              parsed.score ||
+              safeParsed.score ||
               "—"
             }/10
           </p>
@@ -1044,17 +1199,27 @@ analyzeBtn
           <p class="feedback">
             Confidence Level:
             ${
-              parsed.confidence ||
+              safeParsed.confidence ||
               "—"
             }
           </p>
 
           <p class="caution">
             ${
-              parsed.caution ||
+              safeParsed.caution ||
               ""
             }
           </p>
+
+          ${
+            safeUsageMessage
+              ? `
+                <p class="feedback">
+                  ${safeUsageMessage}
+                </p>
+              `
+              : ""
+          }
 
           <div class="commit-actions">
 
@@ -1187,8 +1352,22 @@ analyzeBtn
 
 
         showError(
+          err.message ||
           "Could not analyze meal. Try another photo."
         );
+
+        if (
+          err.code ===
+          "AUTH_REQUIRED"
+        ) {
+          window.setTimeout(
+            () => {
+              window.location.href =
+                "/account/login.html";
+            },
+            1200
+          );
+        }
 
 
         analyzeBtn.textContent =
