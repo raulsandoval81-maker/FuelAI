@@ -703,8 +703,7 @@ function renderResults() {
   }
 
 
-  mealsContainer.innerHTML =
-    "";
+  mealsContainer.replaceChildren();
 
 
   renderSummary(

@@ -1,40 +1,71 @@
 import OpenAI from "openai";
 
+import {
+  AiApiError
+} from "./_lib/ai-security.js";
+
+import {
+  validateFridgeWiseRequest,
+  validateFridgeWiseResult
+} from "./_lib/fridgewise-security.js";
+
+import {
+  authenticateFridgeWise,
+  finalizeFridgeWiseScan,
+  finalizeSuccessfulFridgeWiseScan,
+  getFridgeWiseUsageResponse,
+  reserveFridgeWiseScan
+} from "./_lib/fridgewise-metering.js";
+
+
 const client = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
+  apiKey: process.env.OPENAI_API_KEY
 });
 
+
 export default async function handler(req, res) {
+  res.setHeader("Cache-Control", "no-store");
+  res.setHeader(
+    "X-Content-Type-Options",
+    "nosniff"
+  );
+
   if (req.method !== "POST") {
+    res.setHeader("Allow", "POST");
+
     return res.status(405).json({
-      error: "Method not allowed",
+      error: {
+        code: "METHOD_NOT_ALLOWED",
+        message: "Method not allowed."
+      }
     });
   }
 
+  let reservation = null;
+  let providerUsage = null;
+
   try {
+    const user =
+      await authenticateFridgeWise(req);
+    const input =
+      validateFridgeWiseRequest(req.body);
+
+    reservation =
+      await reserveFridgeWiseScan({
+        uid: user.uid,
+        requestId:
+          req.headers[
+            "x-fuelai-request-id"
+          ]
+      });
+
     const {
       image,
-      lang = "en",
-      wiseFlavor = "sweetspot",
-      pantryItems = [],
-      pantryCompanion = [],
-      pantryNotes = "",
-    } = req.body;
-
-    if (!image) {
-      return res.status(400).json({
-        error: "Missing image",
-      });
-    }
-
-    const safeImage =
-      String(image || "").trim();
-
-    if (!safeImage.startsWith("data:image/")) {
-      return res.status(400).json({
-        error: "Invalid image format",
-      });
-    }
+      lang,
+      wiseFlavor,
+      pantry,
+      pantryNotes
+    } = input;
 
     const language =
       lang === "es"
@@ -44,83 +75,49 @@ export default async function handler(req, res) {
     const flavorGuide = {
       sweetspot:
         "Sweet Spot tone: calm, practical, lightly human. Useful first, personality second.",
-
       mafia:
         "Mafia tone: light funny movie flavor with playful confidence. No threats, crime language, stereotypes, or exaggerated accents. Keep it family-friendly and useful.",
-
       toughguy:
         "Tough Guy tone: direct coach energy. Clear, motivating, practical, no excuses, but never mean, toxic, or shaming.",
-
       internet:
-        "Internet tone: light meme/teen flavor. Understandable, not cringe, not excessive, and still practical.",
+        "Internet tone: light meme/teen flavor. Understandable, not cringe, not excessive, and still practical."
     };
-
-    const selectedFlavor =
-      flavorGuide[wiseFlavor] || flavorGuide.sweetspot;
-
-    const combinedPantry = [
-      ...(Array.isArray(pantryItems) ? pantryItems : []),
-      ...(Array.isArray(pantryCompanion) ? pantryCompanion : []),
-    ];
-
-    const safePantryItems =
-      [...new Set(
-        combinedPantry
-          .map((item) => String(item).trim())
-          .filter(Boolean)
-      )];
-
-    const safePantryNotes =
-      String(pantryNotes || "").trim();
 
     const response =
       await client.chat.completions.create({
         model: "gpt-4.1-mini",
-
         response_format: {
-          type: "json_object",
+          type: "json_object"
         },
-
         temperature: 0.3,
-
+        max_tokens: 1200,
         messages: [
           {
             role: "user",
-
             content: [
               {
                 type: "text",
-
                 text: `
 You are FridgeWise, a practical fridge-to-dinner assistant for overwhelmed adults, teens, and families.
 
 Respond entirely in ${language}.
 Use natural, simple, practical wording.
-
-Your job is NOT perfect nutrition.
-Your job is dinner relief.
+Your job is dinner relief, not perfect nutrition.
 
 Tone setting:
-${selectedFlavor}
+${flavorGuide[wiseFlavor]}
 
-Pantry Companion selected items:
-${safePantryItems.length ? safePantryItems.join(", ") : "None provided"}
+Available pantry and freezer items:
+${pantry.length ? pantry.join(", ") : "None provided"}
 
 Extra pantry/freezer notes:
-${safePantryNotes || "None provided"}
+${pantryNotes || "None provided"}
 
-Use Pantry Companion items and pantry notes as available ingredients when building suggestions.
-
-Do not add Pantry Companion items or pantry notes items to the groceryList.
-
-Only put groceryList items that are missing from BOTH:
-- the image
-- Pantry Companion / pantry notes
+Treat those items and notes as available ingredients. Do not add them to the grocery list. Grocery items must be missing from both the image and supplied kitchen context.
 
 Analyze the uploaded fridge, pantry, grocery, leftover, or food image.
 
 Return ONLY valid JSON in this exact structure:
-
 {
   "detectedItems": [],
   "possibleItems": [],
@@ -139,91 +136,115 @@ Return ONLY valid JSON in this exact structure:
   "groceryList": []
 }
 
-Rules:
-- Give EXACTLY 3 suggestions total.
-- Give EXACTLY 2 quick meals and EXACTLY 1 snack.
-- Mark each suggestion with a "type" field: "meal" or "snack".
-- Keep meals and snacks simple, realistic, and fast.
-- Prioritize ingredients visible in the image.
-- Prioritize Pantry Companion items second.
-- Prioritize minimal extra shopping.
-- Prefer low-dishes and low-cleanup meals.
-- Avoid requiring more than 1–2 missing grocery items per suggestion.
-- Grocery list should include ONLY missing items.
-- Keep steps short and doable.
-- Use common kitchen language.
-- Avoid health lectures.
-- Avoid calories/macros.
-- Avoid gourmet recipes.
-- Avoid overwhelming the user.
-- If something is uncertain, put it in possibleItems or unclearItems.
-- Do not pretend certainty.
-- If the image is not a fridge, pantry, grocery, leftover, or food image, still give practical help based on what is visible.
-- Personality should show lightly in wording only.
-- Do not make every line funny.
-- Help first. Flavor second.
-- Never shame the user.
-- Never insult the user.
-- Never use profanity.
-- Never use threatening language.
-- Never use criminal language.
-- Never use stereotypes.
-                `,
+Give exactly 3 suggestions: exactly 2 meals and 1 snack. Use "meal" or "snack" in each type field. Keep suggestions fast, realistic, low-cleanup, and based first on visible ingredients, then supplied pantry items. Require no more than 1–2 missing items per suggestion. Keep steps short. Avoid health lectures, calories, macros, gourmet recipes, shame, profanity, threats, criminal language, and stereotypes. Put uncertain items in possibleItems or unclearItems and do not pretend certainty. If the image is unusual, still provide practical help based only on what is visible. Help first; flavor second.
+                `
               },
-
               {
                 type: "image_url",
-
                 image_url: {
-                  url: safeImage,
-                },
-              },
-            ],
-          },
-        ],
+                  url: image
+                }
+              }
+            ]
+          }
+        ]
+      }, {
+        timeout: 30000
       });
+
+    providerUsage = response.usage || null;
 
     const content =
-      response.choices?.[0]?.message?.content;
+      response.choices?.[0]
+        ?.message?.content;
 
     if (!content) {
-      return res.status(500).json({
-        error: "No AI response returned",
-      });
+      throw new AiApiError(
+        502,
+        "AI_PROVIDER_UNAVAILABLE",
+        "FridgeWise could not complete this scan."
+      );
     }
 
     let parsed;
 
     try {
       parsed = JSON.parse(content);
-    } catch (err) {
-      console.error("FRIDGE JSON PARSE ERROR:", err);
-      console.error("RAW FRIDGE RESULT:", content);
-
-      return res.status(500).json({
-        error: "Invalid AI JSON returned",
-      });
+    } catch {
+      throw new AiApiError(
+        422,
+        "AI_RESULT_INVALID",
+        "FridgeWise could not read this result. Try another photo."
+      );
     }
 
-    return res.status(200).json({
-      result: parsed,
+    const result =
+      validateFridgeWiseResult(parsed);
+
+    await finalizeSuccessfulFridgeWiseScan({
+      reservation,
+      providerUsage
     });
 
-  } catch (err) {
-    console.error("FRIDGE ERROR:", err);
+    return res.status(200).json({
+      result,
+      usage:
+        getFridgeWiseUsageResponse(
+          reservation
+        )
+    });
+  } catch (error) {
+    console.error(
+      "FRIDGEWISE ERROR:",
+      error
+    );
 
-    return res.status(500).json({
-      error:
-        err.message ||
-        "Failed to analyze fridge image",
+    if (reservation) {
+      try {
+        await finalizeFridgeWiseScan({
+          reservation,
+          succeeded: false,
+          providerUsage,
+          failureCode:
+            error.code ||
+            "AI_PROVIDER_UNAVAILABLE"
+        });
+      } catch (meteringError) {
+        console.error(
+          "FRIDGEWISE METERING ERROR:",
+          meteringError
+        );
+      }
+    }
+
+    const isSafeError =
+      error instanceof AiApiError;
+
+    return res.status(
+      isSafeError
+        ? error.statusCode
+        : 500
+    ).json({
+      error: {
+        code:
+          isSafeError
+            ? error.code
+            : "INTERNAL_ERROR",
+        message:
+          isSafeError
+            ? error.message
+            : "FridgeWise could not complete this scan.",
+        ...(error.details || {})
+      }
     });
   }
 }
 
+
 export const config = {
   api: {
     bodyParser: {
-      sizeLimit: "10mb",
-    },
-  },
+      sizeLimit: "10mb"
+    }
+  }
 };
