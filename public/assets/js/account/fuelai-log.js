@@ -520,6 +520,20 @@ function addFuelLog(
 
   buildTodayDailyLog();
 
+
+  /*
+   * Announce that FuelAI's daily data
+   * changed.
+   *
+   * Consumers decide what to do with it.
+   * The logging layer remains neutral.
+   */
+  window.dispatchEvent(
+    new CustomEvent(
+      "fuelai:daily-log-updated"
+    )
+  );
+
 }
 
 

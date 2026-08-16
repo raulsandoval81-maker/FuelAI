@@ -161,9 +161,107 @@
   }
 
 
+  let syncTimer =
+    null;
+
+
+  function queueTeamMetricsSync() {
+
+    clearTimeout(
+      syncTimer
+    );
+
+
+    syncTimer =
+      setTimeout(
+        async () => {
+
+          try {
+
+            await syncTeamMetrics();
+
+          } catch (error) {
+
+            console.warn(
+              "FuelAI Team metrics sync skipped:",
+              error?.message ||
+              error
+            );
+
+          }
+
+        },
+        750
+      );
+
+  }
+
+
+  function connectFirebaseAuth() {
+
+    const firebase =
+      window.FuelAIFirebase;
+
+
+    if (
+      !firebase?.watchAuth
+    ) {
+      return;
+    }
+
+
+    firebase.watchAuth(
+      user => {
+
+        if (user) {
+          queueTeamMetricsSync();
+        }
+
+      }
+    );
+
+  }
+
+
+  /*
+   * FuelAI Log announces data changes.
+   * Team Metrics decides whether those
+   * changes need to be synchronized.
+   */
+  window.addEventListener(
+    "fuelai:daily-log-updated",
+    queueTeamMetricsSync
+  );
+
+
+  /*
+   * firebase.js may already be ready,
+   * or may finish after this helper.
+   */
+  if (
+    window.FuelAIFirebase
+      ?.watchAuth
+  ) {
+
+    connectFirebaseAuth();
+
+  } else {
+
+    window.addEventListener(
+      "fuelai:firebase-ready",
+      connectFirebaseAuth,
+      {
+        once: true
+      }
+    );
+
+  }
+
+
   window.FuelAITeamMetrics = {
     getSafeDays,
-    syncTeamMetrics
+    syncTeamMetrics,
+    queueTeamMetricsSync
   };
 
 })();
