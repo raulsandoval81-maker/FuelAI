@@ -282,6 +282,22 @@ async function getCurrentUserTeamMemberships() {
       memberDoc.data();
 
 
+    /*
+     * Secure Firestore rules intentionally
+     * deny team data to inactive/invited
+     * memberships. Skip those records before
+     * attempting the team document read so one
+     * stale membership cannot break hydration
+     * of the user's active teams.
+     */
+    if (
+      memberData.status !==
+      "active"
+    ) {
+      continue;
+    }
+
+
     const teamRef =
       memberDoc.ref.parent.parent;
 
