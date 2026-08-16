@@ -218,6 +218,58 @@
 
 
     /* ========================================
+       TEAM VIEW NAV
+       ======================================== */
+
+    .team-view-nav{
+      display:none;
+
+      grid-template-columns:
+        repeat(
+          2,
+          minmax(0,1fr)
+        );
+
+      gap:10px;
+
+      margin-top:22px;
+    }
+
+    .team-view-link{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+
+      min-height:48px;
+      padding:0 16px;
+
+      border-radius:14px;
+
+      border:
+        1px solid
+        rgba(255,255,255,.10);
+
+      background:
+        rgba(15,23,42,.72);
+
+      color:#cbd5e1;
+
+      text-decoration:none;
+      font-weight:900;
+    }
+
+    .team-view-link.current{
+      border-color:
+        rgba(239,68,68,.46);
+
+      background:
+        rgba(239,68,68,.10);
+
+      color:#fff;
+    }
+
+
+    /* ========================================
        LOGISTICS WORKSPACE
        ======================================== */
 
@@ -755,6 +807,30 @@
     </section>
 
 
+    <nav
+      id="teamViewNav"
+      class="team-view-nav"
+      aria-label="Team workspace views"
+    >
+
+      <a
+        class="team-view-link current"
+        href="/team/"
+        aria-current="page"
+      >
+        Quick Scan
+      </a>
+
+      <a
+        class="team-view-link"
+        href="/team/dashboard/"
+      >
+        Team Overview
+      </a>
+
+    </nav>
+
+
     <!-- COACH LOGISTICS -->
 
     <section
@@ -959,6 +1035,12 @@
     const logistics =
       document.getElementById(
         "teamLogistics"
+      );
+
+
+    const teamViewNav =
+      document.getElementById(
+        "teamViewNav"
       );
 
 
@@ -1191,6 +1273,16 @@
         canManage
           ? "block"
           : "none";
+
+
+      if (teamViewNav) {
+
+        teamViewNav.style.display =
+          canManage
+            ? "grid"
+            : "none";
+
+      }
 
     }
 

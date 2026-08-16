@@ -1,0 +1,1446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <meta charset="UTF-8" />
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+
+  <title>Team Overview · FuelAI</title>
+
+  <link
+    rel="stylesheet"
+    href="/assets/css/site.css"
+  />
+
+  <link
+    rel="stylesheet"
+    href="/assets/css/nav.css"
+  />
+
+  <style>
+
+    :root{
+      --team-bg:#071019;
+      --team-panel:#0f172a;
+      --team-line:rgba(255,255,255,.08);
+      --team-muted:#94a3b8;
+      --team-red:#ef4444;
+      --team-green:#22c55e;
+    }
+
+    *{
+      box-sizing:border-box;
+    }
+
+    body{
+      margin:0;
+
+      background:
+        radial-gradient(
+          circle at top,
+          rgba(30,64,175,.14),
+          transparent 34%
+        ),
+        var(--team-bg);
+
+      color:#fff;
+    }
+
+    .overview-wrap{
+      width:min(
+        1180px,
+        calc(100% - 28px)
+      );
+
+      margin:0 auto;
+      padding:92px 0 42px;
+    }
+
+    .team-kicker{
+      margin:0 0 8px;
+
+      color:#f87171;
+
+      font-size:.78rem;
+      font-weight:900;
+      letter-spacing:.16em;
+      text-transform:uppercase;
+    }
+
+    .team-title{
+      margin:0;
+
+      font-size:
+        clamp(
+          2rem,
+          6vw,
+          3.4rem
+        );
+
+      line-height:1;
+    }
+
+    .team-sub{
+      margin:12px 0 0;
+
+      color:var(--team-muted);
+
+      line-height:1.5;
+    }
+
+    .team-view-nav{
+      display:grid;
+
+      grid-template-columns:
+        repeat(
+          2,
+          minmax(0,1fr)
+        );
+
+      gap:10px;
+
+      margin-top:24px;
+    }
+
+    .team-view-link{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+
+      min-height:48px;
+      padding:0 16px;
+
+      border-radius:14px;
+
+      border:
+        1px solid
+        rgba(255,255,255,.10);
+
+      background:
+        rgba(15,23,42,.72);
+
+      color:#cbd5e1;
+
+      text-decoration:none;
+      font-weight:900;
+    }
+
+    .team-view-link.current{
+      border-color:
+        rgba(239,68,68,.46);
+
+      background:
+        rgba(239,68,68,.10);
+
+      color:#fff;
+    }
+
+    .toolbar{
+      display:flex;
+
+      justify-content:
+        space-between;
+
+      align-items:center;
+
+      gap:16px;
+
+      flex-wrap:wrap;
+
+      margin-top:24px;
+      padding:16px;
+
+      border-radius:18px;
+
+      border:
+        1px solid
+        var(--team-line);
+
+      background:
+        rgba(15,23,42,.78);
+    }
+
+    .range-group,
+    .view-group{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+
+    .range-btn,
+    .view-btn{
+      min-height:42px;
+
+      padding:0 14px;
+
+      border-radius:12px;
+
+      border:
+        1px solid
+        rgba(255,255,255,.10);
+
+      background:#071019;
+      color:#cbd5e1;
+
+      font:inherit;
+      font-weight:900;
+
+      cursor:pointer;
+    }
+
+    .range-btn.active,
+    .view-btn.active{
+      border-color:
+        rgba(239,68,68,.52);
+
+      background:
+        rgba(239,68,68,.12);
+
+      color:#fff;
+    }
+
+    .summary-grid{
+      display:grid;
+
+      grid-template-columns:
+        repeat(
+          3,
+          minmax(0,1fr)
+        );
+
+      gap:12px;
+
+      margin-top:20px;
+    }
+
+    .summary-card{
+      padding:18px;
+
+      border-radius:18px;
+
+      border:
+        1px solid
+        var(--team-line);
+
+      background:
+        rgba(15,23,42,.80);
+    }
+
+    .summary-card span{
+      display:block;
+
+      color:#64748b;
+
+      font-size:.7rem;
+      font-weight:900;
+      letter-spacing:.09em;
+      text-transform:uppercase;
+    }
+
+    .summary-card strong{
+      display:block;
+
+      margin-top:7px;
+
+      font-size:1.55rem;
+    }
+
+    .panel{
+      margin-top:20px;
+      padding:20px;
+
+      border-radius:22px;
+
+      border:
+        1px solid
+        var(--team-line);
+
+      background:
+        rgba(15,23,42,.80);
+    }
+
+    .panel h2{
+      margin:0;
+      font-size:1.3rem;
+    }
+
+    .panel-sub{
+      margin:7px 0 0;
+
+      color:var(--team-muted);
+      line-height:1.5;
+    }
+
+    .graph-grid{
+      display:grid;
+
+      grid-template-columns:
+        repeat(
+          2,
+          minmax(0,1fr)
+        );
+
+      gap:12px;
+
+      margin-top:18px;
+    }
+
+    .metric-panel{
+      min-height:150px;
+
+      padding:18px;
+
+      border-radius:18px;
+
+      border:
+        1px solid
+        rgba(255,255,255,.07);
+
+      background:
+        rgba(255,255,255,.025);
+    }
+
+    .metric-panel h3{
+      margin:0;
+      font-size:1rem;
+    }
+
+    .metric-value{
+      display:block;
+
+      margin-top:18px;
+
+      font-size:1.7rem;
+      font-weight:900;
+    }
+
+    .metric-note{
+      margin:6px 0 0;
+
+      color:var(--team-muted);
+      font-size:.88rem;
+    }
+
+    .sheet-wrap{
+      overflow-x:auto;
+      margin-top:18px;
+    }
+
+    table{
+      width:100%;
+
+      border-collapse:
+        collapse;
+
+      min-width:920px;
+    }
+
+    th,
+    td{
+      padding:13px 12px;
+
+      border-bottom:
+        1px solid
+        rgba(255,255,255,.06);
+
+      text-align:left;
+      white-space:nowrap;
+    }
+
+    th{
+      color:#64748b;
+
+      font-size:.72rem;
+      font-weight:900;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+    }
+
+    td{
+      color:#e2e8f0;
+    }
+
+    .athlete-link{
+      color:#fff;
+      font-weight:900;
+      text-decoration:none;
+    }
+
+    .athlete-link:hover{
+      text-decoration:underline;
+    }
+
+    .missing{
+      color:#64748b;
+    }
+
+    .loading,
+    .error{
+      margin-top:24px;
+      padding:20px;
+
+      border-radius:18px;
+
+      border:
+        1px solid
+        var(--team-line);
+
+      background:
+        rgba(15,23,42,.80);
+    }
+
+    .error{
+      display:none;
+      color:#fca5a5;
+    }
+
+    #graphView,
+    #sheetView{
+      display:none;
+    }
+
+    .team-footer{
+      margin-top:30px;
+
+      text-align:center;
+
+      color:#64748b;
+
+      font-size:.78rem;
+
+      letter-spacing:.08em;
+      text-transform:uppercase;
+    }
+
+    .team-footer strong{
+      color:#22c55e;
+    }
+
+    @media(max-width:760px){
+
+      .summary-grid,
+      .graph-grid{
+        grid-template-columns:
+          1fr;
+      }
+
+      .toolbar{
+        align-items:stretch;
+      }
+
+    }
+
+  </style>
+
+</head>
+
+<body data-theme="night">
+
+  <main class="overview-wrap">
+
+    <p class="team-kicker">
+      FuelAI Team
+    </p>
+
+    <h1 class="team-title">
+      Team Overview
+    </h1>
+
+    <p
+      id="teamSubtitle"
+      class="team-sub"
+    >
+      Scan team-wide patterns across recovery, fueling, weight, and training.
+    </p>
+
+
+    <nav
+      class="team-view-nav"
+      aria-label="Team workspace views"
+    >
+
+      <a
+        class="team-view-link"
+        href="/team/"
+      >
+        Quick Scan
+      </a>
+
+      <a
+        class="team-view-link current"
+        href="/team/dashboard/"
+        aria-current="page"
+      >
+        Team Overview
+      </a>
+
+    </nav>
+
+
+    <section class="toolbar">
+
+      <div
+        class="range-group"
+        aria-label="Dashboard range"
+      >
+
+        <button
+          class="range-btn active"
+          data-range="7"
+          type="button"
+        >
+          7 Days
+        </button>
+
+        <button
+          class="range-btn"
+          data-range="21"
+          type="button"
+        >
+          21 Days
+        </button>
+
+        <button
+          class="range-btn"
+          data-range="42"
+          type="button"
+        >
+          42 Days
+        </button>
+
+      </div>
+
+
+      <div
+        class="view-group"
+        aria-label="Dashboard view"
+      >
+
+        <button
+          class="view-btn active"
+          data-view="graph"
+          type="button"
+        >
+          Graph View
+        </button>
+
+        <button
+          class="view-btn"
+          data-view="sheet"
+          type="button"
+        >
+          Sheet View
+        </button>
+
+      </div>
+
+    </section>
+
+
+    <div
+      id="loading"
+      class="loading"
+    >
+      Loading Team Overview...
+    </div>
+
+    <div
+      id="error"
+      class="error"
+    ></div>
+
+
+    <section
+      id="dashboardContent"
+      style="display:none;"
+    >
+
+      <div class="summary-grid">
+
+        <article class="summary-card">
+          <span>Athletes</span>
+          <strong id="summaryAthletes">—</strong>
+        </article>
+
+        <article class="summary-card">
+          <span>Reporting</span>
+          <strong id="summaryReporting">—</strong>
+        </article>
+
+        <article class="summary-card">
+          <span>Missing</span>
+          <strong id="summaryMissing">—</strong>
+        </article>
+
+      </div>
+
+
+      <section
+        id="graphView"
+        class="panel"
+      >
+
+        <h2>
+          Team Patterns
+        </h2>
+
+        <p class="panel-sub">
+          Team-level averages and participation for the selected period.
+        </p>
+
+
+        <div class="graph-grid">
+
+          <article class="metric-panel">
+            <h3>Weight</h3>
+            <strong
+              id="weightMetric"
+              class="metric-value"
+            >
+              —
+            </strong>
+            <p
+              id="weightNote"
+              class="metric-note"
+            >
+              Team average from reported weights.
+            </p>
+          </article>
+
+
+          <article class="metric-panel">
+            <h3>Sleep</h3>
+            <strong
+              id="sleepMetric"
+              class="metric-value"
+            >
+              —
+            </strong>
+            <p class="metric-note">
+              Average reported sleep.
+            </p>
+          </article>
+
+
+          <article class="metric-panel">
+            <h3>Hydration</h3>
+            <strong
+              id="hydrationMetric"
+              class="metric-value"
+            >
+              —
+            </strong>
+            <p class="metric-note">
+              Average reported ounces.
+            </p>
+          </article>
+
+
+          <article class="metric-panel">
+            <h3>Calories</h3>
+            <strong
+              id="caloriesMetric"
+              class="metric-value"
+            >
+              —
+            </strong>
+            <p class="metric-note">
+              Average intake versus target.
+            </p>
+          </article>
+
+
+          <article class="metric-panel">
+            <h3>Training</h3>
+            <strong
+              id="trainingMetric"
+              class="metric-value"
+            >
+              —
+            </strong>
+            <p class="metric-note">
+              Logged training days.
+            </p>
+          </article>
+
+        </div>
+
+      </section>
+
+
+      <section
+        id="sheetView"
+        class="panel"
+      >
+
+        <h2>
+          Team Sheet
+        </h2>
+
+        <p class="panel-sub">
+          One-row scan of the latest reported team data.
+        </p>
+
+
+        <div class="sheet-wrap">
+
+          <table>
+
+            <thead>
+              <tr>
+                <th>Athlete</th>
+                <th>Weight</th>
+                <th>Sleep</th>
+                <th>Hydration</th>
+                <th>Calories</th>
+                <th>Training</th>
+                <th>Reported Days</th>
+              </tr>
+            </thead>
+
+            <tbody id="sheetBody">
+            </tbody>
+
+          </table>
+
+        </div>
+
+      </section>
+
+    </section>
+
+
+    <footer class="team-footer">
+      FuelAI™ · Powered by
+      <strong>Sandman™</strong>
+    </footer>
+
+  </main>
+
+
+  <script src="/assets/js/core/plan.js?v=beta3"></script>
+
+  <script
+    type="module"
+    src="/assets/js/core/firebase.js?v=1"
+  ></script>
+
+  <script src="/assets/js/core/auth-soft.js"></script>
+
+  <script src="/assets/js/core/identity.js?v=identity2"></script>
+
+
+  <script>
+
+    window.FuelAIAuth
+      ?.requireSoftLogin();
+
+
+    const loading =
+      document.getElementById(
+        "loading"
+      );
+
+    const errorBox =
+      document.getElementById(
+        "error"
+      );
+
+    const dashboardContent =
+      document.getElementById(
+        "dashboardContent"
+      );
+
+    const graphView =
+      document.getElementById(
+        "graphView"
+      );
+
+    const sheetView =
+      document.getElementById(
+        "sheetView"
+      );
+
+    let activeRange =
+      Number(
+        localStorage.getItem(
+          "fuelai-team-dashboard-range"
+        )
+      ) || 7;
+
+    if (
+      ![7,21,42].includes(
+        activeRange
+      )
+    ) {
+      activeRange = 7;
+    }
+
+    let activeView =
+      localStorage.getItem(
+        "fuelai-team-dashboard-view"
+      ) ||
+      "graph";
+
+    if (
+      !["graph","sheet"].includes(
+        activeView
+      )
+    ) {
+      activeView =
+        "graph";
+    }
+
+    let activeMembership =
+      null;
+
+    let currentData =
+      null;
+
+
+    function wait(ms) {
+
+      return new Promise(
+        resolve =>
+          setTimeout(
+            resolve,
+            ms
+          )
+      );
+
+    }
+
+
+    async function waitForFirebase() {
+
+      let attempts =
+        0;
+
+      while (
+        attempts < 100 &&
+        !window.FuelAIFirebase
+          ?.getCurrentUserTeamMemberships
+      ) {
+
+        await wait(50);
+        attempts++;
+
+      }
+
+      const firebase =
+        window.FuelAIFirebase;
+
+      if (
+        !firebase
+          ?.getCurrentUserTeamMemberships
+      ) {
+
+        throw new Error(
+          "FuelAI Firebase unavailable"
+        );
+
+      }
+
+      attempts =
+        0;
+
+      while (
+        attempts < 100 &&
+        !firebase.auth
+          ?.currentUser
+      ) {
+
+        await wait(50);
+        attempts++;
+
+      }
+
+      if (
+        !firebase.auth
+          ?.currentUser
+      ) {
+
+        throw new Error(
+          "Firebase user unavailable"
+        );
+
+      }
+
+      return firebase;
+
+    }
+
+
+    function average(
+      values
+    ) {
+
+      const clean =
+        values.filter(
+          value =>
+            Number.isFinite(
+              Number(value)
+            )
+        );
+
+      if (!clean.length) {
+        return null;
+      }
+
+      return (
+        clean.reduce(
+          (sum, value) =>
+            sum +
+            Number(value),
+          0
+        ) /
+        clean.length
+      );
+
+    }
+
+
+    function latestDay(
+      athlete
+    ) {
+
+      const days =
+        athlete.days ||
+        [];
+
+      return (
+        days[
+          days.length - 1
+        ] ||
+        null
+      );
+
+    }
+
+
+    function renderViews() {
+
+      graphView.style.display =
+        activeView ===
+          "graph"
+          ? "block"
+          : "none";
+
+      sheetView.style.display =
+        activeView ===
+          "sheet"
+          ? "block"
+          : "none";
+
+
+      document
+        .querySelectorAll(
+          ".view-btn"
+        )
+        .forEach(
+          button => {
+
+            button.classList.toggle(
+              "active",
+              button.dataset.view ===
+                activeView
+            );
+
+          }
+        );
+
+
+      document
+        .querySelectorAll(
+          ".range-btn"
+        )
+        .forEach(
+          button => {
+
+            button.classList.toggle(
+              "active",
+              Number(
+                button.dataset.range
+              ) ===
+                activeRange
+            );
+
+          }
+        );
+
+    }
+
+
+    function renderDashboard(
+      data
+    ) {
+
+      currentData =
+        data;
+
+      loading.style.display =
+        "none";
+
+      errorBox.style.display =
+        "none";
+
+      dashboardContent.style.display =
+        "block";
+
+
+      document.getElementById(
+        "teamSubtitle"
+      ).textContent =
+        `${
+          data.team?.name ||
+          "FuelAI Team"
+        } · ${
+          data.rangeDays
+        }-day team overview`;
+
+
+      document.getElementById(
+        "summaryAthletes"
+      ).textContent =
+        data.summary?.athletes ??
+        0;
+
+      document.getElementById(
+        "summaryReporting"
+      ).textContent =
+        data.summary?.reporting ??
+        0;
+
+      document.getElementById(
+        "summaryMissing"
+      ).textContent =
+        data.summary?.missing ??
+        0;
+
+
+      const athletes =
+        Array.isArray(
+          data.athletes
+        )
+          ? data.athletes
+          : [];
+
+
+      const allDays =
+        athletes.flatMap(
+          athlete =>
+            athlete.days ||
+            []
+        );
+
+
+      const avgWeight =
+        average(
+          allDays.map(
+            day =>
+              day.weight
+          )
+        );
+
+      const avgSleep =
+        average(
+          allDays.map(
+            day =>
+              day.sleepHours
+          )
+        );
+
+      const avgHydration =
+        average(
+          allDays.map(
+            day =>
+              day.hydrationOz
+          )
+        );
+
+      const caloriePercentages =
+        allDays
+          .filter(
+            day =>
+              Number(
+                day.caloriesTarget
+              ) > 0 &&
+              Number.isFinite(
+                Number(
+                  day.calories
+                )
+              )
+          )
+          .map(
+            day =>
+              (
+                Number(
+                  day.calories
+                ) /
+                Number(
+                  day.caloriesTarget
+                )
+              ) *
+              100
+          );
+
+      const avgCaloriesPercent =
+        average(
+          caloriePercentages
+        );
+
+      const trainingDays =
+        allDays.filter(
+          day =>
+            day.trainingToday
+        ).length;
+
+
+      document.getElementById(
+        "weightMetric"
+      ).textContent =
+        avgWeight === null
+          ? "—"
+          : `${avgWeight.toFixed(1)} lbs`;
+
+      document.getElementById(
+        "sleepMetric"
+      ).textContent =
+        avgSleep === null
+          ? "—"
+          : `${avgSleep.toFixed(1)} hrs`;
+
+      document.getElementById(
+        "hydrationMetric"
+      ).textContent =
+        avgHydration === null
+          ? "—"
+          : `${Math.round(
+              avgHydration
+            )} oz`;
+
+      document.getElementById(
+        "caloriesMetric"
+      ).textContent =
+        avgCaloriesPercent === null
+          ? "—"
+          : `${Math.round(
+              avgCaloriesPercent
+            )}% of target`;
+
+      document.getElementById(
+        "trainingMetric"
+      ).textContent =
+        `${trainingDays} logged days`;
+
+
+      const sheetBody =
+        document.getElementById(
+          "sheetBody"
+        );
+
+      sheetBody.innerHTML =
+        "";
+
+
+      athletes.forEach(
+        athlete => {
+
+          const latest =
+            latestDay(
+              athlete
+            );
+
+          const row =
+            document.createElement(
+              "tr"
+            );
+
+          const calories =
+            latest &&
+            Number(
+              latest.caloriesTarget
+            ) > 0
+              ? `${Math.round(
+                  (
+                    Number(
+                      latest.calories
+                    ) /
+                    Number(
+                      latest.caloriesTarget
+                    )
+                  ) *
+                  100
+                )}%`
+              : "—";
+
+          row.innerHTML = `
+            <td>
+              <a
+                class="athlete-link"
+                href="/team/athlete/?teamId=${
+                  encodeURIComponent(
+                    data.team.teamId
+                  )
+                }&uid=${
+                  encodeURIComponent(
+                    athlete.uid
+                  )
+                }"
+              >
+                ${
+                  athlete.email ||
+                  "Athlete"
+                }
+              </a>
+            </td>
+
+            <td>
+              ${
+                latest?.weight ??
+                "—"
+              }
+            </td>
+
+            <td>
+              ${
+                latest?.sleepHours ??
+                "—"
+              }
+            </td>
+
+            <td>
+              ${
+                latest?.hydrationOz ??
+                "—"
+              }
+            </td>
+
+            <td>
+              ${calories}
+            </td>
+
+            <td>
+              ${
+                latest
+                  ? (
+                      latest.trainingToday
+                        ? "Yes"
+                        : "No"
+                    )
+                  : "—"
+              }
+            </td>
+
+            <td>
+              ${
+                athlete.days?.length ||
+                0
+              }
+            </td>
+          `;
+
+          sheetBody.appendChild(
+            row
+          );
+
+        }
+      );
+
+
+      renderViews();
+
+    }
+
+
+    async function loadDashboard() {
+
+      loading.style.display =
+        "block";
+
+      errorBox.style.display =
+        "none";
+
+
+      try {
+
+        const firebase =
+          await waitForFirebase();
+
+        const memberships =
+          await firebase
+            .getCurrentUserTeamMemberships();
+
+        const membership =
+          memberships.find(
+            item =>
+              item.status ===
+                "active" &&
+              (
+                item.role ===
+                  "coach" ||
+                item.role ===
+                  "admin"
+              )
+          );
+
+        if (!membership) {
+
+          throw new Error(
+            "Active coach or admin team membership required."
+          );
+
+        }
+
+        activeMembership =
+          membership;
+
+
+        const token =
+          await firebase.auth
+            .currentUser
+            .getIdToken(
+              true
+            );
+
+
+        const response =
+          await fetch(
+            "/api/team/dashboard",
+            {
+              method:
+                "POST",
+
+              headers: {
+                "Content-Type":
+                  "application/json",
+
+                Authorization:
+                  `Bearer ${token}`
+              },
+
+              body:
+                JSON.stringify({
+                  teamId:
+                    membership.teamId,
+
+                  rangeDays:
+                    activeRange
+                })
+            }
+          );
+
+
+        const data =
+          await response.json();
+
+
+        if (!response.ok) {
+
+          throw new Error(
+            data.error ||
+            "Unable to load Team Overview"
+          );
+
+        }
+
+
+        renderDashboard(
+          data
+        );
+
+      } catch (error) {
+
+        loading.style.display =
+          "none";
+
+        dashboardContent.style.display =
+          "none";
+
+        errorBox.style.display =
+          "block";
+
+        errorBox.textContent =
+          error.message ||
+          "Unable to load Team Overview.";
+
+      }
+
+    }
+
+
+    document
+      .querySelectorAll(
+        ".range-btn"
+      )
+      .forEach(
+        button => {
+
+          button.addEventListener(
+            "click",
+            () => {
+
+              activeRange =
+                Number(
+                  button.dataset.range
+                );
+
+              localStorage.setItem(
+                "fuelai-team-dashboard-range",
+                String(
+                  activeRange
+                )
+              );
+
+              loadDashboard();
+
+            }
+          );
+
+        }
+      );
+
+
+    document
+      .querySelectorAll(
+        ".view-btn"
+      )
+      .forEach(
+        button => {
+
+          button.addEventListener(
+            "click",
+            () => {
+
+              activeView =
+                button.dataset.view;
+
+              localStorage.setItem(
+                "fuelai-team-dashboard-view",
+                activeView
+              );
+
+              renderViews();
+
+            }
+          );
+
+        }
+      );
+
+
+    renderViews();
+
+    loadDashboard();
+
+  </script>
+
+
+  <script src="/assets/js/core/nav.js?v=team2"></script>
+
+</body>
+</html>
