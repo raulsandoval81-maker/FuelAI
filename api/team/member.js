@@ -79,13 +79,32 @@ export default async function handler(
       String(targetEmail || "")
         .trim()
     ) {
-      target =
-        await getAdminAuth()
-          .getUserByEmail(
-            String(targetEmail)
-              .trim()
-              .toLowerCase()
-          );
+
+      try {
+
+        target =
+          await getAdminAuth()
+            .getUserByEmail(
+              String(targetEmail)
+                .trim()
+                .toLowerCase()
+            );
+
+      } catch (error) {
+
+        if (
+          error?.code ===
+          "auth/user-not-found"
+        ) {
+          return res.status(404).json({
+            error:
+              "No FuelAI account was found for that email."
+          });
+        }
+
+        throw error;
+
+      }
 
     } else {
       return res.status(400).json({
