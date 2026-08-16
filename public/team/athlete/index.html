@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <meta charset="UTF-8" />
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+
+  <title>Athlete Profile · FuelAI Team</title>
+
+  <link
+    rel="stylesheet"
+    href="/assets/css/site.css"
+  />
+
+  <link
+    rel="stylesheet"
+    href="/assets/css/nav.css"
+  />
+
+  <style>
+
+    :root{
+      --profile-bg:#071019;
+      --profile-panel:#0f172a;
+      --profile-line:rgba(255,255,255,.08);
+      --profile-muted:#94a3b8;
+      --profile-red:#ef4444;
+      --profile-green:#22c55e;
+    }
+
+    *{
+      box-sizing:border-box;
+    }
+
+    body{
+      margin:0;
+
+      background:
+        radial-gradient(
+          circle at top,
+          rgba(30,64,175,.14),
+          transparent 34%
+        ),
+        var(--profile-bg);
+
+      color:#fff;
+    }
+
+    .profile-wrap{
+      width:min(
+        920px,
+        calc(100% - 28px)
+      );
+
+      margin:0 auto;
+      padding:92px 0 42px;
+    }
+
+    .back-link{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+
+      margin-bottom:20px;
+
+      color:#cbd5e1;
+      text-decoration:none;
+      font-weight:800;
+    }
+
+    .back-link:hover{
+      color:#fff;
+    }
+
+    .profile-kicker{
+      margin:0 0 8px;
+
+      color:#f87171;
+
+      font-size:.78rem;
+      font-weight:900;
+      letter-spacing:.16em;
+      text-transform:uppercase;
+    }
+
+    .profile-title{
+      margin:0;
+
+      font-size:
+        clamp(
+          2rem,
+          6vw,
+          3.4rem
+        );
+
+      line-height:1;
+    }
+
+    .profile-sub{
+      margin:12px 0 0;
+
+      color:var(--profile-muted);
+
+      line-height:1.5;
+    }
+
+    .loading,
+    .profile-error{
+      margin-top:28px;
+      padding:22px;
+
+      border-radius:20px;
+
+      border:
+        1px solid
+        var(--profile-line);
+
+      background:
+        rgba(15,23,42,.78);
+
+      color:#cbd5e1;
+    }
+
+    .profile-error{
+      display:none;
+      color:#fca5a5;
+
+      border-color:
+        rgba(239,68,68,.28);
+    }
+
+    .athlete-card{
+      display:none;
+
+      margin-top:28px;
+      padding:24px;
+
+      border-radius:24px;
+
+      border:
+        1px solid
+        rgba(239,68,68,.28);
+
+      background:
+        linear-gradient(
+          180deg,
+          rgba(15,23,42,.96),
+          rgba(7,16,25,.98)
+        );
+
+      box-shadow:
+        0 16px 40px
+        rgba(0,0,0,.22);
+    }
+
+    .athlete-head{
+      display:flex;
+
+      justify-content:
+        space-between;
+
+      align-items:flex-start;
+
+      gap:18px;
+    }
+
+    .athlete-name{
+      margin:0;
+      font-size:1.8rem;
+    }
+
+    .athlete-email{
+      margin:7px 0 0;
+
+      color:var(--profile-muted);
+
+      overflow-wrap:anywhere;
+    }
+
+    .status-badge{
+      flex:0 0 auto;
+
+      padding:7px 11px;
+
+      border-radius:999px;
+
+      background:
+        rgba(34,197,94,.12);
+
+      border:
+        1px solid
+        rgba(34,197,94,.28);
+
+      color:#86efac;
+
+      font-size:.76rem;
+      font-weight:900;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+    }
+
+    .profile-section{
+      margin-top:22px;
+    }
+
+    .profile-section h2{
+      margin:0 0 12px;
+      font-size:1.2rem;
+    }
+
+    .profile-grid{
+      display:grid;
+
+      grid-template-columns:
+        repeat(
+          2,
+          minmax(0,1fr)
+        );
+
+      gap:12px;
+    }
+
+    .profile-stat{
+      padding:16px;
+
+      border-radius:17px;
+
+      border:
+        1px solid
+        var(--profile-line);
+
+      background:
+        rgba(255,255,255,.025);
+    }
+
+    .profile-stat span{
+      display:block;
+
+      color:#64748b;
+
+      font-size:.7rem;
+      font-weight:900;
+      letter-spacing:.09em;
+      text-transform:uppercase;
+    }
+
+    .profile-stat strong{
+      display:block;
+
+      margin-top:7px;
+
+      color:#f8fafc;
+      font-size:1rem;
+      line-height:1.35;
+    }
+
+    .profile-note{
+      margin-top:20px;
+      padding:14px 16px;
+
+      border-radius:15px;
+
+      border:
+        1px solid
+        rgba(56,189,248,.16);
+
+      background:
+        rgba(56,189,248,.05);
+
+      color:#94a3b8;
+
+      font-size:.88rem;
+      line-height:1.5;
+    }
+
+    .profile-footer{
+      margin-top:30px;
+
+      text-align:center;
+
+      color:#64748b;
+
+      font-size:.78rem;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+    }
+
+    .profile-footer strong{
+      color:#22c55e;
+    }
+
+    @media (max-width:560px){
+
+      .athlete-head{
+        flex-direction:column;
+      }
+
+      .profile-grid{
+        grid-template-columns:1fr;
+      }
+
+    }
+
+  </style>
+
+</head>
+
+<body data-theme="night">
+
+  <main class="profile-wrap">
+
+    <a
+      class="back-link"
+      href="/team/"
+    >
+      ← Back to Team
+    </a>
+
+
+    <p class="profile-kicker">
+      FuelAI Team
+    </p>
+
+    <h1 class="profile-title">
+      Athlete Profile
+    </h1>
+
+    <p class="profile-sub">
+      Team view of the athlete's existing FuelAI profile.
+    </p>
+
+
+    <div
+      id="profileLoading"
+      class="loading"
+    >
+      Loading athlete profile...
+    </div>
+
+
+    <div
+      id="profileError"
+      class="profile-error"
+    >
+    </div>
+
+
+    <section
+      id="athleteCard"
+      class="athlete-card"
+    >
+
+      <div class="athlete-head">
+
+        <div>
+
+          <h2
+            id="athleteName"
+            class="athlete-name"
+          >
+            FuelAI Athlete
+          </h2>
+
+          <p
+            id="athleteEmail"
+            class="athlete-email"
+          >
+            —
+          </p>
+
+        </div>
+
+
+        <div
+          id="athleteStatus"
+          class="status-badge"
+        >
+          Active
+        </div>
+
+      </div>
+
+
+      <div class="profile-section">
+
+        <h2>
+          Team Membership
+        </h2>
+
+
+        <div class="profile-grid">
+
+          <div class="profile-stat">
+
+            <span>
+              Role
+            </span>
+
+            <strong id="athleteRole">
+              Athlete
+            </strong>
+
+          </div>
+
+
+          <div class="profile-stat">
+
+            <span>
+              Status
+            </span>
+
+            <strong id="membershipStatus">
+              Active
+            </strong>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div class="profile-section">
+
+        <h2>
+          FuelAI Profile
+        </h2>
+
+
+        <div class="profile-grid">
+
+          <div class="profile-stat">
+
+            <span>
+              Profile Type
+            </span>
+
+            <strong id="profileType">
+              Not set
+            </strong>
+
+          </div>
+
+
+          <div class="profile-stat">
+
+            <span>
+              Direction
+            </span>
+
+            <strong id="profileGoal">
+              Not set
+            </strong>
+
+          </div>
+
+
+          <div class="profile-stat">
+
+            <span>
+              Training
+            </span>
+
+            <strong id="profileActivity">
+              Not set
+            </strong>
+
+          </div>
+
+
+          <div class="profile-stat">
+
+            <span>
+              Combat Style
+            </span>
+
+            <strong id="profileCombat">
+              Not set
+            </strong>
+
+          </div>
+
+
+          <div class="profile-stat">
+
+            <span>
+              Current Weight
+            </span>
+
+            <strong id="profileWeight">
+              Not set
+            </strong>
+
+          </div>
+
+
+          <div class="profile-stat">
+
+            <span>
+              Target Weight
+            </span>
+
+            <strong id="profileTargetWeight">
+              Not set
+            </strong>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div class="profile-note">
+        This is a read-only team view. Profile information is controlled by
+        the athlete's own FuelAI account and updates when the athlete updates
+        their FuelAI profile.
+      </div>
+
+    </section>
+
+
+    <footer class="profile-footer">
+      FuelAI™ · Powered by
+      <strong>Sandman™</strong>
+    </footer>
+
+  </main>
+
+
+  <script src="/assets/js/core/plan.js?v=beta3"></script>
+
+  <script
+    type="module"
+    src="/assets/js/core/firebase.js?v=1"
+  ></script>
+
+  <script src="/assets/js/core/auth-soft.js"></script>
+
+  <script src="/assets/js/core/identity.js?v=identity2"></script>
+
+
+  <script>
+
+    window.FuelAIAuth
+      ?.requireSoftLogin();
+
+
+    const params =
+      new URLSearchParams(
+        window.location.search
+      );
+
+
+    const teamId =
+      String(
+        params.get(
+          "teamId"
+        ) ||
+        ""
+      ).trim();
+
+
+    const targetUid =
+      String(
+        params.get(
+          "uid"
+        ) ||
+        ""
+      ).trim();
+
+
+    const loading =
+      document.getElementById(
+        "profileLoading"
+      );
+
+
+    const errorBox =
+      document.getElementById(
+        "profileError"
+      );
+
+
+    const athleteCard =
+      document.getElementById(
+        "athleteCard"
+      );
+
+
+    const PROFILE_LABELS = {
+
+      "general-health":
+        "General Health",
+
+      "fitness-enthusiast":
+        "Fitness Enthusiast",
+
+      "sports-athlete":
+        "Sports Athlete",
+
+      "combat-athlete":
+        "Combat Athlete"
+
+    };
+
+
+    const GOAL_LABELS = {
+
+      fuelwise:
+        "Maintain / Balance",
+
+      cutwise:
+        "Lean Out",
+
+      gainwise:
+        "Build / Recover"
+
+    };
+
+
+    const ACTIVITY_LABELS = {
+
+      "0-1":
+        "0–1 Days / Week",
+
+      "1-2":
+        "1–2 Days / Week",
+
+      "2-3":
+        "2–3 Days / Week",
+
+      "4-5":
+        "4–5 Days / Week",
+
+      "6plus":
+        "6+ Days / Week",
+
+      "6-plus":
+        "6+ Days / Week"
+
+    };
+
+
+    const COMBAT_LABELS = {
+
+      grappling:
+        "Grappling Sports",
+
+      striking:
+        "Striking Sports",
+
+      mma:
+        "MMA / Mixed Combat"
+
+    };
+
+
+    function wait(
+      ms
+    ) {
+
+      return new Promise(
+        resolve =>
+          setTimeout(
+            resolve,
+            ms
+          )
+      );
+
+    }
+
+
+    async function waitForFirebase() {
+
+      let attempts =
+        0;
+
+
+      while (
+        attempts < 100 &&
+        !window.FuelAIFirebase
+          ?.auth
+      ) {
+
+        await wait(50);
+
+        attempts++;
+
+      }
+
+
+      const firebase =
+        window.FuelAIFirebase;
+
+
+      if (!firebase?.auth) {
+
+        throw new Error(
+          "FuelAI Firebase unavailable"
+        );
+
+      }
+
+
+      attempts =
+        0;
+
+
+      while (
+        attempts < 100 &&
+        !firebase.auth.currentUser
+      ) {
+
+        await wait(50);
+
+        attempts++;
+
+      }
+
+
+      if (!firebase.auth.currentUser) {
+
+        throw new Error(
+          "Firebase user unavailable"
+        );
+
+      }
+
+
+      return firebase;
+
+    }
+
+
+    function setText(
+      id,
+      value
+    ) {
+
+      const element =
+        document.getElementById(
+          id
+        );
+
+
+      if (element) {
+
+        element.textContent =
+          value ||
+          "Not set";
+
+      }
+
+    }
+
+
+    function renderAthlete(
+      athlete
+    ) {
+
+      const profile =
+        athlete.profile ||
+        {};
+
+
+      const nickname =
+        String(
+          profile.nickname ||
+          ""
+        ).trim();
+
+
+      setText(
+        "athleteName",
+        nickname ||
+        "FuelAI Athlete"
+      );
+
+
+      setText(
+        "athleteEmail",
+        athlete.email ||
+        "Email unavailable"
+      );
+
+
+      setText(
+        "athleteRole",
+        athlete.role ||
+        "athlete"
+      );
+
+
+      setText(
+        "membershipStatus",
+        athlete.status ||
+        "active"
+      );
+
+
+      setText(
+        "athleteStatus",
+        athlete.status ||
+        "active"
+      );
+
+
+      setText(
+        "profileType",
+        PROFILE_LABELS[
+          profile.lifestyleType
+        ] ||
+        profile.lifestyleType ||
+        "Not set"
+      );
+
+
+      setText(
+        "profileGoal",
+        GOAL_LABELS[
+          profile.goal
+        ] ||
+        profile.goal ||
+        "Not set"
+      );
+
+
+      setText(
+        "profileActivity",
+        ACTIVITY_LABELS[
+          profile.activityLevel
+        ] ||
+        profile.activityLevel ||
+        "Not set"
+      );
+
+
+      setText(
+        "profileCombat",
+        COMBAT_LABELS[
+          profile.combatStyle
+        ] ||
+        profile.combatStyle ||
+        "Not set"
+      );
+
+
+      setText(
+        "profileWeight",
+        profile.weight
+          ? `${profile.weight} lbs`
+          : "Not set"
+      );
+
+
+      setText(
+        "profileTargetWeight",
+        profile.targetWeight
+          ? `${profile.targetWeight} lbs`
+          : "Not set"
+      );
+
+
+      loading.style.display =
+        "none";
+
+
+      errorBox.style.display =
+        "none";
+
+
+      athleteCard.style.display =
+        "block";
+
+    }
+
+
+    async function loadAthleteProfile() {
+
+      if (
+        !teamId ||
+        !targetUid
+      ) {
+
+        throw new Error(
+          "Athlete profile link is incomplete"
+        );
+
+      }
+
+
+      const firebase =
+        await waitForFirebase();
+
+
+      const token =
+        await firebase
+          .auth
+          .currentUser
+          .getIdToken(
+            true
+          );
+
+
+      const response =
+        await fetch(
+          "/api/team/athlete-profile",
+          {
+            method:
+              "POST",
+
+            headers: {
+              "Content-Type":
+                "application/json",
+
+              Authorization:
+                `Bearer ${token}`
+            },
+
+            body:
+              JSON.stringify({
+                teamId,
+                targetUid
+              })
+          }
+        );
+
+
+      const data =
+        await response.json();
+
+
+      if (!response.ok) {
+
+        throw new Error(
+          data.error ||
+          "Unable to load athlete profile"
+        );
+
+      }
+
+
+      renderAthlete(
+        data.athlete
+      );
+
+    }
+
+
+    loadAthleteProfile()
+      .catch(
+        error => {
+
+          loading.style.display =
+            "none";
+
+
+          athleteCard.style.display =
+            "none";
+
+
+          errorBox.style.display =
+            "block";
+
+
+          errorBox.textContent =
+            error.message ||
+            "Unable to load athlete profile.";
+
+        }
+      );
+
+  </script>
+
+
+  <script src="/assets/js/core/nav.js?v=team3"></script>
+
+</body>
+</html>

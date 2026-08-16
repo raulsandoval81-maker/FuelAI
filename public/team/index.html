@@ -364,6 +364,30 @@
         rgba(255,255,255,.025);
     }
 
+    .roster-athlete-link{
+      color:inherit;
+      text-decoration:none;
+
+      cursor:pointer;
+
+      transition:
+        transform .15s ease,
+        border-color .15s ease,
+        background .15s ease;
+    }
+
+    .roster-athlete-link:hover{
+      transform:
+        translateY(-1px);
+
+      border-color:
+        rgba(239,68,68,.38);
+
+      background:
+        rgba(239,68,68,.045);
+    }
+
+
     .roster-email{
       min-width:0;
 
@@ -1201,14 +1225,47 @@
       members.forEach(
         member => {
 
+          const isAthlete =
+            member.role ===
+            "athlete";
+
+
           const row =
             document.createElement(
-              "div"
+              isAthlete
+                ? "a"
+                : "div"
             );
 
 
           row.className =
-            "roster-row";
+            isAthlete
+              ? "roster-row roster-athlete-link"
+              : "roster-row";
+
+
+          if (isAthlete) {
+
+            row.href =
+              `/team/athlete/?teamId=${
+                encodeURIComponent(
+                  activeMembership.teamId
+                )
+              }&uid=${
+                encodeURIComponent(
+                  member.uid
+                )
+              }`;
+
+            row.setAttribute(
+              "aria-label",
+              `Open athlete profile for ${
+                member.email ||
+                "FuelAI athlete"
+              }`
+            );
+
+          }
 
 
           const email =
