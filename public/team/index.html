@@ -1638,11 +1638,33 @@
               "add-message success";
 
 
-            addMessage.textContent =
-              `${
-                data.member?.email ||
-                email
-              } added as an active athlete.`;
+            const memberEmail =
+              data.member?.email ||
+              email;
+
+
+            if (
+              data.action ===
+              "already_active"
+            ) {
+
+              addMessage.textContent =
+                `${memberEmail} is already an active athlete.`;
+
+            } else if (
+              data.action ===
+              "reactivated"
+            ) {
+
+              addMessage.textContent =
+                `${memberEmail} reactivated as an active athlete.`;
+
+            } else {
+
+              addMessage.textContent =
+                `${memberEmail} added as an active athlete.`;
+
+            }
 
 
             emailInput.value =

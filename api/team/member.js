@@ -106,6 +106,10 @@ export default async function handler(
       await memberRef.get();
 
 
+    let membershipAction =
+      "added";
+
+
     if (existing.exists) {
 
       const existingData =
@@ -122,6 +126,57 @@ export default async function handler(
             "Coach and admin memberships cannot be changed here"
         });
       }
+
+
+      const existingStatus =
+        String(
+          existingData.status ||
+          ""
+        )
+          .trim()
+          .toLowerCase();
+
+
+      /*
+       * Adding an athlete who is already
+       * active should be a no-op.
+       */
+      if (
+        existingStatus === "active" &&
+        safeStatus === "active"
+      ) {
+        return res.status(200).json({
+          ok: true,
+
+          action:
+            "already_active",
+
+          teamId:
+            context.teamId,
+
+          member: {
+            uid:
+              target.uid,
+
+            email:
+              target.email ||
+              "",
+
+            role:
+              "athlete",
+
+            status:
+              "active"
+          }
+        });
+      }
+
+
+      membershipAction =
+        existingStatus === "inactive" &&
+        safeStatus === "active"
+          ? "reactivated"
+          : "updated";
 
     }
 
@@ -172,6 +227,9 @@ export default async function handler(
 
     return res.status(200).json({
       ok: true,
+
+      action:
+        membershipAction,
 
       teamId:
         context.teamId,
