@@ -628,6 +628,59 @@ navLink(
 
 
 
+  async function bootstrapTeamMetrics() {
+
+    /*
+     * Team metrics only matter on pages
+     * participating in FuelAI Log.
+     *
+     * nav.js provides the shared bootstrap,
+     * but Team/Firebase logic remains in
+     * their own modules.
+     */
+    if (
+      !window.FuelAILog
+    ) {
+      return;
+    }
+
+
+    try {
+
+      if (
+        !window.FuelAIFirebase
+      ) {
+
+        await import(
+          "/assets/js/core/firebase.js?v=1"
+        );
+
+      }
+
+
+      if (
+        !window.FuelAITeamMetrics
+      ) {
+
+        await import(
+          "/assets/js/team/metrics-sync.js"
+        );
+
+      }
+
+    } catch (error) {
+
+      console.warn(
+        "FuelAI Team metrics bootstrap skipped:",
+        error?.message ||
+        error
+      );
+
+    }
+
+  }
+
+
   function init() {
     if (
       !window.FuelAIAuth
@@ -638,6 +691,10 @@ navLink(
 
 
     buildNav();
+
+
+    bootstrapTeamMetrics();
+
   }
 
 
