@@ -249,6 +249,177 @@
       font-size:1.55rem;
     }
 
+    .attention-panel{
+      margin-top:20px;
+      padding:20px;
+
+      border-radius:22px;
+
+      border:
+        1px solid
+        var(--team-line);
+
+      background:
+        rgba(15,23,42,.80);
+    }
+
+    .attention-head{
+      display:flex;
+
+      justify-content:
+        space-between;
+
+      align-items:flex-start;
+
+      gap:16px;
+
+      flex-wrap:wrap;
+    }
+
+    .attention-head h2{
+      margin:0;
+      font-size:1.3rem;
+    }
+
+    .attention-head p{
+      margin:7px 0 0;
+
+      color:var(--team-muted);
+
+      line-height:1.5;
+    }
+
+    .attention-count{
+      min-width:74px;
+
+      padding:9px 12px;
+
+      border-radius:999px;
+
+      background:
+        rgba(239,68,68,.10);
+
+      border:
+        1px solid
+        rgba(239,68,68,.24);
+
+      color:#fca5a5;
+
+      text-align:center;
+
+      font-size:.8rem;
+      font-weight:900;
+    }
+
+    .attention-list{
+      display:grid;
+      gap:10px;
+
+      margin-top:16px;
+    }
+
+    .attention-row{
+      display:grid;
+
+      grid-template-columns:
+        minmax(0,1fr)
+        auto
+        auto;
+
+      gap:12px;
+
+      align-items:center;
+
+      padding:13px 14px;
+
+      border-radius:15px;
+
+      border:
+        1px solid
+        rgba(255,255,255,.06);
+
+      background:
+        rgba(255,255,255,.025);
+    }
+
+    .attention-athlete{
+      min-width:0;
+
+      color:#fff;
+
+      font-weight:900;
+      text-decoration:none;
+
+      overflow:hidden;
+      text-overflow:ellipsis;
+      white-space:nowrap;
+    }
+
+    .attention-athlete:hover{
+      text-decoration:underline;
+    }
+
+    .attention-coverage{
+      color:#94a3b8;
+
+      font-size:.82rem;
+      font-weight:800;
+    }
+
+    .attention-status{
+      padding:6px 9px;
+
+      border-radius:999px;
+
+      font-size:.7rem;
+      font-weight:900;
+
+      letter-spacing:.05em;
+      text-transform:uppercase;
+    }
+
+    .attention-status.limited{
+      background:
+        rgba(245,158,11,.10);
+
+      border:
+        1px solid
+        rgba(245,158,11,.25);
+
+      color:#fcd34d;
+    }
+
+    .attention-status.missing{
+      background:
+        rgba(239,68,68,.10);
+
+      border:
+        1px solid
+        rgba(239,68,68,.25);
+
+      color:#fca5a5;
+    }
+
+    .attention-clear{
+      margin-top:16px;
+
+      padding:14px;
+
+      border-radius:15px;
+
+      background:
+        rgba(34,197,94,.08);
+
+      border:
+        1px solid
+        rgba(34,197,94,.18);
+
+      color:#86efac;
+
+      line-height:1.45;
+    }
+
+
     .panel{
       margin-top:20px;
       padding:20px;
@@ -623,6 +794,44 @@
 
 
       <section
+        class="attention-panel"
+        aria-label="Team attention"
+      >
+
+        <div class="attention-head">
+
+          <div>
+
+            <h2>
+              Attention
+            </h2>
+
+            <p>
+              Athletes with missing or limited reporting in the selected period.
+            </p>
+
+          </div>
+
+          <div
+            id="attentionCount"
+            class="attention-count"
+          >
+            0 athletes
+          </div>
+
+        </div>
+
+
+        <div
+          id="attentionList"
+          class="attention-list"
+        >
+        </div>
+
+      </section>
+
+
+      <section
         id="graphView"
         class="panel"
       >
@@ -975,6 +1184,83 @@
     }
 
 
+    function getReportingThreshold(
+      rangeDays
+    ) {
+
+      return Math.ceil(
+        rangeDays /
+        2
+      );
+
+    }
+
+
+    function getReportingStatus(
+      athlete,
+      rangeDays
+    ) {
+
+      const reportedDays =
+        athlete.days?.length ||
+        0;
+
+
+      if (
+        reportedDays ===
+        0
+      ) {
+
+        return {
+          key:
+            "missing",
+
+          label:
+            "Not Reporting",
+
+          reportedDays
+        };
+
+      }
+
+
+      const threshold =
+        getReportingThreshold(
+          rangeDays
+        );
+
+
+      if (
+        reportedDays <
+        threshold
+      ) {
+
+        return {
+          key:
+            "limited",
+
+          label:
+            "Limited Reporting",
+
+          reportedDays
+        };
+
+      }
+
+
+      return {
+        key:
+          "reporting",
+
+        label:
+          "Reporting",
+
+        reportedDays
+      };
+
+    }
+
+
     function getDateSeries(
       athletes,
       valueGetter
@@ -1232,6 +1518,166 @@
     }
 
 
+    function renderAttention(
+      data,
+      athletes
+    ) {
+
+      const attentionList =
+        document.getElementById(
+          "attentionList"
+        );
+
+
+      const attentionCount =
+        document.getElementById(
+          "attentionCount"
+        );
+
+
+      const attention =
+        athletes
+          .map(
+            athlete => ({
+              athlete,
+
+              status:
+                getReportingStatus(
+                  athlete,
+                  data.rangeDays
+                )
+            })
+          )
+          .filter(
+            item =>
+              item.status.key !==
+              "reporting"
+          )
+          .sort(
+            (a, b) => {
+
+              if (
+                a.status.key ===
+                b.status.key
+              ) {
+
+                return String(
+                  a.athlete.email
+                ).localeCompare(
+                  String(
+                    b.athlete.email
+                  )
+                );
+
+              }
+
+
+              return (
+                a.status.key ===
+                  "missing"
+                  ? -1
+                  : 1
+              );
+
+            }
+          );
+
+
+      attentionCount.textContent =
+        `${
+          attention.length
+        } ${
+          attention.length ===
+            1
+            ? "athlete"
+            : "athletes"
+        }`;
+
+
+      attentionList.innerHTML =
+        "";
+
+
+      if (
+        !attention.length
+      ) {
+
+        attentionList.innerHTML = `
+          <div class="attention-clear">
+            Reporting coverage looks good for the selected period.
+          </div>
+        `;
+
+        return;
+
+      }
+
+
+      attention.forEach(
+        item => {
+
+          const row =
+            document.createElement(
+              "div"
+            );
+
+
+          row.className =
+            "attention-row";
+
+
+          row.innerHTML = `
+            <a
+              class="attention-athlete"
+              href="/team/athlete/?teamId=${
+                encodeURIComponent(
+                  data.team.teamId
+                )
+              }&uid=${
+                encodeURIComponent(
+                  item.athlete.uid
+                )
+              }"
+            >
+              ${
+                item.athlete.email ||
+                "Athlete"
+              }
+            </a>
+
+            <span
+              class="attention-coverage"
+            >
+              ${
+                item.status.reportedDays
+              } / ${
+                data.rangeDays
+              } days
+            </span>
+
+            <span
+              class="attention-status ${
+                item.status.key
+              }"
+            >
+              ${
+                item.status.label
+              }
+            </span>
+          `;
+
+
+          attentionList
+            .appendChild(
+              row
+            );
+
+        }
+      );
+
+    }
+
+
     function renderViews() {
 
       graphView.style.display =
@@ -1338,6 +1784,12 @@
         )
           ? data.athletes
           : [];
+
+
+      renderAttention(
+        data,
+        athletes
+      );
 
 
       const allDays =
