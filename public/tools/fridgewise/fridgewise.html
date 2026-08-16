@@ -359,7 +359,7 @@
           <input
             id="fridgeInput"
             type="file"
-            accept="image/*"
+            accept="image/jpeg,image/png,image/webp"
             capture="environment"
           />
 
@@ -379,7 +379,7 @@
           <input
             id="fridgeUploadInput"
             type="file"
-            accept="image/*"
+            accept="image/jpeg,image/png,image/webp"
           />
 
         </label>
@@ -494,6 +494,11 @@
   </main>
 
 
+  <script
+    type="module"
+    src="/assets/js/core/firebase.js?v=3"
+  ></script>
+
   <script src="/assets/js/core/auth-soft.js"></script>
 
   <script>
@@ -503,6 +508,8 @@
   <script src="/assets/js/core/preferences.js"></script>
 
   <script src="/assets/js/fridgewise/fridgewise-memory.js"></script>
+
+  <script src="/assets/js/core/ai-client.js?v=1"></script>
 
   <script src="/assets/js/fridgewise/fridgewise-page.js?v=9"></script>
 

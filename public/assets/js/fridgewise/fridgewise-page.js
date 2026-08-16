@@ -536,6 +536,41 @@ pantryInput
 
 
 /* =========================
+   ERROR
+========================= */
+
+function showFridgeError(message) {
+
+  if (!fridgeResultCard) {
+    return;
+  }
+
+
+  const heading =
+    document.createElement("h2");
+
+  heading.textContent = "FridgeWise";
+
+
+  const feedback =
+    document.createElement("p");
+
+  feedback.className = "feedback";
+  feedback.textContent =
+    message ||
+    "FridgeWise could not complete this scan.";
+
+
+  fridgeResultCard.replaceChildren(
+    heading,
+    feedback
+  );
+
+  fridgeResultCard.classList.remove("hidden");
+}
+
+
+/* =========================
    LOADING
 ========================= */
 
@@ -864,35 +899,6 @@ fridgeAnalyzeBtn
         getSetup();
 
 
-      /*
-       * Pull latest memory at
-       * scan time.
-       */
-
-      const memory =
-        getCurrentMemory();
-
-
-      const favoriteMeals =
-        safeArray(
-          memory.favoriteMeals
-        );
-
-
-      const mealMatches =
-        Memory
-          ?.matchFavoriteMeals?.() ||
-        [];
-
-
-      const missingItems =
-        uniqueTextArray(
-          mealMatches.flatMap(
-            (meal) =>
-              meal.missing ||
-              []
-          )
-        );
 
 
       const currentPantryCompanion =
@@ -900,6 +906,14 @@ fridgeAnalyzeBtn
 
 
       try {
+
+        const token =
+          await window.FuelAIAiClient
+            .getAuthToken();
+
+        const requestId =
+          window.FuelAIAiClient
+            .createRequestId();
 
         const response =
           await fetch(
@@ -911,7 +925,11 @@ fridgeAnalyzeBtn
 
               headers: {
                 "Content-Type":
-                  "application/json"
+                  "application/json",
+                "Authorization":
+                  `Bearer ${token}`,
+                "X-FuelAI-Request-ID":
+                  requestId
               },
 
               body:
@@ -931,11 +949,6 @@ fridgeAnalyzeBtn
                   pantryCompanion:
                     currentPantryCompanion,
 
-                  favoriteMeals,
-
-                  mealMatches,
-
-                  missingItems,
 
                   pantryNotes:
                     pantryNotes
@@ -957,10 +970,17 @@ fridgeAnalyzeBtn
           !response.ok
         ) {
 
-          throw new Error(
+          const apiError = new Error(
+            data.error?.message ||
             data.error ||
-            "Failed to analyze fridge"
+            "FridgeWise could not complete this scan."
           );
+
+          apiError.code =
+            data.error?.code ||
+            "API_REQUEST_FAILED";
+
+          throw apiError;
 
         }
 
@@ -978,9 +998,12 @@ fridgeAnalyzeBtn
 
         localStorage.setItem(
           "fuelwise_fridge_result",
-          JSON.stringify(
-            data.result
-          )
+          JSON.stringify(data.result)
+        );
+
+        localStorage.setItem(
+          "fuelwise_fridge_usage",
+          JSON.stringify(data.usage || null)
         );
 
 
@@ -1023,18 +1046,21 @@ fridgeAnalyzeBtn
           );
 
 
-        if (
-          fridgeLoadingText
-        ) {
-
-          fridgeLoadingText.textContent =
-            "Something went wrong. Try again.";
-
-        }
+        showFridgeError(
+          err.message ||
+          "FridgeWise could not complete this scan."
+        );
 
 
         fridgeAnalyzeBtn.disabled =
           false;
+
+        if (err.code === "AUTH_REQUIRED") {
+          window.setTimeout(() => {
+            window.location.href =
+              "/account/login.html";
+          }, 1200);
+        }
 
       }
 
