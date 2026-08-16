@@ -207,11 +207,18 @@ Return ONLY valid JSON with this exact shape:
     const result =
       validateMealWiseResult(parsed);
 
-    await finalizeMealWiseScan({
-      reservation,
-      succeeded: true,
-      providerUsage
-    });
+    try {
+      await finalizeMealWiseScan({
+        reservation,
+        succeeded: true,
+        providerUsage
+      });
+    } catch (meteringError) {
+      console.error(
+        "MEALWISE METERING ERROR:",
+        meteringError
+      );
+    }
 
     return res.status(200).json({
       result,

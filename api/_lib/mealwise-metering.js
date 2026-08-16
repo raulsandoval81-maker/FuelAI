@@ -54,11 +54,15 @@ function getNextUtcReset() {
 }
 
 
-function normalizePlan(value) {
+export function normalizeMealWisePlan(value) {
   const plan =
     String(value || "")
       .trim()
       .toLowerCase();
+
+  if (plan === "basic") {
+    return "standard";
+  }
 
   return Object.hasOwn(
     PLAN_LIMITS,
@@ -98,11 +102,11 @@ function isActiveBeta(beta) {
 
 function resolveMealLimit(user) {
   const purchasedPlan =
-    normalizePlan(user.plan);
+    normalizeMealWisePlan(user.plan);
 
   const effectivePlan =
     isActiveBeta(user.beta)
-      ? normalizePlan(
+      ? normalizeMealWisePlan(
           user.beta.accessLevel
         )
       : purchasedPlan;

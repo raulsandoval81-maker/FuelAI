@@ -8,12 +8,31 @@ import {
   validateRequestId
 } from "../api/_lib/mealwise-security.js";
 
+import {
+  normalizeMealWisePlan
+} from "../api/_lib/mealwise-metering.js";
+
 
 const REQUEST_ID =
   "123e4567-e89b-42d3-a456-426614174000";
 
 const PNG_DATA_URL =
   "data:image/png;base64,iVBORw0KGgo=";
+
+test(
+  "preserves the legacy Basic plan as Standard",
+  () => {
+    assert.equal(
+      normalizeMealWisePlan("basic"),
+      "standard"
+    );
+
+    assert.equal(
+      normalizeMealWisePlan("BASIC"),
+      "standard"
+    );
+  }
+);
 
 
 test(
