@@ -9,6 +9,7 @@ import {
 import {
   authenticateMealWise,
   finalizeMealWiseScan,
+  finalizeSuccessfulMealWiseScan,
   getMealWiseUsageResponse,
   reserveMealWiseScan
 } from "./_lib/mealwise-metering.js";
@@ -207,18 +208,10 @@ Return ONLY valid JSON with this exact shape:
     const result =
       validateMealWiseResult(parsed);
 
-    try {
-      await finalizeMealWiseScan({
-        reservation,
-        succeeded: true,
-        providerUsage
-      });
-    } catch (meteringError) {
-      console.error(
-        "MEALWISE METERING ERROR:",
-        meteringError
-      );
-    }
+    await finalizeSuccessfulMealWiseScan({
+      reservation,
+      providerUsage
+    });
 
     return res.status(200).json({
       result,

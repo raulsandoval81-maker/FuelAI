@@ -100,7 +100,7 @@ function isActiveBeta(beta) {
 }
 
 
-function resolveMealLimit(user) {
+export function resolveMealWiseLimit(user) {
   const purchasedPlan =
     normalizeMealWisePlan(user.plan);
 
@@ -137,7 +137,7 @@ function resolveMealLimit(user) {
 }
 
 
-function getGlobalDailyCap(controls) {
+export function getMealWiseGlobalDailyCap(controls) {
   const rawConfigured =
     controls.dailyRequestCap;
 
@@ -173,7 +173,10 @@ function getGlobalDailyCap(controls) {
 
 
 export async function authenticateMealWise(
-  req
+  req,
+  {
+    auth = getAdminAuth()
+  } = {}
 ) {
   const token =
     getBearerToken(req);
@@ -187,7 +190,7 @@ export async function authenticateMealWise(
   }
 
   try {
-    return await getAdminAuth()
+    return await auth
       .verifyIdToken(token);
   } catch {
     throw new MealWiseApiError(
@@ -201,15 +204,14 @@ export async function authenticateMealWise(
 
 export async function reserveMealWiseScan({
   uid,
-  requestId
+  requestId,
+  db = getAdminDb()
 }) {
   const safeRequestId =
     validateRequestId(requestId);
 
   const dateKey =
     getUtcDateKey();
-
-  const db = getAdminDb();
 
   const userRef =
     db.collection("users").doc(uid);
@@ -302,7 +304,7 @@ export async function reserveMealWiseScan({
         purchasedPlan,
         effectivePlan,
         limit
-      } = resolveMealLimit(user);
+      } = resolveMealWiseLimit(user);
 
       const usage =
         usageSnapshot.exists
@@ -341,7 +343,7 @@ export async function reserveMealWiseScan({
         ) || 0;
 
       const globalCap =
-        getGlobalDailyCap(controls);
+        getMealWiseGlobalDailyCap(controls);
 
       if (
         globalCap === 0 ||
@@ -431,7 +433,8 @@ export async function finalizeMealWiseScan({
   reservation,
   succeeded,
   providerUsage = null,
-  failureCode = null
+  failureCode = null,
+  db = getAdminDb()
 }) {
   if (!reservation) {
     return;
@@ -448,8 +451,6 @@ export async function finalizeMealWiseScan({
       providerUsage?.completion_tokens ??
       providerUsage?.output_tokens
     ) || 0;
-
-  const db = getAdminDb();
 
   await db.runTransaction(
     async transaction => {
@@ -541,6 +542,31 @@ export async function finalizeMealWiseScan({
       );
     }
   );
+}
+
+
+export async function finalizeSuccessfulMealWiseScan({
+  reservation,
+  providerUsage = null,
+  finalize = finalizeMealWiseScan,
+  logger = console
+}) {
+  try {
+    await finalize({
+      reservation,
+      succeeded: true,
+      providerUsage
+    });
+
+    return true;
+  } catch (meteringError) {
+    logger.error(
+      "MEALWISE METERING ERROR:",
+      meteringError
+    );
+
+    return false;
+  }
 }
 
 
