@@ -665,11 +665,17 @@
       FuelAI Team
     </p>
 
-    <h1 class="team-title">
+    <h1
+      id="teamPageTitle"
+      class="team-title"
+    >
       Team Logistics
     </h1>
 
-    <p class="team-sub">
+    <p
+      id="teamPageSubtitle"
+      class="team-sub"
+    >
       Your team, roster, membership status, and athlete access.
     </p>
 
@@ -1141,6 +1147,44 @@
           "coach" ||
         membership.role ===
           "admin";
+
+
+      const teamPageTitle =
+        document.getElementById(
+          "teamPageTitle"
+        );
+
+
+      const teamPageSubtitle =
+        document.getElementById(
+          "teamPageSubtitle"
+        );
+
+
+      document.title =
+        canManage
+          ? "Team Logistics · FuelAI"
+          : "My Team · FuelAI";
+
+
+      if (teamPageTitle) {
+
+        teamPageTitle.textContent =
+          canManage
+            ? "Team Logistics"
+            : "My Team";
+
+      }
+
+
+      if (teamPageSubtitle) {
+
+        teamPageSubtitle.textContent =
+          canManage
+            ? "Your team, roster, membership status, and athlete access."
+            : "Your connection to your FuelAI team.";
+
+      }
 
 
       logistics.style.display =

@@ -1155,11 +1155,11 @@
 
   <div class="hub-card-copy">
 
-    <h3>
+    <h3 id="teamHubCardTitle">
       Team Logistics
     </h3>
 
-    <p>
+    <p id="teamHubCardDescription">
       Manage your roster, athlete access, invites, and team operations.
     </p>
 
@@ -2080,11 +2080,54 @@
       if (logisticsCard) {
 
         logisticsCard.style.display =
-          canManageTeam
-            ? ""
-            : "none";
+          "";
 
       }
+
+
+      const teamCardTitle =
+        document.getElementById(
+          "teamHubCardTitle"
+        );
+
+
+      const teamCardDescription =
+        document.getElementById(
+          "teamHubCardDescription"
+        );
+
+
+      if (teamCardTitle) {
+
+        teamCardTitle.textContent =
+          canManageTeam
+            ? "Team Logistics"
+            : "My Team";
+
+      }
+
+
+      if (teamCardDescription) {
+
+        teamCardDescription.textContent =
+          canManageTeam
+            ? "Manage your roster, athlete access, invites, and team operations."
+            : `Your connection to ${
+                activeTeam.teamName ||
+                "your FuelAI team"
+              }.`;
+
+      }
+
+
+      logisticsCard
+        ?.querySelector("img")
+        ?.setAttribute(
+          "alt",
+          canManageTeam
+            ? "Team Logistics"
+            : "My Team"
+        );
 
     }
 

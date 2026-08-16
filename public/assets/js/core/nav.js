@@ -299,6 +299,16 @@ navLink(
       );
 
 
+    const canManageTeam =
+      activeTeam &&
+      (
+        activeTeam.role ===
+          "coach" ||
+        activeTeam.role ===
+          "admin"
+      );
+
+
     const teamSection =
       activeTeam
         ? `
@@ -310,10 +320,9 @@ navLink(
 
         ${navLink(
           "/team/",
-          `👥 ${
-            activeTeam.teamName ||
-            "Your Team"
-          }`
+          canManageTeam
+            ? "👥 Team Logistics"
+            : "👥 My Team"
         )}
 
       </div>
