@@ -9,7 +9,7 @@
     content="width=device-width, initial-scale=1.0"
   />
 
-  <title>Your Team · FuelAI</title>
+  <title>Team Logistics · FuelAI</title>
 
   <link
     rel="stylesheet"
@@ -23,45 +23,89 @@
 
   <style>
 
+    :root{
+      --team-bg:#071019;
+      --team-panel:#0f172a;
+      --team-line:rgba(255,255,255,.08);
+      --team-green:#22c55e;
+      --team-red:#ef4444;
+      --team-muted:#94a3b8;
+    }
+
+    *{
+      box-sizing:border-box;
+    }
+
     body{
       margin:0;
-      background:#071019;
+
+      background:
+        radial-gradient(
+          circle at top,
+          rgba(30,64,175,.14),
+          transparent 34%
+        ),
+        var(--team-bg);
+
       color:#fff;
     }
 
     .team-wrap{
-      width:min(920px,calc(100% - 28px));
+      width:min(
+        1080px,
+        calc(100% - 28px)
+      );
+
       margin:0 auto;
       padding:92px 0 42px;
     }
 
     .team-kicker{
       margin:0 0 8px;
-      color:#22c55e;
+
+      color:#f87171;
+
       font-size:.78rem;
-      font-weight:800;
+      font-weight:900;
       letter-spacing:.16em;
       text-transform:uppercase;
     }
 
     .team-title{
       margin:0;
-      font-size:clamp(2rem,6vw,3.4rem);
+
+      font-size:
+        clamp(
+          2rem,
+          6vw,
+          3.5rem
+        );
+
       line-height:1;
     }
 
     .team-sub{
       margin:12px 0 0;
-      color:#94a3b8;
+
+      color:var(--team-muted);
+
       line-height:1.55;
     }
 
+
+    /* ========================================
+       TEAM IDENTITY
+       ======================================== */
+
     .team-card{
+      display:none;
+
       margin-top:28px;
       padding:24px;
 
       border:
-        1px solid rgba(34,197,94,.28);
+        1px solid
+        rgba(239,68,68,.28);
 
       border-radius:24px;
 
@@ -73,25 +117,34 @@
         );
 
       box-shadow:
-        0 16px 40px rgba(0,0,0,.22);
+        0 16px 40px
+        rgba(0,0,0,.22);
     }
 
     .team-card-head{
       display:flex;
-      justify-content:space-between;
-      align-items:flex-start;
+
+      justify-content:
+        space-between;
+
+      align-items:
+        flex-start;
+
       gap:18px;
     }
 
     .team-card h2{
       margin:0;
-      font-size:1.65rem;
+      font-size:1.7rem;
     }
 
     .team-sport{
       margin:7px 0 0;
-      color:#94a3b8;
-      text-transform:capitalize;
+
+      color:var(--team-muted);
+
+      text-transform:
+        capitalize;
     }
 
     .team-status{
@@ -103,20 +156,25 @@
         rgba(34,197,94,.12);
 
       border:
-        1px solid rgba(34,197,94,.28);
+        1px solid
+        rgba(34,197,94,.28);
 
       color:#86efac;
 
       font-size:.76rem;
-      font-weight:800;
+      font-weight:900;
       letter-spacing:.08em;
       text-transform:uppercase;
     }
 
     .team-grid{
       display:grid;
+
       grid-template-columns:
-        repeat(2,minmax(0,1fr));
+        repeat(
+          2,
+          minmax(0,1fr)
+        );
 
       gap:12px;
       margin-top:22px;
@@ -128,7 +186,8 @@
       border-radius:17px;
 
       border:
-        1px solid rgba(255,255,255,.07);
+        1px solid
+        var(--team-line);
 
       background:
         rgba(255,255,255,.025);
@@ -140,16 +199,348 @@
       color:#64748b;
 
       font-size:.72rem;
-      font-weight:800;
+      font-weight:900;
+
       letter-spacing:.1em;
       text-transform:uppercase;
     }
 
     .team-stat strong{
       display:block;
+
       margin-top:6px;
+
       font-size:1.05rem;
-      text-transform:capitalize;
+
+      text-transform:
+        capitalize;
+    }
+
+
+    /* ========================================
+       LOGISTICS WORKSPACE
+       ======================================== */
+
+    .logistics{
+      display:none;
+
+      margin-top:28px;
+    }
+
+    .section-head{
+      margin-bottom:12px;
+    }
+
+    .section-head h2{
+      margin:0;
+
+      font-size:1.45rem;
+    }
+
+    .section-head p{
+      margin:6px 0 0;
+
+      color:var(--team-muted);
+
+      line-height:1.5;
+    }
+
+    .summary-grid{
+      display:grid;
+
+      grid-template-columns:
+        repeat(
+          4,
+          minmax(0,1fr)
+        );
+
+      gap:12px;
+    }
+
+    .summary-card{
+      padding:18px;
+
+      border-radius:18px;
+
+      border:
+        1px solid
+        var(--team-line);
+
+      background:
+        rgba(15,23,42,.78);
+    }
+
+    .summary-card span{
+      display:block;
+
+      color:#64748b;
+
+      font-size:.7rem;
+      font-weight:900;
+
+      letter-spacing:.09em;
+      text-transform:uppercase;
+    }
+
+    .summary-card strong{
+      display:block;
+
+      margin-top:7px;
+
+      font-size:1.5rem;
+    }
+
+
+    /* ========================================
+       ROSTER
+       ======================================== */
+
+    .roster-panel,
+    .add-panel{
+      margin-top:20px;
+      padding:20px;
+
+      border-radius:22px;
+
+      border:
+        1px solid
+        var(--team-line);
+
+      background:
+        rgba(15,23,42,.80);
+    }
+
+    .roster-head{
+      display:flex;
+
+      align-items:center;
+
+      justify-content:
+        space-between;
+
+      gap:16px;
+
+      margin-bottom:14px;
+    }
+
+    .roster-head h3{
+      margin:0;
+      font-size:1.2rem;
+    }
+
+    .roster-count{
+      color:#94a3b8;
+
+      font-size:.82rem;
+      font-weight:800;
+    }
+
+    .roster-list{
+      display:grid;
+      gap:10px;
+    }
+
+    .roster-row{
+      display:grid;
+
+      grid-template-columns:
+        minmax(0,1fr)
+        110px
+        110px;
+
+      gap:12px;
+
+      align-items:center;
+
+      padding:14px;
+
+      border-radius:15px;
+
+      border:
+        1px solid
+        rgba(255,255,255,.06);
+
+      background:
+        rgba(255,255,255,.025);
+    }
+
+    .roster-email{
+      min-width:0;
+
+      overflow:hidden;
+
+      text-overflow:
+        ellipsis;
+
+      white-space:
+        nowrap;
+
+      font-weight:800;
+    }
+
+    .roster-role,
+    .roster-status{
+      text-transform:
+        capitalize;
+
+      color:#cbd5e1;
+
+      font-size:.9rem;
+    }
+
+    .roster-status.active{
+      color:#86efac;
+    }
+
+    .roster-status.invited{
+      color:#93c5fd;
+    }
+
+    .roster-status.inactive{
+      color:#fca5a5;
+    }
+
+
+    /* ========================================
+       ADD ATHLETE
+       ======================================== */
+
+    .add-panel h3{
+      margin:0;
+      font-size:1.2rem;
+    }
+
+    .add-panel p{
+      margin:7px 0 0;
+
+      color:var(--team-muted);
+
+      line-height:1.5;
+    }
+
+    .add-form{
+      display:grid;
+
+      grid-template-columns:
+        minmax(0,1fr)
+        140px;
+
+      gap:10px;
+
+      margin-top:16px;
+    }
+
+    .add-form input{
+      width:100%;
+      min-height:48px;
+
+      padding:0 14px;
+
+      border-radius:14px;
+
+      border:
+        1px solid
+        rgba(255,255,255,.10);
+
+      background:#071019;
+
+      color:#fff;
+
+      font:inherit;
+    }
+
+    .add-form input:focus{
+      outline:none;
+
+      border-color:
+        rgba(239,68,68,.65);
+    }
+
+    .add-form button{
+      min-height:48px;
+
+      border:0;
+
+      border-radius:14px;
+
+      background:
+        linear-gradient(
+          135deg,
+          #dc2626,
+          #991b1b
+        );
+
+      color:#fff;
+
+      font:inherit;
+      font-weight:900;
+
+      cursor:pointer;
+    }
+
+    .add-form button:disabled{
+      opacity:.55;
+      cursor:not-allowed;
+    }
+
+    .add-message{
+      display:none;
+
+      margin-top:12px;
+
+      padding:12px 14px;
+
+      border-radius:13px;
+
+      font-size:.9rem;
+      line-height:1.45;
+    }
+
+    .add-message.success{
+      display:block;
+
+      background:
+        rgba(34,197,94,.10);
+
+      border:
+        1px solid
+        rgba(34,197,94,.24);
+
+      color:#86efac;
+    }
+
+    .add-message.error{
+      display:block;
+
+      background:
+        rgba(239,68,68,.10);
+
+      border:
+        1px solid
+        rgba(239,68,68,.24);
+
+      color:#fca5a5;
+    }
+
+
+    /* ========================================
+       STATES
+       ======================================== */
+
+    .loading{
+      margin-top:28px;
+      padding:22px;
+
+      border-radius:20px;
+
+      border:
+        1px solid
+        var(--team-line);
+
+      background:
+        rgba(15,23,42,.72);
+
+      color:#cbd5e1;
     }
 
     .team-empty{
@@ -161,12 +552,14 @@
       border-radius:22px;
 
       border:
-        1px solid rgba(255,255,255,.08);
+        1px solid
+        var(--team-line);
 
       background:
         rgba(15,23,42,.78);
 
       color:#cbd5e1;
+
       line-height:1.55;
     }
 
@@ -178,7 +571,9 @@
       color:#64748b;
 
       font-size:.78rem;
+
       letter-spacing:.08em;
+
       text-transform:uppercase;
     }
 
@@ -186,14 +581,50 @@
       color:#22c55e;
     }
 
+
+    @media (max-width:760px){
+
+      .summary-grid{
+        grid-template-columns:
+          repeat(
+            2,
+            minmax(0,1fr)
+          );
+      }
+
+      .roster-row{
+        grid-template-columns:
+          1fr;
+      }
+
+      .roster-role,
+      .roster-status{
+        font-size:.82rem;
+      }
+
+    }
+
+
     @media (max-width:560px){
 
       .team-grid{
-        grid-template-columns:1fr;
+        grid-template-columns:
+          1fr;
       }
 
       .team-card-head{
-        flex-direction:column;
+        flex-direction:
+          column;
+      }
+
+      .add-form{
+        grid-template-columns:
+          1fr;
+      }
+
+      .summary-grid{
+        grid-template-columns:
+          1fr 1fr;
       }
 
     }
@@ -211,18 +642,27 @@
     </p>
 
     <h1 class="team-title">
-      Your Team
+      Team Logistics
     </h1>
 
     <p class="team-sub">
-      Your active FuelAI team membership.
+      Your team, roster, membership status, and athlete access.
     </p>
 
+
+    <div
+      id="teamLoading"
+      class="loading"
+    >
+      Loading your team...
+    </div>
+
+
+    <!-- TEAM IDENTITY -->
 
     <section
       id="teamCard"
       class="team-card"
-      style="display:none;"
     >
 
       <div class="team-card-head">
@@ -230,17 +670,18 @@
         <div>
 
           <h2 id="teamName">
-            Team
+            FuelAI Team
           </h2>
 
           <p
             id="teamSport"
             class="team-sport"
           >
-            Team
+            Team Membership
           </p>
 
         </div>
+
 
         <div
           id="teamStatus"
@@ -284,6 +725,155 @@
     </section>
 
 
+    <!-- COACH LOGISTICS -->
+
+    <section
+      id="teamLogistics"
+      class="logistics"
+    >
+
+      <div class="section-head">
+
+        <h2>
+          Team Status
+        </h2>
+
+        <p>
+          Live membership totals for this team.
+        </p>
+
+      </div>
+
+
+      <div class="summary-grid">
+
+        <div class="summary-card">
+
+          <span>
+            Total
+          </span>
+
+          <strong id="summaryTotal">
+            —
+          </strong>
+
+        </div>
+
+
+        <div class="summary-card">
+
+          <span>
+            Athletes
+          </span>
+
+          <strong id="summaryAthletes">
+            —
+          </strong>
+
+        </div>
+
+
+        <div class="summary-card">
+
+          <span>
+            Coaches
+          </span>
+
+          <strong id="summaryCoaches">
+            —
+          </strong>
+
+        </div>
+
+
+        <div class="summary-card">
+
+          <span>
+            Active
+          </span>
+
+          <strong id="summaryActive">
+            —
+          </strong>
+
+        </div>
+
+      </div>
+
+
+      <div class="roster-panel">
+
+        <div class="roster-head">
+
+          <h3>
+            Roster
+          </h3>
+
+          <span
+            id="rosterCount"
+            class="roster-count"
+          >
+            0 members
+          </span>
+
+        </div>
+
+
+        <div
+          id="rosterList"
+          class="roster-list"
+        >
+        </div>
+
+      </div>
+
+
+      <div class="add-panel">
+
+        <h3>
+          Add Athlete
+        </h3>
+
+        <p>
+          Add an existing FuelAI account to this team as an active athlete.
+        </p>
+
+
+        <form
+          id="addAthleteForm"
+          class="add-form"
+        >
+
+          <input
+            id="athleteEmail"
+            type="email"
+            autocomplete="email"
+            placeholder="athlete@email.com"
+            required
+          />
+
+          <button
+            id="addAthleteButton"
+            type="submit"
+          >
+            Add Athlete
+          </button>
+
+        </form>
+
+
+        <div
+          id="addAthleteMessage"
+          class="add-message"
+          role="status"
+        >
+        </div>
+
+      </div>
+
+    </section>
+
+
     <section
       id="teamEmpty"
       class="team-empty"
@@ -309,7 +899,7 @@
 
   <script src="/assets/js/core/auth-soft.js"></script>
 
-  <script src="/assets/js/core/identity.js?v=identity1"></script>
+  <script src="/assets/js/core/identity.js?v=identity2"></script>
 
 
   <script>
@@ -318,17 +908,9 @@
       ?.requireSoftLogin();
 
 
-    const memberships =
-      window.FuelAIIdentity
-        ?.getFuelAITeamMemberships?.() ||
-      [];
-
-
-    const membership =
-      memberships.find(
-        item =>
-          item.status ===
-          "active"
+    const loading =
+      document.getElementById(
+        "teamLoading"
       );
 
 
@@ -344,10 +926,154 @@
       );
 
 
-    if (membership) {
+    const logistics =
+      document.getElementById(
+        "teamLogistics"
+      );
+
+
+    const rosterList =
+      document.getElementById(
+        "rosterList"
+      );
+
+
+    const rosterCount =
+      document.getElementById(
+        "rosterCount"
+      );
+
+
+    const addForm =
+      document.getElementById(
+        "addAthleteForm"
+      );
+
+
+    const emailInput =
+      document.getElementById(
+        "athleteEmail"
+      );
+
+
+    const addButton =
+      document.getElementById(
+        "addAthleteButton"
+      );
+
+
+    const addMessage =
+      document.getElementById(
+        "addAthleteMessage"
+      );
+
+
+    let activeMembership =
+      null;
+
+
+    function wait(
+      ms
+    ) {
+
+      return new Promise(
+        resolve =>
+          setTimeout(
+            resolve,
+            ms
+          )
+      );
+
+    }
+
+
+    async function waitForFirebase() {
+
+      let attempts =
+        0;
+
+
+      while (
+        attempts < 100 &&
+        !window.FuelAIFirebase
+          ?.getCurrentUserTeamMemberships
+      ) {
+
+        await wait(50);
+
+        attempts++;
+
+      }
+
+
+      const firebase =
+        window.FuelAIFirebase;
+
+
+      if (
+        !firebase
+          ?.getCurrentUserTeamMemberships
+      ) {
+
+        throw new Error(
+          "FuelAI Firebase unavailable"
+        );
+
+      }
+
+
+      attempts =
+        0;
+
+
+      while (
+        attempts < 100 &&
+        !firebase.auth
+          ?.currentUser
+      ) {
+
+        await wait(50);
+
+        attempts++;
+
+      }
+
+
+      if (
+        !firebase.auth
+          ?.currentUser
+      ) {
+
+        throw new Error(
+          "Firebase user unavailable"
+        );
+
+      }
+
+
+      return firebase;
+
+    }
+
+
+    function renderMembership(
+      membership
+    ) {
+
+      activeMembership =
+        membership;
+
+
+      loading.style.display =
+        "none";
+
+
+      teamEmpty.style.display =
+        "none";
+
 
       teamCard.style.display =
-        "";
+        "block";
 
 
       document.getElementById(
@@ -385,17 +1111,495 @@
         membership.status ||
         "active";
 
-    } else {
 
-      teamEmpty.style.display =
-        "block";
+      const canManage =
+        membership.role ===
+          "coach" ||
+        membership.role ===
+          "admin";
+
+
+      logistics.style.display =
+        canManage
+          ? "block"
+          : "none";
 
     }
+
+
+    function renderRoster(
+      data
+    ) {
+
+      const summary =
+        data.summary ||
+        {};
+
+
+      document.getElementById(
+        "summaryTotal"
+      ).textContent =
+        summary.total ??
+        0;
+
+
+      document.getElementById(
+        "summaryAthletes"
+      ).textContent =
+        summary.athletes ??
+        0;
+
+
+      document.getElementById(
+        "summaryCoaches"
+      ).textContent =
+        summary.coaches ??
+        0;
+
+
+      document.getElementById(
+        "summaryActive"
+      ).textContent =
+        summary.active ??
+        0;
+
+
+      if (
+        data.team?.sport
+      ) {
+
+        document.getElementById(
+          "teamSport"
+        ).textContent =
+          data.team.sport;
+
+      }
+
+
+      const members =
+        Array.isArray(
+          data.members
+        )
+          ? data.members
+          : [];
+
+
+      rosterCount.textContent =
+        `${
+          members.length
+        } ${
+          members.length === 1
+            ? "member"
+            : "members"
+        }`;
+
+
+      rosterList.innerHTML =
+        "";
+
+
+      members.forEach(
+        member => {
+
+          const row =
+            document.createElement(
+              "div"
+            );
+
+
+          row.className =
+            "roster-row";
+
+
+          const email =
+            document.createElement(
+              "div"
+            );
+
+
+          email.className =
+            "roster-email";
+
+
+          email.textContent =
+            member.email ||
+            member.uid ||
+            "FuelAI member";
+
+
+          const role =
+            document.createElement(
+              "div"
+            );
+
+
+          role.className =
+            "roster-role";
+
+
+          role.textContent =
+            member.role ||
+            "athlete";
+
+
+          const status =
+            document.createElement(
+              "div"
+            );
+
+
+          status.className =
+            `roster-status ${
+              member.status ||
+              "inactive"
+            }`;
+
+
+          status.textContent =
+            member.status ||
+            "inactive";
+
+
+          row.append(
+            email,
+            role,
+            status
+          );
+
+
+          rosterList.appendChild(
+            row
+          );
+
+        }
+      );
+
+    }
+
+
+    async function loadRoster() {
+
+      if (
+        !activeMembership
+      ) {
+        return;
+      }
+
+
+      const user =
+        window.FuelAIFirebase
+          ?.auth
+          ?.currentUser;
+
+
+      if (!user) {
+        throw new Error(
+          "No Firebase user"
+        );
+      }
+
+
+      const token =
+        await user
+          .getIdToken(
+            true
+          );
+
+
+      const response =
+        await fetch(
+          "/api/team/roster",
+          {
+            method:
+              "POST",
+
+            headers: {
+              "Content-Type":
+                "application/json",
+
+              Authorization:
+                `Bearer ${token}`
+            },
+
+            body:
+              JSON.stringify({
+                teamId:
+                  activeMembership
+                    .teamId
+              })
+          }
+        );
+
+
+      const data =
+        await response.json();
+
+
+      if (!response.ok) {
+
+        throw new Error(
+          data.error ||
+          "Unable to load roster"
+        );
+
+      }
+
+
+      renderRoster(
+        data
+      );
+
+    }
+
+
+    async function refreshTeam() {
+
+      const firebase =
+        await waitForFirebase();
+
+
+      const memberships =
+        await firebase
+          .getCurrentUserTeamMemberships();
+
+
+      window.FuelAIIdentity
+        ?.setFuelAITeamMemberships?.(
+          memberships
+        );
+
+
+      const membership =
+        memberships.find(
+          item =>
+            item.status ===
+            "active"
+        );
+
+
+      if (!membership) {
+
+        loading.style.display =
+          "none";
+
+        teamEmpty.style.display =
+          "block";
+
+        teamCard.style.display =
+          "none";
+
+        logistics.style.display =
+          "none";
+
+        return;
+
+      }
+
+
+      renderMembership(
+        membership
+      );
+
+
+      const canManage =
+        membership.role ===
+          "coach" ||
+        membership.role ===
+          "admin";
+
+
+      if (canManage) {
+
+        await loadRoster();
+
+      }
+
+
+      window.dispatchEvent(
+        new CustomEvent(
+          "fuelai:team-memberships-ready"
+        )
+      );
+
+    }
+
+
+    addForm
+      ?.addEventListener(
+        "submit",
+        async event => {
+
+          event.preventDefault();
+
+
+          if (
+            !activeMembership
+          ) {
+            return;
+          }
+
+
+          const email =
+            String(
+              emailInput.value ||
+              ""
+            )
+              .trim()
+              .toLowerCase();
+
+
+          if (!email) {
+            return;
+          }
+
+
+          addButton.disabled =
+            true;
+
+
+          addMessage.className =
+            "add-message";
+
+
+          addMessage.textContent =
+            "";
+
+
+          try {
+
+            const user =
+              window.FuelAIFirebase
+                ?.auth
+                ?.currentUser;
+
+
+            if (!user) {
+              throw new Error(
+                "No Firebase user"
+              );
+            }
+
+
+            const token =
+              await user
+                .getIdToken(
+                  true
+                );
+
+
+            const response =
+              await fetch(
+                "/api/team/member",
+                {
+                  method:
+                    "POST",
+
+                  headers: {
+                    "Content-Type":
+                      "application/json",
+
+                    Authorization:
+                      `Bearer ${token}`
+                  },
+
+                  body:
+                    JSON.stringify({
+                      teamId:
+                        activeMembership
+                          .teamId,
+
+                      targetEmail:
+                        email,
+
+                      status:
+                        "active"
+                    })
+                }
+              );
+
+
+            const data =
+              await response
+                .json();
+
+
+            if (!response.ok) {
+
+              throw new Error(
+                data.error ||
+                "Unable to add athlete"
+              );
+
+            }
+
+
+            addMessage.className =
+              "add-message success";
+
+
+            addMessage.textContent =
+              `${
+                data.member?.email ||
+                email
+              } added as an active athlete.`;
+
+
+            emailInput.value =
+              "";
+
+
+            await loadRoster();
+
+          } catch (error) {
+
+            addMessage.className =
+              "add-message error";
+
+
+            addMessage.textContent =
+              error.message ||
+              "Unable to add athlete.";
+
+          } finally {
+
+            addButton.disabled =
+              false;
+
+          }
+
+        }
+      );
+
+
+    refreshTeam()
+      .catch(
+        error => {
+
+          console.error(
+            "FuelAI Team Logistics error:",
+            error
+          );
+
+
+          loading.style.display =
+            "none";
+
+
+          teamEmpty.style.display =
+            "block";
+
+
+          teamEmpty.textContent =
+            error.message ||
+            "Unable to load Team Logistics.";
+
+        }
+      );
 
   </script>
 
 
-  <script src="/assets/js/core/nav.js?v=team1"></script>
+  <script src="/assets/js/core/nav.js?v=team2"></script>
 
 </body>
 </html>
