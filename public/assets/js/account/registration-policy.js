@@ -1,4 +1,4 @@
-export function evaluateRegistration({
+function evaluateRegistration({
   ageBand,
   privacyAccepted = false,
   termsAccepted = false
@@ -39,3 +39,8 @@ export function evaluateRegistration({
     code: "ALLOWED"
   };
 }
+
+
+globalThis.FuelAIRegistrationPolicy = {
+  evaluateRegistration
+};

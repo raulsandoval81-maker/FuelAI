@@ -11,9 +11,11 @@ import {
   requireTeamSharing
 } from "../api/_lib/consent.js";
 
-import {
+import "../public/assets/js/account/registration-policy.js";
+
+const {
   evaluateRegistration
-} from "../public/assets/js/account/registration-policy.js";
+} = globalThis.FuelAIRegistrationPolicy;
 
 const timestamp = "SERVER_TIMESTAMP";
 

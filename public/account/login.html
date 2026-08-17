@@ -89,6 +89,41 @@
   margin-top:.1rem;
 }
 
+    .registration-fields,
+    .adult-consent{
+      display:grid;
+      gap:.8rem;
+    }
+
+    .registration-fields[hidden],
+    .adult-consent[hidden],
+    .wise-links button[hidden]{
+      display:none !important;
+    }
+
+    .adult-consent{
+      padding:1rem;
+      text-align:left;
+      border:1px solid rgba(255,255,255,.14);
+      border-radius:14px;
+      background:rgba(255,255,255,.04);
+    }
+
+    .adult-consent label{
+      display:grid;
+      grid-template-columns:auto 1fr;
+      align-items:start;
+      gap:.65rem;
+      line-height:1.45;
+    }
+
+    .adult-consent input[type="checkbox"]{
+      width:1.25rem;
+      height:1.25rem;
+      margin-top:.1rem;
+      accent-color:#22c55e;
+    }
+
     @media (max-width:600px){
 
       .welcome-profile{
@@ -236,28 +271,6 @@
             aria-label="Email address"
           />
 
-          <select
-            id="ageBandInput"
-            class="goal-select"
-            aria-label="Age group for account creation"
-          >
-            <option value="">Choose age group to create an account</option>
-            <option value="under_13">Under 13</option>
-            <option value="13_17">Age 13–17</option>
-            <option value="18_plus">Age 18 or older</option>
-          </select>
-
-          <div id="adultConsent" hidden>
-            <label class="hero-note">
-              <input id="privacyAccepted" type="checkbox" />
-              I accept the current <a href="/privacy/" target="_blank">Privacy Notice</a>.
-            </label>
-            <label class="hero-note">
-              <input id="termsAccepted" type="checkbox" />
-              I accept the current <a href="/terms/" target="_blank">Terms</a>.
-            </label>
-          </div>
-
           <input
             id="passwordInput"
             class="goal-select"
@@ -276,12 +289,65 @@
           </button>
 
           <button
-            id="createAccountBtn"
+            id="showRegistrationBtn"
             class="secondary-btn"
             type="button"
           >
             Create Account
           </button>
+
+          <div
+            id="registrationFields"
+            class="registration-fields"
+            hidden
+          >
+            <p class="hero-note">
+              Creating a new account
+            </p>
+
+            <select
+              id="ageBandInput"
+              class="goal-select"
+              aria-label="Age group for account creation"
+            >
+              <option value="">Choose your age group</option>
+              <option value="under_13">Under 13</option>
+              <option value="13_17">Age 13–17</option>
+              <option value="18_plus">Age 18 or older</option>
+            </select>
+
+            <div
+              id="adultConsent"
+              class="adult-consent"
+              aria-label="Required adult agreements"
+              hidden
+            >
+              <label>
+                <input id="privacyAccepted" type="checkbox" />
+                <span>I accept the current <a href="/privacy/" target="_blank">Privacy Notice</a>.</span>
+              </label>
+              <label>
+                <input id="termsAccepted" type="checkbox" />
+                <span>I accept the current <a href="/terms/" target="_blank">Terms</a>.</span>
+              </label>
+            </div>
+
+            <button
+              id="createAccountBtn"
+              class="start-btn"
+              type="button"
+            >
+              Create New Account
+            </button>
+
+            <button
+              id="cancelRegistrationBtn"
+              class="secondary-btn"
+              type="button"
+            >
+              Back to Sign In
+            </button>
+          </div>
 
         </div>
 
@@ -309,13 +375,15 @@
 
   <script src="/assets/js/core/auth-soft.js"></script>
 
-  <script type="module">
-    import {
-      evaluateRegistration
-    } from "/assets/js/account/registration-policy.js";
+  <script src="../assets/js/account/registration-policy.js"></script>
 
+  <script>
     (() => {
       "use strict";
+
+      const evaluateRegistration =
+        window.FuelAIRegistrationPolicy
+          .evaluateRegistration;
 
       const signInBtn =
         document.getElementById("signInBtn");
@@ -324,6 +392,13 @@
         document.getElementById(
           "createAccountBtn"
         );
+
+      const showRegistrationBtn =
+        document.getElementById("showRegistrationBtn");
+      const cancelRegistrationBtn =
+        document.getElementById("cancelRegistrationBtn");
+      const registrationFields =
+        document.getElementById("registrationFields");
 
       const emailInput =
         document.getElementById("emailInput");
@@ -347,6 +422,37 @@
       const termsAccepted =
         document.getElementById("termsAccepted");
 
+      function setRegistrationMode(enabled) {
+        registrationFields.hidden = !enabled;
+        signInBtn.hidden = enabled;
+        showRegistrationBtn.hidden = enabled;
+        passwordInput.autocomplete = enabled
+          ? "new-password"
+          : "current-password";
+
+        if (enabled) {
+          ageBandInput.value = "";
+          adultConsent.hidden = true;
+          privacyAccepted.checked = false;
+          termsAccepted.checked = false;
+          setMessage("Choose your age group to create a new account.");
+          ageBandInput.focus();
+        } else {
+          setMessage("Sign in with your existing FuelAI account.");
+          passwordInput.focus();
+        }
+      }
+
+      showRegistrationBtn?.addEventListener(
+        "click",
+        () => setRegistrationMode(true)
+      );
+
+      cancelRegistrationBtn?.addEventListener(
+        "click",
+        () => setRegistrationMode(false)
+      );
+
       ageBandInput?.addEventListener("change", () => {
         adultConsent.hidden =
           ageBandInput.value !== "18_plus";
@@ -354,6 +460,10 @@
           setMessage("FuelAI is not available for users under 13. No account will be created.");
         } else if (ageBandInput.value === "13_17") {
           setMessage("A guardian must authorize this account before FuelAI can be used.");
+        } else if (ageBandInput.value === "18_plus") {
+          privacyAccepted.checked = false;
+          termsAccepted.checked = false;
+          setMessage("Review and accept both agreements to create an adult account.");
         }
       });
 
@@ -845,7 +955,11 @@
         "keydown",
         event => {
           if (event.key === "Enter") {
-            signIn();
+            if (registrationFields.hidden) {
+              signIn();
+            } else {
+              createAccount();
+            }
           }
         }
       );

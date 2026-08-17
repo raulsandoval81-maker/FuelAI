@@ -18,6 +18,46 @@ test("registration is approved before Firebase account creation", async () => {
 });
 
 
+test("registration mode visibly exposes two initially unchecked adult agreements", async () => {
+  const source = await readFile(
+    new URL("../public/account/login.html", import.meta.url),
+    "utf8"
+  );
+
+  const registrationStart = source.indexOf('id="registrationFields"');
+  const registrationEnd = source.indexOf("</div>", source.indexOf('id="cancelRegistrationBtn"'));
+  const registrationMarkup = source.slice(registrationStart, registrationEnd);
+
+  assert.match(registrationMarkup, /id="ageBandInput"/);
+  assert.match(registrationMarkup, /id="adultConsent"/);
+  assert.equal(
+    (registrationMarkup.match(/type="checkbox"/g) || []).length,
+    2
+  );
+  assert.doesNotMatch(registrationMarkup, /type="checkbox"[^>]*checked/);
+  assert.match(source, /adultConsent\.hidden\s*=\s*ageBandInput\.value !== "18_plus"/);
+  assert.match(source, /privacyAccepted\.checked = false/);
+  assert.match(source, /termsAccepted\.checked = false/);
+});
+
+
+test("sign-in is the default mode and does not require registration fields", async () => {
+  const source = await readFile(
+    new URL("../public/account/login.html", import.meta.url),
+    "utf8"
+  );
+
+  assert.match(source, /id="registrationFields"[\s\S]*?hidden/);
+  assert.doesNotMatch(
+    source.match(/<button[\s\S]*?id="signInBtn"[\s\S]*?<\/button>/)?.[0] || "",
+    /hidden/
+  );
+  assert.match(source, /signInBtn\.hidden = enabled/);
+  assert.match(source, /registrationFields\.hidden = !enabled/);
+  assert.match(source, /if \(registrationFields\.hidden\)[\s\S]*?signIn\(\)/);
+});
+
+
 test("existing setup hydrates before an inactive consent redirect", async () => {
   const source = await readFile(
     new URL("../public/account/login.html", import.meta.url),
