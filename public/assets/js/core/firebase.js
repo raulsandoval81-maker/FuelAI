@@ -4,6 +4,13 @@ import {
 } from "./account-storage.js";
 
 import {
+  CONSENT_STORAGE_KEY,
+  PRIVACY_NOTICE_VERSION,
+  TERMS_VERSION,
+  getConsentState
+} from "./consent-config.js";
+
+import {
   initializeApp
 } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
 
@@ -273,6 +280,39 @@ async function getCurrentUserRecord() {
 }
 
 
+async function getCurrentConsentRecord() {
+  const user = auth.currentUser;
+
+  if (!user) {
+    return null;
+  }
+
+  const token = await user.getIdToken();
+  const response = await fetch("/api/consent/record", {
+    headers: { Authorization: `Bearer ${token}` }
+  });
+  const payload = await response.json();
+  if (!response.ok) {
+    throw new Error(
+      payload?.error?.message ||
+      "FuelAI could not check consent."
+    );
+  }
+  const record = payload.consent || null;
+
+  if (record) {
+    localStorage.setItem(
+      CONSENT_STORAGE_KEY,
+      JSON.stringify(record)
+    );
+  } else {
+    localStorage.removeItem(CONSENT_STORAGE_KEY);
+  }
+
+  return record;
+}
+
+
 window.FuelAIFirebase
   .saveCurrentUserRecord =
     saveCurrentUserRecord;
@@ -281,6 +321,16 @@ window.FuelAIFirebase
 window.FuelAIFirebase
   .getCurrentUserRecord =
     getCurrentUserRecord;
+
+window.FuelAIFirebase
+  .getCurrentConsentRecord =
+    getCurrentConsentRecord;
+
+window.FuelAIFirebase.consent = {
+  privacyVersion: PRIVACY_NOTICE_VERSION,
+  termsVersion: TERMS_VERSION,
+  getState: getConsentState
+};
 
 
 async function getCurrentUserTeamMemberships() {

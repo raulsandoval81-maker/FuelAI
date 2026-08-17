@@ -3,6 +3,10 @@ import {
   getAdminDb
 } from "../_lib/firebase-admin.js";
 
+import {
+  requireTeamSharing
+} from "../_lib/consent.js";
+
 
 function getBearerToken(req) {
   const header =
@@ -145,6 +149,14 @@ export async function requireTeamCoach(
 
     throw error;
   }
+
+  // Team access stays closed until this account has
+  // current consent and explicit approval for this team.
+  await requireTeamSharing(
+    user.uid,
+    normalizedTeamId,
+    db
+  );
 
 
   return {

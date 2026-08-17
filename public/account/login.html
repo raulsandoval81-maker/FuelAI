@@ -236,6 +236,28 @@
             aria-label="Email address"
           />
 
+          <select
+            id="ageBandInput"
+            class="goal-select"
+            aria-label="Age group for account creation"
+          >
+            <option value="">Choose age group to create an account</option>
+            <option value="under_13">Under 13</option>
+            <option value="13_17">Age 13–17</option>
+            <option value="18_plus">Age 18 or older</option>
+          </select>
+
+          <div id="adultConsent" hidden>
+            <label class="hero-note">
+              <input id="privacyAccepted" type="checkbox" />
+              I accept the current <a href="/privacy/" target="_blank">Privacy Notice</a>.
+            </label>
+            <label class="hero-note">
+              <input id="termsAccepted" type="checkbox" />
+              I accept the current <a href="/terms/" target="_blank">Terms</a>.
+            </label>
+          </div>
+
           <input
             id="passwordInput"
             class="goal-select"
@@ -311,6 +333,46 @@
         document.getElementById(
           "authMessage"
         );
+
+      const ageBandInput =
+        document.getElementById("ageBandInput");
+      const adultConsent =
+        document.getElementById("adultConsent");
+      const privacyAccepted =
+        document.getElementById("privacyAccepted");
+      const termsAccepted =
+        document.getElementById("termsAccepted");
+
+      ageBandInput?.addEventListener("change", () => {
+        adultConsent.hidden =
+          ageBandInput.value !== "18_plus";
+        if (ageBandInput.value === "under_13") {
+          setMessage("FuelAI is not available for users under 13. No account will be created.");
+        } else if (ageBandInput.value === "13_17") {
+          setMessage("A guardian must authorize this account before FuelAI can be used.");
+        }
+      });
+
+      async function recordConsent(user, ageBand) {
+        const token = await user.getIdToken();
+        const response = await fetch("/api/consent/record", {
+          method: "POST",
+          headers: {
+            "Authorization": `Bearer ${token}`,
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            ageBand,
+            privacyAccepted: privacyAccepted?.checked === true,
+            termsAccepted: termsAccepted?.checked === true
+          })
+        });
+        const payload = await response.json();
+        if (!response.ok) {
+          throw new Error(payload?.error?.message || "Consent could not be recorded.");
+        }
+        return payload;
+      }
 
 
       function setMessage(message) {
@@ -518,12 +580,25 @@
             await firebase
               .getCurrentUserRecord();
 
+          const consent =
+            await firebase.getCurrentConsentRecord();
+
+          if (!firebase.consent.getState(consent).active) {
+            window.location.href =
+              "/account/consent.html";
+            return;
+          }
+
         } catch (error) {
 
           console.warn(
-            "FuelAI account record could not be loaded.",
+            "FuelAI account access could not be verified.",
             error
           );
+
+          window.location.href =
+            "/account/consent.html";
+          return;
 
         }
 
@@ -669,6 +744,23 @@
           return;
         }
 
+        const ageBand = ageBandInput?.value || "";
+        if (!ageBand) {
+          setMessage("Choose your age group before creating an account.");
+          return;
+        }
+        if (ageBand === "under_13") {
+          setMessage("FuelAI is not available for users under 13. No account was created.");
+          return;
+        }
+        if (
+          ageBand === "18_plus" &&
+          (!privacyAccepted?.checked || !termsAccepted?.checked)
+        ) {
+          setMessage("Accept both the Privacy Notice and Terms to create an adult account.");
+          return;
+        }
+
         createAccountBtn.disabled = true;
         setMessage(
           "Creating your account..."
@@ -683,6 +775,8 @@
               email,
               password
             );
+
+          await recordConsent(user, ageBand);
 
           await finishLogin(
             user

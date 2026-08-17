@@ -70,6 +70,7 @@ test(
       "fuelai-setup",
       "fuelai-plan",
       "fuelai-beta-access",
+      "fuelai-consent",
       "fuelai-identity",
       "fuelai-log-v1",
       "fuelai-daily-log-v1",

@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Privacy Notice — FuelAI™</title>
+  <link rel="stylesheet" href="/assets/css/site.css" />
+</head>
+<body data-theme="night">
+  <main class="scan-wrap"><article class="scan-card">
+    <p class="range-label">FuelAI™ · Powered by Sandman™</p>
+    <h1>Privacy Notice</h1>
+    <p><strong id="documentVersion">Current version</strong></p>
+    <p>FuelAI stores your account identity and setup profile in Firebase/Firestore. Setup may include goals, age range, body measurements, activity, training, and nutrition preferences you provide.</p>
+    <h2>Browser and cloud storage</h2>
+    <p>Personal logs, tool history, cached setup, and preferences may be stored in this browser. Account-owned browser data is separated by Firebase UID. Clearing browser storage can remove local history, and local history does not automatically appear on another device. Some account, consent, access, team, and metering records are stored in Firestore.</p>
+    <h2>History and retention</h2>
+    <p>TrackWise displays 7 days on Free, 30 days on Standard, and 42 days on Plus. Structured personal log data has a 42-day physical maximum in the browser.</p>
+    <h2>AI analysis and images</h2>
+    <p>MealWise and FridgeWise send selected images and request details to FuelAI’s AI provider for analysis. FuelAI does not retain scan photographs in meal or fridge history. Structured results you choose to save may remain in browser storage.</p>
+    <h2>Teams</h2>
+    <p>Team sharing is separate from private FuelAI data. Team features are restricted until the required consent and sharing approval are present.</p>
+    <h2>Contact</h2>
+    <p>Questions: Raul Sandoval at <a href="mailto:fuelai.support@gmail.com">fuelai.support@gmail.com</a>.</p>
+    <p><a href="/account/login.html">Return to FuelAI</a></p>
+  </article></main>
+  <script type="module">
+    import { PRIVACY_NOTICE_VERSION } from "/assets/js/core/consent-config.js";
+    document.getElementById("documentVersion").textContent = `Version ${PRIVACY_NOTICE_VERSION}`;
+  </script>
+</body>
+</html>

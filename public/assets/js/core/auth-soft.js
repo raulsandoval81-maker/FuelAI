@@ -125,6 +125,44 @@ function requireSoftLogin() {
     return false;
   }
 
+  const path = window.location.pathname;
+  const consentExempt =
+    path.startsWith("/account/consent") ||
+    path.startsWith("/privacy") ||
+    path.startsWith("/terms");
+
+  if (!consentExempt) {
+    document.documentElement.style.visibility =
+      "hidden";
+    let consent = null;
+
+    try {
+      consent = JSON.parse(
+        localStorage.getItem("fuelai-consent") || "null"
+      );
+    } catch {
+      consent = null;
+    }
+
+    import("./consent-config.js")
+      .then(({ getConsentState }) => {
+        if (!getConsentState(consent).active) {
+          window.location.replace(
+            "/account/consent.html"
+          );
+          return;
+        }
+
+        document.documentElement.style.visibility =
+          "";
+      })
+      .catch(() => {
+        window.location.replace(
+          "/account/consent.html"
+        );
+      });
+  }
+
   return true;
 }
 

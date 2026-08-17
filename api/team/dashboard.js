@@ -6,6 +6,8 @@ import {
   requireTeamCoach
 } from "./_auth.js";
 
+import { requireTeamSharing } from "../_lib/consent.js";
+
 
 const VALID_RANGES =
   new Set([
@@ -278,6 +280,12 @@ export default async function handler(
       await Promise.all(
         athletes.map(
           async athlete => {
+
+            await requireTeamSharing(
+              athlete.uid,
+              context.teamId,
+              db
+            );
 
             const metricsSnapshot =
               await db

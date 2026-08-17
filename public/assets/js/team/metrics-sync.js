@@ -175,6 +175,18 @@
     const days =
       getSafeDays();
 
+    const memberships = await firebase
+      .getCurrentUserTeamMemberships();
+    const athleteTeam = memberships.find(
+      membership =>
+        membership.status === "active" &&
+        membership.role === "athlete"
+    );
+
+    if (!athleteTeam?.teamId) {
+      return { ok: false, skipped: true };
+    }
+
 
     const token =
       await user
@@ -200,6 +212,7 @@
 
           body:
             JSON.stringify({
+              teamId: athleteTeam.teamId,
               days
             })
         }
