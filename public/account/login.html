@@ -12,7 +12,7 @@
 
   <link
     rel="stylesheet"
-    href="/assets/css/site.css"
+    href="/assets/css/site.css?v=consent-2a-3"
   />
 
   <style>
@@ -307,7 +307,7 @@
 
             <select
               id="ageBandInput"
-              class="goal-select"
+              class="goal-select age-gate-select"
               aria-label="Age group for account creation"
             >
               <option value="">Choose your age group</option>
@@ -315,6 +315,16 @@
               <option value="13_17">Age 13–17</option>
               <option value="18_plus">Age 18 or older</option>
             </select>
+
+            <section
+              id="registrationAgeConsequence"
+              class="age-consequence"
+              data-state="unselected"
+              aria-live="polite"
+            >
+              <strong id="registrationAgeTitle">Choose your age group</strong>
+              <p id="registrationAgeText">Your selection determines which authorization steps are required.</p>
+            </section>
 
             <div
               id="adultConsent"
@@ -384,6 +394,9 @@
       const evaluateRegistration =
         window.FuelAIRegistrationPolicy
           .evaluateRegistration;
+      const getAgeGateState =
+        window.FuelAIRegistrationPolicy
+          .getAgeGateState;
 
       const signInBtn =
         document.getElementById("signInBtn");
@@ -421,6 +434,25 @@
         document.getElementById("privacyAccepted");
       const termsAccepted =
         document.getElementById("termsAccepted");
+      const registrationAgeConsequence =
+        document.getElementById("registrationAgeConsequence");
+      const registrationAgeTitle =
+        document.getElementById("registrationAgeTitle");
+      const registrationAgeText =
+        document.getElementById("registrationAgeText");
+
+      function renderRegistrationAge(ageBand) {
+        const state = getAgeGateState(ageBand);
+        registrationAgeConsequence.dataset.state = state.code;
+        registrationAgeTitle.textContent = state.title;
+        registrationAgeText.textContent = state.message;
+        adultConsent.hidden = !state.showAdultAcceptance;
+        createAccountBtn.disabled = state.actionDisabled;
+        createAccountBtn.textContent = state.registrationAction;
+        privacyAccepted.checked = false;
+        termsAccepted.checked = false;
+        setMessage(state.message);
+      }
 
       function setRegistrationMode(enabled) {
         registrationFields.hidden = !enabled;
@@ -432,10 +464,7 @@
 
         if (enabled) {
           ageBandInput.value = "";
-          adultConsent.hidden = true;
-          privacyAccepted.checked = false;
-          termsAccepted.checked = false;
-          setMessage("Choose your age group to create a new account.");
+          renderRegistrationAge("");
           ageBandInput.focus();
         } else {
           setMessage("Sign in with your existing FuelAI account.");
@@ -454,17 +483,7 @@
       );
 
       ageBandInput?.addEventListener("change", () => {
-        adultConsent.hidden =
-          ageBandInput.value !== "18_plus";
-        if (ageBandInput.value === "under_13") {
-          setMessage("FuelAI is not available for users under 13. No account will be created.");
-        } else if (ageBandInput.value === "13_17") {
-          setMessage("A guardian must authorize this account before FuelAI can be used.");
-        } else if (ageBandInput.value === "18_plus") {
-          privacyAccepted.checked = false;
-          termsAccepted.checked = false;
-          setMessage("Review and accept both agreements to create an adult account.");
-        }
+        renderRegistrationAge(ageBandInput.value);
       });
 
       async function recordConsent(user, ageBand) {

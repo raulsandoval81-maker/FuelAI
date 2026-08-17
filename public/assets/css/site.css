@@ -1516,6 +1516,84 @@ select.goal-select{
 .setup-form .goal-select option{
   color:#111;
 }
+
+/* Age/consent selectors need explicit native-menu colors. */
+.age-gate-select{
+  background:#172033 !important;
+  color:#f8fafc !important;
+  border-color:#64748b !important;
+  color-scheme:dark;
+}
+
+.age-gate-select:hover{
+  background:#1e293b !important;
+  border-color:#93c5fd !important;
+}
+
+.age-gate-select:focus{
+  background:#172033 !important;
+  color:#fff !important;
+  border-color:#60a5fa !important;
+  box-shadow:0 0 0 4px rgba(59,130,246,.28) !important;
+}
+
+.age-gate-select option{
+  background:#111827;
+  color:#f8fafc;
+}
+
+.age-gate-select option:checked{
+  background:#2563eb;
+  color:#fff;
+}
+
+body[data-theme="day"] .age-gate-select{
+  background:#fff !important;
+  color:#111827 !important;
+  border-color:#475569 !important;
+  color-scheme:light;
+}
+
+body[data-theme="day"] .age-gate-select option{
+  background:#fff;
+  color:#111827;
+}
+
+.age-consequence{
+  padding:1rem;
+  border:1px solid #64748b;
+  border-radius:16px;
+  background:#111827;
+  color:#f8fafc;
+  text-align:left;
+}
+
+.age-consequence strong{
+  display:block;
+  margin-bottom:.4rem;
+  font-size:1rem;
+}
+
+.age-consequence p{
+  margin:0;
+  color:#e2e8f0;
+  line-height:1.5;
+}
+
+.age-consequence[data-state="blocked"]{
+  border-color:#f87171;
+  background:#3f151b;
+}
+
+.age-consequence[data-state="pending_guardian"]{
+  border-color:#fbbf24;
+  background:#3b2a0a;
+}
+
+.age-consequence[data-state="adult_consent"]{
+  border-color:#60a5fa;
+  background:#102a4c;
+}
 .macro-row {
   display: grid;
   grid-template-columns: 1fr auto;

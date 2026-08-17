@@ -41,6 +41,51 @@ function evaluateRegistration({
 }
 
 
+function getAgeGateState(ageBand) {
+  const states = {
+    "": {
+      code: "unselected",
+      title: "Choose your age group",
+      message: "Your selection determines which authorization steps are required.",
+      showAdultAcceptance: false,
+      actionDisabled: true,
+      registrationAction: "Create New Account",
+      consentAction: "Continue"
+    },
+    under_13: {
+      code: "blocked",
+      title: "FuelAI is unavailable for users under 13",
+      message: "No FuelAI account can be created or activated for this age group.",
+      showAdultAcceptance: false,
+      actionDisabled: true,
+      registrationAction: "Account Unavailable",
+      consentAction: "Account Unavailable"
+    },
+    "13_17": {
+      code: "pending_guardian",
+      title: "Guardian authorization will be required",
+      message: "You may create a pending account, but FuelAI and AI tools stay blocked until guardian authorization and your athlete acknowledgement are completed.",
+      showAdultAcceptance: false,
+      actionDisabled: false,
+      registrationAction: "Create Pending Account",
+      consentAction: "Create Pending Account"
+    },
+    "18_plus": {
+      code: "adult_consent",
+      title: "Adult consent required",
+      message: "Review and accept both the Privacy Notice and Terms before continuing.",
+      showAdultAcceptance: true,
+      actionDisabled: false,
+      registrationAction: "Create Adult Account",
+      consentAction: "Accept and Continue"
+    }
+  };
+
+  return states[ageBand] || states[""];
+}
+
+
 globalThis.FuelAIRegistrationPolicy = {
-  evaluateRegistration
+  evaluateRegistration,
+  getAgeGateState
 };

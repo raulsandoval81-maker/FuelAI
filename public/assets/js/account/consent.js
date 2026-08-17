@@ -10,6 +10,12 @@ const adult = document.getElementById("adultAcceptance");
 const privacy = document.getElementById("acceptPrivacy");
 const terms = document.getElementById("acceptTerms");
 const continueBtn = document.getElementById("continueBtn");
+const consequence = document.getElementById("ageConsequence");
+const consequenceTitle = document.getElementById("ageConsequenceTitle");
+const consequenceText = document.getElementById("ageConsequenceText");
+const getAgeGateState =
+  window.FuelAIRegistrationPolicy.getAgeGateState;
+let ageLocked = false;
 
 function waitForFirebase() {
   if (window.FuelAIFirebase) return Promise.resolve(window.FuelAIFirebase);
@@ -32,6 +38,37 @@ function explain(reason) {
   return messages[reason] || messages.missing;
 }
 
+function showStatus(text) {
+  message.textContent = text;
+  message.hidden = !text;
+}
+
+function renderAgeState(
+  ageBand,
+  { resetAcceptances = true } = {}
+) {
+  const state = getAgeGateState(ageBand);
+
+  consequence.dataset.state = state.code;
+  consequenceTitle.textContent = state.title;
+  consequenceText.textContent = state.message;
+  adult.hidden = !state.showAdultAcceptance;
+  continueBtn.textContent = state.consentAction;
+  continueBtn.disabled =
+    state.actionDisabled ||
+    (
+      ageLocked &&
+      ageBand !== "18_plus"
+    );
+
+  if (resetAcceptances) {
+    privacy.checked = false;
+    terms.checked = false;
+  }
+
+  return state;
+}
+
 async function load() {
   const firebase = await waitForFirebase();
   const user = firebase.auth.currentUser || await new Promise(resolve => {
@@ -49,21 +86,31 @@ async function load() {
     return;
   }
   age.value = record?.ageBand || "";
-  adult.hidden = age.value !== "18_plus";
-  message.textContent = explain(state.reason);
+  ageLocked = Boolean(record?.ageBand);
+  age.disabled = ageLocked;
+  renderAgeState(age.value, {
+    resetAcceptances: true
+  });
+  showStatus(explain(state.reason));
   form.hidden = false;
 }
 
 age.addEventListener("change", () => {
-  adult.hidden = age.value !== "18_plus";
-  if (age.value === "under_13") message.textContent = explain("under_13");
-  if (age.value === "13_17") message.textContent = explain("pending_guardian");
+  showStatus("");
+  renderAgeState(age.value);
 });
 
 continueBtn.addEventListener("click", async () => {
-  if (!age.value) { message.textContent = "Choose your age group."; return; }
+  const ageState = renderAgeState(age.value, {
+    resetAcceptances: false
+  });
+  if (ageState.actionDisabled) {
+    showStatus(ageState.message);
+    return;
+  }
+  if (!age.value) { showStatus("Choose your age group."); return; }
   if (age.value === "18_plus" && (!privacy.checked || !terms.checked)) {
-    message.textContent = "Accept both the Privacy Notice and Terms to continue.";
+    showStatus("Accept both the Privacy Notice and Terms to continue.");
     return;
   }
   continueBtn.disabled = true;
@@ -81,11 +128,20 @@ continueBtn.addEventListener("click", async () => {
     localStorage.setItem(CONSENT_STORAGE_KEY, JSON.stringify(record));
     const state = getConsentState(record);
     if (state.active) location.replace(localStorage.getItem("fuelai-setup") ? "/hub/" : "/account/setup.html");
-    else message.textContent = explain(state.reason);
+    else {
+      ageLocked = Boolean(record?.ageBand);
+      age.disabled = ageLocked;
+      renderAgeState(record?.ageBand || age.value, {
+        resetAcceptances: false
+      });
+      showStatus(explain(state.reason));
+    }
   } catch (error) {
-    message.textContent = error.message;
+    showStatus(error.message);
   } finally {
-    continueBtn.disabled = false;
+    renderAgeState(age.value, {
+      resetAcceptances: false
+    });
   }
 });
 
@@ -95,6 +151,7 @@ document.getElementById("logoutBtn").addEventListener("click", async () => {
 });
 
 load().catch(() => {
-  message.textContent = "FuelAI could not check consent. Please sign in again.";
+  showStatus("FuelAI could not check consent. Please sign in again.");
+  renderAgeState("");
   form.hidden = false;
 });

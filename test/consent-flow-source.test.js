@@ -35,9 +35,38 @@ test("registration mode visibly exposes two initially unchecked adult agreements
     2
   );
   assert.doesNotMatch(registrationMarkup, /type="checkbox"[^>]*checked/);
-  assert.match(source, /adultConsent\.hidden\s*=\s*ageBandInput\.value !== "18_plus"/);
+  assert.match(source, /adultConsent\.hidden = !state\.showAdultAcceptance/);
   assert.match(source, /privacyAccepted\.checked = false/);
   assert.match(source, /termsAccepted\.checked = false/);
+});
+
+
+test("consent age UI renders one readable state and clears stale acceptance", async () => {
+  const html = await readFile(
+    new URL("../public/account/consent.html", import.meta.url),
+    "utf8"
+  );
+  const script = await readFile(
+    new URL("../public/assets/js/account/consent.js", import.meta.url),
+    "utf8"
+  );
+  const css = await readFile(
+    new URL("../public/assets/css/site.css", import.meta.url),
+    "utf8"
+  );
+
+  assert.match(html, /id="ageConsequence"/);
+  assert.match(html, /class="goal-select age-gate-select"/);
+  assert.match(script, /function renderAgeState/);
+  assert.match(script, /adult\.hidden = !state\.showAdultAcceptance/);
+  assert.match(script, /privacy\.checked = false/);
+  assert.match(script, /terms\.checked = false/);
+  assert.match(script, /continueBtn\.disabled =[\s\S]*state\.actionDisabled/);
+  assert.match(css, /\.age-gate-select option\{[\s\S]*background:#111827;[\s\S]*color:#f8fafc/);
+  assert.match(css, /\.age-gate-select option:checked/);
+  assert.match(css, /\.age-consequence\[data-state="blocked"\]/);
+  assert.match(css, /\.age-consequence\[data-state="pending_guardian"\]/);
+  assert.match(css, /\.age-consequence\[data-state="adult_consent"\]/);
 });
 
 

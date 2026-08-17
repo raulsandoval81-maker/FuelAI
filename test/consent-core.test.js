@@ -14,7 +14,8 @@ import {
 import "../public/assets/js/account/registration-policy.js";
 
 const {
-  evaluateRegistration
+  evaluateRegistration,
+  getAgeGateState
 } = globalThis.FuelAIRegistrationPolicy;
 
 const timestamp = "SERVER_TIMESTAMP";
@@ -124,6 +125,33 @@ test("registration policy blocks under-13 and incomplete adult acceptance", () =
     evaluateRegistration({ ageBand: "13_17" }).allowed,
     true
   );
+});
+
+test("age gate states switch without stale controls or messages", () => {
+  const under = getAgeGateState("under_13");
+  const minor = getAgeGateState("13_17");
+  const adult = getAgeGateState("18_plus");
+
+  assert.equal(under.code, "blocked");
+  assert.equal(under.actionDisabled, true);
+  assert.equal(under.showAdultAcceptance, false);
+  assert.match(under.message, /No FuelAI account/);
+
+  assert.equal(minor.code, "pending_guardian");
+  assert.equal(minor.actionDisabled, false);
+  assert.equal(minor.showAdultAcceptance, false);
+  assert.match(minor.message, /guardian authorization/);
+  assert.match(minor.message, /athlete acknowledgement/);
+
+  assert.equal(adult.code, "adult_consent");
+  assert.equal(adult.actionDisabled, false);
+  assert.equal(adult.showAdultAcceptance, true);
+  assert.doesNotMatch(adult.title + adult.message, /guardian/i);
+  assert.doesNotMatch(adult.title + adult.message, /athlete acknowledgement/i);
+
+  // Returning to another state derives every visible property anew.
+  assert.equal(getAgeGateState("under_13").showAdultAcceptance, false);
+  assert.equal(getAgeGateState("13_17").showAdultAcceptance, false);
 });
 
 test("missing, outdated, and withdrawn consent are inactive", () => {
