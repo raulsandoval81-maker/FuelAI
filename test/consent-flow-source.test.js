@@ -132,6 +132,54 @@ test("error-panel text colors meet WCAG AA contrast in day and night modes", () 
 });
 
 
+test("legal pages and consent surfaces share accessible branded navigation", async () => {
+  const login = await readFile(
+    new URL("../public/account/login.html", import.meta.url),
+    "utf8"
+  );
+  const consent = await readFile(
+    new URL("../public/account/consent.html", import.meta.url),
+    "utf8"
+  );
+  const privacy = await readFile(
+    new URL("../public/privacy/index.html", import.meta.url),
+    "utf8"
+  );
+  const terms = await readFile(
+    new URL("../public/terms/index.html", import.meta.url),
+    "utf8"
+  );
+  const css = await readFile(
+    new URL("../public/assets/css/site.css", import.meta.url),
+    "utf8"
+  );
+
+  for (const source of [login, consent, privacy, terms]) {
+    assert.match(source, /FuelAI™[\s\S]*Powered by Sandman™/);
+    assert.match(source, /class="legal-footer"/);
+    assert.match(source, /href="\/privacy\/"|Privacy Notice/);
+    assert.match(source, /href="\/terms\/"|>Terms</);
+  }
+
+  for (const source of [privacy, terms]) {
+    assert.match(source, /class="scan-card legal-document"/);
+    assert.match(source, /class="legal-meta"/);
+    assert.match(source, /Effective date/);
+    assert.match(source, /class="legal-support"/);
+    assert.match(source, /Back to Consent/);
+    assert.match(source, /Back to Sign In/);
+  }
+
+  assert.match(css, /\.legal-document\{[\s\S]*max-width:760px/);
+  assert.match(css, /\.legal-document a:visited/);
+  assert.match(css, /\.legal-document a:hover/);
+  assert.match(css, /\.legal-document a:focus-visible/);
+  assert.match(css, /text-decoration-line:underline/);
+  assert.match(css, /body\[data-theme="day"\] \.legal-document a/);
+  assert.match(css, /@media\(max-width:480px\)\{[\s\S]*\.legal-page/);
+});
+
+
 test("sign-in is the default mode and does not require registration fields", async () => {
   const source = await readFile(
     new URL("../public/account/login.html", import.meta.url),

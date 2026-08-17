@@ -4,27 +4,57 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Terms — FuelAI™</title>
-  <link rel="stylesheet" href="/assets/css/site.css" />
+  <link rel="stylesheet" href="/assets/css/site.css?v=consent-2a-5" />
 </head>
 <body data-theme="night">
-  <main class="scan-wrap"><article class="scan-card">
-    <p class="range-label">FuelAI™ · Powered by Sandman™</p>
-    <h1>Terms</h1>
-    <p><strong id="documentVersion">Current version</strong></p>
-    <p>FuelAI is a beta nutrition, training, and performance-support service. It does not replace professional medical care, diagnosis, treatment, or emergency help.</p>
-    <h2>Age and authorization</h2>
-    <p>FuelAI’s public beta supports users age 13 and older. Users under 13 may not create or use an account. Users age 13–17 require guardian authorization and their own acknowledgement before product access; that authorization flow is not yet available.</p>
-    <h2>Your account</h2>
-    <p>Provide accurate account information, protect your login, and use only your own account. Access may be limited during the beta. AI output can be incomplete or wrong and should be reviewed before acting on it.</p>
-    <h2>Data and teams</h2>
-    <p>Your use is also governed by the current Privacy Notice. Private meals, scans, food history, weight details, check-ins, and conversations are not team data. Team sharing requires separate approval.</p>
-    <h2>Contact</h2>
-    <p>Questions: Raul Sandoval at <a href="mailto:fuelai.support@gmail.com">fuelai.support@gmail.com</a>.</p>
-    <p><a href="/privacy/">Privacy Notice</a> · <a href="/account/login.html">Return to FuelAI</a></p>
-  </article></main>
+  <main class="scan-wrap legal-page">
+    <article class="scan-card legal-document">
+      <header class="legal-document-header">
+        <p class="legal-brand">FuelAI™ <span aria-hidden="true">·</span> Powered by Sandman™</p>
+        <h1>Terms</h1>
+        <div class="legal-meta" aria-label="Document information">
+          <span><strong>Version</strong> <span id="documentVersion">Current</span></span>
+          <span><strong>Effective date</strong> <time id="effectiveDate">Current</time></span>
+        </div>
+      </header>
+
+      <section class="legal-section legal-intro">
+        <p>FuelAI is a beta nutrition, training, and performance-support service. It does not replace professional medical care, diagnosis, treatment, or emergency help.</p>
+      </section>
+      <section class="legal-section">
+        <h2>Age and authorization</h2>
+        <p>FuelAI’s public beta supports users age 13 and older. Users under 13 may not create or use an account. Users age 13–17 require guardian authorization and their own acknowledgement before product access; that authorization flow is not yet available.</p>
+      </section>
+      <section class="legal-section">
+        <h2>Your account</h2>
+        <p>Provide accurate account information, protect your login, and use only your own account. Access may be limited during the beta. AI output can be incomplete or wrong and should be reviewed before acting on it.</p>
+      </section>
+      <section class="legal-section">
+        <h2>Data and teams</h2>
+        <p>Your use is also governed by the current <a href="/privacy/">Privacy Notice</a>. Private meals, scans, food history, weight details, check-ins, and conversations are not team data. Team sharing requires separate approval.</p>
+      </section>
+      <aside class="legal-support" aria-labelledby="termsSupportTitle">
+        <h2 id="termsSupportTitle">Need help?</h2>
+        <p>Questions: Raul Sandoval at <a href="mailto:fuelai.support@gmail.com">fuelai.support@gmail.com</a>.</p>
+      </aside>
+      <footer class="legal-footer" aria-label="Terms navigation">
+        <p>FuelAI™ · Powered by Sandman™</p>
+        <nav aria-label="Legal and account navigation">
+          <a href="/privacy/">Read the Privacy Notice</a>
+          <span aria-hidden="true">·</span>
+          <a href="/account/consent.html">Back to Consent</a>
+          <span aria-hidden="true">·</span>
+          <a href="/account/login.html">Back to Sign In</a>
+        </nav>
+      </footer>
+    </article>
+  </main>
   <script type="module">
     import { TERMS_VERSION } from "/assets/js/core/consent-config.js";
-    document.getElementById("documentVersion").textContent = `Version ${TERMS_VERSION}`;
+    document.getElementById("documentVersion").textContent = TERMS_VERSION;
+    const effectiveDate = document.getElementById("effectiveDate");
+    effectiveDate.dateTime = TERMS_VERSION;
+    effectiveDate.textContent = TERMS_VERSION;
   </script>
 </body>
 </html>
