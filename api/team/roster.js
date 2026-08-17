@@ -2,6 +2,9 @@ import {
   requireTeamCoach
 } from "./_auth.js";
 
+import { requireTeamSharing } from "../_lib/consent.js";
+import { getAdminDb } from "../_lib/firebase-admin.js";
+
 
 export default async function handler(
   req,
@@ -32,6 +35,19 @@ export default async function handler(
         .teamRef
         .collection("members")
         .get();
+
+
+    const db = getAdminDb();
+    await Promise.all(
+      snapshot.docs
+        .map(memberDoc => memberDoc.data() || {})
+        .filter(member => member.role === "athlete")
+        .map(member => requireTeamSharing(
+          member.uid,
+          context.teamId,
+          db
+        ))
+    );
 
 
     const members =

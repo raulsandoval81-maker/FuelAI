@@ -309,7 +309,11 @@
 
   <script src="/assets/js/core/auth-soft.js"></script>
 
-  <script>
+  <script type="module">
+    import {
+      evaluateRegistration
+    } from "/assets/js/account/registration-policy.js";
+
     (() => {
       "use strict";
 
@@ -569,6 +573,9 @@
         let record =
           null;
 
+        let consent =
+          null;
+
 
         try {
 
@@ -580,14 +587,8 @@
             await firebase
               .getCurrentUserRecord();
 
-          const consent =
+          consent =
             await firebase.getCurrentConsentRecord();
-
-          if (!firebase.consent.getState(consent).active) {
-            window.location.href =
-              "/account/consent.html";
-            return;
-          }
 
         } catch (error) {
 
@@ -608,6 +609,32 @@
           hydrateAccountCache(
             record
           );
+
+        } else {
+
+          /*
+           * A real Firebase account with no
+           * Firestore record is a new FuelAI
+           * account. Never inherit another
+           * browser user's setup.
+           */
+          clearAccountCache();
+
+        }
+
+
+        const firebase =
+          await waitForFirebase();
+
+
+        if (!firebase.consent.getState(consent).active) {
+          window.location.href =
+            "/account/consent.html";
+          return;
+        }
+
+
+        if (record) {
 
 
           try {
@@ -648,16 +675,6 @@
             );
 
           }
-
-        } else {
-
-          /*
-           * A real Firebase account with no
-           * Firestore record is a new FuelAI
-           * account. Never inherit another
-           * browser user's setup.
-           */
-          clearAccountCache();
 
         }
 
@@ -745,19 +762,25 @@
         }
 
         const ageBand = ageBandInput?.value || "";
-        if (!ageBand) {
+        const registration = evaluateRegistration({
+          ageBand,
+          privacyAccepted: privacyAccepted?.checked === true,
+          termsAccepted: termsAccepted?.checked === true
+        });
+        if (registration.code === "AGE_REQUIRED") {
           setMessage("Choose your age group before creating an account.");
           return;
         }
-        if (ageBand === "under_13") {
+        if (registration.code === "AGE_NOT_SUPPORTED") {
           setMessage("FuelAI is not available for users under 13. No account was created.");
           return;
         }
-        if (
-          ageBand === "18_plus" &&
-          (!privacyAccepted?.checked || !termsAccepted?.checked)
-        ) {
+        if (registration.code === "ACCEPTANCE_REQUIRED") {
           setMessage("Accept both the Privacy Notice and Terms to create an adult account.");
+          return;
+        }
+        if (!registration.allowed) {
+          setMessage("Choose a valid age group before creating an account.");
           return;
         }
 

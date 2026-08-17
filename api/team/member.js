@@ -1,11 +1,14 @@
 import {
   getAdminAuth,
+  getAdminDb,
   FieldValue
 } from "../_lib/firebase-admin.js";
 
 import {
   requireTeamCoach
 } from "./_auth.js";
+
+import { requireTeamSharing } from "../_lib/consent.js";
 
 
 const VALID_STATUSES =
@@ -112,6 +115,13 @@ export default async function handler(
           "targetUid or targetEmail is required"
       });
     }
+
+
+    await requireTeamSharing(
+      target.uid,
+      context.teamId,
+      getAdminDb()
+    );
 
 
     const memberRef =

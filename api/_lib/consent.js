@@ -181,6 +181,47 @@ export function buildConsentRecord({
 }
 
 
+export function buildCorrectedConsentRecord({
+  uid,
+  ageBand,
+  correctedBy,
+  existing = null,
+  timestamp = FieldValue.serverTimestamp()
+}) {
+  const safeAgeBand = String(ageBand || "").trim();
+
+  if (!CONSENT_AGE_BANDS.has(safeAgeBand)) {
+    throw new ConsentAccessError(
+      "Choose a valid age group.",
+      "INVALID_AGE_BAND",
+      400
+    );
+  }
+
+  const status =
+    safeAgeBand === "under_13"
+      ? "blocked_under_13"
+      : safeAgeBand === "13_17"
+        ? "pending_guardian"
+        : "needs_consent";
+
+  return {
+    uid,
+    ageBand: safeAgeBand,
+    status,
+    privacyVersion: PRIVACY_NOTICE_VERSION,
+    termsVersion: TERMS_VERSION,
+    acceptedAt: null,
+    classifiedAt: existing?.classifiedAt || timestamp,
+    withdrawnAt: null,
+    correctedAt: timestamp,
+    correctedBy,
+    previousAgeBand: existing?.ageBand || null,
+    updatedAt: timestamp
+  };
+}
+
+
 export async function getConsentRecord(
   uid,
   db = getAdminDb()

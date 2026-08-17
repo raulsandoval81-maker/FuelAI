@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 import {
+  buildCorrectedConsentRecord,
   buildConsentRecord,
   getConsentState,
   PRIVACY_NOTICE_VERSION,
@@ -9,6 +10,10 @@ import {
   requireActiveConsent,
   requireTeamSharing
 } from "../api/_lib/consent.js";
+
+import {
+  evaluateRegistration
+} from "../public/assets/js/account/registration-policy.js";
 
 const timestamp = "SERVER_TIMESTAMP";
 
@@ -66,6 +71,56 @@ test("an existing age classification cannot be changed in the app", () => {
   assert.throws(
     () => buildConsentRecord({ uid: "minor", ageBand: "18_plus", privacyAccepted: true, termsAccepted: true, existing: { ageBand: "13_17" }, timestamp }),
     error => error.code === "AGE_BAND_LOCKED"
+  );
+});
+
+test("admin correction resets acceptance and requires the corrected flow", () => {
+  const adult = buildCorrectedConsentRecord({
+    uid: "person",
+    ageBand: "18_plus",
+    correctedBy: "admin",
+    existing: { ageBand: "under_13", acceptedAt: "OLD" },
+    timestamp
+  });
+  assert.equal(adult.status, "needs_consent");
+  assert.equal(adult.acceptedAt, null);
+  assert.equal(adult.previousAgeBand, "under_13");
+  assert.equal(adult.correctedBy, "admin");
+  assert.equal(getConsentState(adult).active, false);
+
+  const minor = buildCorrectedConsentRecord({
+    uid: "person",
+    ageBand: "13_17",
+    correctedBy: "admin",
+    timestamp
+  });
+  assert.equal(minor.status, "pending_guardian");
+});
+
+test("registration policy blocks under-13 and incomplete adult acceptance", () => {
+  assert.deepEqual(
+    evaluateRegistration({ ageBand: "under_13" }),
+    { allowed: false, code: "AGE_NOT_SUPPORTED" }
+  );
+  assert.deepEqual(
+    evaluateRegistration({
+      ageBand: "18_plus",
+      privacyAccepted: true,
+      termsAccepted: false
+    }),
+    { allowed: false, code: "ACCEPTANCE_REQUIRED" }
+  );
+  assert.equal(
+    evaluateRegistration({
+      ageBand: "18_plus",
+      privacyAccepted: true,
+      termsAccepted: true
+    }).allowed,
+    true
+  );
+  assert.equal(
+    evaluateRegistration({ ageBand: "13_17" }).allowed,
+    true
   );
 });
 

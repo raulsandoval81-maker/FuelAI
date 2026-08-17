@@ -144,9 +144,45 @@ function requireSoftLogin() {
       consent = null;
     }
 
-    import("./consent-config.js")
-      .then(({ getConsentState }) => {
+    Promise.all([
+      import("./consent-config.js"),
+      new Promise((resolve, reject) => {
+        if (window.FuelAIFirebase) {
+          resolve(window.FuelAIFirebase);
+          return;
+        }
+
+        const firebaseScript = document.querySelector(
+          'script[src*="/assets/js/core/firebase.js"]'
+        );
+
+        if (firebaseScript) {
+          window.addEventListener(
+            "fuelai:firebase-ready",
+            () => resolve(window.FuelAIFirebase),
+            { once: true }
+          );
+          return;
+        }
+
+        import("./firebase.js")
+          .then(() => resolve(window.FuelAIFirebase))
+          .catch(reject);
+      })
+    ])
+      .then(async ([{ getConsentState }, firebase]) => {
+        // The cache can deny early, but it can never grant access.
         if (!getConsentState(consent).active) {
+          window.location.replace(
+            "/account/consent.html"
+          );
+          return;
+        }
+
+        const current =
+          await firebase.getCurrentConsentRecord();
+
+        if (!getConsentState(current).active) {
           window.location.replace(
             "/account/consent.html"
           );

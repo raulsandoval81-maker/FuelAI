@@ -146,13 +146,15 @@ test(
     const storage = new MemoryStorage({
       [`${SNAPSHOT_PREFIX}user-b`]: JSON.stringify({
         "fuelai-history": "B-meals",
-        "fuelai-weightwise-beta": "B-weight"
+        "fuelai-weightwise-beta": "B-weight",
+        "fuelai-consent": "B-consent"
       })
     });
 
     activateAccountStorage("user-a", storage);
     storage.setItem("fuelai-history", "A-meals");
     storage.setItem("fuelai-setup", "A-profile");
+    storage.setItem("fuelai-consent", "A-consent");
 
     activateAccountStorage("user-b", storage);
 
@@ -168,11 +170,21 @@ test(
       storage.getItem("fuelai-setup"),
       null
     );
+    assert.equal(
+      storage.getItem("fuelai-consent"),
+      "B-consent"
+    );
     assert.match(
       storage.getItem(
         `${SNAPSHOT_PREFIX}user-a`
       ),
       /A-meals/
+    );
+    assert.match(
+      storage.getItem(
+        `${SNAPSHOT_PREFIX}user-a`
+      ),
+      /A-consent/
     );
   }
 );
