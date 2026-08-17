@@ -171,7 +171,10 @@ function restoreAccountStorage(
   const rawSnapshot = storage.getItem(key);
 
   if (!rawSnapshot) {
-    return 0;
+    return {
+      complete: true,
+      restored: 0
+    };
   }
 
   let snapshot;
@@ -185,7 +188,10 @@ function restoreAccountStorage(
     );
 
     storage.removeItem(key);
-    return 0;
+    return {
+      complete: true,
+      restored: 0
+    };
   }
 
   if (
@@ -194,27 +200,58 @@ function restoreAccountStorage(
     Array.isArray(snapshot)
   ) {
     storage.removeItem(key);
-    return 0;
+    return {
+      complete: true,
+      restored: 0
+    };
   }
 
   // Release the serialized copy before restoring its
   // entries so localStorage does not need double space.
   storage.removeItem(key);
 
-  let restored = 0;
+  const restoredKeys = [];
 
-  Object.entries(snapshot)
-    .forEach(([storedKey, value]) => {
-      if (
-        isAccountKey(storedKey) &&
-        typeof value === "string"
-      ) {
-        storage.setItem(storedKey, value);
-        restored += 1;
-      }
-    });
+  try {
+    Object.entries(snapshot)
+      .forEach(([storedKey, value]) => {
+        if (
+          isAccountKey(storedKey) &&
+          typeof value === "string"
+        ) {
+          storage.setItem(storedKey, value);
+          restoredKeys.push(storedKey);
+        }
+      });
+  } catch (error) {
+    restoredKeys.forEach(
+      storedKey => storage.removeItem(storedKey)
+    );
 
-  return restored;
+    try {
+      storage.setItem(key, rawSnapshot);
+    } catch (snapshotError) {
+      console.warn(
+        "FuelAI account storage recovery snapshot could not be preserved.",
+        snapshotError
+      );
+    }
+
+    console.warn(
+      "FuelAI account storage restoration was interrupted and will be retried.",
+      error
+    );
+
+    return {
+      complete: false,
+      restored: 0
+    };
+  }
+
+  return {
+    complete: true,
+    restored: restoredKeys.length
+  };
 }
 
 
@@ -270,10 +307,18 @@ function activateAccountStorage(
 
   clearActiveAccountData(storage);
 
-  const restored = restoreAccountStorage(
+  const restoreResult = restoreAccountStorage(
     normalizedUid,
     storage
   );
+
+  if (!restoreResult.complete) {
+    return {
+      activated: false,
+      reason: "restore-interrupted",
+      restored: 0
+    };
+  }
 
   storage.setItem(
     OWNER_KEY,
@@ -283,7 +328,7 @@ function activateAccountStorage(
   return {
     activated: true,
     sameUser: false,
-    restored
+    restored: restoreResult.restored
   };
 }
 

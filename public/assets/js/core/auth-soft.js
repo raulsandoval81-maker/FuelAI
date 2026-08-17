@@ -129,6 +129,42 @@ function requireSoftLogin() {
 }
 
 
+function isAccountBoundaryStorageEvent(
+  event
+) {
+  return Boolean(
+    event &&
+    event.oldValue !== event.newValue &&
+    (
+      event.key ===
+        "fuelai-account-storage-owner-v1" ||
+      event.key === "fuelai-user"
+    )
+  );
+}
+
+
+window.addEventListener(
+  "storage",
+  event => {
+    if (
+      event.storageArea !== localStorage ||
+      !isAccountBoundaryStorageEvent(event)
+    ) {
+      return;
+    }
+
+    // Another tab changed the authenticated account.
+    // Hide this tab immediately so its previous user's
+    // data cannot remain visible or keep accepting input.
+    document.documentElement.style.visibility =
+      "hidden";
+
+    window.location.reload();
+  }
+);
+
+
 window.FuelAIAuth = {
   normalizeSoftEmail,
   getSoftUser,
@@ -136,5 +172,6 @@ window.FuelAIAuth = {
   isSoftLoggedIn,
   softLogin,
   softLogout,
-  requireSoftLogin
+  requireSoftLogin,
+  isAccountBoundaryStorageEvent
 };

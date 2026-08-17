@@ -46,6 +46,23 @@ class MemoryStorage {
 }
 
 
+class InterruptibleStorage extends MemoryStorage {
+  constructor(entries = {}) {
+    super(entries);
+    this.interruptKey = "";
+  }
+
+  setItem(key, value) {
+    if (key === this.interruptKey) {
+      this.interruptKey = "";
+      throw new Error("simulated interruption");
+    }
+
+    super.setItem(key, value);
+  }
+}
+
+
 test(
   "tool and account caches are classified as account-owned",
   () => {
@@ -303,6 +320,59 @@ test(
     assert.equal(
       storage.getItem("fuelai-user"),
       null
+    );
+  }
+);
+
+
+test(
+  "interrupted restoration rolls back partial data and retries safely",
+  () => {
+    const storage = new InterruptibleStorage({
+      [`${SNAPSHOT_PREFIX}user-a`]: JSON.stringify({
+        "fuelai-history": "A-history",
+        "fuelai-setup": "A-profile"
+      })
+    });
+
+    storage.interruptKey = "fuelai-setup";
+
+    const interrupted = activateAccountStorage(
+      "user-a",
+      storage
+    );
+
+    assert.equal(
+      interrupted.reason,
+      "restore-interrupted"
+    );
+    assert.equal(
+      storage.getItem("fuelai-history"),
+      null
+    );
+    assert.equal(
+      storage.getItem(OWNER_KEY),
+      null
+    );
+    assert.ok(
+      storage.getItem(
+        `${SNAPSHOT_PREFIX}user-a`
+      )
+    );
+
+    const retried = activateAccountStorage(
+      "user-a",
+      storage
+    );
+
+    assert.equal(retried.activated, true);
+    assert.equal(
+      storage.getItem("fuelai-history"),
+      "A-history"
+    );
+    assert.equal(
+      storage.getItem("fuelai-setup"),
+      "A-profile"
     );
   }
 );
