@@ -39,14 +39,14 @@ const features =
   window.FuelAIPlan
     ?.getFuelAIFeatures?.() ||
   {
-    trackwiseDays: 3
+    trackwiseDays: 7
   };
 
 
 const historyDays =
   Number(
     features.trackwiseDays
-  ) || 3;
+  ) || 7;
 
 
 

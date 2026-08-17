@@ -71,7 +71,7 @@ const FUELAI_FEATURES = {
     fridgeScansPerDay: 1,
 
     trackwise: true,
-    trackwiseDays: 3,
+    trackwiseDays: 7,
 
     trainingwise: false,
 
@@ -87,7 +87,7 @@ const FUELAI_FEATURES = {
     fridgeScansPerDay: 2,
 
     trackwise: true,
-    trackwiseDays: 60,
+    trackwiseDays: 30,
 
     trainingwise: true,
 
@@ -103,7 +103,7 @@ const FUELAI_FEATURES = {
     fridgeScansPerDay: 4,
 
     trackwise: true,
-    trackwiseDays: 90,
+    trackwiseDays: 42,
 
     trainingwise: true,
 

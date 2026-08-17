@@ -223,6 +223,62 @@
         );
     }
 
+    .recent-meals-head{
+      display:flex;
+      align-items:flex-end;
+      justify-content:space-between;
+      gap:14px;
+      margin-bottom:14px;
+    }
+
+    .recent-meals-head h2{
+      margin:4px 0 0;
+      font-size:1.25rem;
+    }
+
+    .recent-meals-note{
+      margin:0;
+      color:var(--mw-muted);
+      font-size:.9rem;
+    }
+
+    .recent-meals-list{
+      display:grid;
+      grid-template-columns:
+        repeat(2,minmax(0,1fr));
+      gap:12px;
+    }
+
+    .recent-meal-card{
+      min-width:0;
+      padding:15px;
+      border-radius:16px;
+      border:1px solid rgba(34,197,94,.18);
+      background:rgba(2,6,23,.42);
+    }
+
+    .recent-meal-card h3{
+      margin:0;
+      color:#fff;
+      font-size:1rem;
+      overflow-wrap:anywhere;
+    }
+
+    .recent-meal-macros,
+    .recent-meal-meta,
+    .recent-meals-empty{
+      margin:8px 0 0;
+      color:#cbd5e1;
+      line-height:1.45;
+      overflow-wrap:anywhere;
+    }
+
+    .recent-meal-meta,
+    .recent-meals-empty{
+      color:var(--mw-muted);
+      font-size:.88rem;
+    }
+
     .mealwise-actions{
       display:flex;
       justify-content:center;
@@ -258,6 +314,15 @@
       }
 
       .quick-grid{
+        grid-template-columns:1fr;
+      }
+
+      .recent-meals-head{
+        align-items:flex-start;
+        flex-direction:column;
+      }
+
+      .recent-meals-list{
         grid-template-columns:1fr;
       }
 
@@ -543,6 +608,36 @@
     ></section>
 
 
+    <!-- RECENT MEALS -->
+
+    <section class="mealwise-section">
+
+      <div class="recent-meals-head">
+
+        <div>
+          <p class="range-label">
+            Committed Meals
+          </p>
+
+          <h2>
+            Recent Meals
+          </h2>
+        </div>
+
+        <p class="recent-meals-note">
+          Your latest five committed meals.
+        </p>
+
+      </div>
+
+      <div
+        id="recentMealsList"
+        class="recent-meals-list"
+      ></div>
+
+    </section>
+
+
     <!-- NAVIGATION -->
 
     <div class="mealwise-actions">
@@ -579,7 +674,10 @@
 
   <script src="/assets/js/account/fuelai-log.js"></script>
 
-  <script src="/assets/js/fuel/app.js"></script>
+  <script
+    type="module"
+    src="/assets/js/fuel/app.js"
+  ></script>
 
   <script src="/assets/js/core/plan.js"></script>
 

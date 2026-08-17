@@ -1,3 +1,10 @@
+import {
+  loadRecentMeals,
+  renderRecentMeals,
+  saveRecentMeal
+} from "./meal-history.js";
+
+
 const foodInput =
   document.getElementById("foodInput");
 
@@ -30,6 +37,11 @@ const extraIngredients =
 
 const addWaterBtn =
   document.getElementById("addWaterBtn");
+
+const recentMealsList =
+  document.getElementById(
+    "recentMealsList"
+  );
 
 
 let selectedImageBase64 =
@@ -676,55 +688,15 @@ if (
    HISTORY
 ========================= */
 
-function saveScan(
-  scan
-) {
-
-  let scans =
-    [];
-
-
-  try {
-
-    scans =
-      JSON.parse(
-        localStorage.getItem(
-          "fuelai-history"
-        ) || "[]"
-      );
-
-  } catch {
-
-    scans =
-      [];
-
-  }
-
-
-  scans.unshift({
-    ...scan,
-
-    createdAt:
-      new Date()
-        .toLocaleString()
-  });
-
-
-  const trimmed =
-    scans.slice(
-      0,
-      5
-    );
-
-
-  localStorage.setItem(
-    "fuelai-history",
-    JSON.stringify(
-      trimmed
-    )
+function refreshRecentMeals() {
+  renderRecentMeals(
+    recentMealsList,
+    loadRecentMeals(localStorage)
   );
-
 }
+
+
+refreshRecentMeals();
 
 
 
@@ -827,7 +799,7 @@ function saveParsedMeal(
   parsed
 ) {
 
-  saveScan({
+  saveRecentMeal({
 
     mealName:
       parsed.mealName ||
@@ -858,12 +830,15 @@ function saveParsedMeal(
       parsed.confidence ||
       ""
 
-  });
+  }, localStorage);
 
 
   addMealToFuelLog(
     parsed
   );
+
+
+  refreshRecentMeals();
 
 }
 
@@ -882,19 +857,6 @@ analyzeBtn
         !selectedImageBase64
       ) {
         return;
-      }
-
-
-      const isDirectScan =
-        scanMode ===
-        "scan";
-
-
-      if (
-        !isDirectScan
-      ) {
-        scanMode =
-          "prescan";
       }
 
 
@@ -1260,40 +1222,6 @@ analyzeBtn
           document.getElementById(
             "discardMealBtn"
           );
-
-
-        if (
-          isDirectScan
-        ) {
-
-          saveParsedMeal(
-            parsed
-          );
-
-
-          const commitActions =
-            document.querySelector(
-              ".commit-actions"
-            );
-
-
-          if (
-            commitActions
-          ) {
-
-            commitActions.innerHTML = `
-              <button
-                class="start-btn"
-                type="button"
-                disabled
-              >
-                Meal added to your log.
-              </button>
-            `;
-
-          }
-
-        }
 
 
         commitMealBtn
