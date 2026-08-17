@@ -154,12 +154,16 @@ test("legal pages and consent surfaces share accessible branded navigation", asy
     "utf8"
   );
 
-  for (const source of [login, consent, privacy, terms]) {
+  for (const source of [consent, privacy, terms]) {
     assert.match(source, /FuelAI™[\s\S]*Powered by Sandman™/);
     assert.match(source, /class="legal-footer"/);
     assert.match(source, /href="\/privacy\/"|Privacy Notice/);
     assert.match(source, /href="\/terms\/"|>Terms</);
   }
+
+  assert.doesNotMatch(login, /class="legal-footer"/);
+  assert.match(login, /id="adultConsent"[\s\S]*href="\/privacy\/"/);
+  assert.match(login, /id="adultConsent"[\s\S]*href="\/terms\/"/);
 
   for (const source of [privacy, terms]) {
     assert.match(source, /class="scan-card legal-document"/);
@@ -168,6 +172,7 @@ test("legal pages and consent surfaces share accessible branded navigation", asy
     assert.match(source, /class="legal-support"/);
     assert.match(source, /Back to Consent/);
     assert.match(source, /Back to Sign In/);
+    assert.match(source, /Questions: Management at/);
   }
 
   assert.match(css, /\.legal-document\{[\s\S]*max-width:760px/);
