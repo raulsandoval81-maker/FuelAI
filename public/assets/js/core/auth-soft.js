@@ -85,10 +85,10 @@ function softLogin(email) {
 async function softLogout() {
   /*
    * Sign out of Firebase when available,
-   * then clear the compatibility session.
-   *
-   * Account-specific setup and plan data
-   * remain stored for the next login.
+   * park account-owned device data under the
+   * verified UID, then clear the compatibility
+   * session. A later login restores only data
+   * belonging to that same UID.
    */
 
   try {
