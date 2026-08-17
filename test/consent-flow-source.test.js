@@ -70,6 +70,68 @@ test("consent age UI renders one readable state and clears stale acceptance", as
 });
 
 
+test("registration and consent messages use labelled high-contrast alert panels", async () => {
+  const login = await readFile(
+    new URL("../public/account/login.html", import.meta.url),
+    "utf8"
+  );
+  const consentHtml = await readFile(
+    new URL("../public/account/consent.html", import.meta.url),
+    "utf8"
+  );
+  const consentScript = await readFile(
+    new URL("../public/assets/js/account/consent.js", import.meta.url),
+    "utf8"
+  );
+  const css = await readFile(
+    new URL("../public/assets/css/site.css", import.meta.url),
+    "utf8"
+  );
+
+  for (const source of [login, consentHtml]) {
+    assert.match(source, /class="status-panel"/);
+    assert.match(source, /class="status-icon"/);
+    assert.match(source, /role="status"/);
+    assert.match(source, /aria-live="polite"/);
+  }
+  assert.match(login, /kind === "error" \? "alert" : "status"/);
+  assert.match(login, /kind === "error" \? "assertive" : "polite"/);
+  assert.match(login, /label: "Acceptance required"/);
+  assert.match(login, /label: "Account unavailable"/);
+  assert.match(login, /label: "Account creation error"/);
+  assert.match(consentScript, /statusPresentation/);
+  assert.match(consentScript, /pending_guardian: \{ kind: "warning"/);
+  assert.match(consentScript, /under_13: \{ kind: "error"/);
+  assert.match(consentScript, /label: "Connection error"/);
+  assert.match(css, /\.status-panel\[data-kind="error"\]\{[\s\S]*background:#4c0519;[\s\S]*color:#fff1f2/);
+  assert.match(css, /body\[data-theme="day"\] \.status-panel\[data-kind="error"\]\{[\s\S]*background:#fff1f2;[\s\S]*color:#881337/);
+  assert.match(css, /@media\(max-width:480px\)\{[\s\S]*\.status-panel/);
+});
+
+
+test("error-panel text colors meet WCAG AA contrast in day and night modes", () => {
+  function luminance(hex) {
+    const rgb = hex.match(/[a-f\d]{2}/gi).map(value => {
+      const channel = parseInt(value, 16) / 255;
+      return channel <= 0.03928
+        ? channel / 12.92
+        : ((channel + 0.055) / 1.055) ** 2.4;
+    });
+    return 0.2126 * rgb[0] + 0.7152 * rgb[1] + 0.0722 * rgb[2];
+  }
+  function contrast(foreground, background) {
+    const light = Math.max(luminance(foreground), luminance(background));
+    const dark = Math.min(luminance(foreground), luminance(background));
+    return (light + 0.05) / (dark + 0.05);
+  }
+
+  assert.ok(contrast("#fff1f2", "#4c0519") >= 4.5);
+  assert.ok(contrast("#881337", "#fff1f2") >= 4.5);
+  assert.ok(contrast("#fef3c7", "#422006") >= 4.5);
+  assert.ok(contrast("#78350f", "#fffbeb") >= 4.5);
+});
+
+
 test("sign-in is the default mode and does not require registration fields", async () => {
   const source = await readFile(
     new URL("../public/account/login.html", import.meta.url),

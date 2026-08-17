@@ -1566,6 +1566,10 @@ body[data-theme="day"] .age-gate-select option{
   background:#111827;
   color:#f8fafc;
   text-align:left;
+  display:grid;
+  grid-template-columns:auto 1fr;
+  align-items:start;
+  gap:.75rem;
 }
 
 .age-consequence strong{
@@ -1593,6 +1597,94 @@ body[data-theme="day"] .age-gate-select option{
 .age-consequence[data-state="adult_consent"]{
   border-color:#60a5fa;
   background:#102a4c;
+}
+
+.age-state-icon,
+.status-icon{
+  font-size:1.2rem;
+  line-height:1.2;
+}
+
+.status-panel{
+  margin-top:1.25rem;
+  padding:1rem;
+  border:2px solid #38bdf8;
+  border-radius:16px;
+  background:#082f49;
+  color:#f0f9ff;
+  display:grid;
+  grid-template-columns:auto 1fr;
+  align-items:start;
+  gap:.75rem;
+  text-align:left;
+  opacity:1;
+}
+
+.status-panel[hidden]{
+  display:none !important;
+}
+
+.status-panel strong{
+  display:block;
+  margin-bottom:.3rem;
+  color:inherit;
+}
+
+.status-panel p{
+  margin:0;
+  color:inherit;
+  line-height:1.5;
+}
+
+.status-panel[data-kind="error"]{
+  border-color:#fb7185;
+  background:#4c0519;
+  color:#fff1f2;
+}
+
+.status-panel[data-kind="warning"]{
+  border-color:#fbbf24;
+  background:#422006;
+  color:#fef3c7;
+}
+
+.status-panel[data-kind="success"]{
+  border-color:#4ade80;
+  background:#052e16;
+  color:#f0fdf4;
+}
+
+body[data-theme="day"] .status-panel{
+  border-color:#0369a1;
+  background:#e0f2fe;
+  color:#0c4a6e;
+}
+
+body[data-theme="day"] .status-panel[data-kind="error"]{
+  border-color:#be123c;
+  background:#fff1f2;
+  color:#881337;
+}
+
+body[data-theme="day"] .status-panel[data-kind="warning"]{
+  border-color:#b45309;
+  background:#fffbeb;
+  color:#78350f;
+}
+
+body[data-theme="day"] .status-panel[data-kind="success"]{
+  border-color:#15803d;
+  background:#f0fdf4;
+  color:#14532d;
+}
+
+@media(max-width:480px){
+  .status-panel,
+  .age-consequence{
+    padding:.9rem;
+    gap:.6rem;
+    font-size:.95rem;
+  }
 }
 .macro-row {
   display: grid;

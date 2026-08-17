@@ -45,6 +45,7 @@ function getAgeGateState(ageBand) {
   const states = {
     "": {
       code: "unselected",
+      icon: "ℹ️",
       title: "Choose your age group",
       message: "Your selection determines which authorization steps are required.",
       showAdultAcceptance: false,
@@ -54,6 +55,7 @@ function getAgeGateState(ageBand) {
     },
     under_13: {
       code: "blocked",
+      icon: "⛔",
       title: "FuelAI is unavailable for users under 13",
       message: "No FuelAI account can be created or activated for this age group.",
       showAdultAcceptance: false,
@@ -63,6 +65,7 @@ function getAgeGateState(ageBand) {
     },
     "13_17": {
       code: "pending_guardian",
+      icon: "⚠️",
       title: "Guardian authorization will be required",
       message: "You may create a pending account, but FuelAI and AI tools stay blocked until guardian authorization and your athlete acknowledgement are completed.",
       showAdultAcceptance: false,
@@ -72,6 +75,7 @@ function getAgeGateState(ageBand) {
     },
     "18_plus": {
       code: "adult_consent",
+      icon: "ℹ️",
       title: "Adult consent required",
       message: "Review and accept both the Privacy Notice and Terms before continuing.",
       showAdultAcceptance: true,

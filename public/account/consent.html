@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Privacy and age — FuelAI™</title>
-  <link rel="stylesheet" href="/assets/css/site.css?v=consent-2a-3" />
+  <link rel="stylesheet" href="/assets/css/site.css?v=consent-2a-4" />
   <style>
     .consent-acceptance{
       display:grid;
@@ -40,7 +40,13 @@
   <main class="scan-wrap"><section class="scan-card">
     <p class="range-label">FuelAI™ · Powered by Sandman™</p>
     <h1>Privacy and age</h1>
-    <p id="consentMessage" class="sub" aria-live="polite">Checking your account…</p>
+    <section id="consentMessage" class="status-panel" data-kind="info" role="status" aria-live="polite">
+      <span id="consentMessageIcon" class="status-icon" aria-hidden="true">ℹ️</span>
+      <div>
+        <strong id="consentMessageLabel">Account status</strong>
+        <p id="consentMessageText">Checking your account…</p>
+      </div>
+    </section>
     <div id="consentForm" class="wise-links" hidden>
       <label for="consentAge">Age group</label>
       <select id="consentAge" class="goal-select age-gate-select">
@@ -55,8 +61,11 @@
         data-state="unselected"
         aria-live="polite"
       >
-        <strong id="ageConsequenceTitle">Choose your age group</strong>
-        <p id="ageConsequenceText">Your selection determines which authorization steps are required.</p>
+        <span id="ageConsequenceIcon" class="age-state-icon" aria-hidden="true">ℹ️</span>
+        <div>
+          <strong id="ageConsequenceTitle">Choose your age group</strong>
+          <p id="ageConsequenceText">Your selection determines which authorization steps are required.</p>
+        </div>
       </section>
       <div id="adultAcceptance" class="consent-acceptance" hidden>
         <label><input id="acceptPrivacy" type="checkbox" /> <span>I accept the current <a href="/privacy/" target="_blank">Privacy Notice</a>.</span></label>

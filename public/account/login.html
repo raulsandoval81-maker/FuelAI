@@ -12,7 +12,7 @@
 
   <link
     rel="stylesheet"
-    href="/assets/css/site.css?v=consent-2a-3"
+    href="/assets/css/site.css?v=consent-2a-4"
   />
 
   <style>
@@ -322,8 +322,11 @@
               data-state="unselected"
               aria-live="polite"
             >
-              <strong id="registrationAgeTitle">Choose your age group</strong>
-              <p id="registrationAgeText">Your selection determines which authorization steps are required.</p>
+              <span id="registrationAgeIcon" class="age-state-icon" aria-hidden="true">ℹ️</span>
+              <div>
+                <strong id="registrationAgeTitle">Choose your age group</strong>
+                <p id="registrationAgeText">Your selection determines which authorization steps are required.</p>
+              </div>
             </section>
 
             <div
@@ -362,14 +365,19 @@
         </div>
 
 
-        <p
+        <section
           id="authMessage"
-          class="hero-note"
+          class="status-panel"
+          data-kind="info"
+          role="status"
           aria-live="polite"
         >
-          New here? Create your account,
-          then we’ll guide you through setup.
-        </p>
+          <span id="authMessageIcon" class="status-icon" aria-hidden="true">ℹ️</span>
+          <div>
+            <strong id="authMessageLabel">Account information</strong>
+            <p id="authMessageText">New here? Create your account, then we’ll guide you through setup.</p>
+          </div>
+        </section>
 
       </section>
 
@@ -425,6 +433,12 @@
         document.getElementById(
           "authMessage"
         );
+      const authMessageText =
+        document.getElementById("authMessageText");
+      const authMessageLabel =
+        document.getElementById("authMessageLabel");
+      const authMessageIcon =
+        document.getElementById("authMessageIcon");
 
       const ageBandInput =
         document.getElementById("ageBandInput");
@@ -440,10 +454,21 @@
         document.getElementById("registrationAgeTitle");
       const registrationAgeText =
         document.getElementById("registrationAgeText");
+      const registrationAgeIcon =
+        document.getElementById("registrationAgeIcon");
 
       function renderRegistrationAge(ageBand) {
         const state = getAgeGateState(ageBand);
         registrationAgeConsequence.dataset.state = state.code;
+        registrationAgeConsequence.setAttribute(
+          "role",
+          state.code === "blocked" ? "alert" : "status"
+        );
+        registrationAgeConsequence.setAttribute(
+          "aria-live",
+          state.code === "blocked" ? "assertive" : "polite"
+        );
+        registrationAgeIcon.textContent = state.icon;
         registrationAgeTitle.textContent = state.title;
         registrationAgeText.textContent = state.message;
         adultConsent.hidden = !state.showAdultAcceptance;
@@ -451,7 +476,7 @@
         createAccountBtn.textContent = state.registrationAction;
         privacyAccepted.checked = false;
         termsAccepted.checked = false;
-        setMessage(state.message);
+        authMessage.hidden = true;
       }
 
       function setRegistrationMode(enabled) {
@@ -508,10 +533,33 @@
       }
 
 
-      function setMessage(message) {
+      function setMessage(
+        message,
+        {
+          kind = "info",
+          label = "Account information"
+        } = {}
+      ) {
         if (authMessage) {
-          authMessage.textContent =
-            message;
+          const icons = {
+            error: "⚠️",
+            warning: "⚠️",
+            success: "✓",
+            info: "ℹ️"
+          };
+          authMessage.hidden = false;
+          authMessage.dataset.kind = kind;
+          authMessage.setAttribute(
+            "role",
+            kind === "error" ? "alert" : "status"
+          );
+          authMessage.setAttribute(
+            "aria-live",
+            kind === "error" ? "assertive" : "polite"
+          );
+          authMessageIcon.textContent = icons[kind] || icons.info;
+          authMessageLabel.textContent = label;
+          authMessageText.textContent = message;
         }
       }
 
@@ -593,9 +641,10 @@
         );
 
 
-        setMessage(
-          "You’re signed out."
-        );
+        setMessage("You’re signed out.", {
+          kind: "success",
+          label: "Signed out"
+        });
 
       }
 
@@ -831,14 +880,15 @@
         } = getCredentials();
 
         if (!email || !password) {
-          setMessage(
-            "Enter your email and password."
-          );
+          setMessage("Enter your email and password.", {
+            kind: "error",
+            label: "Sign-in error"
+          });
           return;
         }
 
         signInBtn.disabled = true;
-        setMessage("Signing in...");
+        setMessage("Signing in...", { label: "Signing in" });
 
         try {
           const firebase =
@@ -860,9 +910,10 @@
             error
           );
 
-          setMessage(
-            "Unable to sign in. Check your email and password."
-          );
+          setMessage("Unable to sign in. Check your email and password.", {
+            kind: "error",
+            label: "Sign-in error"
+          });
 
         } finally {
           signInBtn.disabled = false;
@@ -877,16 +928,18 @@
         } = getCredentials();
 
         if (!email || !password) {
-          setMessage(
-            "Enter an email and password."
-          );
+          setMessage("Enter an email and password.", {
+            kind: "error",
+            label: "Account details required"
+          });
           return;
         }
 
         if (password.length < 6) {
-          setMessage(
-            "Use a password with at least 6 characters."
-          );
+          setMessage("Use a password with at least 6 characters.", {
+            kind: "error",
+            label: "Password requirement"
+          });
           return;
         }
 
@@ -897,26 +950,38 @@
           termsAccepted: termsAccepted?.checked === true
         });
         if (registration.code === "AGE_REQUIRED") {
-          setMessage("Choose your age group before creating an account.");
+          setMessage("Choose your age group before creating an account.", {
+            kind: "error",
+            label: "Age selection required"
+          });
           return;
         }
         if (registration.code === "AGE_NOT_SUPPORTED") {
-          setMessage("FuelAI is not available for users under 13. No account was created.");
+          setMessage("FuelAI is not available for users under 13. No account was created.", {
+            kind: "error",
+            label: "Account unavailable"
+          });
           return;
         }
         if (registration.code === "ACCEPTANCE_REQUIRED") {
-          setMessage("Accept both the Privacy Notice and Terms to create an adult account.");
+          setMessage("Accept both the Privacy Notice and Terms to create an adult account.", {
+            kind: "error",
+            label: "Acceptance required"
+          });
           return;
         }
         if (!registration.allowed) {
-          setMessage("Choose a valid age group before creating an account.");
+          setMessage("Choose a valid age group before creating an account.", {
+            kind: "error",
+            label: "Age selection required"
+          });
           return;
         }
 
         createAccountBtn.disabled = true;
-        setMessage(
-          "Creating your account..."
-        );
+        setMessage("Creating your account...", {
+          label: "Creating account"
+        });
 
         try {
           const firebase =
@@ -944,13 +1009,15 @@
             error?.code ===
             "auth/email-already-in-use"
           ) {
-            setMessage(
-              "That email already has an account. Sign in instead."
-            );
+            setMessage("That email already has an account. Sign in instead.", {
+              kind: "error",
+              label: "Account already exists"
+            });
           } else {
-            setMessage(
-              "Unable to create the account. Check the email and password and try again."
-            );
+            setMessage("Unable to create the account. Check the email and password and try again.", {
+              kind: "error",
+              label: "Account creation error"
+            });
           }
 
         } finally {
