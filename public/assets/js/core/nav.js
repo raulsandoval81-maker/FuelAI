@@ -404,12 +404,39 @@ navLink(
       <div class="fuelai-nav-section">
 
         <p class="fuelai-nav-label">
+          Quick Action
+        </p>
+
+        <button
+          class="fuelai-nav-link"
+          id="fuelaiQuickWaterBtn"
+          type="button"
+          style="width:100%;"
+        >
+          💧 +8 oz Water
+        </button>
+
+        <div
+          id="fuelaiQuickWaterStatus"
+          style="
+            margin-top:8px;
+            color:#94a3b8;
+            font-size:.85rem;
+          "
+        ></div>
+
+      </div>
+\n\n      <div class="fuelai-nav-section">
+
+        <p class="fuelai-nav-label">
           Tools
         </p>
 
         ${toolLinks.join("")}
 
       </div>
+
+
 
 
       ${teamSection}
@@ -467,6 +494,50 @@ navLink(
       drawer.querySelector(
         "#fuelaiLogoutBtn"
       );
+
+
+    const quickWaterBtn =
+      drawer.querySelector(
+        "#fuelaiQuickWaterBtn"
+      );
+
+    const quickWaterStatus =
+      drawer.querySelector(
+        "#fuelaiQuickWaterStatus"
+      );
+
+
+    function getTodayKey() {
+      return new Date()
+        .toISOString()
+        .slice(0, 10);
+    }
+
+
+    function getWaterKey() {
+      return (
+        `fuelai-water-oz-${getTodayKey()}`
+      );
+    }
+
+
+    function getWaterToday() {
+      return Number(
+        localStorage.getItem(
+          getWaterKey()
+        )
+      ) || 0;
+    }
+
+
+    function renderQuickWater() {
+      if (!quickWaterStatus) {
+        return;
+      }
+
+      quickWaterStatus.textContent =
+        `${getWaterToday()} oz logged today`;
+    }
 
 
     function openNav() {
@@ -580,6 +651,56 @@ navLink(
           );
         }
       );
+
+
+    quickWaterBtn
+      ?.addEventListener(
+        "click",
+        () => {
+
+          const current =
+            getWaterToday();
+
+          const updated =
+            Math.min(
+              current + 8,
+              128
+            );
+
+          localStorage.setItem(
+            getWaterKey(),
+            String(updated)
+          );
+
+          if (
+            window.FuelAILog
+              ?.addFuelLog
+          ) {
+            window.FuelAILog
+              .addFuelLog({
+                type: "water",
+                water: 8,
+                source: "nav"
+              });
+          }
+
+          renderQuickWater();
+
+          quickWaterBtn.textContent =
+            `💧 ${updated} oz Logged`;
+
+          setTimeout(
+            () => {
+              quickWaterBtn.textContent =
+                "💧 +8 oz Water";
+            },
+            1400
+          );
+        }
+      );
+
+
+    renderQuickWater();
 
 
     logoutBtn
