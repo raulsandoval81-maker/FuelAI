@@ -12,7 +12,14 @@ const FUELAI_DAILY_KEY =
   "fuelai-daily-log-v1";
 
 const FUELAI_LOG_DAYS =
-  90;
+  42;
+
+const FUELAI_LEGACY_DATE_PREFIXES = [
+  "fuelai-water-oz-",
+  "fuelai-workout-",
+  "fuelai-sleep-hours-",
+  "fuelai-sleep-quality-"
+];
 
 const FUEL_LOG_TIME_ZONE =
   "America/Los_Angeles";
@@ -231,11 +238,26 @@ function getFuelLog() {
     );
 
 
-  return Array.isArray(
-    logs
-  )
-    ? logs
-    : [];
+  const cleaned =
+    pruneFuelLogEntries(
+      Array.isArray(logs)
+        ? logs
+        : []
+    );
+
+
+  if (
+    JSON.stringify(cleaned) !==
+    JSON.stringify(logs)
+  ) {
+    localStorage.setItem(
+      FUELAI_LOG_KEY,
+      JSON.stringify(cleaned)
+    );
+  }
+
+
+  return cleaned;
 
 }
 
@@ -251,7 +273,7 @@ function getDailyLogs() {
     );
 
 
-  return (
+  const normalized = (
     logs &&
     typeof logs ===
     "object" &&
@@ -262,6 +284,26 @@ function getDailyLogs() {
       : {}
   );
 
+
+  const cleaned =
+    pruneDailyLogEntries(
+      normalized
+    );
+
+
+  if (
+    JSON.stringify(cleaned) !==
+    JSON.stringify(normalized)
+  ) {
+    localStorage.setItem(
+      FUELAI_DAILY_KEY,
+      JSON.stringify(cleaned)
+    );
+  }
+
+
+  return cleaned;
+
 }
 
 
@@ -270,11 +312,8 @@ function getDailyLogs() {
    RETENTION
 ========================= */
 
-function saveFuelLog(
-  logs
-) {
-
-  const cutoff =
+function getRetentionCutoff() {
+  return (
     Date.now() -
     (
       FUELAI_LOG_DAYS *
@@ -282,35 +321,136 @@ function saveFuelLog(
       60 *
       60 *
       1000
-    );
-
-
-  const cleaned =
-    (
-      Array.isArray(
-        logs
-      )
-        ? logs
-        : []
     )
-      .filter(
-        (entry) => {
-
-          const timestamp =
-            new Date(
-              entry?.createdAt
-            ).getTime();
+  );
+}
 
 
-          return (
-            Number.isFinite(
-              timestamp
-            ) &&
-            timestamp >= cutoff
+function getRetentionCutoffKey() {
+  return getDateKey(
+    new Date(
+      getRetentionCutoff()
+    )
+  );
+}
+
+
+function pruneFuelLogEntries(
+  logs
+) {
+  const cutoff =
+    getRetentionCutoff();
+
+
+  return (
+    Array.isArray(logs)
+      ? logs
+      : []
+  ).filter(
+    (entry) => {
+      const timestamp =
+        new Date(
+          entry?.createdAt
+        ).getTime();
+
+
+      return (
+        Number.isFinite(timestamp) &&
+        timestamp >= cutoff
+      );
+    }
+  );
+}
+
+
+function pruneDailyLogEntries(
+  dailyLogs
+) {
+  const cutoffKey =
+    getRetentionCutoffKey();
+
+  const cleaned = {};
+
+
+  Object.entries(
+    dailyLogs || {}
+  ).forEach(
+    ([dateKey, value]) => {
+      if (dateKey >= cutoffKey) {
+        cleaned[dateKey] = value;
+      }
+    }
+  );
+
+
+  return cleaned;
+}
+
+
+function pruneLegacyDatedKeys() {
+  const cutoffKey =
+    getRetentionCutoffKey();
+
+  const keys = [];
+
+
+  for (
+    let index = 0;
+    index < localStorage.length;
+    index += 1
+  ) {
+    const key =
+      localStorage.key(index);
+
+    if (key) {
+      keys.push(key);
+    }
+  }
+
+
+  keys.forEach(
+    (key) => {
+      const prefix =
+        FUELAI_LEGACY_DATE_PREFIXES
+          .find(
+            candidate =>
+              key.startsWith(candidate)
           );
 
-        }
-      );
+
+      if (!prefix) {
+        return;
+      }
+
+
+      const dateKey =
+        key.slice(prefix.length);
+
+
+      if (
+        /^\d{4}-\d{2}-\d{2}$/.test(
+          dateKey
+        ) &&
+        dateKey < cutoffKey
+      ) {
+        localStorage.removeItem(key);
+      }
+    }
+  );
+}
+
+
+function pruneExpiredFuelData() {
+  getFuelLog();
+  getDailyLogs();
+  pruneLegacyDatedKeys();
+}
+
+function saveFuelLog(
+  logs
+) {
+  const cleaned =
+    pruneFuelLogEntries(logs);
 
 
   localStorage.setItem(
@@ -326,54 +466,9 @@ function saveFuelLog(
 function saveDailyLogs(
   dailyLogs
 ) {
-
-  const cutoffDate =
-    new Date(
-      Date.now() -
-      (
-        FUELAI_LOG_DAYS *
-        24 *
-        60 *
-        60 *
-        1000
-      )
-    );
-
-
-  const cutoffKey =
-    getDateKey(
-      cutoffDate
-    );
-
-
   const cleaned =
-    {};
-
-
-  Object.entries(
-    dailyLogs || {}
-  )
-    .forEach(
-      (
-        [
-          dateKey,
-          value
-        ]
-      ) => {
-
-        if (
-          dateKey >=
-          cutoffKey
-        ) {
-
-          cleaned[
-            dateKey
-          ] =
-            value;
-
-        }
-
-      }
+    pruneDailyLogEntries(
+      dailyLogs
     );
 
 
@@ -1342,7 +1437,13 @@ function getFuelSummary() {
    GLOBAL API
 ========================= */
 
+pruneExpiredFuelData();
+
+
 window.FuelAILog = {
+
+  retentionDays:
+    FUELAI_LOG_DAYS,
 
   getFuelLog,
 
@@ -1363,6 +1464,8 @@ window.FuelAILog = {
   buildDailyLogForDate,
 
   syncDailyLogs,
+
+  pruneExpiredFuelData,
 
   getFuelSummary
 
