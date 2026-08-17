@@ -1,4 +1,9 @@
 import {
+  activateAccountStorage,
+  logoutAccountStorage
+} from "./account-storage.js";
+
+import {
   initializeApp
 } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
 
@@ -72,6 +77,12 @@ async function createAccount(
       password
     );
 
+  activateAccountStorage(
+    credential.user.uid,
+    globalThis.localStorage,
+    credential.user.email
+  );
+
   return credential.user;
 }
 
@@ -89,11 +100,21 @@ async function signIn(
       password
     );
 
+  activateAccountStorage(
+    credential.user.uid,
+    globalThis.localStorage,
+    credential.user.email
+  );
+
   return credential.user;
 }
 
 
 async function firebaseSignOut() {
+  logoutAccountStorage(
+    auth.currentUser?.uid
+  );
+
   await signOut(auth);
 }
 
@@ -103,9 +124,33 @@ function watchAuth(
 ) {
   return onAuthStateChanged(
     auth,
-    callback
+    user => {
+      if (user?.uid) {
+        activateAccountStorage(
+          user.uid,
+          globalThis.localStorage,
+          user.email
+        );
+      }
+
+      callback(user);
+    }
   );
 }
+
+
+onAuthStateChanged(
+  auth,
+  user => {
+    if (user?.uid) {
+      activateAccountStorage(
+        user.uid,
+        globalThis.localStorage,
+        user.email
+      );
+    }
+  }
+);
 
 
 window.FuelAIFirebase = {
