@@ -199,19 +199,6 @@
 
     if (
       access.tools
-        ?.trackwise
-    ) {
-      toolLinks.push(
-navLink(
-  "/tools/trackwise/dashboard.html",
-  "📈 TrackWise"
-)
-    );
-    }
-
-
-    if (
-      access.tools
         ?.mealwise
     ) {
       toolLinks.push(
@@ -415,6 +402,12 @@ navLink(
         >
           💧 +8 oz Water
         </button>
+
+
+        ${navLink(
+          "/tools/trackwise/dashboard.html",
+          "📈 TrackWise"
+        )}
 
         <div
           id="fuelaiQuickWaterStatus"
