@@ -326,6 +326,15 @@
     const accountLinks =
       [];
 
+          accountLinks.push(
+      navLink(
+        "/account/logs.html",
+        "📋 My Fuel Log"
+      )
+    );
+
+
+
 
     accountLinks.push(
       navLink(
@@ -353,13 +362,6 @@
       );
     }
 
-
-    accountLinks.push(
-      navLink(
-        "/account/logs.html",
-        "📋 My Fuel Log"
-      )
-    );
 
 
     drawer.innerHTML = `
