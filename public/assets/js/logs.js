@@ -26,6 +26,27 @@ const fullHistoryContainer =
   );
 
 
+const cycle7Calendar =
+  document.getElementById(
+    "cycle7Calendar"
+  );
+
+const cycle7Detail =
+  document.getElementById(
+    "cycle7Detail"
+  );
+
+const cycle21Calendar =
+  document.getElementById(
+    "cycle21Calendar"
+  );
+
+const cycle42Calendar =
+  document.getElementById(
+    "cycle42Calendar"
+  );
+
+
 const LOGS_TIME_ZONE =
   "America/Los_Angeles";
 
@@ -47,6 +68,68 @@ const historyDays =
   Number(
     features.trackwiseDays
   ) || 7;
+
+
+const fuelAIAccess =
+  window.FuelAIPlan
+    ?.getFuelAIAccess?.() ||
+  {};
+
+const currentProfile =
+  fuelAIAccess.profile ||
+  "general-health";
+
+const currentPlan =
+  fuelAIAccess.effectivePlan ||
+  fuelAIAccess.plan ||
+  "free";
+
+const isFreePlan =
+  currentPlan ===
+  "free";
+
+
+function getCycleAccess() {
+
+  if (
+    isFreePlan
+  ) {
+    return {
+      seven: true,
+      twentyOne: false,
+      fortyTwo: false,
+      sixty: false
+    };
+  }
+
+
+  if (
+    currentProfile ===
+      "sports-athlete" ||
+    currentProfile ===
+      "combat-athlete"
+  ) {
+    return {
+      seven: true,
+      twentyOne: false,
+      fortyTwo: true,
+      sixty: true
+    };
+  }
+
+
+  return {
+    seven: true,
+    twentyOne: true,
+    fortyTwo: false,
+    sixty: true
+  };
+
+}
+
+
+const cycleAccess =
+  getCycleAccess();
 
 
 
@@ -601,6 +684,452 @@ function renderLogCards(
 
 
 /* =========================
+   PROGRESS CYCLES
+========================= */
+
+function getDateKey(
+  date
+) {
+  return date
+    .toISOString()
+    .slice(0, 10);
+}
+
+
+function getPastDates(
+  count
+) {
+
+  const dates =
+    [];
+
+  const today =
+    new Date();
+
+
+  for (
+    let i = count - 1;
+    i >= 0;
+    i--
+  ) {
+
+    const date =
+      new Date(
+        today
+      );
+
+    date.setDate(
+      today.getDate() - i
+    );
+
+    dates.push(
+      date
+    );
+
+  }
+
+
+  return dates;
+
+}
+
+
+function getDayMap(
+  days
+) {
+
+  return new Map(
+    days.map(
+      day => [
+        String(
+          day.date
+        ).slice(
+          0,
+          10
+        ),
+        day
+      ]
+    )
+  );
+
+}
+
+
+function renderCycleDay(
+  date,
+  day,
+  unlocked
+) {
+
+  const todayKey =
+    getTodayKey();
+
+  const key =
+    getDateKey(
+      date
+    );
+
+  const weekday =
+    date.toLocaleDateString(
+      "en-US",
+      {
+        weekday:
+          "short"
+      }
+    );
+
+  const number =
+    date.getDate();
+
+
+  const classes =
+    [
+      "cycle-day",
+      day
+        ? "logged"
+        : "",
+      key === todayKey
+        ? "today"
+        : "",
+      unlocked
+        ? ""
+        : "locked"
+    ]
+      .filter(
+        Boolean
+      )
+      .join(
+        " "
+      );
+
+
+  return `
+    <button
+      class="${classes}"
+      type="button"
+      data-date="${key}"
+      ${
+        unlocked
+          ? ""
+          : "disabled"
+      }
+    >
+      <strong>
+        ${weekday}
+      </strong>
+
+      <span>
+        ${number}
+      </span>
+    </button>
+  `;
+
+}
+
+
+function renderCycleWeeks(
+  container,
+  totalDays,
+  days
+) {
+
+  if (
+    !container
+  ) {
+    return;
+  }
+
+
+  const dates =
+    getPastDates(
+      totalDays
+    );
+
+  const dayMap =
+    getDayMap(
+      days
+    );
+
+  const weeks =
+    [];
+
+
+  for (
+    let i = 0;
+    i < dates.length;
+    i += 7
+  ) {
+
+    const row =
+      dates
+        .slice(
+          i,
+          i + 7
+        )
+        .map(
+          date => {
+
+            const key =
+              getDateKey(
+                date
+              );
+
+            const unlocked =
+              (
+                totalDays <=
+                historyDays
+              );
+
+            return renderCycleDay(
+              date,
+              dayMap.get(
+                key
+              ),
+              unlocked
+            );
+
+          }
+        )
+        .join(
+          ""
+        );
+
+
+    weeks.push(
+      `
+        <div class="cycle-week">
+          ${row}
+        </div>
+      `
+    );
+
+  }
+
+
+  if (
+    totalDays >
+    historyDays
+  ) {
+
+    container.innerHTML = `
+      <p class="range-note">
+        ${
+          totalDays
+        }-day history is not included
+        with your current plan.
+      </p>
+
+      ${weeks.join("")}
+    `;
+
+    return;
+
+  }
+
+
+  container.innerHTML =
+    weeks.join("");
+
+}
+
+
+function renderSevenDayCycle(
+  days
+) {
+
+  if (
+    !cycle7Calendar
+  ) {
+    return;
+  }
+
+
+  const dates =
+    getPastDates(
+      7
+    );
+
+  const dayMap =
+    getDayMap(
+      days
+    );
+
+
+  cycle7Calendar.innerHTML =
+    dates
+      .map(
+        date => {
+
+          const key =
+            getDateKey(
+              date
+            );
+
+          return renderCycleDay(
+            date,
+            dayMap.get(
+              key
+            ),
+            true
+          );
+
+        }
+      )
+      .join(
+        ""
+      );
+
+
+  cycle7Calendar
+    .querySelectorAll(
+      ".cycle-day"
+    )
+    .forEach(
+      button => {
+
+        button.addEventListener(
+          "click",
+          () => {
+
+            const key =
+              button.dataset
+                .date;
+
+            const day =
+              dayMap.get(
+                key
+              );
+
+
+            if (
+              !cycle7Detail
+            ) {
+              return;
+            }
+
+
+            if (
+              !day
+            ) {
+
+              cycle7Detail.innerHTML = `
+                <section class="range-card log-card">
+                  No entries for this day yet.
+                </section>
+              `;
+
+              return;
+
+            }
+
+
+            cycle7Detail.innerHTML =
+              renderLogCards(
+                [
+                  day
+                ]
+              );
+
+          }
+        );
+
+      }
+    );
+
+}
+
+
+function renderProgressCycles(
+  days
+) {
+
+  const cycle21 =
+    document.getElementById(
+      "cycle21"
+    );
+
+  const cycle42 =
+    document.getElementById(
+      "cycle42"
+    );
+
+  const historyCard =
+    document.getElementById(
+      "history60Card"
+    );
+
+
+  renderSevenDayCycle(
+    days
+  );
+
+
+  if (
+    cycleAccess.twentyOne
+  ) {
+
+    cycle21?.classList.remove(
+      "hidden"
+    );
+
+    renderCycleWeeks(
+      cycle21Calendar,
+      21,
+      days
+    );
+
+  } else {
+
+    cycle21?.classList.add(
+      "hidden"
+    );
+
+  }
+
+
+  if (
+    cycleAccess.fortyTwo
+  ) {
+
+    cycle42?.classList.remove(
+      "hidden"
+    );
+
+    renderCycleWeeks(
+      cycle42Calendar,
+      42,
+      days
+    );
+
+  } else {
+
+    cycle42?.classList.add(
+      "hidden"
+    );
+
+  }
+
+
+  if (
+    cycleAccess.sixty
+  ) {
+
+    historyCard?.classList.remove(
+      "hidden"
+    );
+
+  } else {
+
+    historyCard?.classList.add(
+      "hidden"
+    );
+
+  }
+
+}
+
+
+/* =========================
    RECENT LOGS
 ========================= */
 
@@ -618,6 +1147,10 @@ function renderLogs() {
 
 
   renderTodaySnapshot(
+    days
+  );
+
+  renderProgressCycles(
     days
   );
 

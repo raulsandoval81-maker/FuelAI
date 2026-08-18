@@ -139,6 +139,133 @@
       gap:10px;
     }
 
+    .cycle-accordion{
+      margin-top:14px;
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:16px;
+      background:rgba(255,255,255,.025);
+      overflow:hidden;
+    }
+
+    .cycle-accordion summary{
+      min-height:58px;
+      padding:14px 16px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:14px;
+      cursor:pointer;
+      list-style:none;
+    }
+
+    .cycle-accordion summary::-webkit-details-marker{
+      display:none;
+    }
+
+    .cycle-accordion summary span:first-child{
+      display:flex;
+      align-items:baseline;
+      gap:8px;
+    }
+
+    .cycle-accordion summary strong{
+      font-size:1rem;
+    }
+
+    .cycle-accordion summary small{
+      color:#94a3b8;
+      font-size:.78rem;
+      font-weight:800;
+      text-transform:uppercase;
+      letter-spacing:.08em;
+    }
+
+    .cycle-chevron{
+      color:#94a3b8;
+      transition:transform .15s ease;
+    }
+
+    .cycle-accordion[open] .cycle-chevron{
+      transform:rotate(180deg);
+    }
+
+    .cycle-body{
+      padding:0 14px 14px;
+      border-top:1px solid rgba(255,255,255,.06);
+    }
+
+    .cycle-calendar{
+      display:grid;
+      grid-template-columns:repeat(7,minmax(0,1fr));
+      gap:8px;
+      margin-top:14px;
+    }
+
+    .cycle-weeks{
+      display:grid;
+      gap:10px;
+      margin-top:14px;
+    }
+
+    .cycle-week{
+      display:grid;
+      grid-template-columns:repeat(7,minmax(0,1fr));
+      gap:8px;
+    }
+
+    .cycle-day{
+      min-height:72px;
+      padding:9px 6px;
+      border:1px solid rgba(255,255,255,.07);
+      border-radius:12px;
+      background:rgba(255,255,255,.025);
+      text-align:center;
+      color:#cbd5e1;
+      cursor:pointer;
+    }
+
+    .cycle-day strong{
+      display:block;
+      color:#f8fafc;
+      font-size:.8rem;
+    }
+
+    .cycle-day span{
+      display:block;
+      margin-top:4px;
+      color:#64748b;
+      font-size:.72rem;
+    }
+
+    .cycle-day.logged{
+      border-color:rgba(34,197,94,.28);
+    }
+
+    .cycle-day.today{
+      border-color:rgba(56,189,248,.58);
+      background:rgba(56,189,248,.08);
+    }
+
+    .cycle-day.locked{
+      opacity:.42;
+      cursor:default;
+    }
+
+    .cycle-detail{
+      margin-top:12px;
+    }
+
+    @media(max-width:700px){
+      .cycle-calendar,
+      .cycle-week{
+        min-width:620px;
+      }
+
+      .cycle-body{
+        overflow-x:auto;
+      }
+    }
+
     .logs-note{
       margin-top:20px;
       padding:18px;
@@ -229,7 +356,7 @@
 
       <!-- TODAY -->
 
-      <article class="logs-card">
+      <article class="logs-card full">
 
         <p class="range-label">
           Today
@@ -249,43 +376,138 @@
       </article>
 
 
-      <!-- RECENT -->
+      <!-- PROGRESS CYCLES -->
 
-      <article class="logs-card">
+      <article class="logs-card full">
 
         <p class="range-label">
-          Recent
+          Progress Cycles
         </p>
 
         <h2>
-          Recent History
+          Action · Pattern · Progress
         </h2>
 
         <p class="range-note">
-          Your quick recent view.
+          Your plan controls how much history is available.
         </p>
 
-        <div id="logsContainer">
-          Loading logs...
-        </div>
+
+        <details
+          class="cycle-accordion"
+          id="cycle7"
+          open
+        >
+
+          <summary>
+            <span>
+              <strong>7 Days</strong>
+              <small>Action</small>
+            </span>
+
+            <span class="cycle-chevron">
+              ↓
+            </span>
+          </summary>
+
+          <div class="cycle-body">
+
+            <div
+              id="cycle7Calendar"
+              class="cycle-calendar"
+            >
+              Loading 7-day view...
+            </div>
+
+            <div
+              id="cycle7Detail"
+              class="cycle-detail"
+            ></div>
+
+          </div>
+
+        </details>
+
+
+        <details
+          class="cycle-accordion"
+          id="cycle21"
+        >
+
+          <summary>
+            <span>
+              <strong>21 Days</strong>
+              <small>Pattern</small>
+            </span>
+
+            <span class="cycle-chevron">
+              ↓
+            </span>
+          </summary>
+
+          <div class="cycle-body">
+
+            <div
+              id="cycle21Calendar"
+              class="cycle-weeks"
+            >
+              Loading 21-day view...
+            </div>
+
+          </div>
+
+        </details>
+
+
+        <details
+          class="cycle-accordion"
+          id="cycle42"
+        >
+
+          <summary>
+            <span>
+              <strong>42 Days</strong>
+              <small>Progress</small>
+            </span>
+
+            <span class="cycle-chevron">
+              ↓
+            </span>
+          </summary>
+
+          <div class="cycle-body">
+
+            <div
+              id="cycle42Calendar"
+              class="cycle-weeks"
+            >
+              Loading 42-day view...
+            </div>
+
+          </div>
+
+        </details>
 
       </article>
 
 
-      <!-- FULL HISTORY -->
+      <!-- LONGER HISTORY -->
 
-      <article class="logs-card full">
+      <article
+        class="logs-card full"
+        id="history60Card"
+      >
 
         <p class="range-label">
           History
         </p>
 
         <h2>
-          Log History
+          60 Days · History
         </h2>
 
         <p class="range-output">
-          Your available history depends on your FuelAI plan.
+          Look back across your full 60-day FuelAI history.
         </p>
 
         <button
