@@ -10,6 +10,16 @@ const streakOutput =
     "streakOutput"
   );
 
+const yesterdayHeadline =
+  document.getElementById(
+    "yesterdayHeadline"
+  );
+
+const yesterdaySummary =
+  document.getElementById(
+    "yesterdaySummary"
+  );
+
 const waterOutput =
   document.getElementById(
     "waterOutput"
@@ -58,6 +68,11 @@ const macroSuggestion =
 const macroStyleNote =
   document.getElementById(
     "macroStyleNote"
+  );
+
+const macroBalanceToday =
+  document.getElementById(
+    "macroBalanceToday"
   );
 
 const workoutOutput =
@@ -412,6 +427,113 @@ function estimateTargets(
 
 }
 
+
+
+/* =========================
+   RECENT DAY SNAPSHOTS
+========================= */
+
+function renderRecentDaySnapshot(
+  daysBack,
+  headlineElement,
+  summaryElement
+) {
+
+  if (
+    !headlineElement ||
+    !summaryElement
+  ) {
+    return;
+  }
+
+
+  const logs =
+    getDailyLogs();
+
+  const dateKey =
+    getPastDateKey(
+      daysBack
+    );
+
+  const day =
+    logs[
+      dateKey
+    ];
+
+
+  if (
+    !day
+  ) {
+
+    headlineElement.textContent =
+      "No Entry";
+
+    summaryElement.textContent =
+      "Nothing logged.";
+
+    return;
+
+  }
+
+
+  const calories =
+    cleanNumber(
+      day.calories ??
+      day.caloriesToday
+    );
+
+  const protein =
+    cleanNumber(
+      day.protein ??
+      day.proteinToday
+    );
+
+  const water =
+    cleanNumber(
+      day.water ??
+      day.waterToday
+    );
+
+  const trained =
+    Boolean(
+      day.trainingToday ||
+      day.training ||
+      Number(
+        day.trainingSessions ||
+        0
+      ) > 0
+    );
+
+  const sleep =
+    cleanNumber(
+      day.sleepHours
+    );
+
+
+  headlineElement.textContent =
+    `${calories} cal · ${protein}g protein`;
+
+
+  summaryElement.innerHTML = `
+    💧 ${water} oz
+    &nbsp; · &nbsp;
+    🏋️ ${trained ? "Logged" : "—"}
+    &nbsp; · &nbsp;
+    😴 ${sleep ? `${sleep} hrs` : "—"}
+  `;
+
+}
+
+
+function renderRecentDays() {
+
+  renderRecentDaySnapshot(
+    1,
+    yesterdayHeadline,
+    yesterdaySummary
+  );
+
+}
 
 
 /* =========================
@@ -779,6 +901,65 @@ function renderCaloriesAndProtein() {
 
     fatsOutput.textContent =
       `${fats}g / ${targets.fats}g`;
+
+  }
+
+
+  if (
+    macroBalanceToday
+  ) {
+
+    const proteinCalories =
+      protein * 4;
+
+    const carbCalories =
+      carbs * 4;
+
+    const fatCalories =
+      fats * 9;
+
+    const macroCalories =
+      proteinCalories +
+      carbCalories +
+      fatCalories;
+
+
+    if (
+      macroCalories > 0
+    ) {
+
+      const proteinPct =
+        Math.round(
+          proteinCalories /
+          macroCalories *
+          100
+        );
+
+      const carbsPct =
+        Math.round(
+          carbCalories /
+          macroCalories *
+          100
+        );
+
+      const fatsPct =
+        Math.max(
+          0,
+          100 -
+          proteinPct -
+          carbsPct
+        );
+
+
+      macroBalanceToday.textContent =
+        `${proteinPct} / ${carbsPct} / ${fatsPct}`;
+
+    } else {
+
+      macroBalanceToday.textContent =
+        "— / — / —";
+
+    }
 
   }
 
@@ -1307,6 +1488,8 @@ function renderMacroStyle() {
 ========================= */
 
 renderStreak();
+
+renderRecentDays();
 
 renderHydration();
 

@@ -127,9 +127,17 @@
       line-height:1.55;
     }
 
-    .streak-card{
-      min-width:180px;
-      padding:18px;
+    .recent-days{
+      display:grid;
+      grid-template-columns:
+        repeat(2,minmax(150px,1fr));
+      gap:10px;
+      min-width:330px;
+    }
+
+    .recent-day-card{
+      min-width:0;
+      padding:15px;
 
       border-radius:18px;
 
@@ -139,22 +147,24 @@
       background:
         rgba(15,23,42,.72);
 
-      text-align:center;
+      text-align:left;
     }
 
-    .streak-card strong{
+    .recent-day-card strong{
       display:block;
-      margin-top:6px;
+      margin-top:7px;
 
-      font-size:1.8rem;
       color:#fff;
+      font-size:1rem;
+      line-height:1.3;
     }
 
-    .streak-card p:last-child{
-      margin:6px 0 0;
+    .recent-day-card p:last-child{
+      margin:7px 0 0;
 
       color:var(--tw-muted);
-      font-size:.88rem;
+      font-size:.78rem;
+      line-height:1.4;
     }
 
     .trackwise-section-head{
@@ -280,6 +290,30 @@
       line-height:1.5;
     }
 
+    .macro-balance-now{
+      margin-top:14px;
+      padding-top:12px;
+
+      border-top:
+        1px solid rgba(255,255,255,.07);
+
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+    }
+
+    .macro-balance-now span{
+      color:#94a3b8;
+      font-size:.82rem;
+      font-weight:800;
+    }
+
+    .macro-balance-now strong{
+      color:#fff;
+      font-size:1rem;
+    }
+
     .hydration-card{
       border-color:
         rgba(56,189,248,.22);
@@ -388,8 +422,9 @@
         grid-template-columns:1fr;
       }
 
-      .streak-card{
+      .recent-days{
         width:100%;
+        min-width:0;
       }
 
       .trackwise-actions{
@@ -398,6 +433,10 @@
     }
 
     @media (max-width:640px){
+
+      .recent-days{
+        grid-template-columns:1fr;
+      }
 
       .trackwise-wrap{
         padding:18px 12px 30px;
@@ -457,19 +496,41 @@
         </div>
 
 
-        <div class="streak-card">
 
-          <p class="range-label">
-            Check-In Streak
-          </p>
+        <div class="recent-days">
 
-          <strong id="streakOutput">
-            0 Days
-          </strong>
+          <article class="recent-day-card streak-card">
 
-          <p>
-            Keep building.
-          </p>
+            <p class="range-label">
+              Current Streak
+            </p>
+
+            <strong id="streakOutput">
+              0 Days
+            </strong>
+
+            <p>
+              Keep building.
+            </p>
+
+          </article>
+
+
+          <article class="recent-day-card">
+
+            <p class="range-label">
+              Yesterday
+            </p>
+
+            <strong id="yesterdayHeadline">
+              Loading...
+            </strong>
+
+            <p id="yesterdaySummary">
+              Checking your last entry.
+            </p>
+
+          </article>
 
         </div>
 
@@ -626,6 +687,18 @@
           >
             Loading macro direction...
           </p>
+
+          <div class="macro-balance-now">
+
+            <span>
+              Today’s Balance
+            </span>
+
+            <strong id="macroBalanceToday">
+              — / — / —
+            </strong>
+
+          </div>
 
         </article>
 

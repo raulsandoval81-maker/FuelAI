@@ -112,6 +112,160 @@
     .profile-summary strong{
       color:#fff;
     }
+
+    .action-card{
+      margin-top:22px;
+      padding:20px;
+      border-radius:22px;
+      border:1px solid rgba(56,189,248,.22);
+      background:
+        linear-gradient(
+          180deg,
+          rgba(8,47,73,.16),
+          rgba(15,23,42,.72)
+        );
+      text-align:left;
+    }
+
+    .action-card h2{
+      margin:0;
+      font-size:1.35rem;
+    }
+
+    .action-card .range-note{
+      margin:6px 0 0;
+    }
+
+    .cycle-calendar{
+      display:grid;
+      grid-template-columns:repeat(7,minmax(0,1fr));
+      gap:8px;
+      margin-top:14px;
+    }
+
+    .cycle-week{
+      display:grid;
+      grid-template-columns:repeat(7,minmax(0,1fr));
+      gap:8px;
+    }
+
+    .cycle-week-seven{
+      grid-column:1 / -1;
+    }
+
+    .cycle-summary-wrap{
+      grid-column:1 / -1;
+    }
+
+    .cycle-summary{
+      margin:0 0 10px;
+      padding:12px 14px;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,.07);
+      background:rgba(255,255,255,.025);
+    }
+
+    .cycle-summary > strong{
+      display:block;
+      color:#f8fafc;
+    }
+
+    .cycle-sample-size{
+      display:block;
+      margin-top:4px;
+      color:#64748b;
+      font-size:.72rem;
+      font-weight:700;
+    }
+
+    .cycle-summary-stats{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px 14px;
+      margin-top:8px;
+      font-size:.74rem;
+      font-weight:800;
+    }
+
+    .cycle-day{
+      min-height:82px;
+      padding:9px 5px;
+      border:1px solid rgba(255,255,255,.07);
+      border-radius:12px;
+      background:rgba(255,255,255,.025);
+      color:#cbd5e1;
+      text-align:center;
+      cursor:pointer;
+    }
+
+    .cycle-day strong{
+      display:block;
+      color:#f8fafc;
+      font-size:.78rem;
+    }
+
+    .cycle-day span{
+      display:block;
+      margin-top:4px;
+      font-size:.72rem;
+    }
+
+    .cycle-status-dot{
+      font-size:1rem !important;
+    }
+
+    .cycle-status-label{
+      display:block;
+      margin-top:4px;
+      color:#94a3b8;
+      font-size:.6rem;
+      line-height:1.1;
+    }
+
+    .status-on-track{
+      color:#22c55e;
+    }
+
+    .status-mixed{
+      color:#facc15;
+    }
+
+    .status-attention{
+      color:#ef4444;
+    }
+
+    .status-no-data{
+      color:#64748b;
+    }
+
+    .cycle-day.today{
+      border-color:rgba(56,189,248,.62);
+      background:rgba(56,189,248,.08);
+    }
+
+    .cycle-detail{
+      margin-top:12px;
+    }
+
+    .history-link{
+      display:block;
+      margin-top:16px;
+      color:#38bdf8;
+      font-weight:900;
+      text-align:center;
+      text-decoration:none;
+    }
+
+    @media(max-width:700px){
+      .action-card{
+        overflow-x:auto;
+      }
+
+      .cycle-calendar,
+      .cycle-week{
+        min-width:620px;
+      }
+    }
   </style>
 
   <link
@@ -135,7 +289,7 @@
       </h1>
 
       <p class="sub">
-        Choose the level that fits your FuelAI profile.
+        Track today. See the week. Adjust what comes next.
       </p>
 
       <div
@@ -146,7 +300,46 @@
       </div>
 
 
-      <!-- FREE -->
+      <!-- 7 DAY ACTION -->
+
+      <section class="action-card">
+
+        <p class="range-label">
+          This Week
+        </p>
+
+        <h2>
+          7 Days · Action
+        </h2>
+
+        <p class="range-note">
+          Monday through Sunday. Tap a day to see its details.
+        </p>
+
+        <div
+          id="cycle7Calendar"
+          class="cycle-calendar"
+        >
+          Loading this week...
+        </div>
+
+        <div
+          id="cycle7Detail"
+          class="cycle-detail"
+        ></div>
+
+        <a
+          class="history-link"
+          href="/account/logs.html"
+        >
+          📋 View Longer History →
+        </a>
+
+      </section>
+
+
+      <!-- FUELAI PLANS -->
+
 
       <div
         class="plan-card"
@@ -184,7 +377,7 @@
 
           <p>
             <span>✓</span>
-            7-Day History
+            7 Days · Action
           </p>
 
         </div>
@@ -237,7 +430,7 @@
 
           <p>
             <span>✓</span>
-            30-Day History
+            Longer History in My Fuel Log
           </p>
 
           <p>
@@ -292,7 +485,7 @@
 
           <p>
             <span>✓</span>
-            42-Day History
+            Longer History in My Fuel Log
           </p>
 
           <p>
@@ -432,6 +625,26 @@
 
 
     /*
+     * Sports Athlete
+     * Standard or Plus
+     */
+
+    if (
+      profile ===
+      "sports-athlete"
+    ) {
+      freePlanCard.style.display =
+        "none";
+
+      standardPlanCard.style.display =
+        "";
+
+      plusPlanCard.style.display =
+        "";
+    }
+
+
+    /*
      * Combat Athlete
      * Plus only
      */
@@ -451,6 +664,12 @@
     }
   </script>
 
+
+  <script src="/assets/js/core/preferences.js"></script>
+
+  <script src="/assets/js/account/fuelai-log.js"></script>
+
+  <script src="/assets/js/logs.js?v=3"></script>
 
   <script src="/assets/js/core/nav.js"></script>
 

@@ -210,6 +210,43 @@
       }
     }
 
+    .cycle-seven-visible{
+      margin-top:14px;
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:16px;
+      background:rgba(255,255,255,.025);
+      overflow:hidden;
+    }
+
+    .cycle-seven-head{
+      min-height:58px;
+      padding:14px 16px;
+      display:flex;
+      align-items:center;
+    }
+
+    .cycle-seven-head > span{
+      display:flex;
+      align-items:baseline;
+      gap:8px;
+    }
+
+    .cycle-seven-head strong{
+      font-size:1rem;
+    }
+
+    .cycle-seven-head small{
+      color:#94a3b8;
+      font-size:.78rem;
+      font-weight:800;
+      text-transform:uppercase;
+      letter-spacing:.08em;
+    }
+
+    .cycle-seven-body{
+      border-top:1px solid rgba(255,255,255,.06);
+    }
+
     .cycle-accordion{
       margin-top:14px;
       border:1px solid rgba(255,255,255,.08);
@@ -561,49 +598,9 @@
 
     <section class="logs-grid">
 
-      <!-- TODAY -->
-
-      <article class="logs-card">
-
-        <p class="range-label">
-          Today
-        </p>
-
-        <h2>
-          Today Snapshot
-        </h2>
-
-        <p
-          id="todaySnapshot"
-          class="range-output"
-        >
-          Loading today...
-        </p>
-
-      </article>
-
-
-      <article class="logs-card">
-
-        <p class="range-label">
-          Yesterday
-        </p>
-
-        <h2>
-          Yesterday's Entry
-        </h2>
-
-        <p
-          id="yesterdaySnapshot"
-          class="range-output"
-        >
-          Loading yesterday...
-        </p>
-
-      </article>
-
-
       <!-- PROGRESS CYCLES -->
+
+
 
       <article class="logs-card full">
 
@@ -620,13 +617,10 @@
         </p>
 
 
-        <details
-          class="cycle-accordion"
-          id="cycle7"
-          open
-        >
+        <section class="cycle-seven-visible">
 
-          <summary>
+          <div class="cycle-seven-head">
+
             <span>
               <strong>7 Days</strong>
               <small>Action</small>
@@ -636,12 +630,9 @@
               ></small>
             </span>
 
-            <span class="cycle-chevron">
-              ↓
-            </span>
-          </summary>
+          </div>
 
-          <div class="cycle-body">
+          <div class="cycle-body cycle-seven-body">
 
             <div
               id="cycle7Calendar"
@@ -657,7 +648,7 @@
 
           </div>
 
-        </details>
+        </section>
 
 
         <details
@@ -721,6 +712,52 @@
               class="cycle-weeks"
             >
               Loading 42-day view...
+            </div>
+
+          </div>
+
+        </details>
+
+      </article>
+
+
+      <!-- 14 DAY MACRO BALANCE -->
+
+      <article class="logs-card full">
+
+        <p class="range-label">
+          Macro Balance
+        </p>
+
+        <details
+          class="cycle-accordion"
+          id="macro14"
+        >
+
+          <summary>
+
+            <span>
+              <strong>14 Days</strong>
+              <small>Macro Balance</small>
+            </span>
+
+            <span class="cycle-chevron">
+              ↓
+            </span>
+
+          </summary>
+
+          <div class="cycle-body">
+
+            <p class="range-output">
+              See how your protein, carbs, and fat balance has been moving.
+            </p>
+
+            <div
+              id="macroTrendGrid"
+              class="trend-grid"
+            >
+              Loading macro trends...
             </div>
 
           </div>

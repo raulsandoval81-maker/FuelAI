@@ -333,9 +333,6 @@
       )
     );
 
-
-
-
     accountLinks.push(
       navLink(
         "/account/profile.html",

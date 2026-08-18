@@ -1848,7 +1848,13 @@ function renderLogs() {
 
   renderHistoryTrends(
     days
-  );renderProgressCycles(
+  );
+
+  renderMacroTrends(
+    days
+  );
+
+  renderProgressCycles(
     days
   );
 
@@ -2175,7 +2181,7 @@ function renderHistoryTrends(
     ),
 
     renderTrendCard(
-      "�� Hydration",
+      "💧 Hydration",
       hydration.length
         ? `${hydration.at(-1)} oz`
         : "—",
@@ -2188,6 +2194,180 @@ function renderHistoryTrends(
         ? `${sleep.at(-1)} hrs`
         : "—",
       sleep
+    )
+
+  ].join("");
+
+}
+
+
+/* =========================
+   14 DAY MACRO BALANCE
+========================= */
+
+function renderMacroTrends(
+  days
+) {
+
+  const container =
+    document.getElementById(
+      "macroTrendGrid"
+    );
+
+
+  if (
+    !container
+  ) {
+    return;
+  }
+
+
+  const history =
+    days
+      .slice(
+        0,
+        14
+      )
+      .reverse();
+
+
+  const proteinPct = [];
+  const carbsPct = [];
+  const fatsPct = [];
+
+
+  history.forEach(
+    day => {
+
+      const protein =
+        Number(
+          day.protein
+        ) || 0;
+
+      const carbs =
+        Number(
+          day.carbs
+        ) || 0;
+
+      const fats =
+        Number(
+          day.fats ??
+          day.fat
+        ) || 0;
+
+
+      const proteinCalories =
+        protein * 4;
+
+      const carbCalories =
+        carbs * 4;
+
+      const fatCalories =
+        fats * 9;
+
+      const total =
+        proteinCalories +
+        carbCalories +
+        fatCalories;
+
+
+      if (
+        total <= 0
+      ) {
+        return;
+      }
+
+
+      const p =
+        Math.round(
+          proteinCalories /
+          total *
+          100
+        );
+
+      const c =
+        Math.round(
+          carbCalories /
+          total *
+          100
+        );
+
+      const f =
+        Math.max(
+          0,
+          100 - p - c
+        );
+
+
+      proteinPct.push(p);
+      carbsPct.push(c);
+      fatsPct.push(f);
+
+    }
+  );
+
+
+  const average =
+    values => {
+
+      if (
+        !values.length
+      ) {
+        return null;
+      }
+
+      return Math.round(
+        values.reduce(
+          (sum, value) =>
+            sum + value,
+          0
+        ) /
+        values.length
+      );
+
+    };
+
+
+  const avgProtein =
+    average(
+      proteinPct
+    );
+
+  const avgCarbs =
+    average(
+      carbsPct
+    );
+
+  const avgFats =
+    average(
+      fatsPct
+    );
+
+
+  container.innerHTML = [
+
+    renderTrendCard(
+      "🥩 Protein",
+      avgProtein !== null
+        ? `${avgProtein}% avg`
+        : "—",
+      proteinPct
+    ),
+
+    renderTrendCard(
+      "🍞 Carbs",
+      avgCarbs !== null
+        ? `${avgCarbs}% avg`
+        : "—",
+      carbsPct
+    ),
+
+    renderTrendCard(
+      "🥑 Fat",
+      avgFats !== null
+        ? `${avgFats}% avg`
+        : "—",
+      fatsPct
     )
 
   ].join("");
