@@ -824,11 +824,39 @@ function renderLogCards(
 function getDateKey(
   date
 ) {
-  return date
-    .toISOString()
-    .slice(0, 10);
-}
 
+  const parts =
+    new Intl.DateTimeFormat(
+      "en-US",
+      {
+        timeZone:
+          LOGS_TIME_ZONE,
+        year:
+          "numeric",
+        month:
+          "2-digit",
+        day:
+          "2-digit"
+      }
+    )
+      .formatToParts(
+        date
+      );
+
+  const map =
+    Object.fromEntries(
+      parts.map(
+        part => [
+          part.type,
+          part.value
+        ]
+      )
+    );
+
+  return (
+    `${map.year}-${map.month}-${map.day}`
+  );
+}
 
 function getPastDates(
   count
@@ -854,6 +882,152 @@ function getPastDates(
 
     date.setDate(
       today.getDate() - i
+    );
+
+    dates.push(
+      date
+    );
+
+  }
+
+
+  return dates;
+
+}
+
+
+/*
+ * Calendar-cycle dates
+ *
+ * 7 / 21 / 42 use real Monday-Sunday
+ * calendar weeks.
+ *
+ * 60-day History remains rolling.
+ */
+
+function getCalendarCycleDates(
+  totalDays
+) {
+
+  const parts =
+    new Intl.DateTimeFormat(
+      "en-US",
+      {
+        timeZone:
+          LOGS_TIME_ZONE,
+
+        year:
+          "numeric",
+
+        month:
+          "2-digit",
+
+        day:
+          "2-digit"
+      }
+    )
+      .formatToParts(
+        new Date()
+      );
+
+
+  const map =
+    Object.fromEntries(
+      parts.map(
+        part => [
+          part.type,
+          part.value
+        ]
+      )
+    );
+
+
+  /*
+   * Noon avoids midnight / DST edge cases.
+   */
+
+  const today =
+    new Date(
+      Number(
+        map.year
+      ),
+      Number(
+        map.month
+      ) - 1,
+      Number(
+        map.day
+      ),
+      12,
+      0,
+      0
+    );
+
+
+  /*
+   * JS:
+   * Sunday = 0
+   * Monday = 1
+   *
+   * Convert to:
+   * Monday = 0 ... Sunday = 6
+   */
+
+  const mondayOffset =
+    (
+      today.getDay() + 6
+    ) % 7;
+
+
+  const currentMonday =
+    new Date(
+      today
+    );
+
+  currentMonday.setDate(
+    today.getDate() -
+    mondayOffset
+  );
+
+
+  const weeks =
+    Math.max(
+      1,
+      Math.ceil(
+        totalDays / 7
+      )
+    );
+
+
+  const start =
+    new Date(
+      currentMonday
+    );
+
+  start.setDate(
+    currentMonday.getDate() -
+    (
+      weeks - 1
+    ) * 7
+  );
+
+
+  const dates =
+    [];
+
+
+  for (
+    let i = 0;
+    i < weeks * 7;
+    i++
+  ) {
+
+    const date =
+      new Date(
+        start
+      );
+
+    date.setDate(
+      start.getDate() + i
     );
 
     dates.push(
@@ -1329,7 +1503,7 @@ function renderCycleWeeks(
 
 
   const dates =
-    getPastDates(
+    getCalendarCycleDates(
       totalDays
     );
 
@@ -1455,7 +1629,7 @@ function renderSevenDayCycle(
 
 
   const dates =
-    getPastDates(
+    getCalendarCycleDates(
       7
     );
 
