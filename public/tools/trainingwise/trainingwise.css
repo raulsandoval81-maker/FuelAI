@@ -2307,3 +2307,442 @@ body.trainingwise-fullscreen
     0 0 18px rgba(250,204,21,.35);
 }
 
+
+/* Keep active WORK time green in board mode */
+body.trainingwise-fullscreen
+.trainingwise-timer.phase-work
+.trainingwise-clock{
+  color:#22c55e !important;
+}
+
+/* RECOVER can keep its normal recovery color */
+body.trainingwise-fullscreen
+.trainingwise-timer.phase-rest
+.trainingwise-clock{
+  color:inherit;
+}
+
+
+/* ==================================================
+   TRAININGWISE PHONE BOARD HARDENING
+================================================== */
+
+@media (max-width: 700px) {
+
+  /*
+   * Do not depend on Safari fixing the
+   * entire BODY correctly.
+   *
+   * The live TrainingWise timer itself
+   * becomes the phone display layer.
+   */
+
+  body.trainingwise-fullscreen {
+    position: static !important;
+
+    width: auto !important;
+    height: auto !important;
+    min-height: 100% !important;
+
+    overflow: hidden !important;
+  }
+
+
+  body.trainingwise-fullscreen
+  .trainingwise-timer {
+    position: fixed !important;
+
+    inset: 0 !important;
+
+    z-index: 999990 !important;
+
+    width: 100vw !important;
+
+    height: 100vh !important;
+    height: 100svh !important;
+    height: 100dvh !important;
+
+    min-height: 100vh !important;
+    min-height: 100svh !important;
+
+    max-width: none !important;
+
+    margin: 0 !important;
+
+    padding:
+      max(18px, env(safe-area-inset-top))
+      max(14px, env(safe-area-inset-right))
+      max(18px, env(safe-area-inset-bottom))
+      max(14px, env(safe-area-inset-left))
+      !important;
+
+    box-sizing: border-box !important;
+
+    display: flex !important;
+
+    flex-direction: column !important;
+
+    align-items: center !important;
+    justify-content: center !important;
+
+    overflow: hidden !important;
+
+    background: #020617 !important;
+
+    border: 0 !important;
+    border-radius: 0 !important;
+  }
+
+
+  /*
+   * Board controls stay over the timer.
+   */
+
+  body.trainingwise-fullscreen
+  .trainingwise-board-controls {
+    position: fixed !important;
+
+    z-index: 1000000 !important;
+
+    right:
+      max(
+        14px,
+        env(safe-area-inset-right)
+      ) !important;
+
+    bottom:
+      max(
+        14px,
+        env(safe-area-inset-bottom)
+      ) !important;
+  }
+
+
+  /*
+   * Active WORK time is always green.
+   */
+
+  body.trainingwise-fullscreen
+  .trainingwise-timer.phase-work
+  .trainingwise-clock {
+    color: #22c55e !important;
+
+    text-shadow:
+      0 0 22px
+      rgba(34,197,94,.24);
+  }
+
+
+  /*
+   * GET READY + pre-start numbers
+   * remain yellow.
+   */
+
+  body.trainingwise-fullscreen
+  .trainingwise-timer.trainingwise-prestart
+  .trainingwise-clock {
+    color: #facc15 !important;
+  }
+
+
+  /*
+   * Phone-sized clock.
+   */
+
+  body.trainingwise-fullscreen
+  .trainingwise-clock {
+    font-size:
+      clamp(
+        6rem,
+        34vw,
+        13rem
+      ) !important;
+  }
+
+}
+
+
+/* ==================================================
+   TRAININGWISE PHONE BIG CLOCK FINAL
+================================================== */
+
+@media (max-width:700px){
+
+  /*
+   * Phone board mode:
+   * hide the entire setup experience.
+   */
+
+  body.trainingwise-fullscreen
+  .trainingwise-label,
+
+  body.trainingwise-fullscreen
+  .trainingwise-preset,
+
+  body.trainingwise-fullscreen
+  .trainingwise-content-picker,
+
+  body.trainingwise-fullscreen
+  .trainingwise-round-picker,
+
+  body.trainingwise-fullscreen
+  .trainingwise-view-controls,
+
+  body.trainingwise-fullscreen
+  .trainingwise-controls,
+
+  body.trainingwise-fullscreen
+  .trainingwise-session-message,
+
+  body.trainingwise-fullscreen
+  .trainingwise-music,
+
+  body.trainingwise-fullscreen
+  #trainingwiseOutput > p,
+
+  body.trainingwise-fullscreen
+  #trainingwiseOutput > h2{
+    display:none !important;
+  }
+
+
+  /*
+   * Remove normal page chrome/spacing.
+   */
+
+  html:has(body.trainingwise-fullscreen),
+  body.trainingwise-fullscreen{
+    margin:0 !important;
+    padding:0 !important;
+
+    width:100% !important;
+    height:100% !important;
+
+    overflow:hidden !important;
+
+    background:#020617 !important;
+  }
+
+
+  body.trainingwise-fullscreen main,
+  body.trainingwise-fullscreen
+  #trainingwiseOutput{
+    position:static !important;
+
+    width:100% !important;
+    height:100% !important;
+
+    max-width:none !important;
+
+    margin:0 !important;
+    padding:0 !important;
+
+    overflow:visible !important;
+  }
+
+
+  /*
+   * The timer itself becomes the phone screen.
+   */
+
+  body.trainingwise-fullscreen
+  .trainingwise-timer{
+    position:fixed !important;
+
+    top:0 !important;
+    right:0 !important;
+    bottom:0 !important;
+    left:0 !important;
+
+    z-index:999990 !important;
+
+    width:100vw !important;
+
+    height:100vh !important;
+    height:100svh !important;
+    height:100dvh !important;
+
+    min-height:100vh !important;
+    min-height:100svh !important;
+
+    max-width:none !important;
+
+    margin:0 !important;
+
+    padding:
+      max(18px, env(safe-area-inset-top))
+      max(14px, env(safe-area-inset-right))
+      max(18px, env(safe-area-inset-bottom))
+      max(14px, env(safe-area-inset-left))
+      !important;
+
+    box-sizing:border-box !important;
+
+    display:flex !important;
+    flex-direction:column !important;
+
+    align-items:center !important;
+    justify-content:center !important;
+
+    gap:clamp(
+      6px,
+      1.6vh,
+      16px
+    ) !important;
+
+    overflow:hidden !important;
+
+    border:0 !important;
+    border-radius:0 !important;
+
+    background:#020617 !important;
+
+    text-align:center !important;
+  }
+
+
+  /*
+   * Round / interval status.
+   */
+
+  body.trainingwise-fullscreen
+  .trainingwise-timer-round{
+    flex:0 0 auto !important;
+
+    margin:0 !important;
+
+    font-size:
+      clamp(
+        .95rem,
+        4.2vw,
+        1.4rem
+      ) !important;
+  }
+
+
+  /*
+   * WORK / RECOVER / GET READY.
+   */
+
+  body.trainingwise-fullscreen
+  .trainingwise-timer-phase{
+    flex:0 0 auto !important;
+
+    margin:0 !important;
+
+    font-size:
+      clamp(
+        1.5rem,
+        7vw,
+        2.7rem
+      ) !important;
+  }
+
+
+  /*
+   * Exercise name.
+   */
+
+  body.trainingwise-fullscreen
+  .trainingwise-movement-callout{
+    flex:0 0 auto !important;
+
+    width:94vw !important;
+
+    margin:0 !important;
+
+    font-size:
+      clamp(
+        1.35rem,
+        7vw,
+        2.8rem
+      ) !important;
+
+    line-height:1.05 !important;
+  }
+
+
+  /*
+   * Main clock.
+   */
+
+  body.trainingwise-fullscreen
+  .trainingwise-clock{
+    flex:0 1 auto !important;
+
+    width:100% !important;
+
+    margin:0 !important;
+
+    font-size:
+      clamp(
+        7rem,
+        36vw,
+        13rem
+      ) !important;
+
+    line-height:.82 !important;
+
+    white-space:nowrap !important;
+
+    font-variant-numeric:
+      tabular-nums;
+  }
+
+
+  /*
+   * WORK remains green.
+   */
+
+  body.trainingwise-fullscreen
+  .trainingwise-timer.phase-work
+  .trainingwise-clock{
+    color:#22c55e !important;
+
+    text-shadow:
+      0 0 22px
+      rgba(34,197,94,.24);
+  }
+
+
+  /*
+   * GET READY countdown remains yellow.
+   */
+
+  body.trainingwise-fullscreen
+  .trainingwise-timer.trainingwise-prestart
+  .trainingwise-clock,
+
+  body.trainingwise-fullscreen
+  .trainingwise-timer-phase.trainingwise-get-ready{
+    color:#facc15 !important;
+  }
+
+
+  /*
+   * Keep only tiny live board controls visible.
+   */
+
+  body.trainingwise-fullscreen
+  .trainingwise-board-controls{
+    display:flex !important;
+
+    position:fixed !important;
+
+    z-index:1000000 !important;
+
+    right:
+      max(
+        12px,
+        env(safe-area-inset-right)
+      ) !important;
+
+    bottom:
+      max(
+        12px,
+        env(safe-area-inset-bottom)
+      ) !important;
+  }
+
+}
+
