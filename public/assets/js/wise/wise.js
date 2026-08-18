@@ -949,14 +949,31 @@ function renderWise() {
     planOutput
   ) {
 
-    planOutput.innerHTML = `
-      <strong class="direction-plan-name">
-        ${getPlanName(
-          setup.goal
-        )}
-      </strong>
+    const planName =
+      getPlanName(
+        setup.goal
+      );
 
+    const planParts =
+      planName.split("—");
+
+    const planLabel =
+      planParts[0]?.trim() ||
+      planName;
+
+    const planDirection =
+      planParts.slice(1)
+        .join("—")
+        .trim();
+
+    planOutput.innerHTML = `
       <ul class="direction-details">
+
+        <li>
+          <strong>${planLabel}:</strong>
+          ${planDirection}
+        </li>
+
         <li>
           <strong>Profile:</strong>
           ${getProfileLabel()}
@@ -977,6 +994,7 @@ function renderWise() {
             `
             : ""
         }
+
       </ul>
     `;
 
