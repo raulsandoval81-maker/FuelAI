@@ -267,17 +267,23 @@
 
     .direction-details{
       margin:12px 0 0;
-      padding-left:22px;
+      padding-left:24px;
 
-      list-style-type:disc;
-      list-style-position:outside;
+      list-style:disc outside !important;
 
       color:#cbd5e1;
       line-height:1.55;
     }
 
     .direction-details li{
-      display:list-item;
+      display:list-item !important;
+      list-style:disc outside !important;
+      margin-left:0;
+    }
+
+    .direction-details li::marker{
+      color:#cbd5e1;
+      font-size:.9em;
     }
 
     .direction-details li + li{
