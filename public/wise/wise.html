@@ -236,6 +236,29 @@
       font-weight:1000;
     }
 
+    .direction-card{
+      margin-top:20px;
+      padding:16px 18px;
+      border-radius:18px;
+      border:1px solid rgba(56,189,248,.14);
+      background:rgba(15,23,42,.72);
+      box-shadow:none;
+    }
+
+    .direction-card .range-label{
+      margin-bottom:6px;
+    }
+
+    .direction-card h2{
+      margin:0;
+      font-size:1.05rem;
+    }
+
+    .direction-card .range-output{
+      margin:8px 0 0;
+      color:#cbd5e1;
+    }
+
     .guidance-section{
       margin-top:20px;
 
@@ -455,28 +478,6 @@
 
     <section class="wise-grid">
 
-      <!-- PLAN -->
-
-      <article class="wise-card">
-
-        <p class="range-label">
-          Current Direction
-        </p>
-
-        <h2>
-          Your FuelAI Plan
-        </h2>
-
-        <p
-          id="planOutput"
-          class="range-output"
-        >
-          Loading...
-        </p>
-
-      </article>
-
-
       <!-- COACH -->
 
       <article class="wise-card guide-card">
@@ -537,6 +538,28 @@
         </button>
 
       </article>
+
+    </section>
+
+
+    <!-- CURRENT DIRECTION -->
+
+    <section class="direction-card">
+
+      <p class="range-label">
+        Current Direction
+      </p>
+
+      <h2>
+        Your FuelAI Plan
+      </h2>
+
+      <p
+        id="planOutput"
+        class="range-output"
+      >
+        Loading...
+      </p>
 
     </section>
 
@@ -746,6 +769,9 @@ const profileOutput =
 
       "fitness-enthusiast":
         "Fitness Enthusiast",
+
+      "sports-athlete":
+        "Sports Athlete",
 
       "combat-athlete":
         "Combat Athlete"
