@@ -1592,3 +1592,554 @@ button:disabled {
   }
 
 }
+
+
+/* ==================================================
+   TRAININGWISE MUSIC
+================================================== */
+
+.trainingwise-music{
+  width:100%;
+  margin-top:10px;
+  padding:12px;
+
+  border:
+    1px solid rgba(255,255,255,.08);
+
+  border-radius:16px;
+
+  background:
+    rgba(15,23,42,.54);
+}
+
+.trainingwise-music-toggle{
+  width:100%;
+  min-height:42px;
+
+  border-radius:12px;
+
+  font-weight:900;
+}
+
+.trainingwise-music-styles{
+  display:grid;
+
+  grid-template-columns:
+    repeat(3,minmax(0,1fr));
+
+  gap:7px;
+
+  margin-top:8px;
+}
+
+.trainingwise-music-styles button{
+  min-height:38px;
+  padding:7px 8px;
+
+  border-radius:10px;
+
+  font-size:.74rem;
+  font-weight:800;
+}
+
+.trainingwise-music-styles button.active{
+  outline:
+    2px solid rgba(168,85,247,.55);
+}
+
+@media (max-width:640px){
+
+  .trainingwise-music-styles{
+    grid-template-columns:1fr;
+  }
+
+}
+
+
+/* ==================================================
+   TRAININGWISE SESSION CONTENT
+================================================== */
+
+.trainingwise-content-picker{
+  margin:18px 0;
+  padding:14px;
+
+  border:
+    1px solid rgba(255,255,255,.08);
+
+  border-radius:16px;
+
+  background:
+    rgba(15,23,42,.46);
+}
+
+.trainingwise-content-options{
+  display:grid;
+  grid-template-columns:
+    repeat(3,minmax(0,1fr));
+
+  gap:8px;
+  margin-top:9px;
+}
+
+.trainingwise-content-options button{
+  min-height:42px;
+  padding:8px 10px;
+
+  border-radius:12px;
+
+  font-size:.78rem;
+  font-weight:850;
+}
+
+.trainingwise-content-options button.active{
+  outline:
+    2px solid rgba(168,85,247,.55);
+}
+
+.trainingwise-custom-builder{
+  margin-top:12px;
+}
+
+.trainingwise-custom-builder label{
+  display:block;
+  margin-bottom:6px;
+
+  font-size:.78rem;
+  font-weight:850;
+}
+
+.trainingwise-custom-builder textarea{
+  width:100%;
+  box-sizing:border-box;
+
+  padding:10px 12px;
+
+  border-radius:12px;
+
+  border:
+    1px solid rgba(255,255,255,.10);
+
+  background:
+    rgba(2,6,23,.72);
+
+  color:#fff;
+
+  resize:vertical;
+}
+
+.trainingwise-custom-builder small{
+  display:block;
+  margin-top:6px;
+
+  color:#94a3b8;
+}
+
+.trainingwise-movement-preview{
+  margin-top:10px;
+
+  color:#cbd5e1;
+  font-size:.8rem;
+  line-height:1.45;
+}
+
+.trainingwise-movement-callout{
+  margin:8px 0 2px;
+
+  font-size:1.2rem;
+  font-weight:950;
+  letter-spacing:.02em;
+}
+
+@media (max-width:640px){
+
+  .trainingwise-content-options{
+    grid-template-columns:1fr;
+  }
+
+}
+
+
+/* ==================================================
+   TRAININGWISE FULLSCREEN TRAINING BOARD
+================================================== */
+
+/*
+ * The existing fullscreen [ ] control should turn
+ * the live timer into an across-the-room display.
+ */
+
+.trainingwise-timer:fullscreen,
+.trainingwise-timer:-webkit-full-screen{
+  width:100vw;
+  height:100vh;
+  max-width:none;
+  max-height:none;
+
+  margin:0;
+  padding:
+    clamp(18px,4vh,48px)
+    clamp(16px,4vw,56px);
+
+  box-sizing:border-box;
+
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+
+  gap:
+    clamp(8px,2vh,24px);
+
+  overflow:hidden;
+
+  border:none;
+  border-radius:0;
+
+  background:#020617;
+
+  text-align:center;
+}
+
+
+/* Round / interval / minute status */
+
+.trainingwise-timer:fullscreen
+.trainingwise-timer-round,
+.trainingwise-timer:-webkit-full-screen
+.trainingwise-timer-round{
+  flex:0 0 auto;
+
+  margin:0;
+
+  font-size:
+    clamp(
+      1rem,
+      3.2vmin,
+      2.6rem
+    );
+
+  line-height:1.15;
+
+  opacity:.82;
+}
+
+
+/* WORK / RECOVER / ROUND REST */
+
+.trainingwise-timer:fullscreen
+.trainingwise-timer-phase,
+.trainingwise-timer:-webkit-full-screen
+.trainingwise-timer-phase{
+  flex:0 0 auto;
+
+  margin:0;
+
+  font-size:
+    clamp(
+      1.5rem,
+      6vmin,
+      5rem
+    );
+
+  line-height:1;
+
+  font-weight:950;
+
+  letter-spacing:.08em;
+}
+
+
+/* Current exercise */
+
+.trainingwise-timer:fullscreen
+.trainingwise-movement-callout,
+.trainingwise-timer:-webkit-full-screen
+.trainingwise-movement-callout{
+  flex:0 0 auto;
+
+  width:100%;
+  max-width:92vw;
+
+  margin:0;
+
+  font-size:
+    clamp(
+      1.6rem,
+      6.8vmin,
+      5.5rem
+    );
+
+  line-height:1.05;
+
+  font-weight:950;
+
+  white-space:normal;
+  overflow-wrap:anywhere;
+}
+
+
+/* Main clock — dominant element */
+
+.trainingwise-timer:fullscreen
+.trainingwise-clock,
+.trainingwise-timer:-webkit-full-screen
+.trainingwise-clock{
+  flex:0 1 auto;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  width:100%;
+
+  min-height:0;
+
+  margin:0;
+
+  font-size:
+    clamp(
+      7rem,
+      40vmin,
+      30rem
+    );
+
+  line-height:.78;
+
+  font-weight:950;
+
+  letter-spacing:-.055em;
+
+  font-variant-numeric:
+    tabular-nums;
+
+  white-space:nowrap;
+}
+
+
+/*
+ * Landscape screens can afford an even
+ * larger clock while keeping the workout
+ * context visible.
+ */
+
+@media (orientation:landscape){
+
+  .trainingwise-timer:fullscreen
+  .trainingwise-clock,
+  .trainingwise-timer:-webkit-full-screen
+  .trainingwise-clock{
+    font-size:
+      clamp(
+        7rem,
+        48vh,
+        34rem
+      );
+  }
+
+}
+
+
+/*
+ * Very small phone screens:
+ * protect the round/exercise text so the
+ * clock never pushes content offscreen.
+ */
+
+@media (
+  max-width:520px
+){
+
+  .trainingwise-timer:fullscreen,
+  .trainingwise-timer:-webkit-full-screen{
+    padding:
+      16px 12px;
+
+    gap:
+      clamp(6px,1.4vh,12px);
+  }
+
+
+  .trainingwise-timer:fullscreen
+  .trainingwise-clock,
+  .trainingwise-timer:-webkit-full-screen
+  .trainingwise-clock{
+    font-size:
+      clamp(
+        6rem,
+        34vmin,
+        14rem
+      );
+  }
+
+}
+
+
+/* ==================================================
+   TRAININGWISE FULLSCREEN — LIVE BOARD ONLY
+================================================== */
+
+body.trainingwise-fullscreen .trainingwise-label,
+body.trainingwise-fullscreen h2,
+body.trainingwise-fullscreen .trainingwise-preset,
+body.trainingwise-fullscreen .trainingwise-content-picker,
+body.trainingwise-fullscreen .trainingwise-round-picker,
+body.trainingwise-fullscreen .trainingwise-view-controls,
+body.trainingwise-fullscreen .trainingwise-controls,
+body.trainingwise-fullscreen .trainingwise-session-message,
+body.trainingwise-fullscreen #trainingwiseOutput > p{
+  display:none !important;
+}
+
+
+/*
+ * Keep only the live timer board.
+ */
+
+body.trainingwise-fullscreen .trainingwise-timer{
+  display:flex !important;
+
+  width:100vw;
+  height:100vh;
+
+  max-width:none;
+
+  margin:0;
+  padding:
+    clamp(18px,4vh,48px)
+    clamp(14px,4vw,56px);
+
+  box-sizing:border-box;
+
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+
+  gap:
+    clamp(8px,2vh,24px);
+
+  border:none;
+  border-radius:0;
+
+  background:#020617;
+
+  overflow:hidden;
+}
+
+
+/* Round / interval / minute */
+
+body.trainingwise-fullscreen
+.trainingwise-timer-round{
+  margin:0;
+
+  font-size:
+    clamp(
+      1.1rem,
+      3.5vmin,
+      2.8rem
+    );
+
+  line-height:1.1;
+}
+
+
+/* WORK / RECOVER / ROUND REST */
+
+body.trainingwise-fullscreen
+.trainingwise-timer-phase{
+  margin:0;
+
+  font-size:
+    clamp(
+      1.8rem,
+      6vmin,
+      5rem
+    );
+
+  font-weight:950;
+  line-height:1;
+}
+
+
+/* Exercise */
+
+body.trainingwise-fullscreen
+.trainingwise-movement-callout{
+  width:100%;
+  margin:0;
+
+  font-size:
+    clamp(
+      1.8rem,
+      7vmin,
+      6rem
+    );
+
+  font-weight:950;
+  line-height:1.05;
+
+  text-align:center;
+}
+
+
+/* Clock dominates screen */
+
+body.trainingwise-fullscreen
+.trainingwise-clock{
+  width:100%;
+
+  margin:0;
+
+  font-size:
+    clamp(
+      8rem,
+      40vmin,
+      32rem
+    );
+
+  font-weight:950;
+
+  line-height:.8;
+
+  letter-spacing:-.05em;
+
+  font-variant-numeric:
+    tabular-nums;
+
+  text-align:center;
+  white-space:nowrap;
+}
+
+
+/* Kill normal page spacing while fullscreen */
+
+body.trainingwise-fullscreen{
+  overflow:hidden;
+}
+
+body.trainingwise-fullscreen main,
+body.trainingwise-fullscreen #trainingwiseOutput{
+  width:100vw !important;
+  height:100vh !important;
+
+  max-width:none !important;
+
+  margin:0 !important;
+  padding:0 !important;
+}
+
+
+@media (orientation:landscape){
+
+  body.trainingwise-fullscreen
+  .trainingwise-clock{
+    font-size:
+      clamp(
+        8rem,
+        48vh,
+        34rem
+      );
+  }
+
+}

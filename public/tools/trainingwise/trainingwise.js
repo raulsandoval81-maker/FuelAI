@@ -116,6 +116,144 @@
 
 
 
+  /*
+   * =====================================================
+   * TRAININGWISE SESSION CONTENT
+   *
+   * Shared workout-content layer for Interval + EMOM.
+   * Timer Only remains the default.
+   * =====================================================
+   */
+
+  const trainingwiseQuickWorkout = [
+    "Air Squats",
+    "Push-Ups",
+    "Reverse Lunges",
+    "Mountain Climbers",
+    "Plank",
+    "Glute Bridge"
+  ];
+
+
+  function cleanTrainingwiseMovements(
+    value
+  ) {
+
+    return String(
+      value || ""
+    )
+      .split(",")
+      .map(
+        item =>
+          item.trim()
+      )
+      .filter(Boolean)
+      .slice(0, 12);
+
+  }
+
+
+  function getTrainingwiseMovement(
+    state,
+    index
+  ) {
+
+    if (
+      !state ||
+      state.workoutMode ===
+      "timer"
+    ) {
+      return "";
+    }
+
+
+    const movements =
+      state.movements ||
+      [];
+
+
+    if (!movements.length) {
+      return "";
+    }
+
+
+    return movements[
+      index %
+      movements.length
+    ];
+
+  }
+
+
+  function renderTrainingwiseContentPicker(
+    prefix
+  ) {
+
+    return `
+      <div class="trainingwise-content-picker">
+
+        <span class="trainingwise-label">
+          WORKOUT
+        </span>
+
+        <div class="trainingwise-content-options">
+
+          <button
+            type="button"
+            data-session-content="${prefix}:timer"
+            class="active"
+          >
+            Timer Only
+          </button>
+
+          <button
+            type="button"
+            data-session-content="${prefix}:fuelai"
+          >
+            FuelAI Workout
+          </button>
+
+          <button
+            type="button"
+            data-session-content="${prefix}:custom"
+          >
+            Build My Own
+          </button>
+
+        </div>
+
+        <div
+          id="${prefix}CustomBuilder"
+          class="trainingwise-custom-builder hidden"
+        >
+
+          <label>
+            Movements
+          </label>
+
+          <textarea
+            id="${prefix}CustomMovements"
+            rows="3"
+            placeholder="Example: Squats, Push-Ups, Lunges, Plank"
+          ></textarea>
+
+          <small>
+            Separate movements with commas.
+          </small>
+
+        </div>
+
+        <div
+          id="${prefix}MovementPreview"
+          class="trainingwise-movement-preview hidden"
+        ></div>
+
+      </div>
+    `;
+
+  }
+
+
   /* =========================
      INTERVAL
   ========================= */
@@ -161,7 +299,16 @@
         false,
 
       completed:
-        false
+        false,
+
+      workoutMode:
+        "timer",
+
+      movements:
+        [],
+
+      movementIndex:
+        0
 
     };
 
@@ -171,17 +318,80 @@
         INTERVAL
       </p>
 
-      <h2>
+      <h2 id="intervalTitle">
         45 / 15 Conditioning
       </h2>
 
       <p>
-        45 seconds work,
-        15 seconds recovery.
+        Choose your work and recovery rhythm.
       </p>
 
-      <div class="trainingwise-preset">
-        8 minutes per round
+      <div
+        id="intervalPreset"
+        class="trainingwise-preset"
+      >
+        45 sec work · 15 sec recovery
+      </div>
+
+
+      ${renderTrainingwiseContentPicker(
+        "interval"
+      )}
+
+
+      <div class="trainingwise-round-picker">
+
+        <span class="trainingwise-label">
+          INTERVAL
+        </span>
+
+        <div class="trainingwise-round-options">
+
+          <button
+            type="button"
+            data-interval-preset="30/30"
+          >
+            30 / 30
+          </button>
+
+          <button
+            type="button"
+            data-interval-preset="40/20"
+          >
+            40 / 20
+          </button>
+
+          <button
+            type="button"
+            data-interval-preset="45/15"
+            class="active"
+          >
+            45 / 15
+          </button>
+
+          <button
+            type="button"
+            data-interval-preset="50/10"
+          >
+            50 / 10
+          </button>
+
+          <button
+            type="button"
+            data-interval-preset="60/15"
+          >
+            60 / 15
+          </button>
+
+          <button
+            type="button"
+            data-interval-preset="60/30"
+          >
+            60 / 30
+          </button>
+
+        </div>
+
       </div>
 
 
@@ -243,6 +453,11 @@
         </div>
 
         <div
+          id="intervalMovement"
+          class="trainingwise-movement-callout"
+        ></div>
+
+        <div
           id="intervalClock"
           class="trainingwise-clock"
         >
@@ -255,6 +470,8 @@
       <div class="trainingwise-view-controls">
 
         ${renderTrainingwiseSoundControl()}
+
+        ${renderTrainingwiseMusicControl()}
 
         ${renderTrainingwiseFullClockControl()}
 
@@ -386,6 +603,37 @@
         formatSeconds(
           intervalState.remaining
         );
+
+    }
+
+
+    const movement =
+      document.getElementById(
+        "intervalMovement"
+      );
+
+
+    if (movement) {
+
+      const current =
+        intervalState.phase ===
+        "work"
+          ? getTrainingwiseMovement(
+              intervalState,
+              intervalState.movementIndex
+            )
+          : "";
+
+
+      movement.textContent =
+        current
+          ? current
+          : "";
+
+      movement.classList.toggle(
+        "hidden",
+        !current
+      );
 
     }
 
@@ -1090,6 +1338,377 @@
 
 
 
+  /*
+   * =====================================================
+   * TRAININGWISE MUSIC
+   * V1 demo audio layer.
+   *
+   * Separate from timer bells/cues so future music
+   * libraries can be swapped in without touching
+   * Interval / EMOM timing logic.
+   * =====================================================
+   */
+
+  const TRAININGWISE_MUSIC_KEY =
+    "fuelai-trainingwise-music-v1";
+
+  const TRAININGWISE_MUSIC_STYLE_KEY =
+    "fuelai-trainingwise-music-style-v1";
+
+
+  let trainingwiseMusicEnabled =
+    localStorage.getItem(
+      TRAININGWISE_MUSIC_KEY
+    ) === "on";
+
+
+  let trainingwiseMusicStyle =
+    localStorage.getItem(
+      TRAININGWISE_MUSIC_STYLE_KEY
+    ) ||
+    "cinematic";
+
+
+  let trainingwiseMusicTimer =
+    null;
+
+
+  function stopTrainingwiseMusic() {
+
+    if (
+      trainingwiseMusicTimer !==
+      null
+    ) {
+
+      window.clearInterval(
+        trainingwiseMusicTimer
+      );
+
+      trainingwiseMusicTimer =
+        null;
+
+    }
+
+  }
+
+
+  function playTrainingwiseMusicBeat() {
+
+    if (
+      !trainingwiseMusicEnabled
+    ) {
+      return;
+    }
+
+
+    /*
+     * Original synthesized training pulse.
+     * No commercial song/audio asset involved.
+     */
+    if (
+      trainingwiseMusicStyle ===
+      "heavy"
+    ) {
+
+      playTrainingwiseTone(
+        110,
+        .11,
+        0,
+        .055
+      );
+
+      playTrainingwiseTone(
+        165,
+        .07,
+        .18,
+        .035
+      );
+
+      return;
+
+    }
+
+
+    if (
+      trainingwiseMusicStyle ===
+      "focus"
+    ) {
+
+      playTrainingwiseTone(
+        220,
+        .10,
+        0,
+        .035
+      );
+
+      return;
+
+    }
+
+
+    /*
+     * Cinematic Drive
+     */
+    playTrainingwiseTone(
+      130,
+      .10,
+      0,
+      .05
+    );
+
+    playTrainingwiseTone(
+      195,
+      .07,
+      .22,
+      .035
+    );
+
+  }
+
+
+  function startTrainingwiseMusic() {
+
+    stopTrainingwiseMusic();
+
+
+    if (
+      !trainingwiseMusicEnabled
+    ) {
+      return;
+    }
+
+
+    playTrainingwiseMusicBeat();
+
+
+    /*
+     * Roughly 120 BPM pulse.
+     * Later this becomes track playback /
+     * playlist scheduling.
+     */
+    trainingwiseMusicTimer =
+      window.setInterval(
+        playTrainingwiseMusicBeat,
+        500
+      );
+
+  }
+
+
+  function updateTrainingwiseMusicControls() {
+
+    document
+      .querySelectorAll(
+        "[data-trainingwise-music-toggle]"
+      )
+      .forEach(
+        button => {
+
+          button.textContent =
+            trainingwiseMusicEnabled
+              ? "⏸ Music"
+              : "▶ Music";
+
+          button.setAttribute(
+            "aria-pressed",
+            trainingwiseMusicEnabled
+              ? "true"
+              : "false"
+          );
+
+        }
+      );
+
+
+    document
+      .querySelectorAll(
+        "[data-trainingwise-music-style]"
+      )
+      .forEach(
+        button => {
+
+          button.classList.toggle(
+            "active",
+            button.dataset
+              .trainingwiseMusicStyle ===
+              trainingwiseMusicStyle
+          );
+
+        }
+      );
+
+  }
+
+
+  function toggleTrainingwiseMusic() {
+
+    trainingwiseMusicEnabled =
+      !trainingwiseMusicEnabled;
+
+
+    localStorage.setItem(
+      TRAININGWISE_MUSIC_KEY,
+      trainingwiseMusicEnabled
+        ? "on"
+        : "off"
+    );
+
+
+    if (
+      trainingwiseMusicEnabled
+    ) {
+
+      startTrainingwiseMusic();
+
+    } else {
+
+      stopTrainingwiseMusic();
+
+    }
+
+
+    updateTrainingwiseMusicControls();
+
+  }
+
+
+  function setTrainingwiseMusicStyle(
+    style
+  ) {
+
+    trainingwiseMusicStyle =
+      style;
+
+
+    localStorage.setItem(
+      TRAININGWISE_MUSIC_STYLE_KEY,
+      style
+    );
+
+
+    if (
+      trainingwiseMusicEnabled
+    ) {
+
+      startTrainingwiseMusic();
+
+    }
+
+
+    updateTrainingwiseMusicControls();
+
+  }
+
+
+  function renderTrainingwiseMusicControl() {
+
+    return `
+      <div class="trainingwise-music">
+
+        <button
+          type="button"
+          class="trainingwise-music-toggle"
+          data-trainingwise-music-toggle
+          aria-pressed="${
+            trainingwiseMusicEnabled
+              ? "true"
+              : "false"
+          }"
+        >
+          ${
+            trainingwiseMusicEnabled
+              ? "⏸ Music"
+              : "▶ Music"
+          }
+        </button>
+
+        <div class="trainingwise-music-styles">
+
+          <button
+            type="button"
+            data-trainingwise-music-style="cinematic"
+            class="${
+              trainingwiseMusicStyle ===
+              "cinematic"
+                ? "active"
+                : ""
+            }"
+          >
+            🎬 Cinematic Drive
+          </button>
+
+          <button
+            type="button"
+            data-trainingwise-music-style="heavy"
+            class="${
+              trainingwiseMusicStyle ===
+              "heavy"
+                ? "active"
+                : ""
+            }"
+          >
+            🥊 Heavy Grind
+          </button>
+
+          <button
+            type="button"
+            data-trainingwise-music-style="focus"
+            class="${
+              trainingwiseMusicStyle ===
+              "focus"
+                ? "active"
+                : ""
+            }"
+          >
+            🎯 Focus Flow
+          </button>
+
+        </div>
+
+      </div>
+    `;
+
+  }
+
+
+  document.addEventListener(
+    "click",
+    event => {
+
+      const toggle =
+        event.target.closest(
+          "[data-trainingwise-music-toggle]"
+        );
+
+
+      if (toggle) {
+
+        toggleTrainingwiseMusic();
+
+        return;
+
+      }
+
+
+      const style =
+        event.target.closest(
+          "[data-trainingwise-music-style]"
+        );
+
+
+      if (style) {
+
+        setTrainingwiseMusicStyle(
+          style.dataset
+            .trainingwiseMusicStyle
+        );
+
+      }
+
+    }
+  );
+
+
   function renderTrainingwiseSoundControl() {
 
     return `
@@ -1137,6 +1756,66 @@
 
 
 
+  let trainingwiseVoiceUtterance = null;
+
+
+  function speakTrainingwise(message) {
+
+    const phrase =
+      String(message || "").trim();
+
+    if (
+      !phrase ||
+      !("speechSynthesis" in window)
+    ) {
+      return;
+    }
+
+    window.speechSynthesis.resume();
+
+    trainingwiseVoiceUtterance =
+      new SpeechSynthesisUtterance(
+        phrase
+      );
+
+    trainingwiseVoiceUtterance.volume = 1;
+    trainingwiseVoiceUtterance.rate = 1;
+    trainingwiseVoiceUtterance.pitch = 1;
+
+    window.speechSynthesis.speak(
+      trainingwiseVoiceUtterance
+    );
+
+  }
+
+
+  function speakIntervalExercise(prefix) {
+
+    if (
+      !intervalState ||
+      intervalState.workoutMode === "timer"
+    ) {
+      return;
+    }
+
+    const exercise =
+      getTrainingwiseMovement(
+        intervalState,
+        intervalState.movementIndex
+      );
+
+    if (!exercise) {
+      return;
+    }
+
+    speakTrainingwise(
+      `${prefix}. ${exercise}.`
+    );
+
+  }
+
+
+
   function advanceInterval() {
 
     if (
@@ -1163,6 +1842,9 @@
 
       intervalState.currentInterval =
         1;
+
+      intervalState.movementIndex =
+        0;
 
       intervalState.phase =
         "work";
@@ -1200,6 +1882,10 @@
 
       playTrainingwiseBell(
         "transition"
+      );
+
+      speakTrainingwise(
+        "Recover."
       );
 
       updateIntervalDisplay();
@@ -1254,6 +1940,9 @@
     intervalState.currentInterval +=
       1;
 
+    intervalState.movementIndex +=
+      1;
+
     intervalState.phase =
       "work";
 
@@ -1265,6 +1954,10 @@
     );
 
     updateIntervalDisplay();
+
+    speakIntervalExercise(
+      "Go"
+    );
 
   }
 
@@ -1320,6 +2013,10 @@
 
     getTrainingwiseAudioContext();
 
+    speakTrainingwise(
+      "Get ready."
+    );
+
 
     runTrainingwiseStartCountdown(
       startIntervalImmediate
@@ -1345,6 +2042,10 @@
 
 
     updateIntervalDisplay();
+
+    speakIntervalExercise(
+      "Go"
+    );
 
 
     const startBtn =
@@ -1568,7 +2269,7 @@
           "interval",
 
         preset:
-          "45/15",
+          `${intervalState.workSeconds}/${intervalState.restSeconds}`,
 
         rounds:
           intervalState.sessionRounds,
@@ -1581,8 +2282,11 @@
 
         durationSeconds:
           (
-            8 *
-            60 *
+            (
+              intervalState.workSeconds +
+              intervalState.restSeconds
+            ) *
+            intervalState.intervalsPerRound *
             intervalState.sessionRounds
           ) +
           (
@@ -1607,6 +2311,188 @@
     clearTimer();
 
     renderInterval();
+
+  }
+
+
+
+  function updateIntervalDuration() {
+
+    if (!intervalState) {
+      return;
+    }
+
+
+    const duration =
+      document.getElementById(
+        "intervalDuration"
+      );
+
+
+    if (!duration) {
+      return;
+    }
+
+
+    const roundSeconds =
+      (
+        intervalState.workSeconds +
+        intervalState.restSeconds
+      ) *
+      intervalState.intervalsPerRound;
+
+
+    const totalSeconds =
+      (
+        roundSeconds *
+        intervalState.sessionRounds
+      ) +
+      (
+        Math.max(
+          0,
+          intervalState.sessionRounds - 1
+        ) *
+        intervalState.roundRestSeconds
+      );
+
+
+    duration.textContent =
+      `Total: ${
+        formatSessionTime(
+          totalSeconds
+        )
+      }`;
+
+  }
+
+
+
+  function setIntervalPreset(
+    preset
+  ) {
+
+    if (
+      !intervalState ||
+      intervalState.running
+    ) {
+      return;
+    }
+
+
+    const presets = {
+
+      "30/30": {
+        work: 30,
+        rest: 30
+      },
+
+      "40/20": {
+        work: 40,
+        rest: 20
+      },
+
+      "45/15": {
+        work: 45,
+        rest: 15
+      },
+
+      "50/10": {
+        work: 50,
+        rest: 10
+      },
+
+      "60/15": {
+        work: 60,
+        rest: 15
+      },
+
+      "60/30": {
+        work: 60,
+        rest: 30
+      }
+
+    };
+
+
+    const selected =
+      presets[preset];
+
+
+    if (!selected) {
+      return;
+    }
+
+
+    intervalState.workSeconds =
+      selected.work;
+
+    intervalState.restSeconds =
+      selected.rest;
+
+    intervalState.currentInterval =
+      1;
+
+    intervalState.currentSessionRound =
+      1;
+
+    intervalState.inRoundRest =
+      false;
+
+    intervalState.phase =
+      "work";
+
+    intervalState.remaining =
+      selected.work;
+
+
+    document
+      .querySelectorAll(
+        "[data-interval-preset]"
+      )
+      .forEach(
+        button => {
+
+          button.classList.toggle(
+            "active",
+            button.dataset
+              .intervalPreset ===
+              preset
+          );
+
+        }
+      );
+
+
+    const title =
+      document.getElementById(
+        "intervalTitle"
+      );
+
+    const presetOutput =
+      document.getElementById(
+        "intervalPreset"
+      );
+
+
+    if (title) {
+
+      title.textContent =
+        `${selected.work} / ${selected.rest} Conditioning`;
+
+    }
+
+
+    if (presetOutput) {
+
+      presetOutput.textContent =
+        `${selected.work} sec work · ${selected.rest} sec recovery`;
+
+    }
+
+
+    updateIntervalDuration();
+
+    updateIntervalDisplay();
 
   }
 
@@ -1678,38 +2564,7 @@
       );
 
 
-    const duration =
-      document.getElementById(
-        "intervalDuration"
-      );
-
-
-    if (duration) {
-
-      const totalSeconds =
-        (
-          selected *
-          8 *
-          60
-        ) +
-        (
-          Math.max(
-            0,
-            selected - 1
-          ) *
-          intervalState.roundRestSeconds
-        );
-
-
-      duration.textContent =
-        `Total: ${
-          formatSessionTime(
-            totalSeconds
-          )
-        }`;
-
-    }
-
+    updateIntervalDuration();
 
     updateIntervalDisplay();
 
@@ -1717,7 +2572,268 @@
 
 
 
+  function setTrainingwiseSessionContent(
+    prefix,
+    mode
+  ) {
+
+    const state =
+      prefix === "interval"
+        ? intervalState
+        : emomState;
+
+
+    if (
+      !state ||
+      state.running
+    ) {
+      return;
+    }
+
+
+    state.workoutMode =
+      mode;
+
+    state.movementIndex =
+      0;
+
+
+    if (
+      mode ===
+      "fuelai"
+    ) {
+
+      state.movements =
+        [
+          ...trainingwiseQuickWorkout
+        ];
+
+    }
+
+    else if (
+      mode ===
+      "custom"
+    ) {
+
+      const input =
+        document.getElementById(
+          `${prefix}CustomMovements`
+        );
+
+
+      state.movements =
+        cleanTrainingwiseMovements(
+          input?.value
+        );
+
+    }
+
+    else {
+
+      state.movements =
+        [];
+
+    }
+
+
+    document
+      .querySelectorAll(
+        `[data-session-content^="${prefix}:"]`
+      )
+      .forEach(
+        button => {
+
+          button.classList.toggle(
+            "active",
+            button.dataset
+              .sessionContent ===
+              `${prefix}:${mode}`
+          );
+
+        }
+      );
+
+
+    const builder =
+      document.getElementById(
+        `${prefix}CustomBuilder`
+      );
+
+
+    builder?.classList.toggle(
+      "hidden",
+      mode !== "custom"
+    );
+
+
+    const preview =
+      document.getElementById(
+        `${prefix}MovementPreview`
+      );
+
+
+    if (preview) {
+
+      if (
+        mode === "fuelai"
+      ) {
+
+        preview.textContent =
+          trainingwiseQuickWorkout
+            .join(" · ");
+
+        preview.classList.remove(
+          "hidden"
+        );
+
+      }
+
+      else {
+
+        preview.textContent =
+          "";
+
+        preview.classList.add(
+          "hidden"
+        );
+
+      }
+
+    }
+
+
+    if (
+      prefix ===
+      "interval"
+    ) {
+
+      updateIntervalDisplay();
+
+    } else {
+
+      updateEmomDisplay();
+
+    }
+
+  }
+
+
+
+  function wireTrainingwiseSessionContent(
+    prefix
+  ) {
+
+    document
+      .querySelectorAll(
+        `[data-session-content^="${prefix}:"]`
+      )
+      .forEach(
+        button => {
+
+          button.addEventListener(
+            "click",
+            () => {
+
+              const raw =
+                button.dataset
+                  .sessionContent;
+
+              const mode =
+                raw.split(":")[1];
+
+
+              setTrainingwiseSessionContent(
+                prefix,
+                mode
+              );
+
+            }
+          );
+
+        }
+      );
+
+
+    const input =
+      document.getElementById(
+        `${prefix}CustomMovements`
+      );
+
+
+    input?.addEventListener(
+      "input",
+      () => {
+
+        const state =
+          prefix === "interval"
+            ? intervalState
+            : emomState;
+
+
+        if (
+          !state ||
+          state.workoutMode !==
+          "custom"
+        ) {
+          return;
+        }
+
+
+        state.movements =
+          cleanTrainingwiseMovements(
+            input.value
+          );
+
+
+        if (
+          prefix ===
+          "interval"
+        ) {
+
+          updateIntervalDisplay();
+
+        } else {
+
+          updateEmomDisplay();
+
+        }
+
+      }
+    );
+
+  }
+
+
+
   function wireIntervalControls() {
+
+    wireTrainingwiseSessionContent(
+      "interval"
+    );
+
+
+    document
+      .querySelectorAll(
+        "[data-interval-preset]"
+      )
+      .forEach(
+        button => {
+
+          button.addEventListener(
+            "click",
+            () => {
+
+              setIntervalPreset(
+                button.dataset
+                  .intervalPreset
+              );
+
+            }
+          );
+
+        }
+      );
+
 
     document
       .querySelectorAll(
@@ -1811,7 +2927,16 @@
         false,
 
       completed:
-        false
+        false,
+
+      workoutMode:
+        "timer",
+
+      movements:
+        [],
+
+      movementIndex:
+        0
 
     };
 
@@ -1821,7 +2946,7 @@
         EMOM
       </p>
 
-      <h2>
+      <h2 id="emomTitle">
         10 Minute EMOM
       </h2>
 
@@ -1831,8 +2956,72 @@
         the remaining time to recover.
       </p>
 
-      <div class="trainingwise-preset">
+      <div
+        id="emomPreset"
+        class="trainingwise-preset"
+      >
         10 minutes per round
+      </div>
+
+
+      ${renderTrainingwiseContentPicker(
+        "emom"
+      )}
+
+
+      <div class="trainingwise-round-picker">
+
+        <span class="trainingwise-label">
+          DURATION
+        </span>
+
+        <div class="trainingwise-round-options">
+
+          <button
+            type="button"
+            data-emom-minutes="6"
+          >
+            6
+          </button>
+
+          <button
+            type="button"
+            data-emom-minutes="8"
+          >
+            8
+          </button>
+
+          <button
+            type="button"
+            data-emom-minutes="10"
+            class="active"
+          >
+            10
+          </button>
+
+          <button
+            type="button"
+            data-emom-minutes="12"
+          >
+            12
+          </button>
+
+          <button
+            type="button"
+            data-emom-minutes="15"
+          >
+            15
+          </button>
+
+          <button
+            type="button"
+            data-emom-minutes="20"
+          >
+            20
+          </button>
+
+        </div>
+
       </div>
 
 
@@ -1894,6 +3083,11 @@
         </div>
 
         <div
+          id="emomMovement"
+          class="trainingwise-movement-callout"
+        ></div>
+
+        <div
           id="emomClock"
           class="trainingwise-clock"
         >
@@ -1906,6 +3100,8 @@
       <div class="trainingwise-view-controls">
 
         ${renderTrainingwiseSoundControl()}
+
+        ${renderTrainingwiseMusicControl()}
 
         ${renderTrainingwiseFullClockControl()}
 
@@ -2015,6 +3211,36 @@
         formatSeconds(
           emomState.remaining
         );
+
+    }
+
+
+    const movement =
+      document.getElementById(
+        "emomMovement"
+      );
+
+
+    if (movement) {
+
+      const current =
+        !emomState.inRoundRest
+          ? getTrainingwiseMovement(
+              emomState,
+              emomState.currentMinute - 1
+            )
+          : "";
+
+
+      movement.textContent =
+        current
+          ? current
+          : "";
+
+      movement.classList.toggle(
+        "hidden",
+        !current
+      );
 
     }
 
@@ -2436,7 +3662,7 @@
           "emom",
 
         preset:
-          "10-minute",
+          `${emomState.minutesPerRound}-minute`,
 
         rounds:
           emomState.sessionRounds,
@@ -2475,6 +3701,144 @@
     clearTimer();
 
     renderEmom();
+
+  }
+
+
+
+  function updateEmomDuration() {
+
+    if (!emomState) {
+      return;
+    }
+
+
+    const duration =
+      document.getElementById(
+        "emomDuration"
+      );
+
+
+    if (!duration) {
+      return;
+    }
+
+
+    const totalSeconds =
+      (
+        emomState.sessionRounds *
+        emomState.minutesPerRound *
+        60
+      ) +
+      (
+        Math.max(
+          0,
+          emomState.sessionRounds - 1
+        ) *
+        emomState.roundRestSeconds
+      );
+
+
+    duration.textContent =
+      `Total: ${
+        formatSessionTime(
+          totalSeconds
+        )
+      }`;
+
+  }
+
+
+
+  function setEmomMinutes(
+    minutes
+  ) {
+
+    if (
+      !emomState ||
+      emomState.running
+    ) {
+      return;
+    }
+
+
+    const selected =
+      Number(minutes);
+
+
+    if (
+      ![6, 8, 10, 12, 15, 20]
+        .includes(selected)
+    ) {
+      return;
+    }
+
+
+    emomState.minutesPerRound =
+      selected;
+
+    emomState.currentMinute =
+      1;
+
+    emomState.currentSessionRound =
+      1;
+
+    emomState.inRoundRest =
+      false;
+
+    emomState.remaining =
+      60;
+
+
+    document
+      .querySelectorAll(
+        "[data-emom-minutes]"
+      )
+      .forEach(
+        button => {
+
+          button.classList.toggle(
+            "active",
+            Number(
+              button.dataset
+                .emomMinutes
+            ) === selected
+          );
+
+        }
+      );
+
+
+    const title =
+      document.getElementById(
+        "emomTitle"
+      );
+
+    const presetOutput =
+      document.getElementById(
+        "emomPreset"
+      );
+
+
+    if (title) {
+
+      title.textContent =
+        `${selected} Minute EMOM`;
+
+    }
+
+
+    if (presetOutput) {
+
+      presetOutput.textContent =
+        `${selected} minutes per round`;
+
+    }
+
+
+    updateEmomDuration();
+
+    updateEmomDisplay();
 
   }
 
@@ -2543,38 +3907,7 @@
       );
 
 
-    const duration =
-      document.getElementById(
-        "emomDuration"
-      );
-
-
-    if (duration) {
-
-      const totalSeconds =
-        (
-          selected *
-          emomState.minutesPerRound *
-          60
-        ) +
-        (
-          Math.max(
-            0,
-            selected - 1
-          ) *
-          emomState.roundRestSeconds
-        );
-
-
-      duration.textContent =
-        `Total: ${
-          formatSessionTime(
-            totalSeconds
-          )
-        }`;
-
-    }
-
+    updateEmomDuration();
 
     updateEmomDisplay();
 
@@ -2583,6 +3916,34 @@
 
 
   function wireEmomControls() {
+
+    wireTrainingwiseSessionContent(
+      "emom"
+    );
+
+
+    document
+      .querySelectorAll(
+        "[data-emom-minutes]"
+      )
+      .forEach(
+        button => {
+
+          button.addEventListener(
+            "click",
+            () => {
+
+              setEmomMinutes(
+                button.dataset
+                  .emomMinutes
+              );
+
+            }
+          );
+
+        }
+      );
+
 
     document
       .querySelectorAll(
@@ -5768,6 +7129,8 @@
 
         ${renderTrainingwiseSoundControl()}
 
+        ${renderTrainingwiseMusicControl()}
+
         ${renderTrainingwiseFullClockControl()}
 
       </div>
@@ -6188,6 +7551,8 @@
       <div class="trainingwise-view-controls">
 
         ${renderTrainingwiseSoundControl()}
+
+        ${renderTrainingwiseMusicControl()}
 
         ${renderTrainingwiseFullClockControl()}
 
@@ -7277,3 +8642,37 @@
 
 
 })();
+
+
+/* ==================================================
+   TRAININGWISE FULLSCREEN STATE
+================================================== */
+
+document.addEventListener(
+  "fullscreenchange",
+  () => {
+
+    document.body.classList.toggle(
+      "trainingwise-fullscreen",
+      Boolean(
+        document.fullscreenElement
+      )
+    );
+
+  }
+);
+
+
+document.addEventListener(
+  "webkitfullscreenchange",
+  () => {
+
+    document.body.classList.toggle(
+      "trainingwise-fullscreen",
+      Boolean(
+        document.webkitFullscreenElement
+      )
+    );
+
+  }
+);
