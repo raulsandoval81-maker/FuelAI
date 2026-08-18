@@ -1744,17 +1744,52 @@
   }
 
 
+  function isTrainingwiseIPhone() {
+
+    const ua =
+      navigator.userAgent || "";
+
+    return /iPhone/i.test(
+      ua
+    );
+
+  }
+
+
+
   function enterTrainingwiseBoard() {
 
+    /*
+     * FuelAI board mode always activates.
+     * This gives us the stripped-down
+     * training display regardless of browser.
+     */
     document.body.classList.add(
       "trainingwise-fullscreen"
     );
 
 
     /*
-     * Try native fullscreen where supported.
-     * iPhone/browser fallback still keeps
-     * the CSS training board active.
+     * iPhone Safari:
+     * do NOT request native fullscreen.
+     * The CSS board is the fullscreen
+     * experience on iPhone.
+     */
+    if (
+      isTrainingwiseIPhone()
+    ) {
+
+      updateTrainingwiseBoardAction();
+
+      return;
+
+    }
+
+
+    /*
+     * Laptop / tablet:
+     * keep using true fullscreen when
+     * the browser supports it.
      */
     const timer =
       document.querySelector(
@@ -1786,9 +1821,11 @@
 
     } catch (_) {}
 
+
     updateTrainingwiseBoardAction();
 
   }
+
 
 
   function exitTrainingwiseBoard() {
