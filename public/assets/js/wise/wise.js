@@ -950,30 +950,34 @@ function renderWise() {
   ) {
 
     planOutput.innerHTML = `
-      ${getPlanName(
-        setup.goal
-      )}
+      <strong class="direction-plan-name">
+        ${getPlanName(
+          setup.goal
+        )}
+      </strong>
 
-      <br><br>
+      <ul class="direction-details">
+        <li>
+          <strong>Profile:</strong>
+          ${getProfileLabel()}
+        </li>
 
-      Profile:
-      ${getProfileLabel()}
+        <li>
+          <strong>Activity:</strong>
+          ${getActivityLabel()}
+        </li>
 
-      <br><br>
-
-      Activity:
-      ${getActivityLabel()}
-
-      ${
-        isCombatProfile()
-          ? `
-            <br><br>
-
-            Combat:
-            ${getCombatStyleLabel()}
-          `
-          : ""
-      }
+        ${
+          isCombatProfile()
+            ? `
+              <li>
+                <strong>Combat:</strong>
+                ${getCombatStyleLabel()}
+              </li>
+            `
+            : ""
+        }
+      </ul>
     `;
 
   }
