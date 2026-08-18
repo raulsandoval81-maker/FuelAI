@@ -357,7 +357,7 @@
     accountLinks.push(
       navLink(
         "/account/logs.html",
-        "📋 FuelAI Log"
+        "📋 My Fuel Log"
       )
     );
 
