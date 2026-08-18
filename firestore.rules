@@ -88,6 +88,18 @@ service cloud.firestore {
       allow delete: if false;
 
       // Metrics are written and shared only by authenticated server endpoints.
+      // Consent and team-sharing approvals are server-written so clients
+      // cannot forge status, versions, or acceptance timestamps.
+      match /privacy/{documentId} {
+        allow get: if isOwner(uid) && documentId == "current";
+        allow list, create, update, delete: if false;
+      }
+
+      match /teamSharing/{teamId} {
+        allow get: if isOwner(uid);
+        allow list, create, update, delete: if false;
+      }
+
       match /teamMetrics/{date} {
         allow read, write: if false;
       }

@@ -9,6 +9,11 @@ import {
   validateAiRequestId
 } from "./ai-security.js";
 
+import {
+  consentRef,
+  getConsentState
+} from "./consent.js";
+
 
 const DEFAULT_GLOBAL_DAILY_CAP = 100;
 
@@ -210,6 +215,7 @@ export async function reserveAiScan({
     db.collection("system").doc("aiControls");
   const globalUsageRef =
     db.collection("aiSystemUsage").doc(dateKey);
+  const privacyRef = consentRef(db, uid);
 
   return db.runTransaction(
     async transaction => {
@@ -218,13 +224,15 @@ export async function reserveAiScan({
         usageSnapshot,
         requestSnapshot,
         controlsSnapshot,
-        globalUsageSnapshot
+        globalUsageSnapshot,
+        consentSnapshot
       ] = await Promise.all([
         transaction.get(userRef),
         transaction.get(usageRef),
         transaction.get(requestRef),
         transaction.get(controlsRef),
-        transaction.get(globalUsageRef)
+        transaction.get(globalUsageRef),
+        transaction.get(privacyRef)
       ]);
 
       if (!userSnapshot.exists) {
@@ -232,6 +240,23 @@ export async function reserveAiScan({
           403,
           "AI_ACCESS_DENIED",
           `Complete FuelAI setup before using ${toolLabel}.`
+        );
+      }
+
+      const consentRecord = consentSnapshot.exists
+        ? consentSnapshot.data() || null
+        : null;
+      const consentState = getConsentState(consentRecord);
+
+      if (!consentState.active || consentRecord?.uid !== uid) {
+        throw new AiApiError(
+          403,
+          consentState.reason === "under_13"
+            ? "AGE_NOT_SUPPORTED"
+            : "CONSENT_REQUIRED",
+          consentState.reason === "under_13"
+            ? "FuelAI is not available for users under 13."
+            : "Accept the current FuelAI Privacy Notice and Terms to use AI tools."
         );
       }
 

@@ -10,6 +10,11 @@ import {
 } from "../api/_lib/fridgewise-metering.js";
 
 import {
+  PRIVACY_NOTICE_VERSION,
+  TERMS_VERSION
+} from "../public/assets/js/core/consent-config.js";
+
+import {
   MAX_FRIDGEWISE_IMAGE_BYTES,
   validateFridgeWiseRequest,
   validateFridgeWiseResult
@@ -51,6 +56,19 @@ class FakeFirestore {
     this.documents = new Map(
       Object.entries(seed)
     );
+    for (const path of Object.keys(seed)) {
+      const match = path.match(/^users\/([^/]+)$/);
+      if (match) {
+        this.documents.set(
+          `users/${match[1]}/privacy/current`,
+          {
+            uid: match[1], ageBand: "18_plus", status: "active",
+            privacyVersion: PRIVACY_NOTICE_VERSION, termsVersion: TERMS_VERSION,
+            acceptedAt: "server-time"
+          }
+        );
+      }
+    }
     this.transactionQueue =
       Promise.resolve();
   }

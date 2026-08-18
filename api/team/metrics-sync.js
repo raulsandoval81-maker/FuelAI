@@ -4,8 +4,11 @@ import {
 } from "../_lib/firebase-admin.js";
 
 import {
+  normalizeTeamId,
   requireSignedInUser
 } from "./_auth.js";
+
+import { requireTeamSharing } from "../_lib/consent.js";
 
 
 const MAX_TEAM_METRIC_DAYS =
@@ -166,6 +169,33 @@ export default async function handler(
         req
       );
 
+    const teamId = normalizeTeamId(req.body?.teamId);
+    if (!teamId) {
+      return res.status(403).json({
+        error: "Team sharing approval is required."
+      });
+    }
+
+    const db = getAdminDb();
+    const memberSnapshot = await db
+      .collection("teams")
+      .doc(teamId)
+      .collection("members")
+      .doc(user.uid)
+      .get();
+    const membership = memberSnapshot.exists
+      ? memberSnapshot.data() || {}
+      : {};
+    if (
+      membership.status !== "active" ||
+      membership.role !== "athlete"
+    ) {
+      return res.status(403).json({
+        error: "Active athlete membership is required."
+      });
+    }
+    await requireTeamSharing(user.uid, teamId, db);
+
 
     const rawDays =
       Array.isArray(
@@ -225,10 +255,6 @@ export default async function handler(
 
       }
     );
-
-
-    const db =
-      getAdminDb();
 
 
     const metricsRef =

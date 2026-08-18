@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Privacy and age — FuelAI™</title>
+  <link rel="stylesheet" href="/assets/css/site.css?v=consent-2a-5" />
+  <style>
+    .consent-acceptance{
+      display:grid;
+      gap:.85rem;
+      padding:1rem;
+      border:1px solid #60a5fa;
+      border-radius:16px;
+      background:#102a4c;
+      text-align:left;
+    }
+    .consent-acceptance[hidden],
+    #consentMessage[hidden]{ display:none !important; }
+    .consent-acceptance label{
+      display:grid;
+      grid-template-columns:auto 1fr;
+      align-items:start;
+      gap:.65rem;
+      line-height:1.45;
+    }
+    .consent-acceptance input{
+      width:1.25rem;
+      height:1.25rem;
+      margin-top:.1rem;
+      accent-color:#22c55e;
+    }
+    #continueBtn:disabled{
+      cursor:not-allowed;
+      opacity:.55;
+    }
+  </style>
+</head>
+<body data-theme="night">
+  <main class="scan-wrap"><section class="scan-card">
+    <p class="range-label">FuelAI™ · Powered by Sandman™</p>
+    <h1>Privacy and age</h1>
+    <section id="consentMessage" class="status-panel" data-kind="info" role="status" aria-live="polite">
+      <span id="consentMessageIcon" class="status-icon" aria-hidden="true">ℹ️</span>
+      <div>
+        <strong id="consentMessageLabel">Account status</strong>
+        <p id="consentMessageText">Checking your account…</p>
+      </div>
+    </section>
+    <div id="consentForm" class="wise-links" hidden>
+      <label for="consentAge">Age group</label>
+      <select id="consentAge" class="goal-select age-gate-select">
+        <option value="">Choose your age group</option>
+        <option value="under_13">Under 13</option>
+        <option value="13_17">Age 13–17</option>
+        <option value="18_plus">Age 18 or older</option>
+      </select>
+      <section
+        id="ageConsequence"
+        class="age-consequence"
+        data-state="unselected"
+        aria-live="polite"
+      >
+        <span id="ageConsequenceIcon" class="age-state-icon" aria-hidden="true">ℹ️</span>
+        <div>
+          <strong id="ageConsequenceTitle">Choose your age group</strong>
+          <p id="ageConsequenceText">Your selection determines which authorization steps are required.</p>
+        </div>
+      </section>
+      <div id="adultAcceptance" class="consent-acceptance" hidden>
+        <label><input id="acceptPrivacy" type="checkbox" /> <span>I accept the current <a href="/privacy/" target="_blank">Privacy Notice</a>.</span></label>
+        <label><input id="acceptTerms" type="checkbox" /> <span>I accept the current <a href="/terms/" target="_blank">Terms</a>.</span></label>
+      </div>
+      <button id="continueBtn" class="start-btn" type="button">Continue</button>
+      <button id="logoutBtn" class="secondary-btn" type="button">Sign Out</button>
+    </div>
+    <footer class="legal-footer" aria-label="FuelAI legal links">
+      <p>FuelAI™ · Powered by Sandman™</p>
+      <nav aria-label="Legal">
+        <a href="/privacy/">Privacy Notice</a>
+        <span aria-hidden="true">·</span>
+        <a href="/terms/">Terms</a>
+        <span aria-hidden="true">·</span>
+        <a href="/account/login.html">Back to Sign In</a>
+      </nav>
+    </footer>
+  </section></main>
+  <script type="module" src="/assets/js/core/firebase.js?v=3"></script>
+  <script src="/assets/js/core/auth-soft.js"></script>
+  <script src="/assets/js/account/registration-policy.js"></script>
+  <script type="module" src="/assets/js/account/consent.js"></script>
+</body>
+</html>

@@ -120,6 +120,41 @@ function membership(
 }
 
 
+test(
+  "consent records are owner-readable and client-immutable",
+  async () => {
+    await seedDocuments({
+      "users/alice/privacy/current": {
+        uid: "alice",
+        ageBand: "18_plus",
+        status: "active",
+        privacyVersion: "2026-08-17",
+        termsVersion: "2026-08-17",
+        acceptedAt: Timestamp.now(),
+        updatedAt: Timestamp.now()
+      },
+      "users/alice/teamSharing/team-one": {
+        status: "active",
+        approvedAt: Timestamp.now()
+      }
+    });
+
+    const alice = authenticatedDb("alice");
+    const bob = authenticatedDb("bob");
+    const consent = doc(alice, "users/alice/privacy/current");
+    const sharing = doc(alice, "users/alice/teamSharing/team-one");
+
+    await assertSucceeds(getDoc(consent));
+    await assertSucceeds(getDoc(sharing));
+    await assertFails(getDoc(doc(bob, "users/alice/privacy/current")));
+    await assertFails(getDoc(doc(bob, "users/alice/teamSharing/team-one")));
+    await assertFails(updateDoc(consent, { acceptedAt: Timestamp.now() }));
+    await assertFails(setDoc(doc(alice, "users/alice/privacy/forged"), { status: "active" }));
+    await assertFails(updateDoc(sharing, { status: "active" }));
+  }
+);
+
+
 before(
   async () => {
     testEnvironment =

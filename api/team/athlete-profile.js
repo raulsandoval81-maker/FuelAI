@@ -6,6 +6,8 @@ import {
   requireTeamCoach
 } from "./_auth.js";
 
+import { requireTeamSharing } from "../_lib/consent.js";
+
 
 function safeString(
   value
@@ -119,15 +121,22 @@ export default async function handler(
 
 
     if (
-      member.role !== "athlete"
+      member.role !== "athlete" ||
+      member.status !== "active"
     ) {
 
       return res.status(400).json({
         error:
-          "Requested member is not an athlete"
+          "Requested member is not an active athlete"
       });
 
     }
+
+    await requireTeamSharing(
+      safeTargetUid,
+      safeTeamId,
+      db
+    );
 
 
     /*

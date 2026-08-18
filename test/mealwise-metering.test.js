@@ -8,6 +8,11 @@ import {
   resolveMealWiseLimit
 } from "../api/_lib/mealwise-metering.js";
 
+import {
+  PRIVACY_NOTICE_VERSION,
+  TERMS_VERSION
+} from "../public/assets/js/core/consent-config.js";
+
 
 const REQUEST_ONE =
   "123e4567-e89b-42d3-a456-426614174001";
@@ -43,6 +48,19 @@ class FakeFirestore {
     this.documents = new Map(
       Object.entries(seed)
     );
+    for (const path of Object.keys(seed)) {
+      const match = path.match(/^users\/([^/]+)$/);
+      if (match) {
+        this.documents.set(
+          `users/${match[1]}/privacy/current`,
+          {
+            uid: match[1], ageBand: "18_plus", status: "active",
+            privacyVersion: PRIVACY_NOTICE_VERSION, termsVersion: TERMS_VERSION,
+            acceptedAt: "server-time"
+          }
+        );
+      }
+    }
     this.transactionQueue =
       Promise.resolve();
   }
@@ -300,6 +318,36 @@ test(
       rejected.reason.code,
       "SCAN_LIMIT_REACHED"
     );
+  }
+);
+
+
+test(
+  "AI reservation denies missing, pending, outdated, under-13, and withdrawn consent",
+  async () => {
+    const states = [
+      null,
+      { ageBand: "13_17", status: "pending_guardian" },
+      { ageBand: "18_plus", status: "active", privacyVersion: "old", termsVersion: TERMS_VERSION, acceptedAt: "time" },
+      { ageBand: "under_13", status: "blocked_under_13" },
+      { ageBand: "18_plus", status: "withdrawn" }
+    ];
+
+    for (const [index, consent] of states.entries()) {
+      const db = new FakeFirestore({ "users/blocked": { plan: "plus" } });
+      const path = "users/blocked/privacy/current";
+      if (consent) db.documents.set(path, consent);
+      else db.documents.delete(path);
+
+      await assert.rejects(
+        reserveMealWiseScan({
+          uid: "blocked",
+          requestId: `123e4567-e89b-42d3-a456-4266141741${String(index).padStart(2, "0")}`,
+          db
+        }),
+        error => error.code === (consent?.ageBand === "under_13" ? "AGE_NOT_SUPPORTED" : "CONSENT_REQUIRED")
+      );
+    }
   }
 );
 

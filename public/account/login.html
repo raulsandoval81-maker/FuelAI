@@ -12,7 +12,7 @@
 
   <link
     rel="stylesheet"
-    href="/assets/css/site.css"
+    href="/assets/css/site.css?v=consent-2a-5"
   />
 
   <style>
@@ -101,6 +101,41 @@
 #createAccountBtn{
   margin-top:.1rem;
 }
+
+    .registration-fields,
+    .adult-consent{
+      display:grid;
+      gap:.8rem;
+    }
+
+    .registration-fields[hidden],
+    .adult-consent[hidden],
+    .wise-links button[hidden]{
+      display:none !important;
+    }
+
+    .adult-consent{
+      padding:1rem;
+      text-align:left;
+      border:1px solid rgba(255,255,255,.14);
+      border-radius:14px;
+      background:rgba(255,255,255,.04);
+    }
+
+    .adult-consent label{
+      display:grid;
+      grid-template-columns:auto 1fr;
+      align-items:start;
+      gap:.65rem;
+      line-height:1.45;
+    }
+
+    .adult-consent input[type="checkbox"]{
+      width:1.25rem;
+      height:1.25rem;
+      margin-top:.1rem;
+      accent-color:#22c55e;
+    }
 
     @media (max-width:600px){
 
@@ -293,24 +328,95 @@
           </button>
 
           <button
-            id="createAccountBtn"
+            id="showRegistrationBtn"
             class="secondary-btn"
             type="button"
           >
             Create Account
           </button>
 
+          <div
+            id="registrationFields"
+            class="registration-fields"
+            hidden
+          >
+            <p class="hero-note">
+              Creating a new account
+            </p>
+
+            <select
+              id="ageBandInput"
+              class="goal-select age-gate-select"
+              aria-label="Age group for account creation"
+            >
+              <option value="">Choose your age group</option>
+              <option value="under_13">Under 13</option>
+              <option value="13_17">Age 13–17</option>
+              <option value="18_plus">Age 18 or older</option>
+            </select>
+
+            <section
+              id="registrationAgeConsequence"
+              class="age-consequence"
+              data-state="unselected"
+              aria-live="polite"
+            >
+              <span id="registrationAgeIcon" class="age-state-icon" aria-hidden="true">ℹ️</span>
+              <div>
+                <strong id="registrationAgeTitle">Choose your age group</strong>
+                <p id="registrationAgeText">Your selection determines which authorization steps are required.</p>
+              </div>
+            </section>
+
+            <div
+              id="adultConsent"
+              class="adult-consent"
+              aria-label="Required adult agreements"
+              hidden
+            >
+              <label>
+                <input id="privacyAccepted" type="checkbox" />
+                <span>I accept the current <a href="/privacy/" target="_blank">Privacy Notice</a>.</span>
+              </label>
+              <label>
+                <input id="termsAccepted" type="checkbox" />
+                <span>I accept the current <a href="/terms/" target="_blank">Terms</a>.</span>
+              </label>
+            </div>
+
+            <button
+              id="createAccountBtn"
+              class="start-btn"
+              type="button"
+            >
+              Create New Account
+            </button>
+
+            <button
+              id="cancelRegistrationBtn"
+              class="secondary-btn"
+              type="button"
+            >
+              Back to Sign In
+            </button>
+          </div>
+
         </div>
 
 
-        <p
+        <section
           id="authMessage"
-          class="hero-note"
+          class="status-panel"
+          data-kind="info"
+          role="status"
           aria-live="polite"
         >
-          New here? Create your account,
-          then we’ll guide you through setup.
-        </p>
+          <span id="authMessageIcon" class="status-icon" aria-hidden="true">ℹ️</span>
+          <div>
+            <strong id="authMessageLabel">Account information</strong>
+            <p id="authMessageText">New here? Create your account, then we’ll guide you through setup.</p>
+          </div>
+        </section>
 
       </section>
 
@@ -326,9 +432,18 @@
 
   <script src="/assets/js/core/auth-soft.js"></script>
 
+  <script src="../assets/js/account/registration-policy.js"></script>
+
   <script>
     (() => {
       "use strict";
+
+      const evaluateRegistration =
+        window.FuelAIRegistrationPolicy
+          .evaluateRegistration;
+      const getAgeGateState =
+        window.FuelAIRegistrationPolicy
+          .getAgeGateState;
 
       const signInBtn =
         document.getElementById("signInBtn");
@@ -337,6 +452,13 @@
         document.getElementById(
           "createAccountBtn"
         );
+
+      const showRegistrationBtn =
+        document.getElementById("showRegistrationBtn");
+      const cancelRegistrationBtn =
+        document.getElementById("cancelRegistrationBtn");
+      const registrationFields =
+        document.getElementById("registrationFields");
 
       const emailInput =
         document.getElementById("emailInput");
@@ -350,12 +472,133 @@
         document.getElementById(
           "authMessage"
         );
+      const authMessageText =
+        document.getElementById("authMessageText");
+      const authMessageLabel =
+        document.getElementById("authMessageLabel");
+      const authMessageIcon =
+        document.getElementById("authMessageIcon");
+
+      const ageBandInput =
+        document.getElementById("ageBandInput");
+      const adultConsent =
+        document.getElementById("adultConsent");
+      const privacyAccepted =
+        document.getElementById("privacyAccepted");
+      const termsAccepted =
+        document.getElementById("termsAccepted");
+      const registrationAgeConsequence =
+        document.getElementById("registrationAgeConsequence");
+      const registrationAgeTitle =
+        document.getElementById("registrationAgeTitle");
+      const registrationAgeText =
+        document.getElementById("registrationAgeText");
+      const registrationAgeIcon =
+        document.getElementById("registrationAgeIcon");
+
+      function renderRegistrationAge(ageBand) {
+        const state = getAgeGateState(ageBand);
+        registrationAgeConsequence.dataset.state = state.code;
+        registrationAgeConsequence.setAttribute(
+          "role",
+          state.code === "blocked" ? "alert" : "status"
+        );
+        registrationAgeConsequence.setAttribute(
+          "aria-live",
+          state.code === "blocked" ? "assertive" : "polite"
+        );
+        registrationAgeIcon.textContent = state.icon;
+        registrationAgeTitle.textContent = state.title;
+        registrationAgeText.textContent = state.message;
+        adultConsent.hidden = !state.showAdultAcceptance;
+        createAccountBtn.disabled = state.actionDisabled;
+        createAccountBtn.textContent = state.registrationAction;
+        privacyAccepted.checked = false;
+        termsAccepted.checked = false;
+        authMessage.hidden = true;
+      }
+
+      function setRegistrationMode(enabled) {
+        registrationFields.hidden = !enabled;
+        signInBtn.hidden = enabled;
+        showRegistrationBtn.hidden = enabled;
+        passwordInput.autocomplete = enabled
+          ? "new-password"
+          : "current-password";
+
+        if (enabled) {
+          ageBandInput.value = "";
+          renderRegistrationAge("");
+          ageBandInput.focus();
+        } else {
+          setMessage("Sign in with your existing FuelAI account.");
+          passwordInput.focus();
+        }
+      }
+
+      showRegistrationBtn?.addEventListener(
+        "click",
+        () => setRegistrationMode(true)
+      );
+
+      cancelRegistrationBtn?.addEventListener(
+        "click",
+        () => setRegistrationMode(false)
+      );
+
+      ageBandInput?.addEventListener("change", () => {
+        renderRegistrationAge(ageBandInput.value);
+      });
+
+      async function recordConsent(user, ageBand) {
+        const token = await user.getIdToken();
+        const response = await fetch("/api/consent/record", {
+          method: "POST",
+          headers: {
+            "Authorization": `Bearer ${token}`,
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            ageBand,
+            privacyAccepted: privacyAccepted?.checked === true,
+            termsAccepted: termsAccepted?.checked === true
+          })
+        });
+        const payload = await response.json();
+        if (!response.ok) {
+          throw new Error(payload?.error?.message || "Consent could not be recorded.");
+        }
+        return payload;
+      }
 
 
-      function setMessage(message) {
+      function setMessage(
+        message,
+        {
+          kind = "info",
+          label = "Account information"
+        } = {}
+      ) {
         if (authMessage) {
-          authMessage.textContent =
-            message;
+          const icons = {
+            error: "⚠️",
+            warning: "⚠️",
+            success: "✓",
+            info: "ℹ️"
+          };
+          authMessage.hidden = false;
+          authMessage.dataset.kind = kind;
+          authMessage.setAttribute(
+            "role",
+            kind === "error" ? "alert" : "status"
+          );
+          authMessage.setAttribute(
+            "aria-live",
+            kind === "error" ? "assertive" : "polite"
+          );
+          authMessageIcon.textContent = icons[kind] || icons.info;
+          authMessageLabel.textContent = label;
+          authMessageText.textContent = message;
         }
       }
 
@@ -437,9 +680,10 @@
         );
 
 
-        setMessage(
-          "You’re signed out."
-        );
+        setMessage("You’re signed out.", {
+          kind: "success",
+          label: "Signed out"
+        });
 
       }
 
@@ -546,6 +790,9 @@
         let record =
           null;
 
+        let consent =
+          null;
+
 
         try {
 
@@ -557,12 +804,19 @@
             await firebase
               .getCurrentUserRecord();
 
+          consent =
+            await firebase.getCurrentConsentRecord();
+
         } catch (error) {
 
           console.warn(
-            "FuelAI account record could not be loaded.",
+            "FuelAI account access could not be verified.",
             error
           );
+
+          window.location.href =
+            "/account/consent.html";
+          return;
 
         }
 
@@ -572,6 +826,32 @@
           hydrateAccountCache(
             record
           );
+
+        } else {
+
+          /*
+           * A real Firebase account with no
+           * Firestore record is a new FuelAI
+           * account. Never inherit another
+           * browser user's setup.
+           */
+          clearAccountCache();
+
+        }
+
+
+        const firebase =
+          await waitForFirebase();
+
+
+        if (!firebase.consent.getState(consent).active) {
+          window.location.href =
+            "/account/consent.html";
+          return;
+        }
+
+
+        if (record) {
 
 
           try {
@@ -613,16 +893,6 @@
 
           }
 
-        } else {
-
-          /*
-           * A real Firebase account with no
-           * Firestore record is a new FuelAI
-           * account. Never inherit another
-           * browser user's setup.
-           */
-          clearAccountCache();
-
         }
 
 
@@ -649,14 +919,15 @@
         } = getCredentials();
 
         if (!email || !password) {
-          setMessage(
-            "Enter your email and password."
-          );
+          setMessage("Enter your email and password.", {
+            kind: "error",
+            label: "Sign-in error"
+          });
           return;
         }
 
         signInBtn.disabled = true;
-        setMessage("Signing in...");
+        setMessage("Signing in...", { label: "Signing in" });
 
         try {
           const firebase =
@@ -678,9 +949,10 @@
             error
           );
 
-          setMessage(
-            "Unable to sign in. Check your email and password."
-          );
+          setMessage("Unable to sign in. Check your email and password.", {
+            kind: "error",
+            label: "Sign-in error"
+          });
 
         } finally {
           signInBtn.disabled = false;
@@ -695,23 +967,60 @@
         } = getCredentials();
 
         if (!email || !password) {
-          setMessage(
-            "Enter an email and password."
-          );
+          setMessage("Enter an email and password.", {
+            kind: "error",
+            label: "Account details required"
+          });
           return;
         }
 
         if (password.length < 6) {
-          setMessage(
-            "Use a password with at least 6 characters."
-          );
+          setMessage("Use a password with at least 6 characters.", {
+            kind: "error",
+            label: "Password requirement"
+          });
+          return;
+        }
+
+        const ageBand = ageBandInput?.value || "";
+        const registration = evaluateRegistration({
+          ageBand,
+          privacyAccepted: privacyAccepted?.checked === true,
+          termsAccepted: termsAccepted?.checked === true
+        });
+        if (registration.code === "AGE_REQUIRED") {
+          setMessage("Choose your age group before creating an account.", {
+            kind: "error",
+            label: "Age selection required"
+          });
+          return;
+        }
+        if (registration.code === "AGE_NOT_SUPPORTED") {
+          setMessage("FuelAI is not available for users under 13. No account was created.", {
+            kind: "error",
+            label: "Account unavailable"
+          });
+          return;
+        }
+        if (registration.code === "ACCEPTANCE_REQUIRED") {
+          setMessage("Accept both the Privacy Notice and Terms to create an adult account.", {
+            kind: "error",
+            label: "Acceptance required"
+          });
+          return;
+        }
+        if (!registration.allowed) {
+          setMessage("Choose a valid age group before creating an account.", {
+            kind: "error",
+            label: "Age selection required"
+          });
           return;
         }
 
         createAccountBtn.disabled = true;
-        setMessage(
-          "Creating your account..."
-        );
+        setMessage("Creating your account...", {
+          label: "Creating account"
+        });
 
         try {
           const firebase =
@@ -722,6 +1031,8 @@
               email,
               password
             );
+
+          await recordConsent(user, ageBand);
 
           await finishLogin(
             user
@@ -737,13 +1048,15 @@
             error?.code ===
             "auth/email-already-in-use"
           ) {
-            setMessage(
-              "That email already has an account. Sign in instead."
-            );
+            setMessage("That email already has an account. Sign in instead.", {
+              kind: "error",
+              label: "Account already exists"
+            });
           } else {
-            setMessage(
-              "Unable to create the account. Check the email and password and try again."
-            );
+            setMessage("Unable to create the account. Check the email and password and try again.", {
+              kind: "error",
+              label: "Account creation error"
+            });
           }
 
         } finally {
@@ -767,7 +1080,11 @@
         "keydown",
         event => {
           if (event.key === "Enter") {
-            signIn();
+            if (registrationFields.hidden) {
+              signIn();
+            } else {
+              createAccount();
+            }
           }
         }
       );
