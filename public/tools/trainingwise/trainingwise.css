@@ -1343,7 +1343,7 @@ button:disabled {
 .trainingwise-countdown-overlay {
   position: fixed;
   inset: 0;
-  z-index: 99999;
+  z-index: 1000001;
 
   display: grid;
   place-items: center;
@@ -2275,3 +2275,35 @@ body.trainingwise-fullscreen
   }
 
 }
+
+/* Big Clock pre-start state */
+body.trainingwise-fullscreen
+.trainingwise-timer-phase.trainingwise-get-ready{
+  color:#facc15;
+  text-shadow:
+    0 0 18px rgba(250,204,21,.35);
+}
+
+
+/* ==================================================
+   TRAININGWISE BIG CLOCK PRESTART COLORS
+================================================== */
+
+body.trainingwise-fullscreen
+.trainingwise-timer.trainingwise-prestart
+.trainingwise-clock{
+  color:#facc15 !important;
+
+  text-shadow:
+    0 0 24px rgba(250,204,21,.38);
+}
+
+
+body.trainingwise-fullscreen
+.trainingwise-timer-phase.trainingwise-get-ready{
+  color:#facc15 !important;
+
+  text-shadow:
+    0 0 18px rgba(250,204,21,.35);
+}
+

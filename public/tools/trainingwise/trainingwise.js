@@ -881,6 +881,156 @@
     }
 
 
+    /*
+     * BIG CLOCK / TRAINING BOARD COUNTDOWN
+     *
+     * Do not depend on an overlay while the
+     * training board is active. Use the giant
+     * live clock itself for 5-4-3-2-1-GO.
+     */
+    const boardCountdown =
+      document.body.classList.contains(
+        "trainingwise-fullscreen"
+      ) ||
+      Boolean(
+        document.fullscreenElement ||
+        document.webkitFullscreenElement
+      );
+
+
+    if (boardCountdown) {
+
+      const clock =
+        document.querySelector(
+          ".trainingwise-timer .trainingwise-clock"
+        );
+
+      const phase =
+        document.querySelector(
+          ".trainingwise-timer .trainingwise-timer-phase"
+        );
+
+
+      const timer =
+        document.querySelector(
+          ".trainingwise-timer"
+        );
+
+
+      timer?.classList.add(
+        "trainingwise-prestart"
+      );
+
+
+      if (phase) {
+
+        phase.textContent =
+          "GET READY";
+
+        phase.classList.add(
+          "trainingwise-get-ready"
+        );
+
+      }
+
+
+      let count = 5;
+
+
+      if (clock) {
+        clock.textContent =
+          String(count);
+      }
+
+
+      playTrainingwiseCountdownTick(
+        count
+      );
+
+
+      const countdown =
+        window.setInterval(
+          () => {
+
+            count -= 1;
+
+
+            if (count > 0) {
+
+              if (clock) {
+                clock.textContent =
+                  String(count);
+              }
+
+
+              playTrainingwiseCountdownTick(
+                count
+              );
+
+              return;
+
+            }
+
+
+            window.clearInterval(
+              countdown
+            );
+
+
+            timer?.classList.remove(
+              "trainingwise-prestart"
+            );
+
+
+            if (phase) {
+
+              phase.classList.remove(
+                "trainingwise-get-ready"
+              );
+
+              phase.textContent =
+                "GO";
+
+            }
+
+
+            if (clock) {
+
+              clock.textContent =
+                "GO";
+
+            }
+
+
+            playTrainingwiseBell(
+              "transition"
+            );
+
+
+            window.setTimeout(
+              () => {
+
+                if (
+                  typeof onComplete ===
+                  "function"
+                ) {
+                  onComplete();
+                }
+
+              },
+              450
+            );
+
+          },
+          1000
+        );
+
+
+      return;
+
+    }
+
+
     const overlay =
       document.createElement(
         "div"
@@ -908,7 +1058,30 @@
     `;
 
 
-    document.body.appendChild(
+    /*
+     * Mount the countdown inside the active
+     * training display when fullscreen/board
+     * mode is being used.
+     *
+     * Native fullscreen only renders the
+     * fullscreen element and its descendants.
+     */
+    const countdownHost =
+      document.fullscreenElement ||
+      document.webkitFullscreenElement ||
+      (
+        document.body.classList.contains(
+          "trainingwise-fullscreen"
+        )
+          ? document.querySelector(
+              ".trainingwise-timer"
+            )
+          : null
+      ) ||
+      document.body;
+
+
+    countdownHost.appendChild(
       overlay
     );
 
@@ -2081,26 +2254,33 @@
 
   function speakIntervalExercise(prefix) {
 
-    if (
-      !intervalState ||
-      intervalState.workoutMode === "timer"
-    ) {
+    if (!intervalState) {
       return;
     }
+
 
     const exercise =
-      getTrainingwiseMovement(
-        intervalState,
-        intervalState.movementIndex
+      intervalState.workoutMode !== "timer"
+        ? getTrainingwiseMovement(
+            intervalState,
+            intervalState.movementIndex
+          )
+        : "";
+
+
+    if (exercise) {
+
+      speakTrainingwise(
+        `${prefix}. ${exercise}.`
       );
 
-    if (!exercise) {
-      return;
-    }
+    } else {
 
-    speakTrainingwise(
-      `${prefix}. ${exercise}.`
-    );
+      speakTrainingwise(
+        `${prefix}.`
+      );
+
+    }
 
   }
 
@@ -2281,7 +2461,7 @@
     updateIntervalDisplay();
 
     speakIntervalExercise(
-      "Go"
+      "Work"
     );
 
   }
@@ -2371,7 +2551,7 @@
     updateTrainingwiseBoardAction();
 
     speakIntervalExercise(
-      "Go"
+      "Work"
     );
 
 
