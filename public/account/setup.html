@@ -15,6 +15,11 @@
     href="/assets/css/site.css"
   />
 
+  <link
+    rel="stylesheet"
+    href="/assets/css/nav.css"
+  />
+
   <style>
     :root{
       --bg:#030712;
@@ -91,6 +96,21 @@
       border-radius:20px;
       border:1px solid rgba(255,255,255,.06);
       box-shadow:0 0 34px rgba(0,0,0,.32);
+    }
+
+    .setup-example-link{
+      width:min(100%,380px);
+      margin:18px auto;
+    }
+
+    .setup-example-link .secondary-btn{
+      width:100%;
+      min-height:48px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      text-decoration:none;
     }
 
     .setup-section{
@@ -718,11 +738,14 @@
 
     </header>
 
-    <img
-      class="setup-profiles-image"
-      src="/assets/img/hero/fuelai-profiles.png"
-      alt="FuelAI profiles: General Health, Fitness Enthusiast, and Combat Athlete"
-    />
+    <div class="setup-example-link">
+      <a
+        class="secondary-btn"
+        href="/account/profiles-example.html"
+      >
+        See FuelAI Profiles →
+      </a>
+    </div>
 
 
     <!-- YOUR BASICS -->
@@ -1052,6 +1075,100 @@
             </option>
           </select>
 
+
+          <select
+            id="sportStyle"
+            class="goal-select hidden"
+          >
+            <option value="">
+              Sport Type
+            </option>
+
+            <option value="field-court">
+              Field / Court Sports
+            </option>
+
+            <option value="endurance">
+              Endurance Sports
+            </option>
+
+            <option value="strength-power">
+              Strength / Power Sports
+            </option>
+
+            <option value="aquatic">
+              Aquatic Sports
+            </option>
+
+            <option value="racquet">
+              Racquet Sports
+            </option>
+
+            <option value="other-mixed">
+              Other / Mixed Sport
+            </option>
+          </select>
+
+
+          <select
+            id="fitnessFocus"
+            class="goal-select hidden"
+          >
+            <option value="">
+              Fitness Focus
+            </option>
+
+            <option value="strength-muscle">
+              Strength / Muscle
+            </option>
+
+            <option value="conditioning-cardio">
+              Conditioning / Cardio
+            </option>
+
+            <option value="general-fitness">
+              General Fitness
+            </option>
+
+            <option value="body-composition">
+              Body Composition
+            </option>
+
+            <option value="mixed-training">
+              Mixed Training
+            </option>
+          </select>
+
+
+          <select
+            id="healthFocus"
+            class="goal-select hidden"
+          >
+            <option value="">
+              Health Focus
+            </option>
+
+            <option value="everyday-wellness">
+              Everyday Wellness
+            </option>
+
+            <option value="energy-habits">
+              Energy & Habits
+            </option>
+
+            <option value="weight-management">
+              Weight Management
+            </option>
+
+            <option value="healthy-aging">
+              Healthy Aging
+            </option>
+
+            <option value="recovery-mobility">
+              Recovery & Mobility
+            </option>
+          </select>
+
         </div>
 
       </section>
@@ -1097,42 +1214,14 @@
 
     <!-- SCAN FEATURE -->
 
-    <section class="scan-feature">
-
-      <div class="scan-copy">
-
-        <p class="scan-kicker">
-          FuelAI in action
-        </p>
-
-        <h2>
-          Scan. Track. <span>Improve.</span>
-        </h2>
-
-        <p>
-          FuelAI turns your meals and daily habits into clear guidance so you can make better decisions every day.
-        </p>
-
-        <div class="scan-flow">
-          <span>Nutrition</span>
-          <span>Hydration</span>
-          <span>Training</span>
-          <span>Recovery</span>
-          <span>Progress</span>
-        </div>
-
-      </div>
-
-      <div class="scan-visual">
-
-        <img
-          src="/assets/img/setup/fuelai-scan-track-improve.png"
-          alt="FuelAI meal scan showing nutrition, hydration, training, recovery, and progress"
-        />
-
-      </div>
-
-    </section>
+    <div class="setup-example-link">
+      <a
+        class="secondary-btn"
+        href="/account/fuelai-action-example.html"
+      >
+        See FuelAI in Action →
+      </a>
+    </div>
 
 
     <!-- GOALS / FOOD -->
@@ -1243,14 +1332,6 @@
         id="coachWiseMiniProfile"
         class="coach-wise-mini-profile"
       >
-        <strong id="coachWiseMiniName">
-          Coach Wise
-        </strong>
-
-        <span id="coachWiseMiniMeta">
-          Male · Balanced
-        </span>
-
         <button
           type="button"
           id="adjustCoachWise"
@@ -1317,7 +1398,7 @@
                 name="wiseFlavor"
                 value="sweetspot"
               />
-              <span>Balanced</span>
+              <span>Sports Coach</span>
             </label>
 
             <label>
@@ -1326,7 +1407,7 @@
                 name="wiseFlavor"
                 value="toughguy"
               />
-              <span>Military</span>
+              <span>Combat Coach</span>
             </label>
 
             <label>
@@ -1335,7 +1416,7 @@
                 name="wiseFlavor"
                 value="mafia"
               />
-              <span>OG</span>
+              <span>PE Teacher</span>
             </label>
 
             <label>
@@ -1344,7 +1425,7 @@
                 name="wiseFlavor"
                 value="internet"
               />
-              <span>Casual</span>
+              <span>Wellness Coach</span>
             </label>
 
           </div>
@@ -1760,6 +1841,8 @@
 
   <script src="/assets/js/core/plan.js"></script>
 
+
+  <script src="/assets/js/core/nav.js"></script>
 
 </body>
 </html>

@@ -1,7 +1,7 @@
 window.GUIDES = {
 
   sweetspot: {
-    label: "Balanced Coach",
+    label: "Sports Coach",
     tone: "balanced",
     color: "#5eead4",
 
@@ -13,7 +13,7 @@ window.GUIDES = {
   },
 
   toughguy: {
-    label: "Direct Coach",
+    label: "Combat Coach",
     tone: "direct",
     color: "#ef4444",
 
@@ -25,7 +25,7 @@ window.GUIDES = {
   },
 
   mafia: {
-    label: "Streetwise Coach",
+    label: "PE Teacher",
     tone: "playful-direct",
     color: "#a855f7",
 
@@ -37,7 +37,7 @@ window.GUIDES = {
   },
 
   internet: {
-    label: "Casual Coach",
+    label: "Wellness Coach",
     tone: "casual",
     color: "#38bdf8",
 

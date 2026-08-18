@@ -16,6 +16,19 @@
   />
 
   <style>
+    .welcome-brand-icon{
+      display:block;
+
+      width:76px;
+      height:76px;
+
+      margin:0 auto 1rem;
+
+      object-fit:contain;
+
+      border-radius:18px;
+    }
+
     .welcome-stack{
       display:grid;
       gap:1rem;
@@ -39,10 +52,10 @@
     }
 
     .welcome-profile-image{
-      width:84px;
-      height:84px;
+      width:96px;
+      height:96px;
 
-      flex:0 0 84px;
+      flex:0 0 96px;
 
       object-fit:contain;
     }
@@ -97,10 +110,10 @@
       }
 
       .welcome-profile-image{
-        width:68px;
-        height:68px;
+        width:76px;
+        height:76px;
 
-        flex-basis:68px;
+        flex-basis:76px;
       }
 
     }
@@ -113,9 +126,11 @@
 
     <section class="scan-card">
 
-      <p class="range-label">
-        FuelAI
-      </p>
+      <img
+        class="welcome-brand-icon"
+        src="/assets/img/brand/fuelai-app-icon.png"
+        alt="FuelAI"
+      />
 
       <h1>
         Welcome
@@ -178,6 +193,30 @@
               <p class="welcome-feature-text">
                 Fuel your training, improve
                 conditioning, and track progress.
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <div class="welcome-profile">
+
+            <img
+              class="welcome-profile-image"
+              src="/assets/img/profiles/sports-athlete.png"
+              alt="Sports Athlete"
+            />
+
+            <div class="welcome-profile-copy">
+
+              <span class="welcome-feature-title">
+                SPORTS
+              </span>
+
+              <p class="welcome-feature-text">
+                Fuel your sport, track team progress,
+                recover, and perform.
               </p>
 
             </div>

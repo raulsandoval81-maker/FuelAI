@@ -502,6 +502,21 @@ function canUseFuelAITool(tool) {
       );
 
 
+    case "cutwise":
+      return (
+        profile ===
+          "combat-athlete" &&
+
+        features.weightwise ===
+          true
+      );
+
+
+    /*
+     * Legacy compatibility.
+     * Older pages may still ask for
+     * combatAthlete or weightwise.
+     */
     case "weightwise":
       return (
         profile ===
@@ -612,6 +627,15 @@ function getFuelAIAccess() {
           "trainingwise"
         ),
 
+      cutwise:
+        canUseFuelAITool(
+          "cutwise"
+        ),
+
+      /*
+       * Legacy aliases retained while
+       * older combat pages are migrated.
+       */
       combatAthlete:
         canUseFuelAITool(
           "combatAthlete"

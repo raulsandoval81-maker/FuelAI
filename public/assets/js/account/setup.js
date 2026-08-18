@@ -48,6 +48,23 @@ const combatStyle =
     "combatStyle"
   );
 
+
+const sportStyle =
+  document.getElementById(
+    "sportStyle"
+  );
+
+
+const fitnessFocus =
+  document.getElementById(
+    "fitnessFocus"
+  );
+
+const healthFocus =
+  document.getElementById(
+    "healthFocus"
+  );
+
 const rangeOutput =
   document.getElementById(
     "rangeOutput"
@@ -327,6 +344,88 @@ function getCombatStyleText() {
 }
 
 
+function getSportStyleText() {
+
+  if (
+    !sportStyle ||
+    lifestyleType?.value !==
+      "sports-athlete"
+  ) {
+
+    return "Not applicable";
+
+  }
+
+
+  const labels = {
+
+    "field-court":
+      "Field / Court Sports",
+
+    endurance:
+      "Endurance Sports",
+
+    "strength-power":
+      "Strength / Power Sports",
+
+    aquatic:
+      "Aquatic Sports",
+
+    racquet:
+      "Racquet Sports",
+
+    "other-mixed":
+      "Other / Mixed Sport"
+
+  };
+
+
+  return (
+    labels[
+      sportStyle.value
+    ] ||
+    "Not selected"
+  );
+
+}
+
+
+function getFitnessFocusText() {
+
+  const labels = {
+    "strength-muscle": "Strength / Muscle",
+    "conditioning-cardio": "Conditioning / Cardio",
+    "general-fitness": "General Fitness",
+    "body-composition": "Body Composition",
+    "mixed-training": "Mixed Training"
+  };
+
+  return (
+    labels[fitnessFocus?.value] ||
+    "Not selected"
+  );
+
+}
+
+
+function getHealthFocusText() {
+
+  const labels = {
+    "everyday-wellness": "Everyday Wellness",
+    "energy-habits": "Energy & Habits",
+    "weight-management": "Weight Management",
+    "healthy-aging": "Healthy Aging",
+    "recovery-mobility": "Recovery & Mobility"
+  };
+
+  return (
+    labels[healthFocus?.value] ||
+    "Not selected"
+  );
+
+}
+
+
 function getGoalText() {
 
   const labels = {
@@ -429,6 +528,42 @@ function updateGuidance() {
         : ""
     }
 
+    ${
+      lifestyleType?.value ===
+      "sports-athlete"
+        ? `
+          <br><br>
+
+          Sport type:<br>
+          ${getSportStyleText()}
+        `
+        : ""
+    }
+
+    ${
+      lifestyleType?.value ===
+      "fitness-enthusiast"
+        ? `
+          <br><br>
+
+          Fitness focus:<br>
+          ${getFitnessFocusText()}
+        `
+        : ""
+    }
+
+    ${
+      lifestyleType?.value ===
+      "general-health"
+        ? `
+          <br><br>
+
+          Health focus:<br>
+          ${getHealthFocusText()}
+        `
+        : ""
+    }
+
     <br><br>
 
     Direction:<br>
@@ -436,6 +571,82 @@ function updateGuidance() {
   `;
 
 }
+function syncSportStyleVisibility() {
+
+  if (
+    !sportStyle
+  ) {
+    return;
+  }
+
+
+  const isSports =
+    lifestyleType?.value ===
+    "sports-athlete";
+
+
+  sportStyle.classList.toggle(
+    "hidden",
+    !isSports
+  );
+
+
+  if (
+    !isSports
+  ) {
+
+    sportStyle.value =
+      "";
+
+  }
+
+}
+
+
+function syncFitnessFocusVisibility() {
+
+  if (!fitnessFocus) {
+    return;
+  }
+
+  const active =
+    lifestyleType?.value ===
+    "fitness-enthusiast";
+
+  fitnessFocus.classList.toggle(
+    "hidden",
+    !active
+  );
+
+  if (!active) {
+    fitnessFocus.value = "";
+  }
+
+}
+
+
+function syncHealthFocusVisibility() {
+
+  if (!healthFocus) {
+    return;
+  }
+
+  const active =
+    lifestyleType?.value ===
+    "general-health";
+
+  healthFocus.classList.toggle(
+    "hidden",
+    !active
+  );
+
+  if (!active) {
+    healthFocus.value = "";
+  }
+
+}
+
+
 function syncCombatStyleVisibility() {
 
   if (
@@ -565,6 +776,28 @@ function loadSavedSetup() {
 
 
   if (
+    sportStyle
+  ) {
+    sportStyle.value =
+      saved.sportStyle ||
+      "";
+  }
+
+
+  if (fitnessFocus) {
+    fitnessFocus.value =
+      saved.fitnessFocus ||
+      "";
+  }
+
+  if (healthFocus) {
+    healthFocus.value =
+      saved.healthFocus ||
+      "";
+  }
+
+
+  if (
     foodStyle
   ) {
     foodStyle.value =
@@ -591,6 +824,9 @@ function loadSavedSetup() {
 
 
   syncCombatStyleVisibility();
+  syncSportStyleVisibility();
+  syncFitnessFocusVisibility();
+  syncHealthFocusVisibility();
 
 }
 
@@ -664,6 +900,35 @@ async function saveSetup() {
         "combat-athlete"
         ? (
             combatStyle?.value ||
+            ""
+          )
+        : "",
+
+
+    sportStyle:
+      lifestyleType?.value ===
+        "sports-athlete"
+        ? (
+            sportStyle?.value ||
+            ""
+          )
+        : "",
+
+
+    fitnessFocus:
+      lifestyleType?.value ===
+        "fitness-enthusiast"
+        ? (
+            fitnessFocus?.value ||
+            ""
+          )
+        : "",
+
+    healthFocus:
+      lifestyleType?.value ===
+        "general-health"
+        ? (
+            healthFocus?.value ||
             ""
           )
         : "",
@@ -900,6 +1165,23 @@ function resetSetup() {
 
 
   if (
+    sportStyle
+  ) {
+    sportStyle.value =
+      "";
+  }
+
+
+  if (fitnessFocus) {
+    fitnessFocus.value = "";
+  }
+
+  if (healthFocus) {
+    healthFocus.value = "";
+  }
+
+
+  if (
     foodStyle
   ) {
     foodStyle.value =
@@ -930,6 +1212,9 @@ function resetSetup() {
 
 
   syncCombatStyleVisibility();
+  syncSportStyleVisibility();
+  syncFitnessFocusVisibility();
+  syncHealthFocusVisibility();
 
   renderSetupButtons();
 
@@ -1017,6 +1302,9 @@ lifestyleType
     () => {
 
       syncCombatStyleVisibility();
+      syncSportStyleVisibility();
+  syncFitnessFocusVisibility();
+  syncHealthFocusVisibility();
 
       updateGuidance();
 
@@ -1025,6 +1313,26 @@ lifestyleType
 
 
 combatStyle
+  ?.addEventListener(
+    "change",
+    updateGuidance
+  );
+
+
+sportStyle
+  ?.addEventListener(
+    "change",
+    updateGuidance
+  );
+
+
+fitnessFocus
+  ?.addEventListener(
+    "change",
+    updateGuidance
+  );
+
+healthFocus
   ?.addEventListener(
     "change",
     updateGuidance

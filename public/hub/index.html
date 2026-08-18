@@ -97,6 +97,29 @@
       text-transform:uppercase;
     }
 
+    .hub-brand-icon{
+      width:34px;
+      height:34px;
+
+      flex:0 0 34px;
+
+      object-fit:contain;
+
+      border-radius:9px;
+    }
+
+    .hub-brand-kicker{
+      display:flex;
+      align-items:center;
+      gap:9px;
+
+      margin:0 0 8px;
+    }
+
+    .hub-brand-kicker .hub-kicker{
+      margin:0;
+    }
+
     .hub-header h1{
       margin:0;
 
@@ -535,6 +558,55 @@
         rgba(239,68,68,.58);
     }
 
+    .hub-card.orange{
+      border-color:
+        rgba(249,115,22,.30);
+    }
+
+    .hub-card.orange:hover{
+      border-color:
+        rgba(249,115,22,.58);
+    }
+
+    /* Wise family title colors */
+
+    .hub-card.trackwise h3{
+      color:#a78bfa;
+    }
+
+    .hub-card.mealwise h3{
+      color:#22c55e;
+    }
+
+    .hub-card.teamwise h3{
+      color:#38bdf8;
+    }
+
+    .hub-card.trainingwise h3{
+      color:#f97316;
+    }
+
+    .hub-card.cutwise h3{
+      color:#ef4444;
+    }
+
+    .hub-card.coachwise h3{
+      color:#cbd5e1;
+    }
+
+    .hub-card.fridgewise h3{
+      color:#38bdf8;
+    }
+
+    .hub-card.coachwise{
+      border-color:rgba(203,213,225,.24);
+    }
+
+    .hub-card.coachwise:hover{
+      border-color:rgba(203,213,225,.50);
+    }
+
+
     .hub-team{
       display:none;
 
@@ -783,10 +855,6 @@
 
       <div class="hub-header-copy">
 
-        <p class="hub-kicker">
-          FuelAI
-        </p>
-
         <h1>
           Today in FuelAI
         </h1>
@@ -794,6 +862,8 @@
         <p>
           Your daily fuel, recovery, and training in one place.
         </p>
+
+
 
       </div>
 
@@ -1083,9 +1153,6 @@
 
     <section class="hub-grid">
 
-
-      <!-- TRACKWISE -->
-
 <a
   class="hub-card purple"
   id="trackwiseCard"
@@ -1093,7 +1160,7 @@
 >
 
         <img
-          src="/assets/img/hub/stayontrack.png"
+          src="/assets/img/hub/trackwise.png"
           alt="TrackWise"
         />
 
@@ -1111,11 +1178,8 @@
 
       </a>
 
-
-      <!-- MEALWISE -->
-
-      <a
-        class="hub-card green"
+<a
+        class="hub-card green mealwise"
         id="mealwiseCard"
         href="/tools/mealwise/app.html"
       >
@@ -1139,40 +1203,8 @@
 
       </a>
 
-<!-- TEAM LOGISTICS -->
-
 <a
-  class="hub-card red"
-  id="teamLogisticsCard"
-  href="/team/"
-  style="display:none;"
->
-
-  <img
-    src="/assets/img/hub/team-logistics.png"
-    alt="Team Logistics"
-  />
-
-  <div class="hub-card-copy">
-
-    <h3 id="teamHubCardTitle">
-      Team Logistics
-    </h3>
-
-    <p id="teamHubCardDescription">
-      Manage your roster, athlete access, invites, and team operations.
-    </p>
-
-  </div>
-
-</a>
-
-      <!-- TRAININGWISE -->
-
-
-
-      <a
-        class="hub-card blue"
+        class="hub-card orange trainingwise"
         id="trainingwiseCard"
         href="/tools/trainingwise/"
       >
@@ -1196,37 +1228,34 @@
 
       </a>
 
-
-      <!-- COMBAT ATHLETE -->
-
-      <a
-        class="hub-card red"
-        id="combatAthleteCard"
-        href="/tools/combat-athlete/"
+<a
+        class="hub-card coachwise"
+        id="coachWiseCard"
+        href="/wise/wise.html"
       >
 
         <img
-          src="/assets/img/hub/combat-athlete.png"
-          alt="Combat Athlete"
+          id="hubCoachWiseImage"
+          src="/assets/img/guides/sweetspot-male.png"
+          alt="Coach Wise"
         />
 
         <div class="hub-card-copy">
 
           <h3>
-            Combat Athlete
+            Coach Wise
           </h3>
 
           <p>
-            Weight, readiness, and competition tools.
+            Turn your FuelAI signals into a clearer next decision.
           </p>
 
         </div>
 
       </a>
-            <!-- FRIDGEWISE -->
 
-      <a
-        class="hub-card blue"
+<a
+        class="hub-card blue fridgewise"
         id="fridgewiseCard"
         href="/tools/fridgewise/fridgewise.html"
       >
@@ -1250,8 +1279,58 @@
 
       </a>
 
+<a
+  class="hub-card blue teamwise"
+  id="teamLogisticsCard"
+  href="/team/"
+  style="display:none;"
+>
 
-    </section>
+  <img
+    src="/assets/img/hub/teamwise.png"
+    alt="TeamWise"
+  />
+
+  <div class="hub-card-copy">
+
+    <h3 id="teamHubCardTitle">
+      TeamWise
+    </h3>
+
+    <p id="teamHubCardDescription">
+      Manage your roster, athlete access, invites, and team operations.
+    </p>
+
+  </div>
+
+</a>
+
+<a
+        class="hub-card red cutwise"
+        id="combatAthleteCard"
+        href="/tools/combat-athlete/"
+      >
+
+        <img
+          src="/assets/img/hub/cutwise.png"
+          alt="CutWise"
+        />
+
+        <div class="hub-card-copy">
+
+          <h3>
+            CutWise
+          </h3>
+
+          <p>
+            Make weight, preserve performance, and stay competition ready.
+          </p>
+
+        </div>
+
+      </a>
+
+</section>
 
 
     <div
@@ -2101,7 +2180,7 @@
 
         teamCardTitle.textContent =
           canManageTeam
-            ? "Team Logistics"
+            ? "TeamWise"
             : "My Team";
 
       }
@@ -2125,7 +2204,7 @@
         ?.setAttribute(
           "alt",
           canManageTeam
-            ? "Team Logistics"
+            ? "TeamWise"
             : "My Team"
         );
 
@@ -2231,7 +2310,55 @@
   </script>
 
 
+  <script src="/assets/js/wise/guides.js"></script>
   <script src="/assets/js/core/nav.js"></script>
+
+
+  <script>
+    function syncHubCoachWise(){
+
+      const image =
+        document.getElementById(
+          "hubCoachWiseImage"
+        );
+
+      if(!image || !window.GUIDES){
+        return;
+      }
+
+      let saved = {};
+
+      try{
+        saved =
+          JSON.parse(
+            localStorage.getItem(
+              "fuelai-setup"
+            ) || "{}"
+          );
+      }catch{
+        saved = {};
+      }
+
+      const gender =
+        saved.wiseCoachGender ||
+        "male";
+
+      const flavor =
+        saved.wiseFlavor ||
+        "sweetspot";
+
+      const guide =
+        window.GUIDES[flavor] ||
+        window.GUIDES.sweetspot;
+
+      image.src =
+        guide?.[gender] ||
+        guide?.male ||
+        "/assets/img/guides/sweetspot-male.png";
+    }
+
+    syncHubCoachWise();
+  </script>
 
 </body>
 </html>

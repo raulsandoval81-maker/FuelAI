@@ -124,6 +124,8 @@
       profile ===
         "fitness-enthusiast" ||
       profile ===
+        "sports-athlete" ||
+      profile ===
         "combat-athlete";
 
 
@@ -144,7 +146,11 @@
 
     topbar.innerHTML = `
       <div class="fuelai-topbar-brand">
-        Fuel<span>AI</span>™
+        <img
+          class="fuelai-brand-icon"
+          src="/assets/img/brand/fuelai-app-icon.png"
+          alt="FuelAI"
+        />
       </div>
 
       <button
@@ -359,9 +365,15 @@
     drawer.innerHTML = `
       <div class="fuelai-nav-head">
 
-        <h2 class="fuelai-nav-title">
-          FuelAI
-        </h2>
+        <div class="fuelai-nav-title fuelai-nav-brand">
+          <img
+            class="fuelai-brand-icon"
+            src="/assets/img/brand/fuelai-app-icon.png"
+            alt=""
+            aria-hidden="true"
+          />
+          <span>FuelAI</span>
+        </div>
 
         <button
           class="fuelai-nav-close"
