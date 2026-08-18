@@ -890,7 +890,7 @@
      */
     const boardCountdown =
       document.body.classList.contains(
-        "trainingwise-fullscreen"
+        "trainingwise-stage"
       ) ||
       Boolean(
         document.fullscreenElement ||
@@ -1071,7 +1071,7 @@
       document.webkitFullscreenElement ||
       (
         document.body.classList.contains(
-          "trainingwise-fullscreen"
+          "trainingwise-stage"
         )
           ? document.querySelector(
               ".trainingwise-timer"
@@ -1911,20 +1911,8 @@
     return document.body
       .classList
       .contains(
-        "trainingwise-fullscreen"
+        "trainingwise-stage"
       );
-
-  }
-
-
-  function isTrainingwiseIPhone() {
-
-    const ua =
-      navigator.userAgent || "";
-
-    return /iPhone/i.test(
-      ua
-    );
 
   }
 
@@ -1932,15 +1920,8 @@
 
   function enterTrainingwiseBoard() {
 
-    /*
-     * FuelAI board mode is now the
-     * fullscreen experience everywhere.
-     *
-     * Do not depend on the browser's
-     * native Fullscreen API.
-     */
     document.body.classList.add(
-      "trainingwise-fullscreen"
+      "trainingwise-stage"
     );
 
     updateTrainingwiseBoardAction();
@@ -1952,33 +1933,8 @@
   function exitTrainingwiseBoard() {
 
     document.body.classList.remove(
-      "trainingwise-fullscreen"
+      "trainingwise-stage"
     );
-
-
-    try {
-
-      if (
-        document.fullscreenElement &&
-        document.exitFullscreen
-      ) {
-
-        document
-          .exitFullscreen()
-          .catch(() => {});
-
-      }
-
-      else if (
-        document.webkitFullscreenElement &&
-        document.webkitExitFullscreen
-      ) {
-
-        document.webkitExitFullscreen();
-
-      }
-
-    } catch (_) {}
 
   }
 
@@ -9138,7 +9094,7 @@ document.addEventListener(
   () => {
 
     document.body.classList.toggle(
-      "trainingwise-fullscreen",
+      "trainingwise-stage",
       Boolean(
         document.fullscreenElement
       )
@@ -9153,7 +9109,7 @@ document.addEventListener(
   () => {
 
     document.body.classList.toggle(
-      "trainingwise-fullscreen",
+      "trainingwise-stage",
       Boolean(
         document.webkitFullscreenElement
       )

@@ -1979,15 +1979,15 @@ button:disabled {
    TRAININGWISE FULLSCREEN — LIVE BOARD ONLY
 ================================================== */
 
-body.trainingwise-fullscreen .trainingwise-label,
-body.trainingwise-fullscreen h2,
-body.trainingwise-fullscreen .trainingwise-preset,
-body.trainingwise-fullscreen .trainingwise-content-picker,
-body.trainingwise-fullscreen .trainingwise-round-picker,
-body.trainingwise-fullscreen .trainingwise-view-controls,
-body.trainingwise-fullscreen .trainingwise-controls,
-body.trainingwise-fullscreen .trainingwise-session-message,
-body.trainingwise-fullscreen #trainingwiseOutput > p{
+body.trainingwise-stage .trainingwise-label,
+body.trainingwise-stage h2,
+body.trainingwise-stage .trainingwise-preset,
+body.trainingwise-stage .trainingwise-content-picker,
+body.trainingwise-stage .trainingwise-round-picker,
+body.trainingwise-stage .trainingwise-view-controls,
+body.trainingwise-stage .trainingwise-controls,
+body.trainingwise-stage .trainingwise-session-message,
+body.trainingwise-stage #trainingwiseOutput > p{
   display:none !important;
 }
 
@@ -1996,7 +1996,7 @@ body.trainingwise-fullscreen #trainingwiseOutput > p{
  * Keep only the live timer board.
  */
 
-body.trainingwise-fullscreen .trainingwise-timer{
+body.trainingwise-stage .trainingwise-timer{
   display:flex !important;
 
   width:100vw;
@@ -2029,7 +2029,7 @@ body.trainingwise-fullscreen .trainingwise-timer{
 
 /* Round / interval / minute */
 
-body.trainingwise-fullscreen
+body.trainingwise-stage
 .trainingwise-timer-round{
   margin:0;
 
@@ -2046,7 +2046,7 @@ body.trainingwise-fullscreen
 
 /* WORK / RECOVER / ROUND REST */
 
-body.trainingwise-fullscreen
+body.trainingwise-stage
 .trainingwise-timer-phase{
   margin:0;
 
@@ -2064,7 +2064,7 @@ body.trainingwise-fullscreen
 
 /* Exercise */
 
-body.trainingwise-fullscreen
+body.trainingwise-stage
 .trainingwise-movement-callout{
   width:100%;
   margin:0;
@@ -2085,7 +2085,7 @@ body.trainingwise-fullscreen
 
 /* Clock dominates screen */
 
-body.trainingwise-fullscreen
+body.trainingwise-stage
 .trainingwise-clock{
   width:100%;
 
@@ -2114,12 +2114,12 @@ body.trainingwise-fullscreen
 
 /* Kill normal page spacing while fullscreen */
 
-body.trainingwise-fullscreen{
+body.trainingwise-stage{
   overflow:hidden;
 }
 
-body.trainingwise-fullscreen main,
-body.trainingwise-fullscreen #trainingwiseOutput{
+body.trainingwise-stage main,
+body.trainingwise-stage #trainingwiseOutput{
   width:100vw !important;
   height:100vh !important;
 
@@ -2132,7 +2132,7 @@ body.trainingwise-fullscreen #trainingwiseOutput{
 
 @media (orientation:landscape){
 
-  body.trainingwise-fullscreen
+  body.trainingwise-stage
   .trainingwise-clock{
     font-size:
       clamp(
@@ -2155,7 +2155,7 @@ body.trainingwise-fullscreen #trainingwiseOutput{
 }
 
 
-body.trainingwise-fullscreen
+body.trainingwise-stage
 .trainingwise-board-controls{
   display:flex;
 
@@ -2180,9 +2180,9 @@ body.trainingwise-fullscreen
 }
 
 
-body.trainingwise-fullscreen
+body.trainingwise-stage
 .trainingwise-board-action,
-body.trainingwise-fullscreen
+body.trainingwise-stage
 .trainingwise-board-exit{
   display:flex;
   align-items:center;
@@ -2215,7 +2215,7 @@ body.trainingwise-fullscreen
 }
 
 
-body.trainingwise-fullscreen
+body.trainingwise-stage
 .trainingwise-board-exit{
   width:38px;
   height:38px;
@@ -2232,7 +2232,7 @@ body.trainingwise-fullscreen
  * depending on native Fullscreen API.
  */
 
-body.trainingwise-fullscreen{
+body.trainingwise-stage{
   position:fixed;
 
   inset:0;
@@ -2246,7 +2246,7 @@ body.trainingwise-fullscreen{
 }
 
 
-body.trainingwise-fullscreen
+body.trainingwise-stage
 .trainingwise-timer{
   width:100vw;
   height:100dvh;
@@ -2260,7 +2260,7 @@ body.trainingwise-fullscreen
  * but our tiny board controls survive.
  */
 
-body.trainingwise-fullscreen
+body.trainingwise-stage
 .trainingwise-board-controls{
   display:flex !important;
 }
@@ -2268,7 +2268,7 @@ body.trainingwise-fullscreen
 
 @media (max-width:640px){
 
-  body.trainingwise-fullscreen
+  body.trainingwise-stage
   .trainingwise-board-action{
     width:48px;
     height:48px;
@@ -2277,7 +2277,7 @@ body.trainingwise-fullscreen
 }
 
 /* Big Clock pre-start state */
-body.trainingwise-fullscreen
+body.trainingwise-stage
 .trainingwise-timer-phase.trainingwise-get-ready{
   color:#facc15;
   text-shadow:
@@ -2289,7 +2289,7 @@ body.trainingwise-fullscreen
    TRAININGWISE BIG CLOCK PRESTART COLORS
 ================================================== */
 
-body.trainingwise-fullscreen
+body.trainingwise-stage
 .trainingwise-timer.trainingwise-prestart
 .trainingwise-clock{
   color:#facc15 !important;
@@ -2299,7 +2299,7 @@ body.trainingwise-fullscreen
 }
 
 
-body.trainingwise-fullscreen
+body.trainingwise-stage
 .trainingwise-timer-phase.trainingwise-get-ready{
   color:#facc15 !important;
 
@@ -2309,14 +2309,14 @@ body.trainingwise-fullscreen
 
 
 /* Keep active WORK time green in board mode */
-body.trainingwise-fullscreen
+body.trainingwise-stage
 .trainingwise-timer.phase-work
 .trainingwise-clock{
   color:#22c55e !important;
 }
 
 /* RECOVER can keep its normal recovery color */
-body.trainingwise-fullscreen
+body.trainingwise-stage
 .trainingwise-timer.phase-rest
 .trainingwise-clock{
   color:inherit;
@@ -2337,7 +2337,7 @@ body.trainingwise-fullscreen
    * becomes the phone display layer.
    */
 
-  body.trainingwise-fullscreen {
+  body.trainingwise-stage {
     position: static !important;
 
     width: auto !important;
@@ -2348,7 +2348,7 @@ body.trainingwise-fullscreen
   }
 
 
-  body.trainingwise-fullscreen
+  body.trainingwise-stage
   .trainingwise-timer {
     position: fixed !important;
 
@@ -2398,7 +2398,7 @@ body.trainingwise-fullscreen
    * Board controls stay over the timer.
    */
 
-  body.trainingwise-fullscreen
+  body.trainingwise-stage
   .trainingwise-board-controls {
     position: fixed !important;
 
@@ -2422,7 +2422,7 @@ body.trainingwise-fullscreen
    * Active WORK time is always green.
    */
 
-  body.trainingwise-fullscreen
+  body.trainingwise-stage
   .trainingwise-timer.phase-work
   .trainingwise-clock {
     color: #22c55e !important;
@@ -2438,7 +2438,7 @@ body.trainingwise-fullscreen
    * remain yellow.
    */
 
-  body.trainingwise-fullscreen
+  body.trainingwise-stage
   .trainingwise-timer.trainingwise-prestart
   .trainingwise-clock {
     color: #facc15 !important;
@@ -2449,7 +2449,7 @@ body.trainingwise-fullscreen
    * Phone-sized clock.
    */
 
-  body.trainingwise-fullscreen
+  body.trainingwise-stage
   .trainingwise-clock {
     font-size:
       clamp(
@@ -2473,34 +2473,34 @@ body.trainingwise-fullscreen
    * hide the entire setup experience.
    */
 
-  body.trainingwise-fullscreen
+  body.trainingwise-stage
   .trainingwise-label,
 
-  body.trainingwise-fullscreen
+  body.trainingwise-stage
   .trainingwise-preset,
 
-  body.trainingwise-fullscreen
+  body.trainingwise-stage
   .trainingwise-content-picker,
 
-  body.trainingwise-fullscreen
+  body.trainingwise-stage
   .trainingwise-round-picker,
 
-  body.trainingwise-fullscreen
+  body.trainingwise-stage
   .trainingwise-view-controls,
 
-  body.trainingwise-fullscreen
+  body.trainingwise-stage
   .trainingwise-controls,
 
-  body.trainingwise-fullscreen
+  body.trainingwise-stage
   .trainingwise-session-message,
 
-  body.trainingwise-fullscreen
+  body.trainingwise-stage
   .trainingwise-music,
 
-  body.trainingwise-fullscreen
+  body.trainingwise-stage
   #trainingwiseOutput > p,
 
-  body.trainingwise-fullscreen
+  body.trainingwise-stage
   #trainingwiseOutput > h2{
     display:none !important;
   }
@@ -2510,8 +2510,8 @@ body.trainingwise-fullscreen
    * Remove normal page chrome/spacing.
    */
 
-  html:has(body.trainingwise-fullscreen),
-  body.trainingwise-fullscreen{
+  html:has(body.trainingwise-stage),
+  body.trainingwise-stage{
     margin:0 !important;
     padding:0 !important;
 
@@ -2524,8 +2524,8 @@ body.trainingwise-fullscreen
   }
 
 
-  body.trainingwise-fullscreen main,
-  body.trainingwise-fullscreen
+  body.trainingwise-stage main,
+  body.trainingwise-stage
   #trainingwiseOutput{
     position:static !important;
 
@@ -2545,7 +2545,7 @@ body.trainingwise-fullscreen
    * The timer itself becomes the phone screen.
    */
 
-  body.trainingwise-fullscreen
+  body.trainingwise-stage
   .trainingwise-timer{
     position:fixed !important;
 
@@ -2605,7 +2605,7 @@ body.trainingwise-fullscreen
    * Round / interval status.
    */
 
-  body.trainingwise-fullscreen
+  body.trainingwise-stage
   .trainingwise-timer-round{
     flex:0 0 auto !important;
 
@@ -2624,7 +2624,7 @@ body.trainingwise-fullscreen
    * WORK / RECOVER / GET READY.
    */
 
-  body.trainingwise-fullscreen
+  body.trainingwise-stage
   .trainingwise-timer-phase{
     flex:0 0 auto !important;
 
@@ -2643,7 +2643,7 @@ body.trainingwise-fullscreen
    * Exercise name.
    */
 
-  body.trainingwise-fullscreen
+  body.trainingwise-stage
   .trainingwise-movement-callout{
     flex:0 0 auto !important;
 
@@ -2666,7 +2666,7 @@ body.trainingwise-fullscreen
    * Main clock.
    */
 
-  body.trainingwise-fullscreen
+  body.trainingwise-stage
   .trainingwise-clock{
     flex:0 1 auto !important;
 
@@ -2694,7 +2694,7 @@ body.trainingwise-fullscreen
    * WORK remains green.
    */
 
-  body.trainingwise-fullscreen
+  body.trainingwise-stage
   .trainingwise-timer.phase-work
   .trainingwise-clock{
     color:#22c55e !important;
@@ -2709,11 +2709,11 @@ body.trainingwise-fullscreen
    * GET READY countdown remains yellow.
    */
 
-  body.trainingwise-fullscreen
+  body.trainingwise-stage
   .trainingwise-timer.trainingwise-prestart
   .trainingwise-clock,
 
-  body.trainingwise-fullscreen
+  body.trainingwise-stage
   .trainingwise-timer-phase.trainingwise-get-ready{
     color:#facc15 !important;
   }
@@ -2723,7 +2723,7 @@ body.trainingwise-fullscreen
    * Keep only tiny live board controls visible.
    */
 
-  body.trainingwise-fullscreen
+  body.trainingwise-stage
   .trainingwise-board-controls{
     display:flex !important;
 
@@ -2745,4 +2745,3 @@ body.trainingwise-fullscreen
   }
 
 }
-
