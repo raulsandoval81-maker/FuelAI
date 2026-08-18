@@ -2143,3 +2143,135 @@ body.trainingwise-fullscreen #trainingwiseOutput{
   }
 
 }
+
+
+
+/* ==================================================
+   TRAININGWISE BOARD CONTROLS
+================================================== */
+
+.trainingwise-board-controls{
+  display:none;
+}
+
+
+body.trainingwise-fullscreen
+.trainingwise-board-controls{
+  display:flex;
+
+  position:fixed;
+  z-index:999999;
+
+  right:
+    max(
+      14px,
+      env(safe-area-inset-right)
+    );
+
+  bottom:
+    max(
+      14px,
+      env(safe-area-inset-bottom)
+    );
+
+  gap:10px;
+
+  align-items:center;
+}
+
+
+body.trainingwise-fullscreen
+.trainingwise-board-action,
+body.trainingwise-fullscreen
+.trainingwise-board-exit{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  width:52px;
+  height:52px;
+
+  padding:0;
+
+  border-radius:50%;
+
+  border:
+    1px solid rgba(255,255,255,.16);
+
+  background:
+    rgba(2,6,23,.72);
+
+  color:#fff;
+
+  font-size:1.35rem;
+
+  font-weight:900;
+
+  backdrop-filter:
+    blur(8px);
+
+  -webkit-backdrop-filter:
+    blur(8px);
+}
+
+
+body.trainingwise-fullscreen
+.trainingwise-board-exit{
+  width:38px;
+  height:38px;
+
+  font-size:1rem;
+
+  opacity:.72;
+}
+
+
+/*
+ * Mobile browser fallback:
+ * use the visible viewport rather than
+ * depending on native Fullscreen API.
+ */
+
+body.trainingwise-fullscreen{
+  position:fixed;
+
+  inset:0;
+
+  width:100%;
+  height:100dvh;
+
+  overflow:hidden;
+
+  background:#020617;
+}
+
+
+body.trainingwise-fullscreen
+.trainingwise-timer{
+  width:100vw;
+  height:100dvh;
+
+  min-height:100dvh;
+}
+
+
+/*
+ * The setup controls stay hidden,
+ * but our tiny board controls survive.
+ */
+
+body.trainingwise-fullscreen
+.trainingwise-board-controls{
+  display:flex !important;
+}
+
+
+@media (max-width:640px){
+
+  body.trainingwise-fullscreen
+  .trainingwise-board-action{
+    width:48px;
+    height:48px;
+  }
+
+}

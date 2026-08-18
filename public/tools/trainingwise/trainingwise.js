@@ -467,6 +467,30 @@
       </div>
 
 
+      <div
+        class="trainingwise-board-controls"
+        data-board-mode="interval"
+      >
+        <button
+          type="button"
+          class="trainingwise-board-action"
+          data-trainingwise-board-action="interval"
+          aria-label="Start or pause workout"
+        >
+          ▶
+        </button>
+
+        <button
+          type="button"
+          class="trainingwise-board-exit"
+          data-trainingwise-board-exit
+          aria-label="Exit training board"
+        >
+          ×
+        </button>
+      </div>
+
+
       <div class="trainingwise-view-controls">
 
         ${renderTrainingwiseSoundControl()}
@@ -1709,6 +1733,197 @@
   );
 
 
+  function trainingwiseBoardIsOpen() {
+
+    return document.body
+      .classList
+      .contains(
+        "trainingwise-fullscreen"
+      );
+
+  }
+
+
+  function enterTrainingwiseBoard() {
+
+    document.body.classList.add(
+      "trainingwise-fullscreen"
+    );
+
+
+    /*
+     * Try native fullscreen where supported.
+     * iPhone/browser fallback still keeps
+     * the CSS training board active.
+     */
+    const timer =
+      document.querySelector(
+        ".trainingwise-timer"
+      );
+
+
+    try {
+
+      if (
+        timer &&
+        timer.requestFullscreen
+      ) {
+
+        timer
+          .requestFullscreen()
+          .catch(() => {});
+
+      }
+
+      else if (
+        timer &&
+        timer.webkitRequestFullscreen
+      ) {
+
+        timer.webkitRequestFullscreen();
+
+      }
+
+    } catch (_) {}
+
+    updateTrainingwiseBoardAction();
+
+  }
+
+
+  function exitTrainingwiseBoard() {
+
+    document.body.classList.remove(
+      "trainingwise-fullscreen"
+    );
+
+
+    try {
+
+      if (
+        document.fullscreenElement &&
+        document.exitFullscreen
+      ) {
+
+        document
+          .exitFullscreen()
+          .catch(() => {});
+
+      }
+
+      else if (
+        document.webkitFullscreenElement &&
+        document.webkitExitFullscreen
+      ) {
+
+        document.webkitExitFullscreen();
+
+      }
+
+    } catch (_) {}
+
+  }
+
+
+  function updateTrainingwiseBoardAction() {
+
+    document
+      .querySelectorAll(
+        "[data-trainingwise-board-action]"
+      )
+      .forEach(
+        button => {
+
+          const mode =
+            button.dataset
+              .trainingwiseBoardAction;
+
+
+          const state =
+            mode === "interval"
+              ? intervalState
+              : emomState;
+
+
+          if (!state) {
+            return;
+          }
+
+
+          button.textContent =
+            state.running
+              ? "⏸"
+              : "▶";
+
+          button.setAttribute(
+            "aria-label",
+            state.running
+              ? "Pause workout"
+              : (
+                  state.completed
+                    ? "Workout complete"
+                    : "Start or resume workout"
+                )
+          );
+
+          button.disabled =
+            Boolean(
+              state.completed
+            );
+
+        }
+      );
+
+  }
+
+
+  function runTrainingwiseBoardAction(
+    mode
+  ) {
+
+    const state =
+      mode === "interval"
+        ? intervalState
+        : emomState;
+
+
+    if (
+      !state ||
+      state.completed
+    ) {
+      return;
+    }
+
+
+    if (
+      mode === "interval"
+    ) {
+
+      if (state.running) {
+        pauseInterval();
+      } else {
+        startInterval();
+      }
+
+    }
+
+    else {
+
+      if (state.running) {
+        pauseEmom();
+      } else {
+        startEmom();
+      }
+
+    }
+
+
+    updateTrainingwiseBoardAction();
+
+  }
+
+
+
   function renderTrainingwiseSoundControl() {
 
     return `
@@ -1732,6 +1947,44 @@
 
   }
 
+
+
+  document.addEventListener(
+    "click",
+    event => {
+
+      const action =
+        event.target.closest(
+          "[data-trainingwise-board-action]"
+        );
+
+
+      if (action) {
+
+        runTrainingwiseBoardAction(
+          action.dataset
+            .trainingwiseBoardAction
+        );
+
+        return;
+
+      }
+
+
+      const exit =
+        event.target.closest(
+          "[data-trainingwise-board-exit]"
+        );
+
+
+      if (exit) {
+
+        exitTrainingwiseBoard();
+
+      }
+
+    }
+  );
 
 
   document.addEventListener(
@@ -1814,6 +2067,41 @@
 
   }
 
+
+
+  document.addEventListener(
+    "click",
+    event => {
+
+      const button =
+        event.target.closest(
+          "[data-trainingwise-full-clock]"
+        );
+
+
+      if (!button) {
+        return;
+      }
+
+
+      event.preventDefault();
+
+
+      if (
+        trainingwiseBoardIsOpen()
+      ) {
+
+        exitTrainingwiseBoard();
+
+      } else {
+
+        enterTrainingwiseBoard();
+
+      }
+
+    },
+    true
+  );
 
 
   function advanceInterval() {
@@ -2043,6 +2331,8 @@
 
     updateIntervalDisplay();
 
+    updateTrainingwiseBoardAction();
+
     speakIntervalExercise(
       "Go"
     );
@@ -2102,6 +2392,8 @@
       false;
 
     clearTimer();
+
+    updateTrainingwiseBoardAction();
 
 
     const timer =
@@ -3097,6 +3389,30 @@
       </div>
 
 
+      <div
+        class="trainingwise-board-controls"
+        data-board-mode="emom"
+      >
+        <button
+          type="button"
+          class="trainingwise-board-action"
+          data-trainingwise-board-action="emom"
+          aria-label="Start or pause workout"
+        >
+          ▶
+        </button>
+
+        <button
+          type="button"
+          class="trainingwise-board-exit"
+          data-trainingwise-board-exit
+          aria-label="Exit training board"
+        >
+          ×
+        </button>
+      </div>
+
+
       <div class="trainingwise-view-controls">
 
         ${renderTrainingwiseSoundControl()}
@@ -3440,6 +3756,8 @@
 
     updateEmomDisplay();
 
+    updateTrainingwiseBoardAction();
+
 
     const startBtn =
       document.getElementById(
@@ -3495,6 +3813,8 @@
       false;
 
     clearTimer();
+
+    updateTrainingwiseBoardAction();
 
 
     const timer =
