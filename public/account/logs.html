@@ -120,6 +120,7 @@
     }
 
     #todaySnapshot,
+    #yesterdaySnapshot,
     #logsContainer,
     #fullHistoryContainer{
       margin-top:12px;
@@ -137,6 +138,76 @@
       margin-top:14px;
       display:grid;
       gap:10px;
+    }
+
+    .trend-grid{
+      display:grid;
+      grid-template-columns:
+        repeat(2,minmax(0,1fr));
+      gap:12px;
+      margin-top:16px;
+    }
+
+    .trend-card{
+      padding:14px;
+      border-radius:14px;
+      border:
+        1px solid rgba(255,255,255,.07);
+      background:
+        rgba(255,255,255,.025);
+    }
+
+    .trend-card-head{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      margin-bottom:8px;
+    }
+
+    .trend-card-head strong{
+      font-size:.9rem;
+    }
+
+    .trend-card-head span{
+      color:#94a3b8;
+      font-size:.75rem;
+    }
+
+    .trend-chart{
+      display:block;
+      width:100%;
+      height:105px;
+      overflow:visible;
+    }
+
+    .trend-chart .trend-line{
+      fill:none;
+      stroke:currentColor;
+      stroke-width:2.5;
+      stroke-linecap:round;
+      stroke-linejoin:round;
+    }
+
+    .trend-chart .trend-grid-line{
+      stroke:rgba(255,255,255,.07);
+      stroke-width:1;
+    }
+
+    .trend-empty{
+      min-height:90px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:#64748b;
+      font-size:.82rem;
+      text-align:center;
+    }
+
+    @media(max-width:700px){
+      .trend-grid{
+        grid-template-columns:1fr;
+      }
     }
 
     .cycle-accordion{
@@ -180,6 +251,18 @@
       letter-spacing:.08em;
     }
 
+    .cycle-range{
+      color:#64748b !important;
+      font-size:.72rem !important;
+      font-weight:700 !important;
+      letter-spacing:.02em !important;
+      text-transform:none !important;
+    }
+
+    .history-range{
+      margin:6px 0 0;
+    }
+
     .cycle-chevron{
       color:#94a3b8;
       transition:transform .15s ease;
@@ -205,6 +288,20 @@
       display:grid;
       gap:10px;
       margin-top:14px;
+    }
+
+    .cycle-week-wrap{
+      display:grid;
+      gap:6px;
+    }
+
+    .cycle-week-label{
+      margin:0;
+      color:#94a3b8;
+      font-size:.75rem;
+      font-weight:900;
+      letter-spacing:.08em;
+      text-transform:uppercase;
     }
 
     .cycle-week{
@@ -235,6 +332,116 @@
       margin-top:4px;
       color:#64748b;
       font-size:.72rem;
+    }
+
+    .cycle-date-number{
+      font-size:.78rem !important;
+    }
+
+    .cycle-status-dot{
+      margin-top:5px !important;
+      font-size:1rem !important;
+      line-height:1;
+    }
+
+    .cycle-status-label{
+      display:block;
+      margin-top:4px;
+      font-size:.62rem;
+      color:#94a3b8;
+      line-height:1.1;
+    }
+
+    .status-on-track .cycle-status-dot,
+    .status-on-track{
+      color:#22c55e;
+    }
+
+    .status-mixed .cycle-status-dot,
+    .status-mixed{
+      color:#facc15;
+    }
+
+    .status-attention .cycle-status-dot,
+    .status-attention{
+      color:#ef4444;
+    }
+
+    .status-no-data .cycle-status-dot,
+    .status-no-data{
+      color:#64748b;
+    }
+
+    .cycle-day.status-on-track{
+      border-color:rgba(34,197,94,.34);
+    }
+
+    .cycle-day.status-mixed{
+      border-color:rgba(250,204,21,.30);
+    }
+
+    .cycle-day.status-attention{
+      border-color:rgba(239,68,68,.30);
+    }
+
+    .cycle-summary-wrap{
+      grid-column:1 / -1;
+    }
+
+    .cycle-week-seven{
+      grid-column:1 / -1;
+    }
+
+    .cycle-summary{
+      margin:14px 0 10px;
+      padding:12px 14px;
+
+      border-radius:12px;
+
+      border:
+        1px solid rgba(255,255,255,.07);
+
+      background:
+        rgba(255,255,255,.025);
+    }
+
+    .cycle-summary > strong{
+      display:block;
+      color:#f8fafc;
+      font-size:.95rem;
+    }
+
+    .cycle-sample-size{
+      display:block;
+      margin-top:4px;
+      color:#64748b;
+      font-size:.72rem;
+      font-weight:700;
+    }
+
+    .cycle-summary-stats{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px 16px;
+      margin-top:8px;
+      font-size:.76rem;
+      font-weight:800;
+    }
+
+    .status-on-track{
+      color:#22c55e;
+    }
+
+    .status-mixed{
+      color:#facc15;
+    }
+
+    .status-attention{
+      color:#ef4444;
+    }
+
+    .status-no-data{
+      color:#64748b;
     }
 
     .cycle-day.logged{
@@ -356,7 +563,7 @@
 
       <!-- TODAY -->
 
-      <article class="logs-card full">
+      <article class="logs-card">
 
         <p class="range-label">
           Today
@@ -371,6 +578,26 @@
           class="range-output"
         >
           Loading today...
+        </p>
+
+      </article>
+
+
+      <article class="logs-card">
+
+        <p class="range-label">
+          Yesterday
+        </p>
+
+        <h2>
+          Yesterday's Entry
+        </h2>
+
+        <p
+          id="yesterdaySnapshot"
+          class="range-output"
+        >
+          Loading yesterday...
         </p>
 
       </article>
@@ -403,6 +630,10 @@
             <span>
               <strong>7 Days</strong>
               <small>Action</small>
+              <small
+                id="cycle7Range"
+                class="cycle-range"
+              ></small>
             </span>
 
             <span class="cycle-chevron">
@@ -438,6 +669,10 @@
             <span>
               <strong>21 Days</strong>
               <small>Pattern</small>
+              <small
+                id="cycle21Range"
+                class="cycle-range"
+              ></small>
             </span>
 
             <span class="cycle-chevron">
@@ -468,6 +703,10 @@
             <span>
               <strong>42 Days</strong>
               <small>Progress</small>
+              <small
+                id="cycle42Range"
+                class="cycle-range"
+              ></small>
             </span>
 
             <span class="cycle-chevron">
@@ -506,21 +745,34 @@
           60 Days · History
         </h2>
 
+        <p
+          id="history60Range"
+          class="cycle-range history-range"
+        ></p>
+
         <p class="range-output">
-          Look back across your full 60-day FuelAI history.
+          See how your key FuelAI signals have moved over time.
         </p>
+
+        <div
+          id="historyTrendGrid"
+          class="trend-grid"
+        >
+          Loading 60-day trends...
+        </div>
 
         <button
           id="toggleFullHistoryBtn"
           class="secondary-btn"
           type="button"
         >
-          Loading Log History...
+          View Daily History ↓
         </button>
 
         <div
           id="fullHistoryContainer"
-          class="history-stack hidden"
+          class="history-stack"
+          hidden
         ></div>
 
       </article>
