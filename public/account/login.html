@@ -117,6 +117,107 @@
       }
 
     }
+    /* =========================================================
+   DESKTOP LOGIN LAYOUT
+   Mobile stays exactly as-is.
+   ========================================================= */
+
+@media (min-width:900px){
+
+  .scan-wrap{
+    width:min(1180px, calc(100% - 64px));
+    max-width:none;
+    margin:0 auto;
+    padding:48px 0 72px;
+  }
+
+  .scan-card{
+    width:100%;
+    max-width:none;
+    padding:2rem 2.25rem;
+  }
+
+  /*
+   * Welcome/header stays full width.
+   * Profiles + login use the desktop space below it.
+   */
+  .range-card{
+    margin-top:1.5rem;
+  }
+
+  /*
+   * Four profile types become a 2x2 grid
+   * instead of a narrow phone-style stack.
+   */
+  .welcome-stack{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:1rem;
+  }
+
+  .welcome-profile{
+    min-height:132px;
+    padding:1.15rem;
+  }
+
+  .welcome-profile-image{
+    width:104px;
+    height:104px;
+    flex-basis:104px;
+  }
+
+  /*
+   * Login area gets a proper desktop width.
+   */
+  .welcome-start{
+    max-width:680px;
+    margin:2rem auto 0;
+    padding-top:.5rem;
+  }
+
+  .wise-links{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:.9rem;
+  }
+
+  /*
+   * Email/password sit side by side.
+   */
+  .wise-links .goal-select{
+    width:100%;
+  }
+
+  /*
+   * Sign In / Create Account sit side by side.
+   */
+  .wise-links button{
+    width:100%;
+  }
+
+  #createAccountBtn{
+    margin-top:0;
+  }
+
+  #authMessage{
+    text-align:center;
+  }
+}
+
+
+/* Larger desktop / laptop screens */
+@media (min-width:1150px){
+
+  .scan-card{
+    padding:2.4rem 2.75rem;
+  }
+
+  .welcome-stack{
+    gap:1.2rem;
+  }
+
+  .welcome-profile{
+    padding:1.25rem;
+  }
+}
   </style>
 </head>
 
