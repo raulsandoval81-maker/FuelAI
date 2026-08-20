@@ -2744,4 +2744,1326 @@ body.trainingwise-stage
       ) !important;
   }
 
+}\n
+
+/* =========================
+   INTERVAL WORK WARNING
+   Final 10 seconds of work.
+========================= */
+
+.trainingwise-timer.phase-work.phase-ending {
+  border-color:
+    rgba(250,204,21,.95);
+
+  background:
+    rgba(250,204,21,.14);
+
+  box-shadow:
+    0 0 48px
+    rgba(250,204,21,.34);
+
+  animation:
+    trainingwiseWorkEndingFlash
+    .72s
+    ease-in-out
+    infinite;
+}
+
+
+.trainingwise-timer.phase-work.phase-ending
+.trainingwise-timer-phase,
+
+.trainingwise-timer.phase-work.phase-ending
+.trainingwise-clock {
+
+  color:
+    #facc15;
+
+}
+
+
+.trainingwise-timer.phase-work.phase-ending
+.trainingwise-clock {
+
+  text-shadow:
+    0 0 32px
+    rgba(250,204,21,.48);
+
+}
+
+
+@keyframes trainingwiseWorkEndingFlash {
+
+  0%,
+  100% {
+
+    background:
+      rgba(250,204,21,.09);
+
+    box-shadow:
+      0 0 36px
+      rgba(250,204,21,.24);
+
+  }
+
+
+  50% {
+
+    background:
+      rgba(250,204,21,.28);
+
+    box-shadow:
+      0 0 58px
+      rgba(250,204,21,.48);
+
+  }
+
+}
+
+
+/* ==================================================
+   TRAININGWISE STAGE — OUTER STATUS RIM
+
+   Only visible on the large training board.
+   ================================================== */
+
+body.trainingwise-stage::before {
+
+  content:"";
+
+  position:fixed;
+
+  inset:0;
+
+  z-index:9998;
+
+  pointer-events:none;
+
+  border:
+    6px solid
+    transparent;
+
+  box-shadow:
+    inset 0 0 34px
+    transparent;
+
+  transition:
+    border-color .22s ease,
+    box-shadow .22s ease;
+
+}
+
+
+/* WORK */
+
+body.trainingwise-stage.trainingwise-rim-work::before {
+
+  border-color:
+    rgba(34,197,94,.88);
+
+  box-shadow:
+    inset 0 0 38px
+    rgba(34,197,94,.20);
+
+}
+
+
+/* RECOVER / ROUND REST */
+
+body.trainingwise-stage.trainingwise-rim-rest::before {
+
+  border-color:
+    rgba(56,189,248,.90);
+
+  box-shadow:
+    inset 0 0 38px
+    rgba(56,189,248,.22);
+
+}
+
+
+/* FINAL 10 SECONDS */
+
+body.trainingwise-stage.trainingwise-rim-ending::before {
+
+  border-color:
+    rgba(250,204,21,1);
+
+  box-shadow:
+    inset 0 0 50px
+    rgba(250,204,21,.34);
+
+  animation:
+    trainingwiseStageRimWarning
+    .72s
+    ease-in-out
+    infinite;
+
+}
+
+
+@keyframes trainingwiseStageRimWarning {
+
+  0%,
+  100% {
+
+    border-color:
+      rgba(250,204,21,.70);
+
+    box-shadow:
+      inset 0 0 34px
+      rgba(250,204,21,.20);
+
+  }
+
+
+  50% {
+
+    border-color:
+      rgba(250,204,21,1);
+
+    box-shadow:
+      inset 0 0 68px
+      rgba(250,204,21,.48);
+
+  }
+
+}
+
+
+@media (max-width:600px) {
+
+  body.trainingwise-stage::before {
+
+    border-width:
+      4px;
+
+  }
+
+}
+
+
+@media (prefers-reduced-motion: reduce) {
+
+  .trainingwise-timer.phase-work.phase-ending,
+
+  body.trainingwise-stage.trainingwise-rim-ending::before {
+
+    animation:none;
+
+  }
+
+
+  .trainingwise-timer.phase-work.phase-ending {
+
+    background:
+      rgba(250,204,21,.20);
+
+  }
+
+}
+
+
+/* ==================================================
+   TRAININGWISE — SESSION COMPLETE
+   ================================================== */
+
+body.trainingwise-stage.trainingwise-rim-complete::before {
+
+  border-color:
+    rgba(250,204,21,.98);
+
+  box-shadow:
+    inset 0 0 60px
+    rgba(250,204,21,.34);
+
+}
+
+
+.trainingwise-celebration {
+
+  position:
+    fixed;
+
+  inset:
+    0;
+
+  z-index:
+    10050;
+
+  display:
+    grid;
+
+  place-items:
+    center;
+
+  overflow:
+    hidden;
+
+  pointer-events:
+    none;
+
+  background:
+    rgba(2,6,23,.64);
+
+  backdrop-filter:
+    blur(3px);
+
+  animation:
+    trainingwiseCelebrationIn
+    .25s
+    ease-out
+    both;
+
+}
+
+
+.trainingwise-celebration.is-leaving {
+
+  animation:
+    trainingwiseCelebrationOut
+    .55s
+    ease-in
+    forwards;
+
+}
+
+
+.trainingwise-celebration-copy {
+
+  position:
+    relative;
+
+  z-index:
+    2;
+
+  display:
+    grid;
+
+  gap:
+    12px;
+
+  padding:
+    28px;
+
+  text-align:
+    center;
+
+}
+
+
+.trainingwise-celebration-copy strong {
+
+  color:
+    #facc15;
+
+  font-size:
+    clamp(2.2rem,8vw,5.4rem);
+
+  font-weight:
+    1000;
+
+  line-height:
+    .95;
+
+  letter-spacing:
+    .035em;
+
+  text-shadow:
+    0 0 34px
+    rgba(250,204,21,.38);
+
+}
+
+
+.trainingwise-celebration-copy span {
+
+  color:
+    #ffffff;
+
+  font-size:
+    clamp(1rem,3vw,1.65rem);
+
+  font-weight:
+    900;
+
+  letter-spacing:
+    .04em;
+
+}
+
+
+.trainingwise-celebration-burst {
+
+  position:
+    absolute;
+
+  inset:
+    0;
+
+  pointer-events:
+    none;
+
+}
+
+
+.trainingwise-celebration-burst span {
+
+  --size:
+    8px;
+
+  position:
+    absolute;
+
+  left:
+    var(--x);
+
+  top:
+    -20px;
+
+  width:
+    var(--size);
+
+  height:
+    calc(var(--size) * 1.8);
+
+  border-radius:
+    3px;
+
+  background:
+    hsl(
+      calc(var(--i) * 37deg),
+      90%,
+      62%
+    );
+
+  opacity:
+    0;
+
+  animation:
+    trainingwiseConfettiFall
+    1.9s
+    var(--delay)
+    cubic-bezier(.2,.7,.3,1)
+    forwards;
+
+}
+
+
+@keyframes trainingwiseConfettiFall {
+
+  0% {
+
+    opacity:
+      0;
+
+    transform:
+      translate3d(
+        0,
+        -10vh,
+        0
+      )
+      rotate(0deg);
+
+  }
+
+
+  10% {
+
+    opacity:
+      1;
+
+  }
+
+
+  100% {
+
+    opacity:
+      0;
+
+    transform:
+      translate3d(
+        var(--drift),
+        105vh,
+        0
+      )
+      rotate(720deg);
+
+  }
+
+}
+
+
+@keyframes trainingwiseCelebrationIn {
+
+  from {
+    opacity:0;
+  }
+
+  to {
+    opacity:1;
+  }
+
+}
+
+
+@keyframes trainingwiseCelebrationOut {
+
+  from {
+    opacity:1;
+  }
+
+  to {
+    opacity:0;
+  }
+
+}
+
+
+@media (prefers-reduced-motion: reduce) {
+
+  .trainingwise-celebration-burst {
+    display:none;
+  }
+
+  .trainingwise-celebration,
+  .trainingwise-celebration.is-leaving {
+    animation:none;
+  }
+
+}
+
+
+/* ==================================================
+   TRAININGWISE BIG CLOCK — VISIBLE STATUS FRAME
+
+   Expanded clock gets its own physical rim.
+   This is intentionally stronger than normal view.
+   ================================================== */
+
+body.trainingwise-stage
+.trainingwise-timer {
+
+  position:
+    relative;
+
+}
+
+
+body.trainingwise-stage
+.trainingwise-timer::after,
+
+.trainingwise-timer:fullscreen::after,
+
+.trainingwise-timer:-webkit-full-screen::after {
+
+  content:"";
+
+  position:
+    absolute;
+
+  inset:
+    0;
+
+  z-index:
+    50;
+
+  pointer-events:
+    none;
+
+  border:
+    14px solid
+    transparent;
+
+  border-radius:
+    inherit;
+
+  transition:
+    border-color .15s ease,
+    box-shadow .15s ease;
+
+}
+
+
+/* BIG CLOCK — WORK */
+
+body.trainingwise-stage
+.trainingwise-timer.phase-work::after,
+
+.trainingwise-timer.phase-work:fullscreen::after,
+
+.trainingwise-timer.phase-work:-webkit-full-screen::after {
+
+  border-color:
+    rgba(34,197,94,.88);
+
+  box-shadow:
+    inset 0 0 52px
+    rgba(34,197,94,.24);
+
+}
+
+
+/* BIG CLOCK — RECOVER / ROUND REST */
+
+body.trainingwise-stage
+.trainingwise-timer.phase-rest::after,
+
+.trainingwise-timer.phase-rest:fullscreen::after,
+
+.trainingwise-timer.phase-rest:-webkit-full-screen::after {
+
+  border-color:
+    rgba(56,189,248,.90);
+
+  box-shadow:
+    inset 0 0 52px
+    rgba(56,189,248,.26);
+
+}
+
+
+/* ==================================================
+   FINAL 10 — YELLOW TAKES FULL CONTROL
+
+   Important:
+   this deliberately overrides green WORK styling.
+   ================================================== */
+
+body.trainingwise-stage
+.trainingwise-timer.phase-work.phase-ending,
+
+.trainingwise-timer.phase-work.phase-ending:fullscreen,
+
+.trainingwise-timer.phase-work.phase-ending:-webkit-full-screen {
+
+  border-color:
+    rgba(250,204,21,.98) !important;
+
+  background:
+    rgba(250,204,21,.18) !important;
+
+  box-shadow:
+    inset 0 0 70px
+    rgba(250,204,21,.20),
+    0 0 50px
+    rgba(250,204,21,.30) !important;
+
+}
+
+
+body.trainingwise-stage
+.trainingwise-timer.phase-work.phase-ending
+.trainingwise-timer-phase,
+
+body.trainingwise-stage
+.trainingwise-timer.phase-work.phase-ending
+.trainingwise-clock,
+
+.trainingwise-timer.phase-work.phase-ending:fullscreen
+.trainingwise-timer-phase,
+
+.trainingwise-timer.phase-work.phase-ending:fullscreen
+.trainingwise-clock {
+
+  color:
+    #facc15 !important;
+
+}
+
+
+body.trainingwise-stage
+.trainingwise-timer.phase-work.phase-ending::after,
+
+.trainingwise-timer.phase-work.phase-ending:fullscreen::after,
+
+.trainingwise-timer.phase-work.phase-ending:-webkit-full-screen::after {
+
+  border-color:
+    rgba(250,204,21,1);
+
+  box-shadow:
+    inset 0 0 72px
+    rgba(250,204,21,.38);
+
+  animation:
+    trainingwiseBigClockYellow
+    .68s
+    ease-in-out
+    infinite;
+
+}
+
+
+@keyframes trainingwiseBigClockYellow {
+
+  0%,
+  100% {
+
+    border-color:
+      rgba(250,204,21,.72);
+
+    box-shadow:
+      inset 0 0 46px
+      rgba(250,204,21,.22);
+
+  }
+
+
+  50% {
+
+    border-color:
+      rgba(250,204,21,1);
+
+    box-shadow:
+      inset 0 0 86px
+      rgba(250,204,21,.50);
+
+  }
+
+}
+
+
+/* BIG CLOCK — COMPLETE */
+
+body.trainingwise-stage
+.trainingwise-timer.phase-complete::after,
+
+.trainingwise-timer.phase-complete:fullscreen::after,
+
+.trainingwise-timer.phase-complete:-webkit-full-screen::after {
+
+  border-color:
+    rgba(250,204,21,.96);
+
+  box-shadow:
+    inset 0 0 70px
+    rgba(250,204,21,.34);
+
+}
+
+
+/* MOBILE — keep frame controlled */
+
+@media (max-width:600px) {
+
+  body.trainingwise-stage
+  .trainingwise-timer::after,
+
+  .trainingwise-timer:fullscreen::after,
+
+  .trainingwise-timer:-webkit-full-screen::after {
+
+    border-width:
+      5px;
+
+  }
+
+}
+
+
+/* Reduced motion still shows state */
+
+@media (prefers-reduced-motion: reduce) {
+
+  body.trainingwise-stage
+  .trainingwise-timer.phase-work.phase-ending::after,
+
+  .trainingwise-timer.phase-work.phase-ending:fullscreen::after {
+
+    animation:
+      none;
+
+  }
+
+}
+
+
+/* ==================================================
+   TRAININGWISE BIG CLOCK — AUTHORITATIVE STATUS RIM
+
+   The stage timer itself covers the whole viewport.
+   Therefore the rim must live INSIDE that surface,
+   not behind it on body::before.
+   ================================================== */
+
+
+/* --------------------------------------------------
+   WORK — GREEN
+-------------------------------------------------- */
+
+body.trainingwise-stage
+.trainingwise-timer.phase-work {
+
+  background:
+    #020617 !important;
+
+  box-shadow:
+    inset 0 0 0 16px
+    rgba(34,197,94,.82),
+
+    inset 0 0 64px
+    rgba(34,197,94,.20)
+
+    !important;
+
+}
+
+
+/* --------------------------------------------------
+   RECOVER / ROUND REST — BLUE
+-------------------------------------------------- */
+
+body.trainingwise-stage
+.trainingwise-timer.phase-rest {
+
+  background:
+    #020617 !important;
+
+  box-shadow:
+    inset 0 0 0 16px
+    rgba(56,189,248,.86),
+
+    inset 0 0 64px
+    rgba(56,189,248,.22)
+
+    !important;
+
+}
+
+
+/* --------------------------------------------------
+   FINAL 10 SECONDS — YELLOW
+   Yellow fully replaces green.
+-------------------------------------------------- */
+
+body.trainingwise-stage
+.trainingwise-timer.phase-work.phase-ending {
+
+  background:
+    rgba(40,34,6,.96)
+    !important;
+
+  box-shadow:
+    inset 0 0 0 18px
+    rgba(250,204,21,.98),
+
+    inset 0 0 42px
+    rgba(250,204,21,.14)
+
+    !important;
+
+  animation:
+    trainingwiseStageFinalTen
+    .70s
+    ease-in-out
+    infinite;
+
+}
+
+
+body.trainingwise-stage
+.trainingwise-timer.phase-work.phase-ending
+.trainingwise-timer-phase,
+
+body.trainingwise-stage
+.trainingwise-timer.phase-work.phase-ending
+.trainingwise-clock {
+
+  color:
+    #facc15
+    !important;
+
+  text-shadow:
+    0 0 34px
+    rgba(250,204,21,.50)
+    !important;
+
+}
+
+
+@keyframes trainingwiseStageFinalTen {
+
+  0%,
+  100% {
+
+    box-shadow:
+      inset 0 0 0 14px
+      rgba(250,204,21,.76),
+
+      inset 0 0 34px
+      rgba(250,204,21,.10);
+
+  }
+
+
+  50% {
+
+    box-shadow:
+      inset 0 0 0 20px
+      rgba(250,204,21,1),
+
+      inset 0 0 46px
+      rgba(250,204,21,.17);
+
+  }
+
+}
+
+
+/* --------------------------------------------------
+   SESSION COMPLETE — GOLD
+-------------------------------------------------- */
+
+body.trainingwise-stage
+.trainingwise-timer.phase-complete {
+
+  background:
+    #020617 !important;
+
+  box-shadow:
+    inset 0 0 0 18px
+    rgba(250,204,21,.94),
+
+    inset 0 0 90px
+    rgba(250,204,21,.30)
+
+    !important;
+
+}
+
+
+/* --------------------------------------------------
+   MOBILE
+   Same state language, much more subtle.
+-------------------------------------------------- */
+
+@media (max-width:600px) {
+
+  body.trainingwise-stage
+  .trainingwise-timer.phase-work {
+
+    box-shadow:
+      inset 0 0 0 5px
+      rgba(34,197,94,.72),
+
+      inset 0 0 28px
+      rgba(34,197,94,.14)
+
+      !important;
+
+  }
+
+
+  body.trainingwise-stage
+  .trainingwise-timer.phase-rest {
+
+    box-shadow:
+      inset 0 0 0 5px
+      rgba(56,189,248,.76),
+
+      inset 0 0 28px
+      rgba(56,189,248,.15)
+
+      !important;
+
+  }
+
+
+  body.trainingwise-stage
+  .trainingwise-timer.phase-work.phase-ending {
+
+    box-shadow:
+      inset 0 0 0 6px
+      rgba(250,204,21,.92),
+
+      inset 0 0 24px
+      rgba(250,204,21,.12)
+
+      !important;
+
+  }
+
+
+  body.trainingwise-stage
+  .trainingwise-timer.phase-complete {
+
+    box-shadow:
+      inset 0 0 0 6px
+      rgba(250,204,21,.88),
+
+      inset 0 0 36px
+      rgba(250,204,21,.20)
+
+      !important;
+
+  }
+
+}
+
+
+/* --------------------------------------------------
+   REDUCED MOTION
+-------------------------------------------------- */
+
+@media (prefers-reduced-motion:reduce) {
+
+  body.trainingwise-stage
+  .trainingwise-timer.phase-work.phase-ending {
+
+    animation:
+      none;
+
+  }
+
+}
+
+
+/* ==================================================
+   FINAL 10 — REFINED WARNING
+   Yellow is an EDGE cue only.
+   Keep the FuelAI board dark and restrained.
+   ================================================== */
+
+body.trainingwise-stage
+.trainingwise-timer.phase-work.phase-ending {
+
+  background:
+    #020617 !important;
+
+  box-shadow:
+    inset 0 0 0 14px
+    rgba(250,204,21,.72),
+
+    inset 0 0 22px
+    rgba(250,204,21,.06)
+
+    !important;
+
+}
+
+
+body.trainingwise-stage
+.trainingwise-timer.phase-work.phase-ending
+.trainingwise-timer-phase,
+
+body.trainingwise-stage
+.trainingwise-timer.phase-work.phase-ending
+.trainingwise-clock {
+
+  color:
+    #ffffff !important;
+
+  text-shadow:
+    none !important;
+
+}
+
+
+body.trainingwise-stage
+.trainingwise-timer.phase-work.phase-ending {
+
+  animation:
+    trainingwiseStageFinalTenSubtle
+    .85s
+    ease-in-out
+    infinite !important;
+
+}
+
+
+@keyframes trainingwiseStageFinalTenSubtle {
+
+  0%,
+  100% {
+
+    box-shadow:
+      inset 0 0 0 12px
+      rgba(250,204,21,.60),
+
+      inset 0 0 18px
+      rgba(250,204,21,.04);
+
+  }
+
+
+  50% {
+
+    box-shadow:
+      inset 0 0 0 16px
+      rgba(250,204,21,.88),
+
+      inset 0 0 26px
+      rgba(250,204,21,.08);
+
+  }
+
+}
+
+
+/* Mobile — just a yellow trace */
+
+@media (max-width:600px) {
+
+  body.trainingwise-stage
+  .trainingwise-timer.phase-work.phase-ending {
+
+    box-shadow:
+      inset 0 0 0 5px
+      rgba(250,204,21,.70),
+
+      inset 0 0 12px
+      rgba(250,204,21,.04)
+
+      !important;
+
+  }
+
+}
+
+
+/* ==================================================
+   TRAININGWISE RECOVERY FINAL FIVE — AUTHORITATIVE
+
+   Recovery stays blue.
+   During 5-4-3-2-1 only the outside rim pulses.
+   ================================================== */
+
+body.trainingwise-stage
+.trainingwise-timer.phase-rest.phase-recovery-ending {
+
+  background:
+    #020617 !important;
+
+  animation:
+    trainingwiseRecoveryFinalFive
+    .85s
+    ease-in-out
+    infinite
+    !important;
+
+}
+
+
+@keyframes trainingwiseRecoveryFinalFive {
+
+  0%,
+  100% {
+
+    box-shadow:
+      inset 0 0 0 12px
+      rgba(56,189,248,.62),
+
+      inset 0 0 18px
+      rgba(56,189,248,.04)
+
+      !important;
+
+  }
+
+
+  50% {
+
+    box-shadow:
+      inset 0 0 0 16px
+      rgba(56,189,248,.92),
+
+      inset 0 0 24px
+      rgba(56,189,248,.08)
+
+      !important;
+
+  }
+
+}
+
+
+/* -----------------------------------------------
+   MOBILE
+   Much smaller pulse.
+------------------------------------------------ */
+
+@media (max-width:600px) {
+
+  body.trainingwise-stage
+  .trainingwise-timer.phase-rest.phase-recovery-ending {
+
+    animation:
+      trainingwiseRecoveryFinalFiveMobile
+      .85s
+      ease-in-out
+      infinite
+      !important;
+
+  }
+
+
+  @keyframes trainingwiseRecoveryFinalFiveMobile {
+
+    0%,
+    100% {
+
+      box-shadow:
+        inset 0 0 0 4px
+        rgba(56,189,248,.58),
+
+        inset 0 0 8px
+        rgba(56,189,248,.03)
+
+        !important;
+
+    }
+
+
+    50% {
+
+      box-shadow:
+        inset 0 0 0 6px
+        rgba(56,189,248,.82),
+
+        inset 0 0 12px
+        rgba(56,189,248,.06)
+
+        !important;
+
+    }
+
+  }
+
+}
+
+
+/* -----------------------------------------------
+   REDUCED MOTION
+------------------------------------------------ */
+
+@media (prefers-reduced-motion:reduce) {
+
+  body.trainingwise-stage
+  .trainingwise-timer.phase-rest.phase-recovery-ending {
+
+    animation:
+      none
+      !important;
+
+  }
+
+}
+
+
+/* ==================================================
+   RECOVERY FINAL FIVE — VISIBLE RIM PULSE FIX
+
+   The steady Big Clock blue box-shadow uses !important,
+   so animate the independent ::after rim instead.
+   ================================================== */
+
+body.trainingwise-stage
+.trainingwise-timer.phase-rest.phase-recovery-ending::after {
+
+  border-color:
+    rgba(56,189,248,.72);
+
+  animation:
+    trainingwiseBlueRimFinalFive
+    .78s
+    ease-in-out
+    infinite;
+
+}
+
+
+@keyframes trainingwiseBlueRimFinalFive {
+
+  0%,
+  100% {
+
+    border-width:
+      10px;
+
+    border-color:
+      rgba(56,189,248,.55);
+
+    box-shadow:
+      inset 0 0 16px
+      rgba(56,189,248,.04);
+
+  }
+
+
+  50% {
+
+    border-width:
+      18px;
+
+    border-color:
+      rgba(56,189,248,1);
+
+    box-shadow:
+      inset 0 0 30px
+      rgba(56,189,248,.12);
+
+  }
+
+}
+
+
+/* Mobile stays restrained */
+
+@media (max-width:600px) {
+
+  body.trainingwise-stage
+  .trainingwise-timer.phase-rest.phase-recovery-ending::after {
+
+    animation:
+      trainingwiseBlueRimFinalFiveMobile
+      .78s
+      ease-in-out
+      infinite;
+
+  }
+
+
+  @keyframes trainingwiseBlueRimFinalFiveMobile {
+
+    0%,
+    100% {
+
+      border-width:
+        3px;
+
+      border-color:
+        rgba(56,189,248,.52);
+
+    }
+
+
+    50% {
+
+      border-width:
+        6px;
+
+      border-color:
+        rgba(56,189,248,.88);
+
+    }
+
+  }
+
+}
+
+
+@media (prefers-reduced-motion:reduce) {
+
+  body.trainingwise-stage
+  .trainingwise-timer.phase-rest.phase-recovery-ending::after {
+
+    animation:
+      none;
+
+    border-color:
+      rgba(56,189,248,.92);
+
+  }
+
 }

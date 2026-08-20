@@ -405,13 +405,6 @@
 
           <button
             type="button"
-            data-interval-count="6"
-          >
-            6
-          </button>
-
-          <button
-            type="button"
             data-interval-count="8"
             class="active"
           >
@@ -470,7 +463,7 @@
         </div>
 
         <small id="intervalDuration">
-          Total: 17:30
+          Total: 17:00
         </small>
 
       </div>
@@ -486,13 +479,6 @@
 
           <button
             type="button"
-            data-interval-round-rest="60"
-          >
-            60 sec
-          </button>
-
-          <button
-            type="button"
             data-interval-round-rest="90"
             class="active"
           >
@@ -504,6 +490,13 @@
             data-interval-round-rest="120"
           >
             120 sec
+          </button>
+
+          <button
+            type="button"
+            data-interval-round-rest="180"
+          >
+            180 sec
           </button>
 
         </div>
@@ -747,7 +740,8 @@
       timer.classList.remove(
         "phase-work",
         "phase-rest",
-        "phase-complete"
+        "phase-complete",
+        "phase-ending"
       );
 
 
@@ -757,6 +751,71 @@
           ? "phase-work"
           : "phase-rest"
       );
+
+
+      const endingWork =
+        intervalState.phase === "work" &&
+        intervalState.running &&
+        intervalState.remaining <= 10 &&
+        intervalState.remaining > 0;
+
+
+      if (endingWork) {
+
+        timer.classList.add(
+          "phase-ending"
+        );
+
+      }
+
+
+      /*
+       * BIG TRAINING BOARD OUTER RIM
+       *
+       * Green  = work
+       * Blue   = recovery / round rest
+       * Yellow = final 10 seconds of work
+       */
+
+      document.body.classList.remove(
+        "trainingwise-rim-work",
+        "trainingwise-rim-rest",
+        "trainingwise-rim-ending"
+      );
+
+
+      if (
+        !intervalState.completed
+      ) {
+
+        if (endingWork) {
+
+          document.body.classList.add(
+            "trainingwise-rim-ending"
+          );
+
+        }
+
+        else if (
+          intervalState.phase ===
+          "work"
+        ) {
+
+          document.body.classList.add(
+            "trainingwise-rim-work"
+          );
+
+        }
+
+        else {
+
+          document.body.classList.add(
+            "trainingwise-rim-rest"
+          );
+
+        }
+
+      }
 
     }
 
@@ -2351,14 +2410,67 @@
 
     /*
      * End of work segment.
-     * Every 45 seconds gets its
-     * normal 15-second recovery.
+     *
+     * Normal recovery belongs only
+     * BETWEEN intervals.
+     *
+     * After the final work interval
+     * of a round, skip interval recovery
+     * and go directly to round rest.
+     *
+     * After the final work interval
+     * of the final round, finish.
      */
 
     if (
       intervalState.phase ===
       "work"
     ) {
+
+      const roundComplete =
+        intervalState.currentInterval >=
+        intervalState.intervalsPerRound;
+
+
+      if (roundComplete) {
+
+        const sessionComplete =
+          intervalState.currentSessionRound >=
+          intervalState.sessionRounds;
+
+
+        if (sessionComplete) {
+
+          finishInterval();
+
+          return;
+
+        }
+
+
+        intervalState.inRoundRest =
+          true;
+
+        intervalState.phase =
+          "round-rest";
+
+        intervalState.remaining =
+          intervalState.roundRestSeconds;
+
+        playTrainingwiseBell(
+          "round"
+        );
+
+        speakTrainingwise(
+          "Round complete. Recover."
+        );
+
+        updateIntervalDisplay();
+
+        return;
+
+      }
+
 
       intervalState.phase =
         "rest";
@@ -2372,48 +2484,6 @@
 
       speakTrainingwise(
         "Recover."
-      );
-
-      updateIntervalDisplay();
-
-      return;
-
-    }
-
-
-    /*
-     * End of the eighth
-     * 15-second recovery.
-     */
-
-    if (
-      intervalState.currentInterval >=
-      intervalState.intervalsPerRound
-    ) {
-
-      if (
-        intervalState.currentSessionRound >=
-        intervalState.sessionRounds
-      ) {
-
-        finishInterval();
-
-        return;
-
-      }
-
-
-      intervalState.inRoundRest =
-        true;
-
-      intervalState.phase =
-        "round-rest";
-
-      intervalState.remaining =
-        intervalState.roundRestSeconds;
-
-      playTrainingwiseBell(
-        "round"
       );
 
       updateIntervalDisplay();
@@ -2463,9 +2533,114 @@
       1;
 
 
-    trainingwiseCountdownCue(
-      intervalState.remaining
-    );
+    /*
+     * FINAL 5 OF RECOVERY
+     *
+     * Keep recovery blue.
+     * Add a pulse state only during
+     * 5-4-3-2-1 before WORK resumes.
+     */
+
+    const intervalTimer =
+      document.querySelector(
+        ".trainingwise-timer"
+      );
+
+
+    const recoveryEnding =
+      (
+        intervalState.phase === "rest" ||
+        intervalState.phase === "round-rest"
+      ) &&
+      intervalState.remaining >= 1 &&
+      intervalState.remaining <= 5;
+
+
+    intervalTimer
+      ?.classList.toggle(
+        "phase-recovery-ending",
+        recoveryEnding
+      );
+
+
+    /*
+     * Halfway cue during WORK.
+     * Fires once at approximately
+     * the midpoint of each interval.
+     */
+
+    if (
+      intervalState.phase === "work" &&
+      intervalState.remaining ===
+        Math.floor(
+          intervalState.workSeconds / 2
+        )
+    ) {
+
+      speakTrainingwise(
+        "Halfway!"
+      );
+
+    }
+
+
+    /*
+     * Final 10 seconds of WORK.
+     * Fire this cue once as the clock reaches 10.
+     */
+
+    if (
+      intervalState.phase === "work" &&
+      intervalState.remaining === 10
+    ) {
+
+      speakTrainingwise(
+        "All you got!"
+      );
+
+    }
+
+
+    const isRecoveryPhase =
+      intervalState.phase === "rest" ||
+      intervalState.phase === "round-rest";
+
+
+    /*
+     * Recovery preparation cue.
+     * Fires once at 6 seconds,
+     * immediately before 5-4-3-2-1.
+     */
+
+    if (
+      isRecoveryPhase &&
+      intervalState.remaining === 6
+    ) {
+
+      speakTrainingwise(
+        "Get ready!"
+      );
+
+    }
+
+
+    if (
+      isRecoveryPhase &&
+      intervalState.remaining >= 1 &&
+      intervalState.remaining <= 5
+    ) {
+
+      trainingwiseCountdownCue(
+        intervalState.remaining
+      );
+
+      speakTrainingwise(
+        String(
+          intervalState.remaining
+        )
+      );
+
+    }
 
 
     if (
@@ -2655,6 +2830,102 @@
 
 
 
+  function showTrainingwiseCelebration() {
+
+    document
+      .querySelector(
+        ".trainingwise-celebration"
+      )
+      ?.remove();
+
+
+    const overlay =
+      document.createElement(
+        "div"
+      );
+
+    overlay.className =
+      "trainingwise-celebration";
+
+
+    overlay.innerHTML = `
+      <div class="trainingwise-celebration-burst"
+           aria-hidden="true">
+        ${Array.from(
+          { length: 28 },
+          (_, index) => `
+            <span
+              style="
+                --i:${index};
+                --x:${Math.round(
+                  Math.random() * 100
+                )}%;
+                --delay:${
+                  (
+                    Math.random() * .55
+                  ).toFixed(2)
+                }s;
+                --drift:${
+                  Math.round(
+                    (Math.random() * 160) - 80
+                  )
+                }px;
+              "
+            ></span>
+          `
+        ).join("")}
+      </div>
+
+      <div class="trainingwise-celebration-copy">
+
+        <strong>
+          SESSION COMPLETE
+        </strong>
+
+        <span>
+          You've Been Fueled by FuelAI™
+        </span>
+
+      </div>
+    `;
+
+
+    document.body.appendChild(
+      overlay
+    );
+
+
+    speakTrainingwise(
+      "Session complete."
+    );
+
+
+    window.setTimeout(
+      () => {
+
+        overlay.classList.add(
+          "is-leaving"
+        );
+
+      },
+      2200
+    );
+
+
+    window.setTimeout(
+      () => {
+
+        overlay.remove();
+
+      },
+      2800
+    );
+
+  }
+
+
+
+
   function finishInterval() {
 
     playTrainingwiseBell(
@@ -2679,6 +2950,9 @@
     intervalState.completed =
       true;
 
+    intervalState.remaining =
+      0;
+
 
     const timer =
       document.querySelector(
@@ -2696,10 +2970,17 @@
       );
 
 
+    const clock =
+      document.getElementById(
+        "intervalClock"
+      );
+
+
     timer?.classList.remove(
       "phase-work",
       "phase-rest",
-      "phase-paused"
+      "phase-paused",
+      "phase-ending"
     );
 
     timer?.classList.add(
@@ -2707,10 +2988,29 @@
     );
 
 
+    document.body.classList.remove(
+      "trainingwise-rim-work",
+      "trainingwise-rim-rest",
+      "trainingwise-rim-ending"
+    );
+
+    document.body.classList.add(
+      "trainingwise-rim-complete"
+    );
+
+
     if (phase) {
 
       phase.textContent =
-        "COMPLETE";
+        "SESSION COMPLETE";
+
+    }
+
+
+    if (clock) {
+
+      clock.textContent =
+        formatSeconds(0);
 
     }
 
@@ -2718,9 +3018,10 @@
     if (message) {
 
       message.textContent =
-        "Session complete.";
+        "You\'ve Been Fueled by FuelAI™";
 
     }
+
 
 
     document
@@ -2772,11 +3073,16 @@
 
         durationSeconds:
           (
-            (
-              intervalState.workSeconds +
-              intervalState.restSeconds
-            ) *
+            intervalState.workSeconds *
             intervalState.intervalsPerRound *
+            intervalState.sessionRounds
+          ) +
+          (
+            intervalState.restSeconds *
+            Math.max(
+              0,
+              intervalState.intervalsPerRound - 1
+            ) *
             intervalState.sessionRounds
           ) +
           (
@@ -2826,10 +3132,16 @@
 
     const roundSeconds =
       (
-        intervalState.workSeconds +
-        intervalState.restSeconds
-      ) *
-      intervalState.intervalsPerRound;
+        intervalState.workSeconds *
+        intervalState.intervalsPerRound
+      ) +
+      (
+        intervalState.restSeconds *
+        Math.max(
+          0,
+          intervalState.intervalsPerRound - 1
+        )
+      );
 
 
     const totalSeconds =
@@ -3005,7 +3317,7 @@
 
 
     if (
-      ![6, 8, 10, 12]
+      ![8, 10, 12]
         .includes(selected)
     ) {
       return;
@@ -3075,7 +3387,7 @@
 
 
     if (
-      ![60, 90, 120]
+      ![90, 120, 180]
         .includes(selected)
     ) {
       return;
