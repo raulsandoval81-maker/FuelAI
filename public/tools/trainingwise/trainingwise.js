@@ -398,6 +398,48 @@
       <div class="trainingwise-round-picker">
 
         <span class="trainingwise-label">
+          INTERVALS PER ROUND
+        </span>
+
+        <div class="trainingwise-round-options">
+
+          <button
+            type="button"
+            data-interval-count="6"
+          >
+            6
+          </button>
+
+          <button
+            type="button"
+            data-interval-count="8"
+            class="active"
+          >
+            8
+          </button>
+
+          <button
+            type="button"
+            data-interval-count="10"
+          >
+            10
+          </button>
+
+          <button
+            type="button"
+            data-interval-count="12"
+          >
+            12
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <div class="trainingwise-round-picker">
+
+        <span class="trainingwise-label">
           ROUNDS
         </span>
 
@@ -430,6 +472,41 @@
         <small id="intervalDuration">
           Total: 17:30
         </small>
+
+      </div>
+
+
+      <div class="trainingwise-round-picker">
+
+        <span class="trainingwise-label">
+          ROUND REST
+        </span>
+
+        <div class="trainingwise-round-options">
+
+          <button
+            type="button"
+            data-interval-round-rest="60"
+          >
+            60 sec
+          </button>
+
+          <button
+            type="button"
+            data-interval-round-rest="90"
+            class="active"
+          >
+            90 sec
+          </button>
+
+          <button
+            type="button"
+            data-interval-round-rest="120"
+          >
+            120 sec
+          </button>
+
+        </div>
 
       </div>
 
@@ -2911,6 +2988,131 @@
 
 
 
+  function setIntervalCount(
+    count
+  ) {
+
+    if (
+      !intervalState ||
+      intervalState.running
+    ) {
+      return;
+    }
+
+
+    const selected =
+      Number(count);
+
+
+    if (
+      ![6, 8, 10, 12]
+        .includes(selected)
+    ) {
+      return;
+    }
+
+
+    intervalState.intervalsPerRound =
+      selected;
+
+    intervalState.currentInterval =
+      1;
+
+    intervalState.currentSessionRound =
+      1;
+
+    intervalState.inRoundRest =
+      false;
+
+    intervalState.phase =
+      "work";
+
+    intervalState.remaining =
+      intervalState.workSeconds;
+
+
+    document
+      .querySelectorAll(
+        "[data-interval-count]"
+      )
+      .forEach(
+        button => {
+
+          button.classList.toggle(
+            "active",
+            Number(
+              button.dataset
+                .intervalCount
+            ) === selected
+          );
+
+        }
+      );
+
+
+    updateIntervalDuration();
+
+    updateIntervalDisplay();
+
+  }
+
+
+
+  function setIntervalRoundRest(
+    seconds
+  ) {
+
+    if (
+      !intervalState ||
+      intervalState.running
+    ) {
+      return;
+    }
+
+
+    const selected =
+      Number(seconds);
+
+
+    if (
+      ![60, 90, 120]
+        .includes(selected)
+    ) {
+      return;
+    }
+
+
+    intervalState.roundRestSeconds =
+      selected;
+
+
+    document
+      .querySelectorAll(
+        "[data-interval-round-rest]"
+      )
+      .forEach(
+        button => {
+
+          button.classList.toggle(
+            "active",
+            Number(
+              button.dataset
+                .intervalRoundRest
+            ) === selected
+          );
+
+        }
+      );
+
+
+    updateIntervalDuration();
+
+    updateIntervalDisplay();
+
+  }
+
+
+
   function setIntervalSessionRounds(
     rounds
   ) {
@@ -3239,6 +3441,52 @@
               setIntervalPreset(
                 button.dataset
                   .intervalPreset
+              );
+
+            }
+          );
+
+        }
+      );
+
+
+    document
+      .querySelectorAll(
+        "[data-interval-count]"
+      )
+      .forEach(
+        button => {
+
+          button.addEventListener(
+            "click",
+            () => {
+
+              setIntervalCount(
+                button.dataset
+                  .intervalCount
+              );
+
+            }
+          );
+
+        }
+      );
+
+
+    document
+      .querySelectorAll(
+        "[data-interval-round-rest]"
+      )
+      .forEach(
+        button => {
+
+          button.addEventListener(
+            "click",
+            () => {
+
+              setIntervalRoundRest(
+                button.dataset
+                  .intervalRoundRest
               );
 
             }
