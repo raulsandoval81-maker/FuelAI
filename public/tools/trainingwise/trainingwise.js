@@ -301,6 +301,9 @@
       completed:
         false,
 
+      hasStarted:
+        false,
+
       workoutMode:
         "timer",
 
@@ -1023,306 +1026,316 @@
 
 
     /*
-     * BIG CLOCK / TRAINING BOARD COUNTDOWN
-     *
-     * Do not depend on an overlay while the
-     * training board is active. Use the giant
-     * live clock itself for 5-4-3-2-1-GO.
+     * SESSION START ONLY:
+     * Give "Get ready" room to breathe
+     * before 5-4-3-2-1 begins.
      */
-    const boardCountdown =
-      document.body.classList.contains(
-        "trainingwise-stage"
-      ) ||
-      Boolean(
-        document.fullscreenElement ||
-        document.webkitFullscreenElement
-      );
+    window.setTimeout(
+      () => {
+
+        const boardCountdown =
+          document.body.classList.contains(
+            "trainingwise-stage"
+          ) ||
+          Boolean(
+            document.fullscreenElement ||
+            document.webkitFullscreenElement
+          );
 
 
-    if (boardCountdown) {
+        /*
+         * BIG CLOCK / TRAINING BOARD
+         */
+        if (boardCountdown) {
 
-      const clock =
-        document.querySelector(
-          ".trainingwise-timer .trainingwise-clock"
-        );
+          const clock =
+            document.querySelector(
+              ".trainingwise-timer .trainingwise-clock"
+            );
 
-      const phase =
-        document.querySelector(
-          ".trainingwise-timer .trainingwise-timer-phase"
-        );
+          const phase =
+            document.querySelector(
+              ".trainingwise-timer .trainingwise-timer-phase"
+            );
 
-
-      const timer =
-        document.querySelector(
-          ".trainingwise-timer"
-        );
-
-
-      timer?.classList.add(
-        "trainingwise-prestart"
-      );
-
-
-      if (phase) {
-
-        phase.textContent =
-          "GET READY";
-
-        phase.classList.add(
-          "trainingwise-get-ready"
-        );
-
-      }
-
-
-      let count = 5;
-
-
-      if (clock) {
-        clock.textContent =
-          String(count);
-      }
-
-
-      playTrainingwiseCountdownTick(
-        count
-      );
-
-
-      const countdown =
-        window.setInterval(
-          () => {
-
-            count -= 1;
-
-
-            if (count > 0) {
-
-              if (clock) {
-                clock.textContent =
-                  String(count);
-              }
-
-
-              playTrainingwiseCountdownTick(
-                count
-              );
-
-              speakTrainingwise(
-                String(count)
-              );
-
-              return;
-
-            }
-
-
-            window.clearInterval(
-              countdown
+          const timer =
+            document.querySelector(
+              ".trainingwise-timer"
             );
 
 
-            speakTrainingwise(
-              "Go!"
+          timer?.classList.add(
+            "trainingwise-prestart"
+          );
+
+
+          if (phase) {
+
+            phase.textContent =
+              "GET READY";
+
+            phase.classList.add(
+              "trainingwise-get-ready"
             );
 
-
-            timer?.classList.remove(
-              "trainingwise-prestart"
-            );
+          }
 
 
-            if (phase) {
-
-              phase.classList.remove(
-                "trainingwise-get-ready"
-              );
-
-              phase.textContent =
-                "GO";
-
-            }
+          let count =
+            5;
 
 
-            if (clock) {
+          if (clock) {
 
-              clock.textContent =
-                "GO";
+            clock.textContent =
+              String(count);
 
-            }
-
-
-            playTrainingwiseBell(
-              "transition"
-            );
+          }
 
 
-            window.setTimeout(
+          playTrainingwiseCountdownTick(
+            count
+          );
+
+          speakTrainingwise(
+            String(count)
+          );
+
+
+          const countdown =
+            window.setInterval(
               () => {
 
-                if (
-                  typeof onComplete ===
-                  "function"
-                ) {
+                count -= 1;
 
-                  onComplete();
+
+                if (count > 0) {
+
+                  if (clock) {
+
+                    clock.textContent =
+                      String(count);
+
+                  }
+
+
+                  playTrainingwiseCountdownTick(
+                    count
+                  );
+
+                  speakTrainingwise(
+                    String(count)
+                  );
+
+                  return;
 
                 }
 
+
+                window.clearInterval(
+                  countdown
+                );
+
+
+                speakTrainingwise(
+                  "Go!"
+                );
+
+
+                timer?.classList.remove(
+                  "trainingwise-prestart"
+                );
+
+
+                if (phase) {
+
+                  phase.classList.remove(
+                    "trainingwise-get-ready"
+                  );
+
+                  phase.textContent =
+                    "GO";
+
+                }
+
+
+                if (clock) {
+
+                  clock.textContent =
+                    "GO";
+
+                }
+
+
+                playTrainingwiseBell(
+                  "transition"
+                );
+
+
+                window.setTimeout(
+                  () => {
+
+                    if (
+                      typeof onComplete ===
+                      "function"
+                    ) {
+
+                      onComplete();
+
+                    }
+
+                  },
+                  450
+                );
+
               },
-              450
+              1000
             );
 
-          },
-          1000
+
+          return;
+
+        }
+
+
+        /*
+         * NORMAL SCREEN
+         */
+        const overlay =
+          document.createElement(
+            "div"
+          );
+
+
+        overlay.className =
+          "trainingwise-countdown-overlay";
+
+
+        overlay.innerHTML = `
+          <div class="trainingwise-countdown-card">
+
+            <span>
+              GET READY
+            </span>
+
+            <strong
+              id="trainingwiseCountdownNumber"
+            >
+              5
+            </strong>
+
+          </div>
+        `;
+
+
+        const countdownHost =
+          document.fullscreenElement ||
+          document.webkitFullscreenElement ||
+          document.body;
+
+
+        countdownHost.appendChild(
+          overlay
         );
 
 
-      return;
-
-    }
-
-
-    const overlay =
-      document.createElement(
-        "div"
-      );
+        let count =
+          5;
 
 
-    overlay.className =
-      "trainingwise-countdown-overlay";
-
-
-    overlay.innerHTML = `
-      <div class="trainingwise-countdown-card">
-
-        <span>
-          GET READY
-        </span>
-
-        <strong
-          id="trainingwiseCountdownNumber"
-        >
-          5
-        </strong>
-
-      </div>
-    `;
-
-
-    /*
-     * Mount the countdown inside the active
-     * training display when fullscreen/board
-     * mode is being used.
-     *
-     * Native fullscreen only renders the
-     * fullscreen element and its descendants.
-     */
-    const countdownHost =
-      document.fullscreenElement ||
-      document.webkitFullscreenElement ||
-      (
-        document.body.classList.contains(
-          "trainingwise-stage"
-        )
-          ? document.querySelector(
-              ".trainingwise-timer"
-            )
-          : null
-      ) ||
-      document.body;
-
-
-    countdownHost.appendChild(
-      overlay
-    );
-
-
-    let count =
-      5;
-
-
-    const number =
-      overlay.querySelector(
-        "#trainingwiseCountdownNumber"
-      );
-
-
-    playTrainingwiseCountdownTick(
-      5
-    );
-
-    speakTrainingwise(
-      "5"
-    );
-
-
-    const countdown =
-      window.setInterval(
-        () => {
-
-          count -=
-            1;
-
-
-          if (count > 0) {
-
-            if (number) {
-              number.textContent =
-                String(count);
-            }
-
-
-            playTrainingwiseCountdownTick(
-              count
-            );
-
-            return;
-          }
-
-
-          window.clearInterval(
-            countdown
+        const number =
+          overlay.querySelector(
+            "#trainingwiseCountdownNumber"
           );
 
 
-          if (number) {
-            number.textContent =
-              "GO";
-          }
+        playTrainingwiseCountdownTick(
+          count
+        );
+
+        speakTrainingwise(
+          String(count)
+        );
 
 
-          /*
-           * Existing bell system handles
-           * the GO cue.
-           */
-          playTrainingwiseBell(
-            "transition"
-          );
-
-
-          window.setTimeout(
+        const countdown =
+          window.setInterval(
             () => {
 
-              overlay.remove();
+              count -= 1;
 
 
-              if (
-                typeof onComplete ===
-                "function"
-              ) {
+              if (count > 0) {
 
-                onComplete();
+                if (number) {
+
+                  number.textContent =
+                    String(count);
+
+                }
+
+
+                playTrainingwiseCountdownTick(
+                  count
+                );
+
+                speakTrainingwise(
+                  String(count)
+                );
+
+                return;
 
               }
 
+
+              window.clearInterval(
+                countdown
+              );
+
+
+              if (number) {
+
+                number.textContent =
+                  "GO";
+
+              }
+
+
+              playTrainingwiseBell(
+                "transition"
+              );
+
+              speakTrainingwise(
+                "Go!"
+              );
+
+
+              window.setTimeout(
+                () => {
+
+                  overlay.remove();
+
+
+                  if (
+                    typeof onComplete ===
+                    "function"
+                  ) {
+
+                    onComplete();
+
+                  }
+
+                },
+                400
+              );
+
             },
-            400
+            1000
           );
 
-        },
-        1000
-      );
+      },
+      1000
+    );
 
   }
 
@@ -1362,23 +1375,9 @@
 
       playTrainingwiseTone(
         660,
-        .16,
+        8,
         0,
-        .18
-      );
-
-      playTrainingwiseTone(
-        880,
-        .18,
-        .19,
-        .19
-      );
-
-      playTrainingwiseTone(
-        1175,
-        .30,
-        .40,
-        .22
+        .11
       );
 
       return;
@@ -2405,6 +2404,144 @@
   );
 
 
+  function formatTrainingwiseBreakDuration(
+    seconds
+  ) {
+
+    const value =
+      Number(seconds) || 0;
+
+
+    if (
+      value > 0 &&
+      value % 60 === 0
+    ) {
+
+      const minutes =
+        value / 60;
+
+
+      return (
+        minutes === 1
+          ? "1 minute"
+          : `${minutes} minutes`
+      );
+
+    }
+
+
+    return `${value} seconds`;
+
+  }
+
+
+
+  function speakIntervalUpNext() {
+
+    if (!intervalState) {
+      return;
+    }
+
+
+    let nextIndex =
+      intervalState.movementIndex;
+
+
+    if (
+      intervalState.phase ===
+      "round-rest"
+    ) {
+
+      nextIndex =
+        0;
+
+    }
+
+    else {
+
+      nextIndex +=
+        1;
+
+    }
+
+
+    const exercise =
+      intervalState.workoutMode !==
+      "timer"
+        ? getTrainingwiseMovement(
+            intervalState,
+            nextIndex
+          )
+        : "";
+
+
+    if (exercise) {
+
+      speakTrainingwise(
+        `Next up. ${exercise}.`
+      );
+
+    } else {
+
+      speakTrainingwise(
+        "Next up."
+      );
+
+    }
+
+  }
+
+
+
+  function speakTrainingwiseRoundBreak(
+    seconds
+  ) {
+
+    const duration =
+      formatTrainingwiseBreakDuration(
+        seconds
+      );
+
+
+    speakTrainingwise(
+      "Stop."
+    );
+
+
+    /*
+     * Give STOP room to land.
+     */
+    window.setTimeout(
+      () => {
+
+        speakTrainingwise(
+          `Rest ${duration}.`
+        );
+
+      },
+      1500
+    );
+
+
+    /*
+     * Give the rest instruction room
+     * before the final coaching cue.
+     */
+    window.setTimeout(
+      () => {
+
+        speakTrainingwise(
+          "Use the break wisely."
+        );
+
+      },
+      3500
+    );
+
+  }
+
+
+
   function advanceInterval() {
 
     if (
@@ -2446,6 +2583,10 @@
       );
 
       updateIntervalDisplay();
+
+      speakTrainingwise(
+        "Start!"
+      );
 
       return;
 
@@ -2505,8 +2646,8 @@
           "round"
         );
 
-        speakTrainingwise(
-          "Round complete. Recover."
+        speakTrainingwiseRoundBreak(
+          intervalState.roundRestSeconds
         );
 
         updateIntervalDisplay();
@@ -2555,8 +2696,8 @@
 
     updateIntervalDisplay();
 
-    speakIntervalExercise(
-      "Work"
+    speakTrainingwise(
+      "Start!"
     );
 
   }
@@ -2661,9 +2802,7 @@
       intervalState.remaining === 6
     ) {
 
-      speakTrainingwise(
-        "Get ready!"
-      );
+      speakIntervalUpNext();
 
     }
 
@@ -2692,6 +2831,20 @@
       0
     ) {
 
+      /*
+       * Normal interval transition:
+       *
+       * WORK
+       *   -> STOP
+       *   -> 2 second pause
+       *   -> RECOVER
+       *
+       * Do not use this delay after the
+       * final interval of a set. That path
+       * moves directly into set-complete /
+       * round-rest handling.
+       */
+
       advanceInterval();
 
       return;
@@ -2718,20 +2871,41 @@
 
     getTrainingwiseAudioContext();
 
-    speakTrainingwise(
-      "Get ready."
-    );
+
+    /*
+     * Resume means continue immediately.
+     * Do not replay the opening countdown.
+     */
+    if (
+      intervalState.hasStarted
+    ) {
+
+      startIntervalImmediate(
+        true
+      );
+
+      return;
+
+    }
 
 
     runTrainingwiseStartCountdown(
-      startIntervalImmediate
+      () => {
+
+        startIntervalImmediate(
+          false
+        );
+
+      }
     );
 
   }
 
 
 
-  function startIntervalImmediate() {
+  function startIntervalImmediate(
+    isResume = false
+  ) {
 
     if (
       !intervalState ||
@@ -2745,14 +2919,49 @@
     intervalState.running =
       true;
 
+    intervalState.hasStarted =
+      true;
+
 
     updateIntervalDisplay();
 
     updateTrainingwiseBoardAction();
 
-    speakIntervalExercise(
-      "Work"
-    );
+
+    if (isResume) {
+
+      speakTrainingwise(
+        "Continue."
+      );
+
+    }
+
+    else {
+
+      /*
+       * Opening GO has already been spoken
+       * by the shared countdown.
+       * Do not stack another cue here.
+       */
+      const exercise =
+        intervalState.workoutMode !==
+        "timer"
+          ? getTrainingwiseMovement(
+              intervalState,
+              intervalState.movementIndex
+            )
+          : "";
+
+
+      if (exercise) {
+
+        speakTrainingwise(
+          exercise
+        );
+
+      }
+
+    }
 
 
     const startBtn =
@@ -2927,7 +3136,7 @@
         </strong>
 
         <span>
-          You've Been Fueled by FuelAI™
+          YOU'VE BEEN FUELED
         </span>
 
       </div>
@@ -2940,7 +3149,7 @@
 
 
     speakTrainingwise(
-      "Session complete."
+      "Session complete. You've been fueled."
     );
 
 
@@ -3020,6 +3229,12 @@
       );
 
 
+    const movement =
+      document.getElementById(
+        "intervalMovement"
+      );
+
+
     timer?.classList.remove(
       "phase-work",
       "phase-rest",
@@ -3059,10 +3274,22 @@
     }
 
 
+    if (movement) {
+
+      movement.textContent =
+        "YOU'VE BEEN FUELED";
+
+      movement.classList.remove(
+        "hidden"
+      );
+
+    }
+
+
     if (message) {
 
       message.textContent =
-        "You\'ve Been Fueled by FuelAI™";
+        "You've Been Fueled.";
 
     }
 
@@ -4433,6 +4660,10 @@
 
       updateEmomDisplay();
 
+      speakTrainingwise(
+        "Start!"
+      );
+
       return;
 
     }
@@ -4464,6 +4695,12 @@
 
       emomState.remaining =
         emomState.roundRestSeconds;
+
+
+      speakTrainingwiseRoundBreak(
+        emomState.roundRestSeconds
+      );
+
 
       playTrainingwiseBell(
         "round"
@@ -4547,7 +4784,7 @@
     ) {
 
       speakTrainingwise(
-        "3 more reps!"
+        "3 more good reps!"
       );
 
     }
@@ -4819,6 +5056,12 @@
       );
 
 
+    const movement =
+      document.getElementById(
+        "emomMovement"
+      );
+
+
     timer?.classList.remove(
       "phase-work",
       "phase-rest",
@@ -4848,10 +5091,22 @@
     }
 
 
+    if (movement) {
+
+      movement.textContent =
+        "YOU'VE BEEN FUELED";
+
+      movement.classList.remove(
+        "hidden"
+      );
+
+    }
+
+
     if (message) {
 
       message.textContent =
-        "You've Been Fueled by FuelAI™";
+        "YOU'VE BEEN FUELED";
 
     }
 
@@ -10404,7 +10659,7 @@
     if (message) {
 
       message.textContent =
-        "You've Been Fueled by FuelAI™";
+        "YOU'VE BEEN FUELED";
 
     }
 
