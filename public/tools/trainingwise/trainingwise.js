@@ -1017,6 +1017,11 @@
     }
 
 
+    speakTrainingwise(
+      "Get ready."
+    );
+
+
     /*
      * BIG CLOCK / TRAINING BOARD COUNTDOWN
      *
@@ -1103,6 +1108,10 @@
                 count
               );
 
+              speakTrainingwise(
+                String(count)
+              );
+
               return;
 
             }
@@ -1110,6 +1119,11 @@
 
             window.clearInterval(
               countdown
+            );
+
+
+            speakTrainingwise(
+              "Go!"
             );
 
 
@@ -1150,7 +1164,9 @@
                   typeof onComplete ===
                   "function"
                 ) {
+
                   onComplete();
+
                 }
 
               },
@@ -1234,6 +1250,10 @@
 
     playTrainingwiseCountdownTick(
       5
+    );
+
+    speakTrainingwise(
+      "5"
     );
 
 
@@ -3387,7 +3407,7 @@
 
 
     if (
-      ![90, 120, 180]
+      ![60, 120, 180]
         .includes(selected)
     ) {
       return;
@@ -3952,6 +3972,13 @@
 
           <button
             type="button"
+            data-emom-minutes="4"
+          >
+            4
+          </button>
+
+          <button
+            type="button"
             data-emom-minutes="6"
           >
             6
@@ -3985,15 +4012,7 @@
           >
             15
           </button>
-
-          <button
-            type="button"
-            data-emom-minutes="20"
-          >
-            20
-          </button>
-
-        </div>
+          </div>
 
       </div>
 
@@ -4033,6 +4052,41 @@
         <small id="emomDuration">
           Total: 22:00
         </small>
+
+      </div>
+
+
+      <div class="trainingwise-round-picker">
+
+        <span class="trainingwise-label">
+          ROUND REST
+        </span>
+
+        <div class="trainingwise-round-options">
+
+          <button
+            type="button"
+            data-emom-round-rest="60"
+          >
+            60 sec
+          </button>
+
+          <button
+            type="button"
+            data-emom-round-rest="120"
+            class="active"
+          >
+            120 sec
+          </button>
+
+          <button
+            type="button"
+            data-emom-round-rest="180"
+          >
+            180 sec
+          </button>
+
+        </div>
 
       </div>
 
@@ -4250,7 +4304,9 @@
       timer.classList.remove(
         "phase-work",
         "phase-rest",
-        "phase-complete"
+        "phase-complete",
+        "phase-ending",
+        "phase-recovery-ending"
       );
 
 
@@ -4259,6 +4315,46 @@
           ? "phase-rest"
           : "phase-work"
       );
+
+
+      /*
+       * EMOM active minute:
+       * final 10 seconds gets the same
+       * yellow warning state as Interval.
+       */
+
+      if (
+        !emomState.inRoundRest &&
+        emomState.running &&
+        emomState.remaining <= 10 &&
+        emomState.remaining > 0
+      ) {
+
+        timer.classList.add(
+          "phase-ending"
+        );
+
+      }
+
+
+      /*
+       * EMOM round rest:
+       * final 5 seconds gets the same
+       * blue recovery pulse.
+       */
+
+      if (
+        emomState.inRoundRest &&
+        emomState.running &&
+        emomState.remaining <= 5 &&
+        emomState.remaining > 0
+      ) {
+
+        timer.classList.add(
+          "phase-recovery-ending"
+        );
+
+      }
 
     }
 
@@ -4295,6 +4391,17 @@
 
       emomState.remaining =
         60;
+
+
+      document
+        .querySelector(
+          ".trainingwise-timer"
+        )
+        ?.classList.remove(
+          "phase-ending",
+          "phase-recovery-ending"
+        );
+
 
       playTrainingwiseBell(
         "round"
@@ -4345,11 +4452,27 @@
     }
 
 
+    speakTrainingwise(
+      "Switch!"
+    );
+
+
     emomState.currentMinute +=
       1;
 
     emomState.remaining =
       60;
+
+
+    document
+      .querySelector(
+        ".trainingwise-timer"
+      )
+      ?.classList.remove(
+        "phase-ending",
+        "phase-recovery-ending"
+      );
+
 
     playTrainingwiseBell(
       "transition"
@@ -4375,9 +4498,73 @@
       1;
 
 
-    trainingwiseCountdownCue(
-      emomState.remaining
-    );
+    /*
+     * ACTIVE EMOM MINUTE
+     *
+     * 30 = halfway
+     * 10 = all you got
+     */
+
+    if (
+      !emomState.inRoundRest &&
+      emomState.remaining === 30
+    ) {
+
+      speakTrainingwise(
+        "Halfway!"
+      );
+
+    }
+
+
+    if (
+      !emomState.inRoundRest &&
+      emomState.remaining === 10
+    ) {
+
+      speakTrainingwise(
+        "3 more reps!"
+      );
+
+    }
+
+
+    /*
+     * ROUND REST
+     *
+     * 6 = get ready
+     * 5-4-3-2-1 = countdown
+     */
+
+    if (
+      emomState.inRoundRest &&
+      emomState.remaining === 6
+    ) {
+
+      speakTrainingwise(
+        "Get ready!"
+      );
+
+    }
+
+
+    if (
+      emomState.inRoundRest &&
+      emomState.remaining >= 1 &&
+      emomState.remaining <= 5
+    ) {
+
+      trainingwiseCountdownCue(
+        emomState.remaining
+      );
+
+      speakTrainingwise(
+        String(
+          emomState.remaining
+        )
+      );
+
+    }
 
 
     if (
@@ -4583,6 +4770,9 @@
     emomState.completed =
       true;
 
+    emomState.remaining =
+      0;
+
 
     const timer =
       document.querySelector(
@@ -4599,11 +4789,18 @@
         "emomMessage"
       );
 
+    const clock =
+      document.getElementById(
+        "emomClock"
+      );
+
 
     timer?.classList.remove(
       "phase-work",
       "phase-rest",
-      "phase-paused"
+      "phase-paused",
+      "phase-ending",
+      "phase-recovery-ending"
     );
 
     timer?.classList.add(
@@ -4614,7 +4811,15 @@
     if (phase) {
 
       phase.textContent =
-        "COMPLETE";
+        "SESSION COMPLETE";
+
+    }
+
+
+    if (clock) {
+
+      clock.textContent =
+        formatSeconds(0);
 
     }
 
@@ -4622,7 +4827,22 @@
     if (message) {
 
       message.textContent =
-        "Session complete.";
+        "You've Been Fueled by FuelAI™";
+
+    }
+
+
+    /*
+     * Use the shared TrainingWise
+     * completion celebration.
+     */
+
+    if (
+      typeof showTrainingwiseCelebration ===
+      "function"
+    ) {
+
+      showTrainingwiseCelebration();
 
     }
 
@@ -4768,7 +4988,7 @@
 
 
     if (
-      ![6, 8, 10, 12, 15, 20]
+      ![4, 6, 8, 10, 12, 15]
         .includes(selected)
     ) {
       return;
@@ -4916,6 +5136,62 @@
 
 
 
+  function setEmomRoundRest(
+    seconds
+  ) {
+
+    if (
+      !emomState ||
+      emomState.running
+    ) {
+      return;
+    }
+
+
+    const selected =
+      Number(seconds);
+
+
+    if (
+      ![60, 120, 180]
+        .includes(selected)
+    ) {
+      return;
+    }
+
+
+    emomState.roundRestSeconds =
+      selected;
+
+
+    document
+      .querySelectorAll(
+        "[data-emom-round-rest]"
+      )
+      .forEach(
+        button => {
+
+          button.classList.toggle(
+            "active",
+            Number(
+              button.dataset
+                .emomRoundRest
+            ) === selected
+          );
+
+        }
+      );
+
+
+    updateEmomDuration();
+
+    updateEmomDisplay();
+
+  }
+
+
+
+
   function wireEmomControls() {
 
     wireTrainingwiseSessionContent(
@@ -4937,6 +5213,29 @@
               setEmomMinutes(
                 button.dataset
                   .emomMinutes
+              );
+
+            }
+          );
+
+        }
+      );
+
+
+    document
+      .querySelectorAll(
+        "[data-emom-round-rest]"
+      )
+      .forEach(
+        button => {
+
+          button.addEventListener(
+            "click",
+            () => {
+
+              setEmomRoundRest(
+                button.dataset
+                  .emomRoundRest
               );
 
             }
@@ -8962,6 +9261,29 @@
     );
 
 
+    const nextMove =
+      selfGuidedState
+        .recoveryMoves[
+          selfGuidedState.currentMove
+        ];
+
+
+    if (nextMove?.name) {
+
+      const finalMove =
+        selfGuidedState.currentMove ===
+        lastIndex;
+
+
+      speakTrainingwise(
+        finalMove
+          ? `Final movement. ${nextMove.name}.`
+          : `Next. ${nextMove.name}.`
+      );
+
+    }
+
+
     updateRecoveryMove();
 
   }
@@ -8987,6 +9309,18 @@
     trainingwiseCountdownCue(
       selfGuidedState.moveRemaining
     );
+
+
+    if (
+      selfGuidedState.moveRemaining ===
+      5
+    ) {
+
+      speakTrainingwise(
+        "Finish easy."
+      );
+
+    }
 
 
     if (
@@ -9065,6 +9399,78 @@
       1;
 
 
+    /*
+     * SELF-GUIDED COACHING
+     *
+     * Conditioning and Strength use sparse
+     * session-level cues.
+     *
+     * Recovery is coached by movement changes
+     * instead of generic elapsed-time chatter.
+     */
+
+    const halfwayPoint =
+      Math.floor(
+        selfGuidedState.totalSeconds / 2
+      );
+
+
+    if (
+      selfGuidedState.mode ===
+        "conditioning" &&
+      selfGuidedState.remaining ===
+        halfwayPoint
+    ) {
+
+      speakTrainingwise(
+        "Halfway. Stay with it."
+      );
+
+    }
+
+
+    if (
+      selfGuidedState.mode ===
+        "conditioning" &&
+      selfGuidedState.totalSeconds > 180 &&
+      selfGuidedState.remaining === 120
+    ) {
+
+      speakTrainingwise(
+        "Two minutes left. Finish strong."
+      );
+
+    }
+
+
+    if (
+      selfGuidedState.mode ===
+        "strength" &&
+      selfGuidedState.remaining ===
+        halfwayPoint
+    ) {
+
+      speakTrainingwise(
+        "Halfway. Quality reps."
+      );
+
+    }
+
+
+    if (
+      selfGuidedState.mode ===
+        "strength" &&
+      selfGuidedState.totalSeconds > 600 &&
+      selfGuidedState.remaining === 300
+    ) {
+
+      speakTrainingwise(
+        "Five minutes left. Finish with good form."
+      );
+
+    }
+
+
     if (
       selfGuidedState.mode ===
       "recovery"
@@ -9135,6 +9541,29 @@
       true;
 
 
+    if (
+      selfGuidedState.mode ===
+      "recovery"
+    ) {
+
+      const firstMove =
+        selfGuidedState
+          .recoveryMoves?.[
+            selfGuidedState.currentMove
+          ];
+
+
+      if (firstMove?.name) {
+
+        speakTrainingwise(
+          `Begin. ${firstMove.name}.`
+        );
+
+      }
+
+    }
+
+
     const timer =
       document.querySelector(
         ".trainingwise-timer"
@@ -9157,12 +9586,16 @@
 
 
     timer?.classList.remove(
+      "phase-work",
+      "phase-rest",
       "phase-paused",
       "phase-complete"
     );
 
     timer?.classList.add(
-      "phase-work"
+      selfGuidedState.mode === "recovery"
+        ? "phase-rest"
+        : "phase-work"
     );
 
 
@@ -9374,7 +9807,10 @@
 
     timer?.classList.remove(
       "phase-work",
-      "phase-paused"
+      "phase-rest",
+      "phase-paused",
+      "phase-ending",
+      "phase-recovery-ending"
     );
 
     timer?.classList.add(
@@ -9385,7 +9821,21 @@
     if (phase) {
 
       phase.textContent =
-        "COMPLETE";
+        "SESSION COMPLETE";
+
+    }
+
+
+    const clock =
+      document.getElementById(
+        "selfGuidedClock"
+      );
+
+
+    if (clock) {
+
+      clock.textContent =
+        formatSessionTime(0);
 
     }
 
@@ -9393,7 +9843,17 @@
     if (message) {
 
       message.textContent =
-        "Workout complete.";
+        "You've Been Fueled by FuelAI™";
+
+    }
+
+
+    if (
+      typeof showTrainingwiseCelebration ===
+      "function"
+    ) {
+
+      showTrainingwiseCelebration();
 
     }
 
