@@ -2112,7 +2112,11 @@
           const state =
             mode === "interval"
               ? intervalState
-              : emomState;
+              : (
+                  mode === "emom"
+                    ? emomState
+                    : selfGuidedState
+                );
 
 
           if (!state) {
@@ -2154,7 +2158,11 @@
     const state =
       mode === "interval"
         ? intervalState
-        : emomState;
+        : (
+            mode === "emom"
+              ? emomState
+              : selfGuidedState
+          );
 
 
     if (
@@ -2177,12 +2185,28 @@
 
     }
 
-    else {
+    else if (
+      mode === "emom"
+    ) {
 
       if (state.running) {
         pauseEmom();
       } else {
         startEmom();
+      }
+
+    }
+
+    else {
+
+      if (state.running) {
+
+        pauseSelfGuidedTimer();
+
+      } else {
+
+        startSelfGuidedTimer();
+
       }
 
     }
@@ -8352,6 +8376,12 @@
         false,
 
       completed:
+        false,
+
+      roundsCompleted:
+        null,
+
+      logSaved:
         false
 
     };
@@ -8397,6 +8427,30 @@
           )}
         </div>
 
+
+        <div
+          class="trainingwise-board-context
+                 trainingwise-board-recovery"
+        >
+
+          <span class="trainingwise-board-context-label">
+            CURRENT
+          </span>
+
+          <strong id="recoveryBoardMove">
+          </strong>
+
+          <span
+            id="recoveryBoardMoveClock"
+            class="trainingwise-board-move-clock"
+          >
+          </span>
+
+          <small id="recoveryBoardNext">
+          </small>
+
+        </div>
+
       </div>
 
 
@@ -8420,6 +8474,32 @@
           type="button"
         >
           Next →
+        </button>
+
+      </div>
+
+
+      <div
+        class="trainingwise-board-controls"
+        data-board-mode="recovery"
+      >
+
+        <button
+          type="button"
+          class="trainingwise-board-action"
+          data-trainingwise-board-action="recovery"
+          aria-label="Start or pause recovery"
+        >
+          ▶
+        </button>
+
+        <button
+          type="button"
+          class="trainingwise-board-exit"
+          data-trainingwise-board-exit
+          aria-label="Exit training board"
+        >
+          ×
         </button>
 
       </div>
@@ -8557,6 +8637,57 @@
     }
 
 
+    const boardMove =
+      document.getElementById(
+        "recoveryBoardMove"
+      );
+
+    const boardClock =
+      document.getElementById(
+        "recoveryBoardMoveClock"
+      );
+
+    const boardNext =
+      document.getElementById(
+        "recoveryBoardNext"
+      );
+
+
+    const nextMove =
+      selfGuidedState
+        .recoveryMoves[
+          selfGuidedState.currentMove + 1
+        ];
+
+
+    if (boardMove) {
+
+      boardMove.textContent =
+        move.name;
+
+    }
+
+
+    if (boardClock) {
+
+      boardClock.textContent =
+        formatSessionTime(
+          selfGuidedState.moveRemaining
+        );
+
+    }
+
+
+    if (boardNext) {
+
+      boardNext.textContent =
+        nextMove?.name
+          ? `Next: ${nextMove.name}`
+          : "Final movement";
+
+    }
+
+
     box.innerHTML = `
       <p class="trainingwise-label">
         MOVEMENT ${
@@ -8669,6 +8800,109 @@
 
 
 
+  function renderSelfGuidedBoardContext(
+    mode,
+    workout
+  ) {
+
+    if (!workout) {
+      return "";
+    }
+
+
+    if (
+      mode === "conditioning"
+    ) {
+
+      const items =
+        Array.isArray(workout.main)
+          ? workout.main
+          : [];
+
+
+      return `
+        <div
+          class="trainingwise-board-context
+                 trainingwise-board-conditioning"
+        >
+
+          <span class="trainingwise-board-context-label">
+            CURRENT CIRCUIT
+          </span>
+
+          <div class="trainingwise-board-circuit">
+
+            ${items
+              .map(
+                item => `
+                  <div>
+                    ${item}
+                  </div>
+                `
+              )
+              .join("")}
+
+          </div>
+
+        </div>
+      `;
+
+    }
+
+
+    if (
+      mode === "strength"
+    ) {
+
+      const exercises =
+        Array.isArray(workout.main)
+          ? workout.main
+          : [];
+
+
+      return `
+        <div
+          class="trainingwise-board-context
+                 trainingwise-board-strength"
+        >
+
+          <span class="trainingwise-board-context-label">
+            TODAY'S WORK
+          </span>
+
+          <div class="trainingwise-board-circuit">
+
+            ${exercises
+              .map(
+                exercise => `
+                  <div>
+                    <strong>
+                      ${exercise.name}
+                    </strong>
+                    ·
+                    ${exercise.sets}
+                    ×
+                    ${exercise.reps}
+                  </div>
+                `
+              )
+              .join("")}
+
+          </div>
+
+        </div>
+      `;
+
+    }
+
+
+    return "";
+
+  }
+
+
+
+
   function renderSelfGuidedExecution(
     mode,
     workout,
@@ -8727,6 +8961,14 @@
         false,
 
       completed:
+        false,
+
+      roundsCompleted:
+        mode === "conditioning"
+          ? 0
+          : null,
+
+      logSaved:
         false
 
     };
@@ -8781,6 +9023,12 @@
             selfGuidedState.remaining
           )}
         </div>
+
+
+        ${renderSelfGuidedBoardContext(
+          mode,
+          workout
+        )}
 
       </div>
 
@@ -8844,6 +9092,32 @@
             workout.cooldown
           )}
         </ul>
+
+      </div>
+
+
+      <div
+        class="trainingwise-board-controls"
+        data-board-mode="${mode}"
+      >
+
+        <button
+          type="button"
+          class="trainingwise-board-action"
+          data-trainingwise-board-action="${mode}"
+          aria-label="Start or pause workout"
+        >
+          ▶
+        </button>
+
+        <button
+          type="button"
+          class="trainingwise-board-exit"
+          data-trainingwise-board-exit
+          aria-label="Exit training board"
+        >
+          ×
+        </button>
 
       </div>
 
@@ -9353,6 +9627,22 @@
 
     }
 
+
+    const boardMoveClock =
+      document.getElementById(
+        "recoveryBoardMoveClock"
+      );
+
+
+    if (boardMoveClock) {
+
+      boardMoveClock.textContent =
+        formatSessionTime(
+          selfGuidedState.moveRemaining
+        );
+
+    }
+
   }
 
 
@@ -9752,6 +10042,277 @@
 
 
 
+  function saveSelfGuidedTrainingLog() {
+
+    if (
+      !selfGuidedState ||
+      selfGuidedState.logSaved
+    ) {
+      return;
+    }
+
+
+    selfGuidedState.logSaved =
+      true;
+
+
+    window.FuelAILog
+      ?.addFuelLog?.({
+
+        type:
+          "training",
+
+        sessions:
+          1,
+
+        source:
+          "trainingwise",
+
+        trainingType:
+          "self-guided",
+
+        workoutType:
+          selfGuidedState.mode,
+
+        workoutTitle:
+          selfGuidedState.workoutTitle,
+
+        level:
+          selfGuidedState.level,
+
+        strengthFocus:
+          selfGuidedState
+            .strengthFocus,
+
+        recoveryFocus:
+          selfGuidedState
+            .recoveryFocus ||
+          null,
+
+        recoveryMoves:
+          selfGuidedState.mode ===
+          "recovery"
+            ? (
+                selfGuidedState
+                  .recoveryMoves ||
+                []
+              )
+            : null,
+
+        exercises:
+          selfGuidedState
+            .exercises,
+
+        bestSets:
+          selfGuidedState.mode ===
+          "strength"
+            ? (
+                selfGuidedState.bestSets ||
+                []
+              )
+            : null,
+
+        roundsCompleted:
+          selfGuidedState.mode ===
+          "conditioning"
+            ? Number(
+                selfGuidedState
+                  .roundsCompleted || 0
+              )
+            : null,
+
+        plannedDurationMinutes:
+          selfGuidedState.plannedMinutes,
+
+        actualDurationSeconds:
+          selfGuidedState.totalSeconds -
+          selfGuidedState.remaining,
+
+        completed:
+          true
+
+      });
+
+  }
+
+
+
+  function showConditioningRoundsPrompt() {
+
+    if (
+      !selfGuidedState ||
+      selfGuidedState.mode !==
+        "conditioning"
+    ) {
+      return;
+    }
+
+
+    document
+      .getElementById(
+        "conditioningRoundsPrompt"
+      )
+      ?.remove();
+
+
+    const panel =
+      document.createElement(
+        "div"
+      );
+
+
+    panel.id =
+      "conditioningRoundsPrompt";
+
+    panel.className =
+      "trainingwise-rounds-complete";
+
+
+    panel.innerHTML = `
+      <span class="trainingwise-label">
+        SESSION LOG
+      </span>
+
+      <h3>
+        How many rounds did you complete?
+      </h3>
+
+      <div class="trainingwise-rounds-stepper">
+
+        <button
+          type="button"
+          data-conditioning-rounds-minus
+        >
+          −
+        </button>
+
+        <strong
+          id="conditioningRoundsValue"
+        >
+          ${selfGuidedState.roundsCompleted || 0}
+        </strong>
+
+        <button
+          type="button"
+          data-conditioning-rounds-plus
+        >
+          +
+        </button>
+
+      </div>
+
+      <button
+        type="button"
+        class="trainingwise-btn"
+        id="saveConditioningRoundsBtn"
+      >
+        Save Session
+      </button>
+    `;
+
+
+    output.appendChild(
+      panel
+    );
+
+
+    const refresh =
+      () => {
+
+        const value =
+          document.getElementById(
+            "conditioningRoundsValue"
+          );
+
+
+        if (value) {
+
+          value.textContent =
+            String(
+              selfGuidedState
+                .roundsCompleted || 0
+            );
+
+        }
+
+      };
+
+
+    panel
+      .querySelector(
+        "[data-conditioning-rounds-minus]"
+      )
+      ?.addEventListener(
+        "click",
+        () => {
+
+          selfGuidedState.roundsCompleted =
+            Math.max(
+              0,
+              Number(
+                selfGuidedState
+                  .roundsCompleted || 0
+              ) - 1
+            );
+
+          refresh();
+
+        }
+      );
+
+
+    panel
+      .querySelector(
+        "[data-conditioning-rounds-plus]"
+      )
+      ?.addEventListener(
+        "click",
+        () => {
+
+          selfGuidedState.roundsCompleted =
+            Number(
+              selfGuidedState
+                .roundsCompleted || 0
+            ) + 1;
+
+          refresh();
+
+        }
+      );
+
+
+    document
+      .getElementById(
+        "saveConditioningRoundsBtn"
+      )
+      ?.addEventListener(
+        "click",
+        () => {
+
+          saveSelfGuidedTrainingLog();
+
+          panel.innerHTML = `
+            <strong>
+              Session Saved
+            </strong>
+
+            <p>
+              ${
+                selfGuidedState
+                  .roundsCompleted
+              }
+              rounds completed.
+            </p>
+          `;
+
+        }
+      );
+
+  }
+
+
+
+
   function finishSelfGuidedWorkout() {
 
     playTrainingwiseBell(
@@ -9888,73 +10449,19 @@
       );
 
 
-    window.FuelAILog
-      ?.addFuelLog?.({
+    if (
+      selfGuidedState.mode ===
+      "conditioning"
+    ) {
 
-        type:
-          "training",
+      showConditioningRoundsPrompt();
 
-        sessions:
-          1,
+    } else {
 
-        source:
-          "trainingwise",
+      saveSelfGuidedTrainingLog();
 
-        trainingType:
-          "self-guided",
+    }
 
-        workoutType:
-          selfGuidedState.mode,
-
-        workoutTitle:
-          selfGuidedState.workoutTitle,
-
-        level:
-          selfGuidedState.level,
-
-        strengthFocus:
-          selfGuidedState
-            .strengthFocus,
-
-        recoveryFocus:
-          selfGuidedState
-            .recoveryFocus ||
-          null,
-
-        recoveryMoves:
-          selfGuidedState.mode ===
-          "recovery"
-            ? (
-                selfGuidedState
-                  .recoveryMoves ||
-                []
-              )
-            : null,
-
-        exercises:
-          selfGuidedState
-            .exercises,
-
-        bestSets:
-          selfGuidedState.mode ===
-          "strength"
-            ? (
-                selfGuidedState.bestSets ||
-                []
-              )
-            : null,
-
-        plannedDurationMinutes:
-          selfGuidedState.plannedMinutes,
-
-        actualDurationSeconds:
-          selfGuidedState.totalSeconds -
-          selfGuidedState.remaining,
-
-        completed:
-          true
-
-      });
 
   }
 
