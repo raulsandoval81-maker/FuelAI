@@ -41,6 +41,12 @@
   let selfGuidedState =
     null;
 
+  const trainingwiseCore =
+    window.TrainingWiseCore || {};
+
+  const startCountdownLifecycle =
+    trainingwiseCore.createCountdownLifecycle?.(window) || null;
+
 
 
   /* =========================
@@ -62,6 +68,63 @@
         null;
 
     }
+
+  }
+
+
+  function cancelTrainingwiseSpeech() {
+
+    if ("speechSynthesis" in window) {
+      window.speechSynthesis.cancel();
+    }
+
+    trainingwiseVoiceUtterance = null;
+
+  }
+
+
+  function cancelTrainingwiseStartCountdown() {
+
+    startCountdownLifecycle?.cancel();
+
+    document
+      .querySelector(".trainingwise-countdown-overlay")
+      ?.remove();
+
+    document
+      .querySelector(".trainingwise-timer")
+      ?.classList.remove("trainingwise-prestart");
+
+    document
+      .querySelector(".trainingwise-timer-phase")
+      ?.classList.remove("trainingwise-get-ready");
+
+  }
+
+
+  function clearTrainingwiseVisualState() {
+
+    document.body.classList.remove(
+      "trainingwise-rim-work",
+      "trainingwise-rim-rest",
+      "trainingwise-rim-ending",
+      "trainingwise-rim-complete"
+    );
+
+    document
+      .querySelectorAll(".trainingwise-movement-coach")
+      .forEach((host) => {
+        host.replaceChildren();
+        host.classList.add("hidden");
+      });
+
+  }
+
+
+  function cancelTrainingwiseTransientState({ cancelSpeech = true } = {}) {
+
+    cancelTrainingwiseStartCountdown();
+    if (cancelSpeech) cancelTrainingwiseSpeech();
 
   }
 
@@ -167,20 +230,113 @@
     }
 
 
-    const movements =
-      state.movements ||
-      [];
+    const movement =
+      getTrainingwiseMovementEntry(state, index);
 
 
-    if (!movements.length) {
+    if (!movement) {
       return "";
     }
 
 
-    return movements[
-      index %
-      movements.length
-    ];
+    return getTrainingwiseMovementName(
+      movement
+    );
+
+  }
+
+
+  function getTrainingwiseMovementEntry(state, index) {
+
+    if (!state || state.workoutMode === "timer") return null;
+    const movements = state.movements || [];
+    if (!movements.length) return null;
+    return movements[index % movements.length];
+
+  }
+
+
+  function getTrainingwiseMovementName(
+    movement
+  ) {
+
+    return trainingwiseCore.getMovementName
+      ? trainingwiseCore.getMovementName(movement)
+      : String(movement?.name || movement || "").trim();
+
+  }
+
+
+  function updateTrainingwiseMovementCoach(
+    hostId,
+    movement,
+    phase = "current"
+  ) {
+
+    const host =
+      document.getElementById(hostId);
+
+    if (!host) return;
+
+    const model =
+      trainingwiseCore.getMovementCoachModel?.(
+        movement,
+        phase
+      );
+
+    host.replaceChildren();
+    host.classList.add("hidden");
+
+    if (!model) return;
+
+    const heading = document.createElement("div");
+    heading.className = "trainingwise-visual-heading";
+
+    const label = document.createElement("span");
+    label.className = "trainingwise-visual-phase";
+    label.textContent = model.phase === "next" ? "NEXT UP" : "CURRENT";
+
+    const name = document.createElement("strong");
+    name.textContent = model.name;
+    heading.append(label, name);
+
+    if (model.primaryMuscles.length) {
+      const muscles = document.createElement("small");
+      muscles.textContent = `Target: ${model.primaryMuscles.join(", ")}`;
+      heading.appendChild(muscles);
+    }
+
+    const visuals = document.createElement("div");
+    visuals.className = "trainingwise-visual-options";
+
+    [model.standard, model.modified]
+      .filter(Boolean)
+      .forEach((visual) => {
+        const figure = document.createElement("figure");
+        const caption = document.createElement("figcaption");
+        const image = document.createElement("img");
+        figure.hidden = true;
+        caption.textContent = visual.label;
+        image.src = visual.src;
+        image.alt = visual.alt;
+        image.loading = "eager";
+        image.decoding = "async";
+        image.addEventListener("load", () => {
+          figure.hidden = false;
+          host.classList.remove("hidden");
+        }, { once: true });
+        image.addEventListener("error", () => {
+          figure.remove();
+          if (!visuals.children.length) {
+            host.replaceChildren();
+            host.classList.add("hidden");
+          }
+        }, { once: true });
+        figure.append(caption, image);
+        visuals.appendChild(figure);
+      });
+
+    host.append(heading, visuals);
 
   }
 
@@ -298,10 +454,10 @@
       running:
         false,
 
-      completed:
+      hasStarted:
         false,
 
-      hasStarted:
+      completed:
         false,
 
       workoutMode:
@@ -537,6 +693,11 @@
           45
         </div>
 
+        <div
+          id="intervalMovementCoach"
+          class="trainingwise-movement-coach hidden"
+        ></div>
+
       </div>
 
 
@@ -733,6 +894,24 @@
       );
 
     }
+
+    const intervalCoachMovement =
+      intervalState.workoutMode === "timer"
+        ? ""
+        : getTrainingwiseMovementEntry(
+            intervalState,
+            intervalState.phase === "work"
+              ? intervalState.movementIndex
+              : intervalState.phase === "round-rest"
+                ? 0
+                : intervalState.movementIndex + 1
+          );
+
+    updateTrainingwiseMovementCoach(
+      "intervalMovementCoach",
+      intervalCoachMovement,
+      intervalState.phase === "work" ? "current" : "next"
+    );
 
 
     if (
@@ -1009,15 +1188,20 @@
     onComplete
   ) {
 
-    const existing =
-      document.querySelector(
-        ".trainingwise-countdown-overlay"
-      );
-
-
-    if (existing) {
+    if (
+      !startCountdownLifecycle?.begin()
+    ) {
       return;
     }
+
+    document
+      .querySelectorAll(
+        "#intervalStartBtn, #emomStartBtn, #selfGuidedStartBtn, [data-trainingwise-board-action]"
+      )
+      .forEach((button) => {
+        button.disabled = true;
+        if (button.id) button.textContent = "Get Ready";
+      });
 
 
     speakTrainingwise(
@@ -1030,7 +1214,7 @@
      * Give "Get ready" room to breathe
      * before 5-4-3-2-1 begins.
      */
-    window.setTimeout(
+    startCountdownLifecycle.timeout(
       () => {
 
         const boardCountdown =
@@ -1103,7 +1287,7 @@
 
 
           const countdown =
-            window.setInterval(
+            startCountdownLifecycle.interval(
               () => {
 
                 count -= 1;
@@ -1132,7 +1316,7 @@
                 }
 
 
-                window.clearInterval(
+                startCountdownLifecycle.clearInterval(
                   countdown
                 );
 
@@ -1172,8 +1356,10 @@
                 );
 
 
-                window.setTimeout(
+                startCountdownLifecycle.timeout(
                   () => {
+
+                    startCountdownLifecycle.finish();
 
                     if (
                       typeof onComplete ===
@@ -1259,7 +1445,7 @@
 
 
         const countdown =
-          window.setInterval(
+          startCountdownLifecycle.interval(
             () => {
 
               count -= 1;
@@ -1288,7 +1474,7 @@
               }
 
 
-              window.clearInterval(
+              startCountdownLifecycle.clearInterval(
                 countdown
               );
 
@@ -1310,10 +1496,12 @@
               );
 
 
-              window.setTimeout(
+              startCountdownLifecycle.timeout(
                 () => {
 
                   overlay.remove();
+
+                  startCountdownLifecycle.finish();
 
 
                   if (
@@ -1446,6 +1634,11 @@
               : "false"
           );
 
+          button.setAttribute(
+            "aria-label",
+            active ? "Close Big Clock" : "Open Big Clock"
+          );
+
         }
       );
 
@@ -1463,6 +1656,9 @@
       false;
 
   }
+
+  let trainingwiseNativeFullscreenWasActive =
+    false;
 
 
 
@@ -1514,6 +1710,10 @@
       "trainingwise-full-clock-body"
     );
 
+    document.body.classList.add(
+      "trainingwise-stage"
+    );
+
 
     updateTrainingwiseFullClockButtons();
 
@@ -1563,6 +1763,10 @@
 
     document.body.classList.remove(
       "trainingwise-full-clock-body"
+    );
+
+    document.body.classList.remove(
+      "trainingwise-stage"
     );
 
 
@@ -1623,6 +1827,7 @@
         class="trainingwise-full-clock-toggle"
         data-trainingwise-fullclock-toggle
         aria-pressed="false"
+        aria-label="Open Big Clock"
       >
         ⛶
       </button>
@@ -1663,22 +1868,23 @@
        * with Escape or browser controls.
        */
 
-      if (
-        !document.fullscreenElement &&
-        output
-          ?.classList
-          .contains(
-            "trainingwise-full-clock-active"
-          )
-      ) {
+      if (document.fullscreenElement) {
 
-        output.classList.remove(
-          "trainingwise-full-clock-active"
-        );
+        trainingwiseNativeFullscreenWasActive =
+          true;
 
-        document.body.classList.remove(
-          "trainingwise-full-clock-body"
-        );
+      }
+
+      else if (trainingwiseNativeFullscreenWasActive) {
+
+        /*
+         * Native fullscreen can be rejected or closed by
+         * mobile browser chrome. Keep the CSS Big Clock
+         * fallback active until the athlete uses its Exit
+         * control, so session state and controls stay visible.
+         */
+        trainingwiseNativeFullscreenWasActive =
+          false;
 
       }
 
@@ -2224,6 +2430,7 @@
         type="button"
         class="trainingwise-sound-toggle"
         data-trainingwise-sound-toggle
+        aria-label="Toggle TrainingWise sound"
         aria-pressed="${
           trainingwiseSoundEnabled
             ? "true"
@@ -2272,7 +2479,11 @@
 
       if (exit) {
 
-        exitTrainingwiseBoard();
+        if (isTrainingwiseFullClock()) {
+          exitTrainingwiseFullClock();
+        } else {
+          exitTrainingwiseBoard();
+        }
 
       }
 
@@ -2511,7 +2722,7 @@
     /*
      * Give STOP room to land.
      */
-    window.setTimeout(
+    startCountdownLifecycle.timeout(
       () => {
 
         speakTrainingwise(
@@ -2527,7 +2738,7 @@
      * Give the rest instruction room
      * before the final coaching cue.
      */
-    window.setTimeout(
+    startCountdownLifecycle.timeout(
       () => {
 
         speakTrainingwise(
@@ -2536,6 +2747,105 @@
 
       },
       3500
+    );
+
+  }
+
+
+
+  function getIntervalCueIndex(
+    length
+  ) {
+
+    if (
+      !intervalState ||
+      !length
+    ) {
+      return 0;
+    }
+
+
+    const round =
+      Number(
+        intervalState.currentSessionRound ||
+        intervalState.currentRound ||
+        1
+      );
+
+
+    const interval =
+      Number(
+        intervalState.currentInterval ||
+        1
+      );
+
+
+    return Math.abs(
+      round + interval
+    ) % length;
+
+  }
+
+
+
+  function speakIntervalWorkStartCue() {
+
+    const cues = [
+      "Start.",
+      "Start. Let's work.",
+      "Start. All you got.",
+      "Start. Hit the pedal."
+    ];
+
+
+    speakTrainingwise(
+      cues[
+        getIntervalCueIndex(
+          cues.length
+        )
+      ]
+    );
+
+  }
+
+
+
+  function speakIntervalHalfwayCue() {
+
+    const cues = [
+      "Halfway!",
+      "Stay with it!"
+    ];
+
+
+    speakTrainingwise(
+      cues[
+        getIntervalCueIndex(
+          cues.length
+        )
+      ]
+    );
+
+  }
+
+
+
+  function speakIntervalRedlineCue() {
+
+    const cues = [
+      "Short time.",
+      "Short time. Red light.",
+      "Short time. All gas.",
+      "Short time. One more push."
+    ];
+
+
+    speakTrainingwise(
+      cues[
+        getIntervalCueIndex(
+          cues.length
+        )
+      ]
     );
 
   }
@@ -2584,9 +2894,7 @@
 
       updateIntervalDisplay();
 
-      speakTrainingwise(
-        "Start!"
-      );
+      speakIntervalWorkStartCue();
 
       return;
 
@@ -2762,9 +3070,7 @@
         )
     ) {
 
-      speakTrainingwise(
-        "Halfway!"
-      );
+      speakIntervalHalfwayCue();
 
     }
 
@@ -2779,9 +3085,7 @@
       intervalState.remaining === 10
     ) {
 
-      speakTrainingwise(
-        "All you got!"
-      );
+      speakIntervalRedlineCue();
 
     }
 
@@ -2919,6 +3223,15 @@
     intervalState.running =
       true;
 
+
+    document
+      .querySelector(
+        ".trainingwise-timer"
+      )
+      ?.classList.remove(
+        "phase-paused"
+      );
+
     intervalState.hasStarted =
       true;
 
@@ -3018,6 +3331,7 @@
       false;
 
     clearTimer();
+    cancelTrainingwiseSpeech();
 
     updateTrainingwiseBoardAction();
 
@@ -3153,7 +3467,7 @@
     );
 
 
-    window.setTimeout(
+    startCountdownLifecycle.timeout(
       () => {
 
         overlay.classList.add(
@@ -3165,7 +3479,7 @@
     );
 
 
-    window.setTimeout(
+    startCountdownLifecycle.timeout(
       () => {
 
         overlay.remove();
@@ -3180,6 +3494,8 @@
 
 
   function finishInterval() {
+
+    cancelTrainingwiseTransientState();
 
     playTrainingwiseBell(
       "finish"
@@ -3205,6 +3521,11 @@
 
     intervalState.remaining =
       0;
+
+    updateTrainingwiseMovementCoach(
+      "intervalMovementCoach",
+      ""
+    );
 
 
     const timer =
@@ -3293,6 +3614,8 @@
 
     }
 
+    showTrainingwiseCelebration();
+
 
 
     document
@@ -3376,6 +3699,8 @@
   function stopInterval() {
 
     clearTimer();
+    cancelTrainingwiseTransientState();
+    clearTrainingwiseVisualState();
 
     renderInterval();
 
@@ -4170,6 +4495,9 @@
       running:
         false,
 
+      hasStarted:
+        false,
+
       completed:
         false,
 
@@ -4372,6 +4700,11 @@
           60
         </div>
 
+        <div
+          id="emomMovementCoach"
+          class="trainingwise-movement-coach hidden"
+        ></div>
+
       </div>
 
 
@@ -4545,6 +4878,22 @@
       );
 
     }
+
+    const emomCoachMovement =
+      emomState.workoutMode === "timer"
+        ? ""
+        : getTrainingwiseMovementEntry(
+            emomState,
+            emomState.inRoundRest
+              ? 0
+              : emomState.currentMinute - 1
+          );
+
+    updateTrainingwiseMovementCoach(
+      "emomMovementCoach",
+      emomCoachMovement,
+      emomState.inRoundRest ? "next" : "current"
+    );
 
 
     if (
@@ -4860,15 +5209,25 @@
     getTrainingwiseAudioContext();
 
 
+    if (emomState.hasStarted) {
+
+      startEmomImmediate(true);
+      return;
+
+    }
+
+
     runTrainingwiseStartCountdown(
-      startEmomImmediate
+      () => startEmomImmediate(false)
     );
 
   }
 
 
 
-  function startEmomImmediate() {
+  function startEmomImmediate(
+    isResume = false
+  ) {
 
     if (
       !emomState ||
@@ -4880,6 +5239,18 @@
 
 
     emomState.running =
+      true;
+
+
+    document
+      .querySelector(
+        ".trainingwise-timer"
+      )
+      ?.classList.remove(
+        "phase-paused"
+      );
+
+    emomState.hasStarted =
       true;
 
 
@@ -4942,6 +5313,7 @@
       false;
 
     clearTimer();
+    cancelTrainingwiseSpeech();
 
     updateTrainingwiseBoardAction();
 
@@ -5009,6 +5381,8 @@
 
   function finishEmom() {
 
+    cancelTrainingwiseTransientState();
+
     playTrainingwiseBell(
       "finish"
     );
@@ -5027,6 +5401,11 @@
 
     emomState.running =
       false;
+
+    updateTrainingwiseMovementCoach(
+      "emomMovementCoach",
+      ""
+    );
 
     emomState.completed =
       true;
@@ -5199,6 +5578,8 @@
   function stopEmom() {
 
     clearTimer();
+    cancelTrainingwiseTransientState();
+    clearTrainingwiseVisualState();
 
     renderEmom();
 
@@ -7696,6 +8077,14 @@
       return null;
     }
 
+    const scaledMoves =
+      trainingwiseCore.scaleMovementDurations
+        ? trainingwiseCore.scaleMovementDurations(
+            base.moves,
+            duration * 60
+          )
+        : base.moves.map((move) => ({ ...move }));
+
 
     return {
 
@@ -7706,11 +8095,7 @@
       duration,
 
       moves:
-        base.moves.map(
-          (move) => ({
-            ...move
-          })
-        )
+        scaledMoves
 
     };
 
@@ -8630,6 +9015,9 @@
       running:
         false,
 
+      hasStarted:
+        false,
+
       completed:
         false,
 
@@ -8712,6 +9100,11 @@
       <div
         id="recoveryCurrentMove"
         class="trainingwise-recovery-current"
+      ></div>
+
+      <div
+        id="recoveryMovementCoach"
+        class="trainingwise-movement-coach trainingwise-movement-coach-recovery hidden"
       ></div>
 
 
@@ -8941,6 +9334,12 @@
           : "Final movement";
 
     }
+
+    updateTrainingwiseMovementCoach(
+      "recoveryMovementCoach",
+      move,
+      "current"
+    );
 
 
     box.innerHTML = `
@@ -9213,6 +9612,9 @@
         duration * 60,
 
       running:
+        false,
+
+      hasStarted:
         false,
 
       completed:
@@ -9720,14 +10122,12 @@
               exercise.name,
 
             reps:
-              Math.round(
-                reps
-              ),
+              Math.min(100, Math.round(reps)),
 
             weight:
               Number.isFinite(weight) &&
               weight >= 0
-                ? weight
+                ? Math.min(2000, weight)
                 : 0
 
           };
@@ -10063,15 +10463,25 @@
     getTrainingwiseAudioContext();
 
 
+    if (selfGuidedState.hasStarted) {
+
+      startSelfGuidedTimerImmediate(true);
+      return;
+
+    }
+
+
     runTrainingwiseStartCountdown(
-      startSelfGuidedTimerImmediate
+      () => startSelfGuidedTimerImmediate(false)
     );
 
   }
 
 
 
-  function startSelfGuidedTimerImmediate() {
+  function startSelfGuidedTimerImmediate(
+    isResume = false
+  ) {
 
     if (
       !selfGuidedState ||
@@ -10086,9 +10496,22 @@
       true;
 
 
+    document
+      .querySelector(
+        ".trainingwise-timer"
+      )
+      ?.classList.remove(
+        "phase-paused"
+      );
+
+    selfGuidedState.hasStarted =
+      true;
+
+
     if (
       selfGuidedState.mode ===
-      "recovery"
+      "recovery" &&
+      !isResume
     ) {
 
       const firstMove =
@@ -10209,6 +10632,7 @@
       false;
 
     clearTimer();
+    cancelTrainingwiseSpeech();
 
 
     const timer =
@@ -10276,6 +10700,8 @@
   ) {
 
     clearTimer();
+    cancelTrainingwiseTransientState();
+    clearTrainingwiseVisualState();
 
 
     if (
@@ -10307,12 +10733,14 @@
     }
 
 
-    selfGuidedState.logSaved =
-      true;
+    const addFuelLog =
+      window.FuelAILog?.addFuelLog;
 
+    if (typeof addFuelLog !== "function") {
+      return;
+    }
 
-    window.FuelAILog
-      ?.addFuelLog?.({
+    addFuelLog.call(window.FuelAILog, {
 
         type:
           "training",
@@ -10387,6 +10815,9 @@
           true
 
       });
+
+    selfGuidedState.logSaved =
+      true;
 
   }
 
@@ -10569,6 +11000,8 @@
 
 
   function finishSelfGuidedWorkout() {
+
+    cancelTrainingwiseTransientState();
 
     playTrainingwiseBell(
       "finish"
@@ -10790,6 +11223,17 @@
       return;
     }
 
+    clearTimer();
+    cancelTrainingwiseTransientState();
+    clearTrainingwiseVisualState();
+    stopTrainingwiseMusic();
+
+    if (isTrainingwiseFullClock()) {
+      exitTrainingwiseFullClock();
+    }
+
+    exitTrainingwiseBoard();
+
 
     output.classList.remove(
       "hidden"
@@ -10825,6 +11269,20 @@
       );
 
     }
+
+    document
+      .querySelectorAll("button.active")
+      .forEach((button) => button.setAttribute("aria-pressed", "true"));
+
+    document
+      .querySelectorAll(".trainingwise-session-message")
+      .forEach((message) => {
+        message.setAttribute("role", "status");
+        message.setAttribute("aria-live", "polite");
+      });
+
+    output.setAttribute("tabindex", "-1");
+    output.focus({ preventScroll: true });
 
 
     output.scrollIntoView({
@@ -10863,39 +11321,22 @@
       }
     );
 
+  document.addEventListener("click", (event) => {
+    if (!event.target.closest(
+      ".trainingwise-content-options button, .trainingwise-round-options button, .trainingwise-choice-grid button"
+    )) return;
+
+    queueMicrotask(() => {
+      document
+        .querySelectorAll(
+          ".trainingwise-content-options button, .trainingwise-round-options button, .trainingwise-choice-grid button"
+        )
+        .forEach((button) => button.setAttribute(
+          "aria-pressed",
+          button.classList.contains("active") ? "true" : "false"
+        ));
+    });
+  });
+
 
 })();
-
-
-/* ==================================================
-   TRAININGWISE FULLSCREEN STATE
-================================================== */
-
-document.addEventListener(
-  "fullscreenchange",
-  () => {
-
-    document.body.classList.toggle(
-      "trainingwise-stage",
-      Boolean(
-        document.fullscreenElement
-      )
-    );
-
-  }
-);
-
-
-document.addEventListener(
-  "webkitfullscreenchange",
-  () => {
-
-    document.body.classList.toggle(
-      "trainingwise-stage",
-      Boolean(
-        document.webkitFullscreenElement
-      )
-    );
-
-  }
-);

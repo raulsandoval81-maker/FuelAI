@@ -10,6 +10,119 @@
     42px 0 70px;
 }
 
+/* =========================
+   MOVEMENT COACHING
+   Optional approved assets only.
+========================= */
+
+.trainingwise-movement-coach {
+  display: grid;
+  gap: 12px;
+  width: min(100%, 680px);
+  margin: 18px auto 0;
+  padding: 14px;
+  border: 1px solid rgba(255,255,255,.14);
+  border-radius: 16px;
+  background: rgba(8,15,28,.54);
+  text-align: left;
+}
+
+.trainingwise-movement-coach.hidden {
+  display: none;
+}
+
+.trainingwise-visual-heading {
+  display: grid;
+  gap: 3px;
+}
+
+.trainingwise-visual-phase {
+  color: #38bdf8;
+  font-size: .72rem;
+  font-weight: 900;
+  letter-spacing: .11em;
+}
+
+.trainingwise-visual-heading small {
+  opacity: .78;
+}
+
+.trainingwise-visual-options {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.trainingwise-visual-options figure {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+}
+
+.trainingwise-visual-options figcaption {
+  font-size: .75rem;
+  font-weight: 900;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.trainingwise-visual-options img {
+  display: block;
+  width: 100%;
+  max-height: 210px;
+  border-radius: 12px;
+  object-fit: contain;
+}
+
+.trainingwise-movement-coach-recovery {
+  border-color: rgba(56,189,248,.26);
+  background: rgba(14,116,144,.09);
+}
+
+.trainingwise-btn:focus-visible,
+.trainingwise-options button:focus-visible,
+.trainingwise-controls button:focus-visible,
+.trainingwise-content-options button:focus-visible,
+.trainingwise-round-options button:focus-visible,
+.trainingwise-choice-grid button:focus-visible,
+.trainingwise-view-controls button:focus-visible,
+.trainingwise-board-controls button:focus-visible,
+.trainingwise-recovery-nav button:focus-visible {
+  outline: 3px solid #facc15;
+  outline-offset: 3px;
+}
+
+.trainingwise-board-action,
+.trainingwise-board-exit {
+  min-width: 44px;
+  min-height: 44px;
+}
+
+@media (max-width: 560px) {
+  .trainingwise-movement-coach {
+    padding: 12px;
+  }
+
+  .trainingwise-visual-options {
+    grid-template-columns: 1fr;
+  }
+
+  .trainingwise-visual-options img {
+    max-height: 180px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .trainingwise-timer,
+  .trainingwise-clock,
+  .trainingwise-countdown-overlay,
+  .trainingwise-celebration,
+  body.trainingwise-stage::before {
+    animation: none !important;
+    transition-duration: .01ms !important;
+  }
+}
+
 
 .trainingwise-hero {
   text-align: center;
@@ -2605,7 +2718,7 @@ body.trainingwise-stage
       ) !important;
   }
 
-}\n
+}
 
 /* =========================
    INTERVAL WORK WARNING
@@ -4537,6 +4650,1287 @@ small {
 
     font-size:
       1.35rem;
+
+  }
+
+}
+
+/* Optional movement figures stay secondary to the Big Clock. */
+body.trainingwise-stage .trainingwise-movement-coach {
+  position: fixed;
+  z-index: 100002;
+  right: max(16px, env(safe-area-inset-right));
+  bottom: max(68px, calc(env(safe-area-inset-bottom) + 56px));
+  width: min(28vw, 320px);
+  max-height: 42vh;
+  margin: 0;
+  overflow: auto;
+  background: rgba(3, 9, 19, .88);
+}
+
+body.trainingwise-stage .trainingwise-visual-options img {
+  max-height: 23vh;
+}
+
+@media (max-width: 700px) {
+  body.trainingwise-stage .trainingwise-movement-coach {
+    right: max(10px, env(safe-area-inset-right));
+    bottom: max(62px, calc(env(safe-area-inset-bottom) + 52px));
+    width: min(42vw, 190px);
+    max-height: 38vh;
+    padding: 9px;
+  }
+
+  body.trainingwise-stage .trainingwise-visual-heading small {
+    display: none;
+  }
+
+  body.trainingwise-stage .trainingwise-visual-options {
+    grid-template-columns: 1fr;
+  }
+
+  body.trainingwise-stage .trainingwise-visual-options img {
+    max-height: 14vh;
+  }
+}
+
+
+/* ==================================================
+   TRAININGWISE — AUTHORITATIVE RIM STATE LANGUAGE
+
+   GREEN  = WORK
+   BLUE   = RECOVER / REST
+   YELLOW = PAUSED
+   GOLD   = COMPLETE
+
+   Final 10 remains WORK, therefore it pulses GREEN.
+   ================================================== */
+
+
+/* --------------------------------------------------
+   FINAL 10 WORK — GREEN PULSE
+   Overrides historical yellow phase-ending rules.
+-------------------------------------------------- */
+
+body.trainingwise-stage
+.trainingwise-timer.phase-work.phase-ending {
+
+  background:
+    #020617 !important;
+
+  box-shadow:
+    inset 0 0 0 14px
+    rgba(34,197,94,.82),
+
+    inset 0 0 42px
+    rgba(34,197,94,.16)
+
+    !important;
+
+  animation:
+    trainingwiseWorkFinalTenGreen
+    .78s
+    ease-in-out
+    infinite
+    !important;
+
+}
+
+
+body.trainingwise-stage
+.trainingwise-timer.phase-work.phase-ending
+.trainingwise-timer-phase,
+
+body.trainingwise-stage
+.trainingwise-timer.phase-work.phase-ending
+.trainingwise-clock {
+
+  color:
+    #ffffff !important;
+
+  text-shadow:
+    none !important;
+
+}
+
+
+/*
+ * Independent outer rim.
+ * This is the visible pulse around Big Clock.
+ */
+
+body.trainingwise-stage
+.trainingwise-timer.phase-work.phase-ending::after,
+
+body.trainingwise-stage
+.trainingwise-timer.phase-work.phase-ending:fullscreen::after,
+
+body.trainingwise-stage
+.trainingwise-timer.phase-work.phase-ending:-webkit-full-screen::after {
+
+  border-color:
+    rgba(34,197,94,.94)
+    !important;
+
+  box-shadow:
+    inset 0 0 64px
+    rgba(34,197,94,.32),
+
+    0 0 34px
+    rgba(34,197,94,.24)
+
+    !important;
+
+  animation:
+    trainingwiseWorkFinalTenGreenRim
+    .78s
+    ease-in-out
+    infinite
+    !important;
+
+}
+
+
+@keyframes trainingwiseWorkFinalTenGreen {
+
+  0%,
+  100% {
+
+    box-shadow:
+      inset 0 0 0 14px
+      rgba(34,197,94,.68),
+
+      inset 0 0 30px
+      rgba(34,197,94,.10);
+
+  }
+
+  50% {
+
+    box-shadow:
+      inset 0 0 0 18px
+      rgba(34,197,94,1),
+
+      inset 0 0 62px
+      rgba(34,197,94,.30);
+
+  }
+
+}
+
+
+@keyframes trainingwiseWorkFinalTenGreenRim {
+
+  0%,
+  100% {
+
+    border-color:
+      rgba(34,197,94,.62);
+
+    box-shadow:
+      inset 0 0 40px
+      rgba(34,197,94,.16),
+
+      0 0 20px
+      rgba(34,197,94,.12);
+
+  }
+
+  50% {
+
+    border-color:
+      rgba(34,197,94,1);
+
+    box-shadow:
+      inset 0 0 78px
+      rgba(34,197,94,.40),
+
+      0 0 46px
+      rgba(34,197,94,.34);
+
+  }
+
+}
+
+
+/* --------------------------------------------------
+   PAUSED — YELLOW PULSE
+
+   Pause is the attention state.
+   Keep the rim visible instead of allowing it to vanish.
+-------------------------------------------------- */
+
+body.trainingwise-stage
+.trainingwise-timer.phase-paused {
+
+  background:
+    #020617 !important;
+
+  box-shadow:
+    inset 0 0 0 14px
+    rgba(250,204,21,.72),
+
+    inset 0 0 38px
+    rgba(250,204,21,.12)
+
+    !important;
+
+  animation:
+    trainingwisePausedYellow
+    1.05s
+    ease-in-out
+    infinite
+    !important;
+
+}
+
+
+body.trainingwise-stage
+.trainingwise-timer.phase-paused::after,
+
+body.trainingwise-stage
+.trainingwise-timer.phase-paused:fullscreen::after,
+
+body.trainingwise-stage
+.trainingwise-timer.phase-paused:-webkit-full-screen::after {
+
+  border-color:
+    rgba(250,204,21,.88)
+    !important;
+
+  box-shadow:
+    inset 0 0 48px
+    rgba(250,204,21,.20),
+
+    0 0 28px
+    rgba(250,204,21,.18)
+
+    !important;
+
+  animation:
+    trainingwisePausedYellowRim
+    1.05s
+    ease-in-out
+    infinite
+    !important;
+
+}
+
+
+@keyframes trainingwisePausedYellow {
+
+  0%,
+  100% {
+
+    box-shadow:
+      inset 0 0 0 12px
+      rgba(250,204,21,.58),
+
+      inset 0 0 26px
+      rgba(250,204,21,.08);
+
+  }
+
+  50% {
+
+    box-shadow:
+      inset 0 0 0 16px
+      rgba(250,204,21,.90),
+
+      inset 0 0 48px
+      rgba(250,204,21,.20);
+
+  }
+
+}
+
+
+@keyframes trainingwisePausedYellowRim {
+
+  0%,
+  100% {
+
+    border-color:
+      rgba(250,204,21,.56);
+
+    box-shadow:
+      inset 0 0 34px
+      rgba(250,204,21,.10),
+
+      0 0 16px
+      rgba(250,204,21,.08);
+
+  }
+
+  50% {
+
+    border-color:
+      rgba(250,204,21,.96);
+
+    box-shadow:
+      inset 0 0 60px
+      rgba(250,204,21,.26),
+
+      0 0 34px
+      rgba(250,204,21,.22);
+
+  }
+
+}
+
+
+/* --------------------------------------------------
+   MOBILE — SAME LANGUAGE, SMALLER EFFECT
+-------------------------------------------------- */
+
+@media (max-width:600px) {
+
+  body.trainingwise-stage
+  .trainingwise-timer.phase-work.phase-ending {
+
+    box-shadow:
+      inset 0 0 0 5px
+      rgba(34,197,94,.78),
+
+      inset 0 0 18px
+      rgba(34,197,94,.10)
+
+      !important;
+
+  }
+
+
+  body.trainingwise-stage
+  .trainingwise-timer.phase-paused {
+
+    box-shadow:
+      inset 0 0 0 5px
+      rgba(250,204,21,.72),
+
+      inset 0 0 16px
+      rgba(250,204,21,.08)
+
+      !important;
+
+  }
+
+}
+
+
+/* --------------------------------------------------
+   REDUCED MOTION
+   Preserve state color without animation.
+-------------------------------------------------- */
+
+@media (prefers-reduced-motion:reduce) {
+
+  body.trainingwise-stage
+  .trainingwise-timer.phase-work.phase-ending,
+
+  body.trainingwise-stage
+  .trainingwise-timer.phase-work.phase-ending::after,
+
+  body.trainingwise-stage
+  .trainingwise-timer.phase-paused,
+
+  body.trainingwise-stage
+  .trainingwise-timer.phase-paused::after {
+
+    animation:
+      none !important;
+
+  }
+
+}
+
+
+/* ==================================================
+   TRAININGWISE FINAL AUTHORITATIVE STATE PATCH
+   ==================================================
+
+   WORK              = GREEN
+   FINAL WORK        = GREEN PULSE
+   RECOVER           = BLUE
+   FINAL RECOVER     = BLUE PULSE
+   PAUSED            = YELLOW PULSE
+   COMPLETE          = GOLD
+
+   This block intentionally sits LAST.
+   ================================================== */
+
+
+/* ------------------------------
+   WORK — STEADY GREEN
+------------------------------ */
+
+body.trainingwise-stage
+.trainingwise-timer.phase-work:not(.phase-ending):not(.phase-paused) {
+
+  background:
+    #020617 !important;
+
+  color:
+    #22c55e !important;
+
+  animation:
+    none !important;
+
+}
+
+
+body.trainingwise-stage
+.trainingwise-timer.phase-work:not(.phase-ending):not(.phase-paused)
+.trainingwise-timer-phase,
+
+body.trainingwise-stage
+.trainingwise-timer.phase-work:not(.phase-ending):not(.phase-paused)
+.trainingwise-clock {
+
+  color:
+    #22c55e !important;
+
+  text-shadow:
+    0 0 18px rgba(34,197,94,.22) !important;
+
+}
+
+
+body.trainingwise-stage
+.trainingwise-timer.phase-work:not(.phase-ending):not(.phase-paused)::after {
+
+  border-color:
+    rgba(34,197,94,.88) !important;
+
+  box-shadow:
+    inset 0 0 52px rgba(34,197,94,.24) !important;
+
+  animation:
+    none !important;
+
+}
+
+
+/* ------------------------------
+   FINAL 10 WORK — GREEN PULSE
+------------------------------ */
+
+body.trainingwise-stage
+.trainingwise-timer.phase-work.phase-ending:not(.phase-paused) {
+
+  background:
+    #020617 !important;
+
+  animation:
+    trainingwiseFinalWorkGreen
+    .72s ease-in-out infinite !important;
+
+}
+
+
+body.trainingwise-stage
+.trainingwise-timer.phase-work.phase-ending:not(.phase-paused)
+.trainingwise-timer-phase,
+
+body.trainingwise-stage
+.trainingwise-timer.phase-work.phase-ending:not(.phase-paused)
+.trainingwise-clock {
+
+  color:
+    #22c55e !important;
+
+  text-shadow:
+    0 0 22px rgba(34,197,94,.30) !important;
+
+}
+
+
+body.trainingwise-stage
+.trainingwise-timer.phase-work.phase-ending:not(.phase-paused)::after {
+
+  border-color:
+    rgba(34,197,94,.96) !important;
+
+  animation:
+    trainingwiseFinalWorkGreenRim
+    .72s ease-in-out infinite !important;
+
+}
+
+
+@keyframes trainingwiseFinalWorkGreen {
+
+  0%,100% {
+
+    box-shadow:
+      inset 0 0 0 14px rgba(34,197,94,.60),
+      inset 0 0 30px rgba(34,197,94,.10)
+      !important;
+
+  }
+
+  50% {
+
+    box-shadow:
+      inset 0 0 0 18px rgba(34,197,94,1),
+      inset 0 0 70px rgba(34,197,94,.34)
+      !important;
+
+  }
+
+}
+
+
+@keyframes trainingwiseFinalWorkGreenRim {
+
+  0%,100% {
+
+    border-color:
+      rgba(34,197,94,.52);
+
+    box-shadow:
+      inset 0 0 36px rgba(34,197,94,.12),
+      0 0 18px rgba(34,197,94,.10);
+
+  }
+
+  50% {
+
+    border-color:
+      rgba(34,197,94,1);
+
+    box-shadow:
+      inset 0 0 78px rgba(34,197,94,.38),
+      0 0 42px rgba(34,197,94,.28);
+
+  }
+
+}
+
+
+/* ------------------------------
+   RECOVER — STEADY BLUE
+------------------------------ */
+
+body.trainingwise-stage
+.trainingwise-timer.phase-rest:not(.phase-recovery-ending):not(.phase-paused) {
+
+  background:
+    #020617 !important;
+
+  animation:
+    none !important;
+
+}
+
+
+body.trainingwise-stage
+.trainingwise-timer.phase-rest:not(.phase-recovery-ending):not(.phase-paused)
+.trainingwise-timer-phase,
+
+body.trainingwise-stage
+.trainingwise-timer.phase-rest:not(.phase-recovery-ending):not(.phase-paused)
+.trainingwise-clock {
+
+  color:
+    #38bdf8 !important;
+
+  text-shadow:
+    0 0 18px rgba(56,189,248,.24) !important;
+
+}
+
+
+body.trainingwise-stage
+.trainingwise-timer.phase-rest:not(.phase-recovery-ending):not(.phase-paused)::after {
+
+  border-color:
+    rgba(56,189,248,.90) !important;
+
+  animation:
+    none !important;
+
+}
+
+
+/* ------------------------------
+   FINAL 5 RECOVER — BLUE PULSE
+------------------------------ */
+
+body.trainingwise-stage
+.trainingwise-timer.phase-rest.phase-recovery-ending:not(.phase-paused) {
+
+  background:
+    #020617 !important;
+
+}
+
+
+body.trainingwise-stage
+.trainingwise-timer.phase-rest.phase-recovery-ending:not(.phase-paused)
+.trainingwise-timer-phase,
+
+body.trainingwise-stage
+.trainingwise-timer.phase-rest.phase-recovery-ending:not(.phase-paused)
+.trainingwise-clock {
+
+  color:
+    #38bdf8 !important;
+
+  text-shadow:
+    0 0 20px rgba(56,189,248,.28) !important;
+
+}
+
+
+body.trainingwise-stage
+.trainingwise-timer.phase-rest.phase-recovery-ending:not(.phase-paused)::after {
+
+  border-color:
+    rgba(56,189,248,.95) !important;
+
+  animation:
+    trainingwiseFinalRecoverBlueRim
+    .72s ease-in-out infinite !important;
+
+}
+
+
+@keyframes trainingwiseFinalRecoverBlueRim {
+
+  0%,100% {
+
+    border-color:
+      rgba(56,189,248,.52);
+
+    box-shadow:
+      inset 0 0 32px rgba(56,189,248,.10),
+      0 0 16px rgba(56,189,248,.08);
+
+  }
+
+  50% {
+
+    border-color:
+      rgba(56,189,248,1);
+
+    box-shadow:
+      inset 0 0 70px rgba(56,189,248,.34),
+      0 0 38px rgba(56,189,248,.24);
+
+  }
+
+}
+
+
+/* ------------------------------
+   PAUSED — YELLOW PULSE
+------------------------------ */
+
+body.trainingwise-stage
+.trainingwise-timer.phase-paused {
+
+  background:
+    #020617 !important;
+
+  animation:
+    trainingwisePausedYellowFinal
+    .95s ease-in-out infinite !important;
+
+}
+
+
+body.trainingwise-stage
+.trainingwise-timer.phase-paused
+.trainingwise-timer-phase,
+
+body.trainingwise-stage
+.trainingwise-timer.phase-paused
+.trainingwise-clock {
+
+  color:
+    #facc15 !important;
+
+  text-shadow:
+    0 0 18px rgba(250,204,21,.24) !important;
+
+}
+
+
+body.trainingwise-stage
+.trainingwise-timer.phase-paused::after {
+
+  border-color:
+    rgba(250,204,21,.92) !important;
+
+  animation:
+    trainingwisePausedYellowRimFinal
+    .95s ease-in-out infinite !important;
+
+}
+
+
+@keyframes trainingwisePausedYellowFinal {
+
+  0%,100% {
+
+    box-shadow:
+      inset 0 0 0 12px rgba(250,204,21,.52),
+      inset 0 0 26px rgba(250,204,21,.08)
+      !important;
+
+  }
+
+  50% {
+
+    box-shadow:
+      inset 0 0 0 16px rgba(250,204,21,.92),
+      inset 0 0 56px rgba(250,204,21,.22)
+      !important;
+
+  }
+
+}
+
+
+@keyframes trainingwisePausedYellowRimFinal {
+
+  0%,100% {
+
+    border-color:
+      rgba(250,204,21,.48);
+
+    box-shadow:
+      inset 0 0 30px rgba(250,204,21,.08),
+      0 0 14px rgba(250,204,21,.06);
+
+  }
+
+  50% {
+
+    border-color:
+      rgba(250,204,21,1);
+
+    box-shadow:
+      inset 0 0 64px rgba(250,204,21,.28),
+      0 0 34px rgba(250,204,21,.20);
+
+  }
+
+}
+
+
+/* ------------------------------
+   MOBILE — SAME STATE LANGUAGE,
+   SMALLER / CALMER EFFECT
+------------------------------ */
+
+@media (max-width:600px) {
+
+  body.trainingwise-stage
+  .trainingwise-timer.phase-work.phase-ending:not(.phase-paused) {
+
+    animation:
+      trainingwiseFinalWorkGreen
+      .82s ease-in-out infinite !important;
+
+  }
+
+
+  body.trainingwise-stage
+  .trainingwise-timer.phase-paused {
+
+    animation:
+      trainingwisePausedYellowFinal
+      1.05s ease-in-out infinite !important;
+
+  }
+
+}
+
+
+/* ------------------------------
+   REDUCED MOTION
+------------------------------ */
+
+@media (prefers-reduced-motion:reduce) {
+
+  body.trainingwise-stage
+  .trainingwise-timer.phase-work.phase-ending,
+
+  body.trainingwise-stage
+  .trainingwise-timer.phase-work.phase-ending::after,
+
+  body.trainingwise-stage
+  .trainingwise-timer.phase-rest.phase-recovery-ending,
+
+  body.trainingwise-stage
+  .trainingwise-timer.phase-rest.phase-recovery-ending::after,
+
+  body.trainingwise-stage
+  .trainingwise-timer.phase-paused,
+
+  body.trainingwise-stage
+  .trainingwise-timer.phase-paused::after {
+
+    animation:
+      none !important;
+
+  }
+
+}
+
+
+/* ==================================================
+   TRAININGWISE — FINAL COLOR / CUE CLARITY
+   ================================================== */
+
+
+/* --------------------------------------------------
+   ROUND / INTERVAL / MINUTE TRACKER
+   ALWAYS WHITE.
+
+   This is session-position information,
+   not an action cue.
+-------------------------------------------------- */
+
+body.trainingwise-stage
+.trainingwise-timer
+.trainingwise-timer-round {
+
+  color:
+    #ffffff !important;
+
+  text-shadow:
+    none !important;
+
+  opacity:
+    .88 !important;
+
+}
+
+
+/* Keep tracker white in EVERY active state. */
+
+body.trainingwise-stage
+.trainingwise-timer.phase-work
+.trainingwise-timer-round,
+
+body.trainingwise-stage
+.trainingwise-timer.phase-work.phase-ending
+.trainingwise-timer-round,
+
+body.trainingwise-stage
+.trainingwise-timer.phase-rest
+.trainingwise-timer-round,
+
+body.trainingwise-stage
+.trainingwise-timer.phase-rest.phase-recovery-ending
+.trainingwise-timer-round,
+
+body.trainingwise-stage
+.trainingwise-timer.phase-paused
+.trainingwise-timer-round,
+
+body.trainingwise-stage
+.trainingwise-timer.phase-complete
+.trainingwise-timer-round {
+
+  color:
+    #ffffff !important;
+
+  text-shadow:
+    none !important;
+
+}
+
+
+/* --------------------------------------------------
+   FINAL 10 WORK
+   KEEP ACTION GREEN + MAKE RIM PULSE OBVIOUS.
+
+   WORK label and countdown stay green.
+   Round/Interval tracker stays white.
+-------------------------------------------------- */
+
+body.trainingwise-stage
+.trainingwise-timer.phase-work.phase-ending:not(.phase-paused) {
+
+  background:
+    #020617 !important;
+
+  animation:
+    trainingwiseGreenWorkRimPulseFinal
+    .68s
+    ease-in-out
+    infinite
+    !important;
+
+}
+
+
+body.trainingwise-stage
+.trainingwise-timer.phase-work.phase-ending:not(.phase-paused)
+.trainingwise-timer-phase,
+
+body.trainingwise-stage
+.trainingwise-timer.phase-work.phase-ending:not(.phase-paused)
+.trainingwise-clock {
+
+  color:
+    #22c55e !important;
+
+  text-shadow:
+    0 0 18px
+    rgba(34,197,94,.26)
+    !important;
+
+}
+
+
+/*
+ * Animate the actual timer box.
+ * This avoids depending solely on ::after.
+ */
+
+@keyframes trainingwiseGreenWorkRimPulseFinal {
+
+  0%,
+  100% {
+
+    box-shadow:
+      inset 0 0 0 10px
+      rgba(34,197,94,.46),
+
+      inset 0 0 24px
+      rgba(34,197,94,.08),
+
+      0 0 8px
+      rgba(34,197,94,.04)
+
+      !important;
+
+  }
+
+
+  50% {
+
+    box-shadow:
+      inset 0 0 0 18px
+      rgba(34,197,94,1),
+
+      inset 0 0 68px
+      rgba(34,197,94,.34),
+
+      0 0 34px
+      rgba(34,197,94,.24)
+
+      !important;
+
+  }
+
+}
+
+
+/* Outer trace pulses too when available. */
+
+body.trainingwise-stage
+.trainingwise-timer.phase-work.phase-ending:not(.phase-paused)::after {
+
+  border-color:
+    rgba(34,197,94,1)
+    !important;
+
+  animation:
+    trainingwiseGreenOuterTraceFinal
+    .68s
+    ease-in-out
+    infinite
+    !important;
+
+}
+
+
+@keyframes trainingwiseGreenOuterTraceFinal {
+
+  0%,
+  100% {
+
+    opacity:
+      .40;
+
+    box-shadow:
+      inset 0 0 26px
+      rgba(34,197,94,.08),
+
+      0 0 10px
+      rgba(34,197,94,.06);
+
+  }
+
+
+  50% {
+
+    opacity:
+      1;
+
+    box-shadow:
+      inset 0 0 84px
+      rgba(34,197,94,.42),
+
+      0 0 44px
+      rgba(34,197,94,.30);
+
+  }
+
+}
+
+
+/* --------------------------------------------------
+   PAUSE
+   Keep tracker white.
+   Pause action itself can remain yellow.
+-------------------------------------------------- */
+
+body.trainingwise-stage
+.trainingwise-timer.phase-paused
+.trainingwise-timer-round {
+
+  color:
+    #ffffff !important;
+
+}
+
+
+/* --------------------------------------------------
+   MOBILE
+   Same cue, less aggressive.
+-------------------------------------------------- */
+
+@media (max-width:600px) {
+
+  body.trainingwise-stage
+  .trainingwise-timer.phase-work.phase-ending:not(.phase-paused) {
+
+    animation-duration:
+      .76s !important;
+
+  }
+
+}
+
+
+/* ==================================================
+   TRAININGWISE — FINAL WORK REDLINE
+   Last 10 seconds of active work only.
+
+   GREEN  = normal work
+   RED    = final work push
+   BLUE   = recovery
+   YELLOW = paused
+   GOLD   = complete
+   ================================================== */
+
+
+/* --------------------------------------------------
+   FINAL 10 WORK — RED ACTION STATE
+-------------------------------------------------- */
+
+body.trainingwise-stage
+.trainingwise-timer.phase-work.phase-ending:not(.phase-paused) {
+
+  background:
+    #020617 !important;
+
+  animation:
+    trainingwiseRedlinePulse
+    .68s
+    ease-in-out
+    infinite
+    !important;
+
+}
+
+
+/* ALL YOU GOT + CLOCK = RED */
+
+body.trainingwise-stage
+.trainingwise-timer.phase-work.phase-ending:not(.phase-paused)
+.trainingwise-timer-phase,
+
+body.trainingwise-stage
+.trainingwise-timer.phase-work.phase-ending:not(.phase-paused)
+.trainingwise-clock {
+
+  color:
+    #ef4444 !important;
+
+  text-shadow:
+    0 0 20px
+    rgba(239,68,68,.34)
+    !important;
+
+}
+
+
+/* ROUND / INTERVAL TRACKER STAYS WHITE */
+
+body.trainingwise-stage
+.trainingwise-timer.phase-work.phase-ending
+.trainingwise-timer-round {
+
+  color:
+    #ffffff !important;
+
+  text-shadow:
+    none !important;
+
+}
+
+
+/* OUTER RED RIM */
+
+body.trainingwise-stage
+.trainingwise-timer.phase-work.phase-ending:not(.phase-paused)::after {
+
+  border-color:
+    rgba(239,68,68,1)
+    !important;
+
+  animation:
+    trainingwiseRedlineOuterPulse
+    .68s
+    ease-in-out
+    infinite
+    !important;
+
+}
+
+
+/* TIMER BODY PULSE */
+
+@keyframes trainingwiseRedlinePulse {
+
+  0%,
+  100% {
+
+    box-shadow:
+      inset 0 0 0 10px
+      rgba(239,68,68,.48),
+
+      inset 0 0 24px
+      rgba(239,68,68,.08),
+
+      0 0 8px
+      rgba(239,68,68,.04)
+
+      !important;
+
+  }
+
+
+  50% {
+
+    box-shadow:
+      inset 0 0 0 18px
+      rgba(239,68,68,1),
+
+      inset 0 0 70px
+      rgba(239,68,68,.36),
+
+      0 0 38px
+      rgba(239,68,68,.28)
+
+      !important;
+
+  }
+
+}
+
+
+/* OUTER TRACE PULSE */
+
+@keyframes trainingwiseRedlineOuterPulse {
+
+  0%,
+  100% {
+
+    opacity:
+      .42;
+
+    border-color:
+      rgba(239,68,68,.58);
+
+    box-shadow:
+      inset 0 0 26px
+      rgba(239,68,68,.08),
+
+      0 0 10px
+      rgba(239,68,68,.06);
+
+  }
+
+
+  50% {
+
+    opacity:
+      1;
+
+    border-color:
+      rgba(239,68,68,1);
+
+    box-shadow:
+      inset 0 0 88px
+      rgba(239,68,68,.46),
+
+      0 0 48px
+      rgba(239,68,68,.36);
+
+  }
+
+}
+
+
+/* --------------------------------------------------
+   MOBILE — SAME REDLINE, MORE RESTRAINED
+-------------------------------------------------- */
+
+@media (max-width:600px) {
+
+  body.trainingwise-stage
+  .trainingwise-timer.phase-work.phase-ending:not(.phase-paused) {
+
+    animation-duration:
+      .76s !important;
+
+  }
+
+
+  body.trainingwise-stage
+  .trainingwise-timer.phase-work.phase-ending:not(.phase-paused)::after {
+
+    animation-duration:
+      .76s !important;
+
+  }
+
+}
+
+
+/* --------------------------------------------------
+   REDUCED MOTION
+   Keep RED state without flashing.
+-------------------------------------------------- */
+
+@media (prefers-reduced-motion:reduce) {
+
+  body.trainingwise-stage
+  .trainingwise-timer.phase-work.phase-ending:not(.phase-paused),
+
+  body.trainingwise-stage
+  .trainingwise-timer.phase-work.phase-ending:not(.phase-paused)::after {
+
+    animation:
+      none !important;
 
   }
 
