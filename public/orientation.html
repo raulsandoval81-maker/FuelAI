@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+
+  <title>Welcome to FuelAI</title>
+
+  <link
+    rel="stylesheet"
+    href="/assets/css/site.css"
+  />
+
+  <style>
+    .orientation-wrap{
+      min-height:100vh;
+
+      padding:
+        32px 20px 60px;
+
+      display:flex;
+      justify-content:center;
+
+      background:
+        radial-gradient(
+          circle at top,
+          #14532d 0,
+          #020617 42%
+        ),
+        #020617;
+
+      color:#fff;
+    }
+
+
+    .orientation-card{
+      width:100%;
+      max-width:1000px;
+
+      margin:auto;
+
+      padding:
+        38px 28px;
+
+      border:
+        1px solid
+        rgba(34,197,94,.26);
+
+      border-radius:30px;
+
+      background:
+        rgba(15,23,42,.88);
+
+      box-shadow:
+        0 0 44px
+        rgba(34,197,94,.16);
+    }
+
+
+    .orientation-kicker{
+      margin:0 0 8px;
+
+      text-align:center;
+
+      color:#86efac;
+
+      font-size:.78rem;
+      font-weight:900;
+
+      letter-spacing:.14em;
+
+      text-transform:uppercase;
+    }
+
+
+    .orientation-card h1{
+      margin:
+        0 auto 12px;
+
+      text-align:center;
+
+      font-size:
+        clamp(
+          2.4rem,
+          10vw,
+          4rem
+        );
+
+      line-height:1;
+
+      letter-spacing:-.05em;
+    }
+
+
+    .orientation-lead{
+      max-width:680px;
+
+      margin:
+        0 auto;
+
+      text-align:center;
+
+      color:#cbd5e1;
+
+      font-size:1.05rem;
+      line-height:1.65;
+    }
+
+
+    .orientation-system{
+      display:grid;
+
+      grid-template-columns:
+        repeat(
+          4,
+          minmax(0,1fr)
+        );
+
+      gap:10px;
+
+      margin:
+        28px auto;
+
+      max-width:760px;
+    }
+
+
+    .orientation-system span{
+      min-height:52px;
+
+      display:flex;
+      align-items:center;
+      justify-content:center;
+
+      padding:
+        10px;
+
+      border:
+        1px solid
+        rgba(255,255,255,.08);
+
+      border-radius:14px;
+
+      background:
+        rgba(255,255,255,.04);
+
+      font-weight:800;
+    }
+
+
+    .orientation-section{
+      margin-top:36px;
+    }
+
+
+    .orientation-section h2{
+      margin:
+        0 0 8px;
+
+      text-align:center;
+    }
+
+
+    .orientation-section-intro{
+      max-width:680px;
+
+      margin:
+        0 auto 20px;
+
+      text-align:center;
+
+      color:#94a3b8;
+
+      line-height:1.55;
+    }
+
+
+    .fit-grid{
+      display:grid;
+
+      grid-template-columns:
+        repeat(
+          2,
+          minmax(0,1fr)
+        );
+
+      gap:14px;
+    }
+
+
+    .fit-card{
+      padding:
+        20px;
+
+      border:
+        1px solid
+        rgba(255,255,255,.09);
+
+      border-radius:18px;
+
+      background:
+        rgba(255,255,255,.035);
+    }
+
+
+    .fit-card h3{
+      margin:
+        0 0 8px;
+
+      color:#f8fafc;
+    }
+
+
+    .fit-card p{
+      margin:0;
+
+      color:#cbd5e1;
+
+      line-height:1.55;
+    }
+
+
+    .tools-grid{
+      display:grid;
+
+      grid-template-columns:
+        repeat(
+          2,
+          minmax(0,1fr)
+        );
+
+      gap:12px;
+
+      margin-top:18px;
+    }
+
+
+    .tool{
+      padding:
+        16px;
+
+      border-radius:16px;
+
+      background:
+        rgba(34,197,94,.055);
+
+      border:
+        1px solid
+        rgba(34,197,94,.15);
+    }
+
+
+    .tool strong{
+      display:block;
+
+      margin-bottom:5px;
+
+      color:#86efac;
+    }
+
+
+    .tool span{
+      color:#cbd5e1;
+
+      line-height:1.5;
+    }
+
+
+    .orientation-note{
+      max-width:700px;
+
+      margin:
+        30px auto 0;
+
+      padding:
+        18px;
+
+      border-radius:16px;
+
+      background:
+        rgba(59,130,246,.07);
+
+      border:
+        1px solid
+        rgba(96,165,250,.16);
+
+      text-align:center;
+
+      color:#dbeafe;
+
+      line-height:1.55;
+    }
+
+
+    .orientation-actions{
+      display:grid;
+
+      gap:12px;
+
+      max-width:520px;
+
+      margin:
+        34px auto 0;
+    }
+
+
+    .orientation-btn{
+      min-height:58px;
+
+      display:flex;
+      align-items:center;
+      justify-content:center;
+
+      border-radius:18px;
+
+      text-decoration:none;
+
+      font-weight:900;
+    }
+
+
+    .orientation-btn.primary{
+      background:
+        linear-gradient(
+          135deg,
+          #16a34a,
+          #22c55e
+        );
+
+      color:#02130a;
+
+      box-shadow:
+        0 0 24px
+        rgba(34,197,94,.25);
+    }
+
+
+    .orientation-btn.secondary{
+      border:
+        1px solid
+        rgba(255,255,255,.12);
+
+      background:
+        rgba(255,255,255,.05);
+
+      color:#e5e7eb;
+    }
+
+
+    .orientation-footer{
+      margin-top:28px;
+
+      text-align:center;
+
+      color:#64748b;
+
+      font-size:.8rem;
+
+      letter-spacing:.08em;
+
+      text-transform:uppercase;
+    }
+
+
+    @media(max-width:700px){
+
+      .orientation-wrap{
+        padding:
+          18px 12px 40px;
+      }
+
+
+      .orientation-card{
+        padding:
+          28px 16px;
+
+        border-radius:24px;
+      }
+
+
+      .orientation-system,
+      .fit-grid,
+      .tools-grid{
+        grid-template-columns:1fr;
+      }
+
+    }
+  </style>
+</head>
+
+<body data-theme="night">
+
+  <main class="orientation-wrap">
+
+    <section class="orientation-card">
+
+      <p class="orientation-kicker">
+        Powered by Sandman™
+      </p>
+
+      <h1>
+        Meet FuelAI
+      </h1>
+
+      <p class="orientation-lead">
+        FuelAI brings your training,
+        nutrition, hydration,
+        and recovery into one
+        connected system built
+        around how you live and train.
+      </p>
+
+
+      <div class="orientation-system">
+
+        <span>
+          🍽 Food
+        </span>
+
+        <span>
+          💧 Hydration
+        </span>
+
+        <span>
+          💪 Training
+        </span>
+
+        <span>
+          🌙 Recovery
+        </span>
+
+      </div>
+
+
+      <section class="orientation-section">
+
+        <h2>
+          Built Around You
+        </h2>
+
+        <p class="orientation-section-intro">
+          FuelAI adjusts its guidance
+          based on your goals,
+          experience,
+          and the way you train.
+        </p>
+
+
+        <div class="fit-grid">
+
+          <article class="fit-card">
+
+            <h3>
+              General Health
+            </h3>
+
+            <p>
+              Everyday wellness,
+              movement,
+              nutrition,
+              hydration,
+              and recovery.
+            </p>
+
+          </article>
+
+
+          <article class="fit-card">
+
+            <h3>
+              Fitness Enthusiast
+            </h3>
+
+            <p>
+              Strength,
+              conditioning,
+              workouts,
+              nutrition,
+              and recovery for
+              consistent fitness.
+            </p>
+
+          </article>
+
+
+          <article class="fit-card">
+
+            <h3>
+              Sports Athlete
+            </h3>
+
+            <p>
+              Performance-focused
+              training,
+              fueling,
+              recovery,
+              and athlete workload.
+            </p>
+
+          </article>
+
+
+          <article class="fit-card">
+
+            <h3>
+              Combat Athlete
+            </h3>
+
+            <p>
+              Combat-focused
+              conditioning,
+              weight management,
+              fueling,
+              recovery,
+              and competition support.
+            </p>
+
+          </article>
+
+        </div>
+
+      </section>
+
+
+      <section class="orientation-section">
+
+        <h2>
+          Your FuelAI Tools
+        </h2>
+
+
+        <div class="tools-grid">
+
+          <div class="tool">
+            <strong>
+              Coach Wise
+            </strong>
+
+            <span>
+              Personal guidance based
+              on your profile,
+              goals,
+              habits,
+              and training direction.
+            </span>
+          </div>
+
+
+          <div class="tool">
+            <strong>
+              TrainingWise
+            </strong>
+
+            <span>
+              Guided workouts,
+              intervals,
+              Tabata,
+              EMOM,
+              strength,
+              conditioning,
+              and recovery.
+            </span>
+          </div>
+
+
+          <div class="tool">
+            <strong>
+              MealWise
+            </strong>
+
+            <span>
+              Practical meal guidance
+              built around your goals,
+              schedule,
+              and training.
+            </span>
+          </div>
+
+
+          <div class="tool">
+            <strong>
+              FridgeWise
+            </strong>
+
+            <span>
+              Turn the food you already
+              have into practical meals
+              and better choices.
+            </span>
+          </div>
+
+
+          <div class="tool">
+            <strong>
+              TrackWise
+            </strong>
+
+            <span>
+              Track habits,
+              activity,
+              training,
+              and progress over time.
+            </span>
+          </div>
+
+
+          <div class="tool">
+            <strong>
+              WeightWise
+            </strong>
+
+            <span>
+              Support for bodyweight,
+              fueling,
+              hydration,
+              and athlete weight goals.
+            </span>
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <div class="orientation-note">
+        If you train with Sandman,
+        FuelAI can also support your
+        assigned work while your official
+        coaching and progression remain
+        connected to the Sandman system.
+      </div>
+
+
+      <div class="orientation-actions">
+
+        <a
+          class="orientation-btn primary"
+          href="/"
+        >
+          Continue to FuelAI →
+        </a>
+
+        <a
+          class="orientation-btn secondary"
+          href="/account/login.html"
+        >
+          Already have an account? Sign In
+        </a>
+
+      </div>
+
+
+      <footer class="orientation-footer">
+        FuelAI™ · Powered by Sandman™
+      </footer>
+
+    </section>
+
+  </main>
+
+</body>
+</html>
