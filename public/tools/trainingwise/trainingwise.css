@@ -123,7 +123,6 @@
   }
 }
 
-
 .trainingwise-hero {
   text-align: center;
 
@@ -5934,4 +5933,69 @@ body.trainingwise-stage
 
   }
 
+}
+
+/* ==================================================
+   AUTHORITATIVE CSS TRAINING STAGE
+   CSS is primary; native fullscreen is enhancement only.
+================================================== */
+
+html:has(body.trainingwise-stage),
+body.trainingwise-stage {
+  overflow: hidden !important;
+  overscroll-behavior: none;
+}
+
+body.trainingwise-stage #trainingwiseOutput.trainingwise-full-clock-active {
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 100000 !important;
+  width: 100vw !important;
+  max-width: none !important;
+  height: var(--trainingwise-stage-height, 100dvh) !important;
+  min-height: var(--trainingwise-stage-height, 100dvh) !important;
+  margin: 0 !important;
+  padding:
+    max(12px, env(safe-area-inset-top))
+    max(12px, env(safe-area-inset-right))
+    max(64px, calc(env(safe-area-inset-bottom) + 52px))
+    max(12px, env(safe-area-inset-left)) !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  overflow: hidden !important;
+  background: #020617 !important;
+}
+
+body.trainingwise-stage .trainingwise-timer {
+  max-height: calc(var(--trainingwise-stage-height, 100dvh) - 76px) !important;
+}
+
+body.trainingwise-stage .trainingwise-clock {
+  font-size: clamp(5rem, 30vmin, 14rem) !important;
+  line-height: .9 !important;
+}
+
+body.trainingwise-stage .trainingwise-board-controls {
+  right: max(12px, env(safe-area-inset-right)) !important;
+  bottom: max(12px, env(safe-area-inset-bottom)) !important;
+}
+
+@media (max-width:700px) {
+  body.trainingwise-stage #trainingwiseOutput.trainingwise-full-clock-active {
+    padding-top: max(8px, env(safe-area-inset-top)) !important;
+  }
+
+  body.trainingwise-stage .trainingwise-clock {
+    font-size: clamp(4.5rem, 32vmin, 10rem) !important;
+  }
+}
+
+@media (max-height:520px) and (orientation:landscape) {
+  body.trainingwise-stage .trainingwise-clock {
+    font-size: clamp(4rem, 38vh, 8rem) !important;
+  }
+
+  body.trainingwise-stage .trainingwise-timer-phase {
+    margin-top:4px !important;
+  }
 }

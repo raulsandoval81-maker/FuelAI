@@ -1653,6 +1653,10 @@
 
     clearTimer();
 
+    if (isTabataFullClock()) {
+      exitTabataFullClock();
+    }
+
 
     window.speechSynthesis
       ?.cancel?.();
@@ -1696,15 +1700,12 @@
   }
 
 
-  let tabataNativeFullscreenWasActive =
-    false;
-
-
   function isTabataFullClock() {
 
-    return output.classList.contains(
-      "trainingwise-full-clock-active"
-    );
+    return window
+      .TrainingWiseStageController
+      ?.isActive?.() ||
+      false;
 
   }
 
@@ -1751,53 +1752,11 @@
 
     if (!output) return;
 
-
-    output.classList.add(
-      "trainingwise-full-clock-active"
-    );
-
-
-    document.body.classList.add(
-      "trainingwise-full-clock-body"
-    );
-
-
-    document.body.classList.add(
-      "trainingwise-stage"
-    );
-
+    await window
+      .TrainingWiseStageController
+      ?.enter?.();
 
     updateTabataFullClockButton();
-
-
-    /*
-     * Match TrainingWise:
-     * fullscreen the output panel itself.
-     *
-     * If native fullscreen is rejected,
-     * the CSS Big Clock stays active.
-     */
-    try {
-
-      if (
-        output.requestFullscreen &&
-        !document.fullscreenElement
-      ) {
-
-        await output
-          .requestFullscreen();
-
-      }
-
-    }
-    catch {
-
-      /*
-       * CSS Big Clock fallback
-       * remains active.
-       */
-
-    }
 
   }
 
@@ -1806,49 +1765,11 @@
 
     if (!output) return;
 
-
-    output.classList.remove(
-      "trainingwise-full-clock-active"
-    );
-
-
-    document.body.classList.remove(
-      "trainingwise-full-clock-body"
-    );
-
-
-    document.body.classList.remove(
-      "trainingwise-stage"
-    );
-
-
-    tabataNativeFullscreenWasActive =
-      false;
-
+    await window
+      .TrainingWiseStageController
+      ?.exit?.();
 
     updateTabataFullClockButton();
-
-
-    try {
-
-      if (
-        document.fullscreenElement &&
-        document.exitFullscreen
-      ) {
-
-        await document
-          .exitFullscreen();
-
-      }
-
-    }
-    catch {
-
-      /*
-       * CSS mode has already exited.
-       */
-
-    }
 
   }
 
@@ -2250,38 +2171,8 @@
   );
 
   document.addEventListener(
-    "fullscreenchange",
-    () => {
-
-      if (
-        document.fullscreenElement
-      ) {
-
-        tabataNativeFullscreenWasActive =
-          true;
-
-      }
-
-      else if (
-        tabataNativeFullscreenWasActive
-      ) {
-
-        /*
-         * Native fullscreen may close because
-         * of browser chrome or mobile behavior.
-         *
-         * Keep TrainingWise CSS Big Clock active
-         * until the athlete explicitly exits.
-         */
-        tabataNativeFullscreenWasActive =
-          false;
-
-      }
-
-
-      updateTabataFullClockButton();
-
-    }
+    "trainingwisestagechange",
+    updateTabataFullClockButton
   );
 
 

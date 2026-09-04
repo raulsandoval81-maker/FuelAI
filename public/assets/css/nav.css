@@ -92,8 +92,16 @@
 
   width: min(86vw, 360px);
   height: 100vh;
+  height: 100dvh;
 
-  padding: 22px;
+  padding:
+    max(22px, env(safe-area-inset-top))
+    max(22px, env(safe-area-inset-right))
+    max(22px, env(safe-area-inset-bottom))
+    22px;
+
+  overflow-y: auto;
+  overscroll-behavior: contain;
 
   background: #0f172a;
 
@@ -107,6 +115,10 @@
 
 .fuelai-nav-drawer.open {
   transform: translateX(0);
+}
+
+body.fuelai-nav-open {
+  overflow: hidden;
 }
 
 .fuelai-nav-head {

@@ -1671,3 +1671,50 @@ select.goal-select{
   gap:12px;
   text-align:left;
 }
+
+/* =========================
+   FUELAI PRODUCT SHELL
+   Shared outer geometry only. Tool interiors remain independent.
+========================= */
+
+:root{
+  --fuelai-shell-max:1100px;
+  --fuelai-shell-inline:18px;
+  --fuelai-shell-top:28px;
+  --fuelai-shell-bottom:42px;
+}
+
+body > main[class]{
+  width:min(100%, var(--fuelai-shell-max)) !important;
+  max-width:var(--fuelai-shell-max) !important;
+  margin-inline:auto !important;
+  padding:var(--fuelai-shell-top) var(--fuelai-shell-inline) var(--fuelai-shell-bottom) !important;
+}
+
+:where(.hero-note,.footer-note,.setup-footer-note,.trainingwise-footer-link,.sandman-footer,.app-footer){
+  margin-top:30px;
+  text-align:center;
+  line-height:1.55;
+}
+
+:where(.hero-note,.footer-note,.setup-footer-note,.trainingwise-footer-link,.sandman-footer,.app-footer) a{
+  color:inherit;
+  text-underline-offset:3px;
+}
+
+:where(a,button,input,select,textarea):focus-visible{
+  outline:3px solid #22c55e;
+  outline-offset:3px;
+}
+
+@media(max-width:700px){
+  :root{
+    --fuelai-shell-inline:12px;
+    --fuelai-shell-top:18px;
+    --fuelai-shell-bottom:32px;
+  }
+
+  body > main[class]{
+    min-width:0;
+  }
+}

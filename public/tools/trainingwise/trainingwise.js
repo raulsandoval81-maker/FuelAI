@@ -1634,11 +1634,6 @@
               : "false"
           );
 
-          button.setAttribute(
-            "aria-label",
-            active ? "Close Big Clock" : "Open Big Clock"
-          );
-
         }
       );
 
@@ -1659,6 +1654,68 @@
 
   let trainingwiseNativeFullscreenWasActive =
     false;
+
+  let trainingwiseStageScrollY =
+    0;
+
+
+  function syncTrainingwiseStageViewport() {
+
+    const height =
+      window.visualViewport?.height ||
+      window.innerHeight;
+
+    document.documentElement.style.setProperty(
+      "--trainingwise-stage-height",
+      `${Math.round(height)}px`
+    );
+
+  }
+
+
+  function setTrainingwiseStage(active) {
+
+    if (!output) return;
+
+    if (active && !isTrainingwiseFullClock()) {
+      trainingwiseStageScrollY = window.scrollY;
+    }
+
+    output.classList.toggle(
+      "trainingwise-full-clock-active",
+      active
+    );
+
+    document.body.classList.toggle(
+      "trainingwise-full-clock-body",
+      active
+    );
+
+    document.body.classList.toggle(
+      "trainingwise-stage",
+      active
+    );
+
+    if (active) {
+      syncTrainingwiseStageViewport();
+    } else {
+      document.documentElement.style.removeProperty(
+        "--trainingwise-stage-height"
+      );
+      window.scrollTo(0, trainingwiseStageScrollY);
+    }
+
+    updateTrainingwiseFullClockButtons();
+    updateTrainingwiseBoardAction();
+
+    document.dispatchEvent(
+      new CustomEvent(
+        "trainingwisestagechange",
+        { detail: { active } }
+      )
+    );
+
+  }
 
 
 
@@ -1687,6 +1744,11 @@
               : "false"
           );
 
+          button.setAttribute(
+            "aria-label",
+            active ? "Close Big Clock" : "Open Big Clock"
+          );
+
         }
       );
 
@@ -1701,21 +1763,7 @@
     }
 
 
-    output.classList.add(
-      "trainingwise-full-clock-active"
-    );
-
-
-    document.body.classList.add(
-      "trainingwise-full-clock-body"
-    );
-
-    document.body.classList.add(
-      "trainingwise-stage"
-    );
-
-
-    updateTrainingwiseFullClockButtons();
+    setTrainingwiseStage(true);
 
 
     /*
@@ -1726,6 +1774,8 @@
     try {
 
       if (
+        window.innerWidth >= 900 &&
+        window.matchMedia("(hover: hover) and (pointer: fine)").matches &&
         output.requestFullscreen &&
         !document.fullscreenElement
       ) {
@@ -1756,21 +1806,7 @@
     }
 
 
-    output.classList.remove(
-      "trainingwise-full-clock-active"
-    );
-
-
-    document.body.classList.remove(
-      "trainingwise-full-clock-body"
-    );
-
-    document.body.classList.remove(
-      "trainingwise-stage"
-    );
-
-
-    updateTrainingwiseFullClockButtons();
+    setTrainingwiseStage(false);
 
 
     try {
@@ -1816,6 +1852,21 @@
     }
 
   }
+
+
+  window.TrainingWiseStageController =
+    Object.freeze({
+      enter:
+        enterTrainingwiseFullClock,
+      exit:
+        exitTrainingwiseFullClock,
+      toggle:
+        toggleTrainingwiseFullClock,
+      isActive:
+        isTrainingwiseFullClock,
+      syncViewport:
+        syncTrainingwiseStageViewport
+    });
 
 
 
@@ -1885,6 +1936,8 @@
          */
         trainingwiseNativeFullscreenWasActive =
           false;
+
+        setTrainingwiseStage(false);
 
       }
 
@@ -2281,11 +2334,7 @@
 
   function enterTrainingwiseBoard() {
 
-    document.body.classList.add(
-      "trainingwise-stage"
-    );
-
-    updateTrainingwiseBoardAction();
+    enterTrainingwiseFullClock();
 
   }
 
@@ -2293,9 +2342,7 @@
 
   function exitTrainingwiseBoard() {
 
-    document.body.classList.remove(
-      "trainingwise-stage"
-    );
+    exitTrainingwiseFullClock();
 
   }
 
@@ -3701,6 +3748,7 @@
     clearTimer();
     cancelTrainingwiseTransientState();
     clearTrainingwiseVisualState();
+    if (isTrainingwiseFullClock()) exitTrainingwiseFullClock();
 
     renderInterval();
 
@@ -5580,6 +5628,7 @@
     clearTimer();
     cancelTrainingwiseTransientState();
     clearTrainingwiseVisualState();
+    if (isTrainingwiseFullClock()) exitTrainingwiseFullClock();
 
     renderEmom();
 
@@ -10702,6 +10751,7 @@
     clearTimer();
     cancelTrainingwiseTransientState();
     clearTrainingwiseVisualState();
+    if (isTrainingwiseFullClock()) exitTrainingwiseFullClock();
 
 
     if (
@@ -11336,6 +11386,24 @@
           button.classList.contains("active") ? "true" : "false"
         ));
     });
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && isTrainingwiseFullClock()) {
+      exitTrainingwiseFullClock();
+    }
+  });
+
+  window.addEventListener("resize", () => {
+    if (isTrainingwiseFullClock()) syncTrainingwiseStageViewport();
+  });
+
+  window.addEventListener("orientationchange", () => {
+    if (isTrainingwiseFullClock()) syncTrainingwiseStageViewport();
+  });
+
+  window.visualViewport?.addEventListener("resize", () => {
+    if (isTrainingwiseFullClock()) syncTrainingwiseStageViewport();
   });
 
 
