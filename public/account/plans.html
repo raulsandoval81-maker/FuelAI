@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FuelAI Plans</title>
+  <link rel="stylesheet" href="/assets/css/site.css" />
+  <style>
+    .plans-shell{max-width:960px;margin:0 auto;padding:92px 18px 48px}
+    .plans-shell h1{margin:0 0 10px}
+    .plans-shell .intro{color:#cbd5e1;line-height:1.5}
+    .plans-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-top:24px}
+    .plans-card{padding:22px;border:1px solid rgba(255,255,255,.12);border-radius:18px;background:#0f172a}
+    .plans-card h2{margin:0 0 8px}
+    .plans-card p{color:#cbd5e1}
+    .plans-card button,.plans-card a{display:inline-block;margin-top:12px;padding:12px 16px;border:0;border-radius:10px;background:#22c55e;color:#071019;font:inherit;font-weight:800;text-decoration:none;cursor:pointer}
+    .plans-card button:disabled{opacity:.55;cursor:wait}
+    #checkout-status{min-height:1.5em;margin-top:20px;color:#f8fafc}
+  </style>
+</head>
+<body data-theme="night">
+  <main class="plans-shell">
+    <h1>Choose your FuelAI plan</h1>
+    <p class="intro">Your monthly price is confirmed securely before checkout. Member pricing is available only when your account has verified eligibility.</p>
+    <div class="plans-grid">
+      <section class="plans-card">
+        <h2>Wellness</h2>
+        <p>Free</p>
+        <a href="/hub/">Continue free</a>
+      </section>
+      <section class="plans-card">
+        <h2>Fitness</h2>
+        <p>$14.99/month public · $12.99/month eligible member</p>
+        <button type="button" data-checkout-plan="fitness">Continue to checkout</button>
+      </section>
+      <section class="plans-card">
+        <h2>Sports</h2>
+        <p>$24.99/month public · $19.99/month eligible member</p>
+        <button type="button" data-checkout-plan="sports">Continue to checkout</button>
+      </section>
+      <section class="plans-card">
+        <h2>Combat</h2>
+        <p>$39.99/month public · $29.99/month eligible member</p>
+        <button type="button" data-checkout-plan="combat">Continue to checkout</button>
+      </section>
+    </div>
+    <p id="checkout-status" role="status" aria-live="polite"></p>
+    <p class="intro">Checkout alone does not activate access. Your subscription will be confirmed after payment verification.</p>
+  </main>
+  <script type="module" src="/assets/js/core/firebase.js"></script>
+  <script type="module" src="/assets/js/account/plans-checkout.js"></script>
+</body>
+</html>

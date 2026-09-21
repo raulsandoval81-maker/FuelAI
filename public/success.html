@@ -22,15 +22,15 @@
     <section class="scan-card">
 
       <h1>
-        🎉 Subscription Active
+        Checkout received
       </h1>
 
       <p class="sub">
-        Your FuelAI membership has been updated.
+        Your payment is being verified. Access will update only after confirmation.
       </p>
 
       <p id="planOutput">
-        Updating account...
+        You can return to FuelAI while verification completes.
       </p>
 
       <a
@@ -43,44 +43,6 @@
     </section>
 
   </main>
-
-<script>
-
-const params =
-  new URLSearchParams(
-    window.location.search
-  );
-
-const plan =
-  params.get("plan");
-
-const setup =
-  JSON.parse(
-    localStorage.getItem(
-      "fuelai-setup"
-    ) || "{}"
-  );
-
-if (
-  plan === "standard" ||
-  plan === "plus"
-) {
-
-  setup.membership =
-    plan;
-
-  localStorage.setItem(
-    "fuelai-setup",
-    JSON.stringify(setup)
-  );
-
-  document.getElementById(
-    "planOutput"
-  ).textContent =
-    `Membership activated: ${plan}`;
-}
-
-</script>
 
 </body>
 </html>
