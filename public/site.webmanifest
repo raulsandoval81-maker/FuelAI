@@ -1,0 +1,16 @@
+{
+  "name": "FuelAI",
+  "short_name": "FuelAI",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#020617",
+  "theme_color": "#020617",
+  "icons": [
+    {
+      "src": "/assets/img/brand/fuelai-app-icon.png",
+      "type": "image/png",
+      "sizes": "any",
+      "purpose": "any maskable"
+    }
+  ]
+}
