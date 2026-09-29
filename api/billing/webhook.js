@@ -5,6 +5,7 @@ import {
   fulfillStripeSubscriptionEvent,
   parseStripeEvent,
   subscriptionUpdateFromEvent,
+  validateSubscriptionPrice,
   verifyStripeSignature,
 } from "../_lib/stripe-webhook.js";
 
@@ -47,6 +48,8 @@ export default async function handler(req, res) {
     const event = parseStripeEvent(rawBody);
     const expectedLiveMode = expectedStripeLiveMode(process.env.FUELAI_STRIPE_SECRET_KEY);
     const update = subscriptionUpdateFromEvent(event, expectedLiveMode);
+    validateSubscriptionPrice(update, process.env, expectedLiveMode);
+
     const result = await fulfillStripeSubscriptionEvent({
       db: getAdminDb(),
       fieldValue: FieldValue,
