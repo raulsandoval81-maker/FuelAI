@@ -8,6 +8,7 @@ import {
   fulfillStripeSubscriptionEvent,
   parseStripeEvent,
   subscriptionUpdateFromEvent,
+  validateSubscriptionPrice,
   verifyStripeSignature,
 } from "../api/_lib/stripe-webhook.js";
 
@@ -19,27 +20,46 @@ function signed(payload, secret, timestamp) {
     .digest("hex");
 }
 
-function subscriptionEvent(overrides = {}) {
+function price(overrides = {}) {
+  return {
+    id: "price_sports_public",
+    active: true,
+    currency: "usd",
+    unit_amount: 2499,
+    type: "recurring",
+    recurring: { interval: "month", interval_count: 1, usage_type: "licensed" },
+    livemode: false,
+    ...overrides,
+  };
+}
+
+function subscriptionObject(overrides = {}) {
+  return {
+    id: "sub_test123",
+    customer: "cus_test123",
+    status: "active",
+    current_period_end: 1_800_100_000,
+    cancel_at_period_end: false,
+    metadata: {
+      uid: "user-1",
+      plan: "sports",
+      pricingAudience: "public",
+    },
+    items: {
+      data: [{ quantity: 1, price: price() }],
+    },
+    ...overrides,
+  };
+}
+
+function subscriptionEvent(eventOverrides = {}, objectOverrides = {}) {
   return {
     id: "evt_test123",
     type: "customer.subscription.updated",
     livemode: false,
     created: 1_800_000_000,
-    data: {
-      object: {
-        id: "sub_test123",
-        customer: "cus_test123",
-        status: "active",
-        current_period_end: 1_800_100_000,
-        cancel_at_period_end: false,
-        metadata: {
-          uid: "user-1",
-          plan: "sports",
-          pricingAudience: "public",
-        },
-      },
-    },
-    ...overrides,
+    data: { object: subscriptionObject(objectOverrides) },
+    ...eventOverrides,
   };
 }
 
@@ -77,6 +97,10 @@ function fakeDb(seed = {}) {
 
 const fieldValue = {
   serverTimestamp() { return "SERVER_TS"; },
+};
+
+const env = {
+  FUELAI_STRIPE_PRICE_SPORTS_PUBLIC: "price_sports_public",
 };
 
 test("Stripe signature verification accepts current valid v1 signature", () => {
@@ -136,6 +160,22 @@ test("subscription event produces canonical paid entitlement update", () => {
   assert.equal(update.revoke, false);
 });
 
+test("subscription price must match the configured catalog price", () => {
+  const update = subscriptionUpdateFromEvent(subscriptionEvent(), false);
+  assert.doesNotThrow(() => validateSubscriptionPrice(update, env, false));
+
+  const wrongAmount = subscriptionUpdateFromEvent(
+    subscriptionEvent({}, {
+      items: { data: [{ quantity: 1, price: price({ unit_amount: 999 }) }] },
+    }),
+    false
+  );
+  assert.throws(
+    () => validateSubscriptionPrice(wrongAmount, env, false),
+    /not configured correctly/
+  );
+});
+
 test("unsupported signed Stripe events are acknowledged without fulfillment", () => {
   const event = subscriptionEvent({ type: "invoice.paid" });
   assert.equal(subscriptionUpdateFromEvent(event, false), null);
@@ -157,6 +197,14 @@ test("active subscription writes server-authoritative plan and is idempotent", a
   assert.equal(second.reason, "duplicate");
 });
 
+test("signed event cannot create a missing FuelAI user", async () => {
+  const db = fakeDb();
+  const update = subscriptionUpdateFromEvent(subscriptionEvent(), false);
+  const result = await fulfillStripeSubscriptionEvent({ db, fieldValue, update });
+  assert.equal(result.reason, "missing_user");
+  assert.equal(db.docs.has("users/user-1"), false);
+});
+
 test("canceled current subscription revokes to wellness but stale old cancellation cannot", async () => {
   const db = fakeDb({
     "users/user-1": {
@@ -169,37 +217,42 @@ test("canceled current subscription revokes to wellness but stale old cancellati
     },
   });
 
-  const stale = subscriptionUpdateFromEvent(subscriptionEvent({
-    id: "evt_old",
-    type: "customer.subscription.deleted",
-    created: 1_800_000_000,
-    data: {
-      object: {
+  const stale = subscriptionUpdateFromEvent(
+    subscriptionEvent(
+      { id: "evt_old", type: "customer.subscription.deleted", created: 1_800_000_000 },
+      {
         id: "sub_test123",
-        customer: "cus_test123",
         status: "canceled",
         metadata: { uid: "user-1", plan: "sports", pricingAudience: "public" },
-      },
-    },
-  }), false);
+      }
+    ),
+    false
+  );
 
   const staleResult = await fulfillStripeSubscriptionEvent({ db, fieldValue, update: stale });
   assert.equal(staleResult.reason, "stale");
   assert.equal(db.docs.get("users/user-1").plan, "combat");
 
-  const current = subscriptionUpdateFromEvent(subscriptionEvent({
-    id: "evt_new",
-    type: "customer.subscription.deleted",
-    created: 1_800_000_200,
-    data: {
-      object: {
+  const current = subscriptionUpdateFromEvent(
+    subscriptionEvent(
+      { id: "evt_new", type: "customer.subscription.deleted", created: 1_800_000_200 },
+      {
         id: "sub_newer",
-        customer: "cus_test123",
         status: "canceled",
         metadata: { uid: "user-1", plan: "combat", pricingAudience: "public" },
-      },
-    },
-  }), false);
+        items: {
+          data: [{
+            quantity: 1,
+            price: price({
+              id: "price_combat_public",
+              unit_amount: 3999,
+            }),
+          }],
+        },
+      }
+    ),
+    false
+  );
 
   const currentResult = await fulfillStripeSubscriptionEvent({ db, fieldValue, update: current });
   assert.equal(currentResult.ignored, false);
