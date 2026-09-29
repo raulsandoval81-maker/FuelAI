@@ -1,690 +1,332 @@
-const FUELAI_PLAN_KEY =
-  "fuelai-plan";
+const FUELAI_PLAN_KEY = "fuelai-plan";
+const FUELAI_BETA_KEY = "fuelai-beta-access";
 
-const FUELAI_BETA_KEY =
-  "fuelai-beta-access";
+const CANONICAL_PLANS = [
+  "wellness",
+  "fitness",
+  "sports",
+  "combat"
+];
 
-
-/*
- * ========================================
- * PROFILE → DEFAULT PLAN
- * ========================================
- */
+const LEGACY_AMBIGUOUS_PLANS = new Set([
+  "basic",
+  "standard",
+  "plus"
+]);
 
 const FUELAI_PROFILE_PLANS = {
-
   "general-health": {
     label: "General Health",
-    defaultPlan: "free",
-    allowedPlans: [
-      "free",
-      "standard",
-      "plus"
-    ]
+    defaultPlan: "wellness",
+    allowedPlans: [...CANONICAL_PLANS]
   },
-
   "fitness-enthusiast": {
     label: "Fitness Enthusiast",
-    defaultPlan: "standard",
-    allowedPlans: [
-      "free",
-      "standard",
-      "plus"
-    ]
+    defaultPlan: "fitness",
+    allowedPlans: [...CANONICAL_PLANS]
   },
-
   "sports-athlete": {
     label: "Sports Athlete",
-    defaultPlan: "standard",
-    allowedPlans: [
-      "free",
-      "standard",
-      "plus"
-    ]
+    defaultPlan: "sports",
+    allowedPlans: [...CANONICAL_PLANS]
   },
-
   "combat-athlete": {
     label: "Combat Athlete",
-    defaultPlan: "plus",
-    allowedPlans: [
-      "free",
-      "standard",
-      "plus"
-    ]
+    defaultPlan: "combat",
+    allowedPlans: [...CANONICAL_PLANS]
   }
-
 };
 
-
 /*
- * ========================================
- * PLAN FEATURES
- * ========================================
+ * Client feature exposure remains intentionally conservative during the
+ * plan-name migration. Fitness and Sports preserve the former Standard
+ * feature surface; Combat preserves the former Plus feature surface.
+ * Server entitlements remain authoritative for billing and paid access.
  */
-
 const FUELAI_FEATURES = {
-
-  free: {
-    label: "Free",
-
+  wellness: {
+    label: "Wellness",
     mealScansPerDay: 2,
     fridgeScansPerDay: 1,
-
     trackwise: true,
     trackwiseDays: 7,
-
     trainingwise: false,
-
     combatAthlete: false,
     weightwise: false
   },
-
-
-  standard: {
-    label: "FuelAI",
-
+  fitness: {
+    label: "Fitness",
     mealScansPerDay: 5,
     fridgeScansPerDay: 2,
-
     trackwise: true,
     trackwiseDays: 60,
-
     trainingwise: true,
-
     combatAthlete: false,
     weightwise: false
   },
-
-
-  plus: {
-    label: "FuelAI+",
-
-    mealScansPerDay: 8,
-    fridgeScansPerDay: 4,
-
+  sports: {
+    label: "Sports",
+    mealScansPerDay: 5,
+    fridgeScansPerDay: 2,
     trackwise: true,
     trackwiseDays: 60,
-
     trainingwise: true,
-
+    combatAthlete: false,
+    weightwise: false
+  },
+  combat: {
+    label: "Combat",
+    mealScansPerDay: 8,
+    fridgeScansPerDay: 4,
+    trackwise: true,
+    trackwiseDays: 60,
+    trainingwise: true,
     combatAthlete: true,
     weightwise: true
   }
-
 };
-
-
-/*
- * ========================================
- * SETUP
- * ========================================
- */
 
 function getFuelAISetup() {
   try {
-    return JSON.parse(
-      localStorage.getItem(
-        "fuelai-setup"
-      ) || "{}"
-    );
+    return JSON.parse(localStorage.getItem("fuelai-setup") || "{}");
   } catch (error) {
-    console.warn(
-      "Unable to read FuelAI setup.",
-      error
-    );
-
+    console.warn("Unable to read FuelAI setup.", error);
     return {};
   }
 }
 
-
-/*
- * ========================================
- * PROFILE
- * ========================================
- */
-
-function normalizeFuelAIProfile(
-  profile
-) {
-  const value =
-    String(profile || "")
-      .trim()
-      .toLowerCase();
-
-  /*
-   * Old profile migration
-   */
-  if (
-    value === "general-fitness"
-  ) {
-    return "fitness-enthusiast";
-  }
-
-  if (
-    value === "fitness-enthusiast" ||
-    value === "sports-athlete" ||
-    value === "combat-athlete"
-  ) {
-    return value;
-  }
-
+function normalizeFuelAIProfile(profile) {
+  const value = String(profile || "").trim().toLowerCase();
+  if (value === "general-fitness") return "fitness-enthusiast";
+  if ([
+    "general-health",
+    "fitness-enthusiast",
+    "sports-athlete",
+    "combat-athlete"
+  ].includes(value)) return value;
   return "general-health";
 }
 
-
 function getFuelAIProfile() {
-  const setup =
-    getFuelAISetup();
-
-  return normalizeFuelAIProfile(
-    setup.lifestyleType
-  );
+  return normalizeFuelAIProfile(getFuelAISetup().lifestyleType);
 }
-
 
 function getFuelAIProfileConfig() {
-  const profile =
-    getFuelAIProfile();
-
-  return (
-    FUELAI_PROFILE_PLANS[profile] ||
-    FUELAI_PROFILE_PLANS[
-      "general-health"
-    ]
-  );
+  return FUELAI_PROFILE_PLANS[getFuelAIProfile()] || FUELAI_PROFILE_PLANS["general-health"];
 }
-
 
 /*
- * ========================================
- * PLAN
- * ========================================
+ * Billing policy intentionally permits only one automatic legacy mapping:
+ * free -> wellness. Standard/Plus (and the older Basic alias) are recognized
+ * so callers can surface migration state, but are never silently promoted to
+ * a paid canonical plan.
  */
+function translateLegacyFuelAIPlan(plan) {
+  const value = String(plan || "").trim().toLowerCase();
 
-function normalizeFuelAIPlan(plan) {
-  const value =
-    String(plan || "")
-      .trim()
-      .toLowerCase();
-
-  /*
-   * Old Basic plan migration
-   */
-  if (value === "basic") {
-    return "standard";
+  if (CANONICAL_PLANS.includes(value)) {
+    return { status: "canonical", plan: value, legacyPlan: null };
   }
 
-  if (
-    value === "standard" ||
-    value === "plus"
-  ) {
-    return value;
+  if (value === "free") {
+    return { status: "mapped", plan: "wellness", legacyPlan: value };
   }
 
-  return "free";
+  if (LEGACY_AMBIGUOUS_PLANS.has(value)) {
+    return { status: "migration_required", plan: null, legacyPlan: value };
+  }
+
+  return { status: "unrecognized", plan: null, legacyPlan: value || null };
 }
 
+function normalizeFuelAIPlan(plan, fallback = null) {
+  const translated = translateLegacyFuelAIPlan(plan);
+  return translated.plan || fallback;
+}
+
+function getFuelAIPlanMigration() {
+  const stored = localStorage.getItem(FUELAI_PLAN_KEY);
+  if (!stored) return { status: "none", plan: null, legacyPlan: null };
+  return translateLegacyFuelAIPlan(stored);
+}
 
 function getFuelAIPlan() {
-  const profileConfig =
-    getFuelAIProfileConfig();
+  const profileConfig = getFuelAIProfileConfig();
+  const stored = localStorage.getItem(FUELAI_PLAN_KEY);
+  if (!stored) return profileConfig.defaultPlan;
 
-  const stored =
-    localStorage.getItem(
-      FUELAI_PLAN_KEY
-    );
-
-  /*
-   * No plan yet:
-   * use the natural starting plan
-   * for this profile.
-   */
-  if (!stored) {
-    return profileConfig.defaultPlan;
-  }
-
-  const plan =
-    normalizeFuelAIPlan(
-      stored
-    );
-
-  /*
-   * Existing plan is valid for
-   * this profile.
-   */
-  if (
-    profileConfig.allowedPlans.includes(
-      plan
-    )
-  ) {
-    return plan;
+  const translated = translateLegacyFuelAIPlan(stored);
+  if (translated.plan && profileConfig.allowedPlans.includes(translated.plan)) {
+    return translated.plan;
   }
 
   /*
-   * Unknown or invalid plan.
-   * Fall back to the profile's
-   * natural starting plan.
+   * Ambiguous legacy values are left untouched in storage and fall back to
+   * the profile's canonical starting plan until an explicit migration choice
+   * is made. This avoids fabricating a paid entitlement in the browser.
    */
   return profileConfig.defaultPlan;
 }
 
-
 function setFuelAIPlan(plan) {
-  const normalized =
-    normalizeFuelAIPlan(
-      plan
-    );
+  const translated = translateLegacyFuelAIPlan(plan);
+  const normalized = translated.plan;
+  const profileConfig = getFuelAIProfileConfig();
 
-  const profileConfig =
-    getFuelAIProfileConfig();
-
-  if (
-    !profileConfig.allowedPlans.includes(
-      normalized
-    )
-  ) {
-    console.warn(
-      `Plan "${normalized}" is not available for ${profileConfig.label}.`
-    );
-
+  if (!normalized || !profileConfig.allowedPlans.includes(normalized)) {
+    console.warn(`Plan "${String(plan || "")}" requires a canonical FuelAI plan.`);
     return false;
   }
 
-  localStorage.setItem(
-    FUELAI_PLAN_KEY,
-    normalized
-  );
-
+  localStorage.setItem(FUELAI_PLAN_KEY, normalized);
   return true;
 }
 
+function migrateStoredFuelAIPlan() {
+  const migration = getFuelAIPlanMigration();
+  if (migration.status !== "mapped" || !migration.plan) return migration;
+  localStorage.setItem(FUELAI_PLAN_KEY, migration.plan);
+  return { ...migration, status: "migrated" };
+}
 
 function getAllowedFuelAIPlans() {
-  return [
-    ...getFuelAIProfileConfig()
-      .allowedPlans
-  ];
+  return [...getFuelAIProfileConfig().allowedPlans];
 }
-
-
-function getFuelAIFeatures() {
-  const plan =
-    getFuelAIEffectivePlan();
-
-  return (
-    FUELAI_FEATURES[plan] ||
-    FUELAI_FEATURES.free
-  );
-}
-
-
-/*
- * ========================================
- * BETA ACCESS
- * ========================================
- */
 
 function getFuelAIBetaAccess() {
   try {
-
-    const beta =
-      JSON.parse(
-        localStorage.getItem(
-          FUELAI_BETA_KEY
-        ) || "{}"
-      );
-
-    const enabled =
-      beta.enabled === true;
-
-    const accessLevel =
-      normalizeFuelAIPlan(
-        beta.accessLevel
-      );
+    const beta = JSON.parse(localStorage.getItem(FUELAI_BETA_KEY) || "{}");
+    const enabled = beta.enabled === true;
+    const translated = translateLegacyFuelAIPlan(beta.accessLevel);
+    const accessLevel = translated.plan;
 
     return {
       enabled,
-      accessLevel:
-        enabled
-          ? accessLevel
-          : null,
-      cohort:
-        String(
-          beta.cohort || ""
-        ),
-      startedAt:
-        beta.startedAt ||
-        null,
-      expiresAt:
-        beta.expiresAt ||
-        null
+      accessLevel: enabled ? accessLevel : null,
+      cohort: String(beta.cohort || ""),
+      startedAt: beta.startedAt || null,
+      expiresAt: beta.expiresAt || null,
+      migrationStatus: translated.status,
+      legacyAccessLevel: translated.legacyPlan
     };
-
   } catch (error) {
-
-    console.warn(
-      "Unable to read FuelAI beta access.",
-      error
-    );
-
+    console.warn("Unable to read FuelAI beta access.", error);
     return {
       enabled: false,
       accessLevel: null,
       cohort: "",
       startedAt: null,
-      expiresAt: null
+      expiresAt: null,
+      migrationStatus: "unrecognized",
+      legacyAccessLevel: null
     };
-
   }
 }
-
 
 function isFuelAIBetaUser() {
-  return (
-    getFuelAIBetaAccess()
-      .enabled === true
-  );
+  return getFuelAIBetaAccess().enabled === true;
 }
-
 
 function getFuelAIEffectivePlan() {
-
-  const purchasedPlan =
-    getFuelAIPlan();
-
-  const beta =
-    getFuelAIBetaAccess();
-
-
-  if (
-    beta.enabled &&
-    beta.accessLevel
-  ) {
-    return beta.accessLevel;
-  }
-
-
-  return purchasedPlan;
+  const purchasedPlan = getFuelAIPlan();
+  const beta = getFuelAIBetaAccess();
+  return beta.enabled && beta.accessLevel ? beta.accessLevel : purchasedPlan;
 }
 
-
-/*
- * ========================================
- * DEVELOPER OVERRIDE
- * ========================================
- */
+function getFuelAIFeatures() {
+  const plan = getFuelAIEffectivePlan();
+  return FUELAI_FEATURES[plan] || FUELAI_FEATURES.wellness;
+}
 
 function isFuelAIDevUnlocked() {
-  return (
-    localStorage.getItem(
-      "fuelai-dev-unlock-all"
-    ) === "true"
-  );
+  return localStorage.getItem("fuelai-dev-unlock-all") === "true";
 }
 
-
-/*
- * ========================================
- * TOOL ACCESS
- * ========================================
- */
-
 function canUseFuelAITool(tool) {
+  if (isFuelAIDevUnlocked()) return true;
 
-  if (isFuelAIDevUnlocked()) {
-    return true;
-  }
-
-  const features =
-    getFuelAIFeatures();
-
-  const profile =
-    getFuelAIProfile();
-
+  const features = getFuelAIFeatures();
+  const profile = getFuelAIProfile();
 
   switch (tool) {
-
-    /*
-     * Core FuelAI
-     */
-
     case "mealwise":
-      return true;
-
-
     case "fridgewise":
       return true;
-
-
     case "trackwise":
-      return (
-        features.trackwise === true
-      );
-
-
-    /*
-     * TrainingWise
-     *
-     * Fitness Enthusiast
-     * or Combat Athlete
-     */
-
+      return features.trackwise === true;
     case "trainingwise":
-      return (
-        features.trainingwise === true &&
-        (
-          profile ===
-            "fitness-enthusiast" ||
-
-          profile ===
-            "sports-athlete" ||
-
-          profile ===
-            "combat-athlete"
-        )
-      );
-
-
-    /*
-     * Combat suite
-     *
-     * Combat Athlete + Plus
-     */
-
+      return features.trainingwise === true && [
+        "fitness-enthusiast",
+        "sports-athlete",
+        "combat-athlete"
+      ].includes(profile);
     case "combatAthlete":
-      return (
-        profile ===
-          "combat-athlete" &&
-
-        features.combatAthlete ===
-          true
-      );
-
-
+      return profile === "combat-athlete" && features.combatAthlete === true;
     case "cutwise":
-      return (
-        profile ===
-          "combat-athlete" &&
-
-        features.weightwise ===
-          true
-      );
-
-
-    /*
-     * Legacy compatibility.
-     * Older pages may still ask for
-     * combatAthlete or weightwise.
-     */
     case "weightwise":
-      return (
-        profile ===
-          "combat-athlete" &&
-
-        features.weightwise ===
-          true
-      );
-
-
+      return profile === "combat-athlete" && features.weightwise === true;
     default:
       return false;
   }
 }
 
-
-/*
- * ========================================
- * FULL ACCESS SNAPSHOT
- * ========================================
- */
-
 function getFuelAIAccess() {
-
-  const profile =
-    getFuelAIProfile();
-
-  const profileConfig =
-    getFuelAIProfileConfig();
-
-  const plan =
-    getFuelAIPlan();
-
-  const effectivePlan =
-    getFuelAIEffectivePlan();
-
-  const beta =
-    getFuelAIBetaAccess();
-
-  const features =
-    getFuelAIFeatures();
-
+  const profile = getFuelAIProfile();
+  const profileConfig = getFuelAIProfileConfig();
+  const plan = getFuelAIPlan();
+  const effectivePlan = getFuelAIEffectivePlan();
+  const beta = getFuelAIBetaAccess();
+  const features = getFuelAIFeatures();
+  const migration = getFuelAIPlanMigration();
 
   return {
-
     profile,
-
-    profileLabel:
-      profileConfig.label,
-
+    profileLabel: profileConfig.label,
     plan,
-
-    planLabel:
-      FUELAI_FEATURES[plan]
-        ?.label ||
-      plan,
-
+    planLabel: FUELAI_FEATURES[plan]?.label || plan,
     effectivePlan,
-
-    effectivePlanLabel:
-      features.label,
-
-    betaUser:
-      beta.enabled,
-
+    effectivePlanLabel: features.label,
+    betaUser: beta.enabled,
     beta,
-
-    allowedPlans:
-      getAllowedFuelAIPlans(),
-
-    developerUnlock:
-      isFuelAIDevUnlocked(),
-
-
+    planMigration: migration,
+    allowedPlans: getAllowedFuelAIPlans(),
+    developerUnlock: isFuelAIDevUnlocked(),
     limits: {
-
-      mealScansPerDay:
-        features.mealScansPerDay,
-
-      fridgeScansPerDay:
-        features.fridgeScansPerDay,
-
-      trackwiseDays:
-        features.trackwiseDays
-
+      mealScansPerDay: features.mealScansPerDay,
+      fridgeScansPerDay: features.fridgeScansPerDay,
+      trackwiseDays: features.trackwiseDays
     },
-
-
     tools: {
-
-      mealwise:
-        canUseFuelAITool(
-          "mealwise"
-        ),
-
-      fridgewise:
-        canUseFuelAITool(
-          "fridgewise"
-        ),
-
-      trackwise:
-        canUseFuelAITool(
-          "trackwise"
-        ),
-
-      trainingwise:
-        canUseFuelAITool(
-          "trainingwise"
-        ),
-
-      cutwise:
-        canUseFuelAITool(
-          "cutwise"
-        ),
-
-      /*
-       * Legacy aliases retained while
-       * older combat pages are migrated.
-       */
-      combatAthlete:
-        canUseFuelAITool(
-          "combatAthlete"
-        ),
-
-      weightwise:
-        canUseFuelAITool(
-          "weightwise"
-        )
-
+      mealwise: canUseFuelAITool("mealwise"),
+      fridgewise: canUseFuelAITool("fridgewise"),
+      trackwise: canUseFuelAITool("trackwise"),
+      trainingwise: canUseFuelAITool("trainingwise"),
+      cutwise: canUseFuelAITool("cutwise"),
+      combatAthlete: canUseFuelAITool("combatAthlete"),
+      weightwise: canUseFuelAITool("weightwise")
     }
-
   };
 }
 
-
-/*
- * ========================================
- * PUBLIC API
- * ========================================
- */
-
 window.FuelAIPlan = {
-
-  profiles:
-    FUELAI_PROFILE_PLANS,
-
-  features:
-    FUELAI_FEATURES,
-
+  profiles: FUELAI_PROFILE_PLANS,
+  features: FUELAI_FEATURES,
+  canonicalPlans: [...CANONICAL_PLANS],
   getFuelAISetup,
-
   getFuelAIProfile,
   getFuelAIProfileConfig,
-
+  translateLegacyFuelAIPlan,
+  normalizeFuelAIPlan,
+  getFuelAIPlanMigration,
+  migrateStoredFuelAIPlan,
   getFuelAIPlan,
   setFuelAIPlan,
-
   getAllowedFuelAIPlans,
-
   getFuelAIFeatures,
-
   getFuelAIBetaAccess,
   isFuelAIBetaUser,
   getFuelAIEffectivePlan,
-
   canUseFuelAITool,
   getFuelAIAccess,
-
   isFuelAIDevUnlocked
-
 };
