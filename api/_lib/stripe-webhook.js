@@ -1,4 +1,6 @@
 import crypto from "node:crypto";
+import { catalogPriceFor } from "./fuelai-billing-catalog.js";
+import { validateConfiguredPrice } from "./fuelai-checkout.js";
 
 const PAID_PLANS = new Set(["fitness", "sports", "combat"]);
 const AUDIENCES = new Set(["public", "member"]);
@@ -103,11 +105,14 @@ export function subscriptionUpdateFromEvent(event, expectedLiveMode) {
   const customerId = typeof subscription?.customer === "string" ? subscription.customer : "";
   const status = String(subscription?.status || "").trim();
   const created = Number(event.created);
+  const items = Array.isArray(subscription?.items?.data) ? subscription.items.data : [];
+  const item = items[0];
 
   if (!uid || uid.length > 128 || !/^sub_[A-Za-z0-9]+$/.test(subscriptionId) ||
       (customerId && !/^cus_[A-Za-z0-9]+$/.test(customerId)) ||
       !PAID_PLANS.has(plan) || !AUDIENCES.has(pricingAudience) ||
-      !Number.isInteger(created) || created <= 0) {
+      !Number.isInteger(created) || created <= 0 || items.length !== 1 ||
+      Number(item?.quantity || 1) !== 1 || !item?.price) {
     throw new StripeWebhookError(400, "Stripe subscription metadata is invalid.");
   }
 
@@ -121,12 +126,27 @@ export function subscriptionUpdateFromEvent(event, expectedLiveMode) {
     subscriptionId,
     customerId: customerId || null,
     status,
+    price: item.price,
     active: ACTIVE_STATUSES.has(status),
     revoke: event.type === "customer.subscription.deleted" || REVOKE_STATUSES.has(status),
     currentPeriodEnd: Number.isInteger(subscription.current_period_end)
       ? subscription.current_period_end : null,
     cancelAtPeriodEnd: subscription.cancel_at_period_end === true,
   };
+}
+
+export function validateSubscriptionPrice(update, env, expectedLiveMode) {
+  if (!update) return;
+  const expected = catalogPriceFor(update.plan, update.pricingAudience);
+  const priceId = String(env?.[expected?.priceEnv] || "").trim();
+  if (!expected || !/^price_[A-Za-z0-9]+$/.test(priceId)) {
+    throw new StripeWebhookError(503, "FuelAI checkout price is not configured correctly.");
+  }
+  try {
+    validateConfiguredPrice(update.price, expected, priceId, !expectedLiveMode);
+  } catch (error) {
+    throw new StripeWebhookError(error?.statusCode || 400, error?.message || "Stripe subscription price is invalid.");
+  }
 }
 
 export async function fulfillStripeSubscriptionEvent({
@@ -149,7 +169,18 @@ export async function fulfillStripeSubscriptionEvent({
       return { ignored: true, reason: "duplicate", uid: update.uid };
     }
 
-    const user = userSnapshot.exists ? userSnapshot.data() || {} : {};
+    if (!userSnapshot.exists) {
+      transaction.set(eventRef, {
+        type: update.eventType,
+        uid: update.uid,
+        ignored: true,
+        reason: "missing_user",
+        processedAt: fieldValue.serverTimestamp(),
+      });
+      return { ignored: true, reason: "missing_user", uid: update.uid };
+    }
+
+    const user = userSnapshot.data() || {};
     const billing = user.billing && typeof user.billing === "object" ? user.billing : {};
     const lastEventCreated = Number(billing.lastStripeEventCreated || 0);
 
