@@ -8,6 +8,12 @@ const CANONICAL_PLANS = [
   "combat"
 ];
 
+const LEGACY_AMBIGUOUS_PLANS = new Set([
+  "basic",
+  "standard",
+  "plus"
+]);
+
 const FUELAI_PROFILE_PLANS = {
   "general-health": {
     label: "General Health",
@@ -109,8 +115,15 @@ function getFuelAIProfileConfig() {
   return FUELAI_PROFILE_PLANS[getFuelAIProfile()] || FUELAI_PROFILE_PLANS["general-health"];
 }
 
-function translateLegacyFuelAIPlan(plan, profile = getFuelAIProfile()) {
+/*
+ * Billing policy intentionally permits only one automatic legacy mapping:
+ * free -> wellness. Standard/Plus (and the older Basic alias) are recognized
+ * so callers can surface migration state, but are never silently promoted to
+ * a paid canonical plan.
+ */
+function translateLegacyFuelAIPlan(plan) {
   const value = String(plan || "").trim().toLowerCase();
+
   if (CANONICAL_PLANS.includes(value)) {
     return { status: "canonical", plan: value, legacyPlan: null };
   }
@@ -119,32 +132,16 @@ function translateLegacyFuelAIPlan(plan, profile = getFuelAIProfile()) {
     return { status: "mapped", plan: "wellness", legacyPlan: value };
   }
 
-  if (value === "basic") {
-    return { status: "mapped", plan: "fitness", legacyPlan: value };
-  }
-
-  if (value === "standard") {
-    const mapped = profile === "sports-athlete" || profile === "combat-athlete"
-      ? "sports"
-      : "fitness";
-    return { status: "mapped", plan: mapped, legacyPlan: value };
-  }
-
-  if (value === "plus") {
-    const mapped = profile === "combat-athlete"
-      ? "combat"
-      : profile === "sports-athlete"
-        ? "sports"
-        : "fitness";
-    return { status: "mapped", plan: mapped, legacyPlan: value };
+  if (LEGACY_AMBIGUOUS_PLANS.has(value)) {
+    return { status: "migration_required", plan: null, legacyPlan: value };
   }
 
   return { status: "unrecognized", plan: null, legacyPlan: value || null };
 }
 
-function normalizeFuelAIPlan(plan, profile = getFuelAIProfile()) {
-  const translated = translateLegacyFuelAIPlan(plan, profile);
-  return translated.plan || FUELAI_PROFILE_PLANS[profile]?.defaultPlan || "wellness";
+function normalizeFuelAIPlan(plan, fallback = null) {
+  const translated = translateLegacyFuelAIPlan(plan);
+  return translated.plan || fallback;
 }
 
 function getFuelAIPlanMigration() {
@@ -158,10 +155,17 @@ function getFuelAIPlan() {
   const stored = localStorage.getItem(FUELAI_PLAN_KEY);
   if (!stored) return profileConfig.defaultPlan;
 
-  const plan = normalizeFuelAIPlan(stored);
-  return profileConfig.allowedPlans.includes(plan)
-    ? plan
-    : profileConfig.defaultPlan;
+  const translated = translateLegacyFuelAIPlan(stored);
+  if (translated.plan && profileConfig.allowedPlans.includes(translated.plan)) {
+    return translated.plan;
+  }
+
+  /*
+   * Ambiguous legacy values are left untouched in storage and fall back to
+   * the profile's canonical starting plan until an explicit migration choice
+   * is made. This avoids fabricating a paid entitlement in the browser.
+   */
+  return profileConfig.defaultPlan;
 }
 
 function setFuelAIPlan(plan) {
@@ -170,7 +174,7 @@ function setFuelAIPlan(plan) {
   const profileConfig = getFuelAIProfileConfig();
 
   if (!normalized || !profileConfig.allowedPlans.includes(normalized)) {
-    console.warn(`Plan "${String(plan || "")}" is not available for ${profileConfig.label}.`);
+    console.warn(`Plan "${String(plan || "")}" requires a canonical FuelAI plan.`);
     return false;
   }
 
@@ -195,6 +199,7 @@ function getFuelAIBetaAccess() {
     const enabled = beta.enabled === true;
     const translated = translateLegacyFuelAIPlan(beta.accessLevel);
     const accessLevel = translated.plan;
+
     return {
       enabled,
       accessLevel: enabled ? accessLevel : null,
